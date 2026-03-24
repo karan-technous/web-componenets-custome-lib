@@ -18,6 +18,7 @@ export class UiInput {
   private inputEl!: HTMLInputElement;
 
   componentDidLoad() {
+    console.log(this.placeholder == '', 'placeholder=');
     this.inputEl = this.el.shadowRoot.querySelector('input')!;
   }
 
@@ -29,7 +30,7 @@ export class UiInput {
         this.inputEl.value = this.value || '';
       }
 
-      //  FIX: disabled sync
+      // disabled sync
       this.inputEl.disabled = this.disabled;
     }
   }
@@ -43,6 +44,15 @@ export class UiInput {
   };
 
   render() {
-    return <input class="input" placeholder={this.placeholder || ''} disabled={this.disabled} onInput={this.onInput} onBlur={() => this.uiBlur.emit()} />;
+    return (
+      // <input
+      //   class="input"
+      //   placeholder={this.placeholder === undefined || this.placeholder === null || this.placeholder == '' ? 'Type something...' : this.placeholder}
+      //   disabled={this.disabled}
+      //   onInput={this.onInput}
+      //   onBlur={() => this.uiBlur.emit()}
+      // />
+      <p>test</p>
+    );
   }
 }

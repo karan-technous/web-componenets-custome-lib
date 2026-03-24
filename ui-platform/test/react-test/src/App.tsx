@@ -18,7 +18,7 @@ const App = () => {
       <h2>Custom Input</h2>
       <UiInput
         value={value}
-        placeholder="Enter your name"
+        // placeholder="Enter your name"
         onChange={(val) => setValue(val)}
         disabled={disabled}
         onBlur={() => console.log("Blur event")}

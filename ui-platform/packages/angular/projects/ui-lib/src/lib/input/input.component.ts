@@ -23,7 +23,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   ],
 })
 export class InputComponent implements ControlValueAccessor {
-  @Input() placeholder: string = '';
+  @Input() placeholder?: string;
 
   isDisabled: boolean = false;
   value: string = '';
@@ -31,7 +31,7 @@ export class InputComponent implements ControlValueAccessor {
   constructor(private cdr: ChangeDetectorRef) {}
 
   onChange = (value: any) => {};
-  onTouched = () => {};
+  onTouched = () => {}; 
 
   writeValue(value: string): void {
     this.value = value;

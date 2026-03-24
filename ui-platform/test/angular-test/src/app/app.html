@@ -4,16 +4,13 @@
 <h2>angular support</h2>
 <h2>✅ CVA Test - ui-input</h2>
 
-<ui-input-angular
-  [(ngModel)]="name"
-  #ctrl="ngModel"
-  [placeholder]="'Enter the number'"
-></ui-input-angular>
+<ui-input-angular [(ngModel)]="name" #ctrl="ngModel" [placeholder]="'tedst'"></ui-input-angular>
 
 <hr />
 <p>Value: {{ name }}</p>
 <p>Touched: {{ ctrl.touched }}</p>
 <p>Dirty: {{ ctrl.dirty }}</p>
+
 <p>Pristine: {{ ctrl.pristine }}</p>
 <p>Valid: {{ ctrl.valid }}</p>
 <p>Invalid: {{ ctrl.invalid }}</p>
