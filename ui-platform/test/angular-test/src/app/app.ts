@@ -2,11 +2,10 @@ import { Component, CUSTOM_ELEMENTS_SCHEMA, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
 import { InputComponent } from '@ui-platform/angular';
-import { InputTest } from './test/input-test/input-test';
 
 @Component({
   selector: 'app-root',
-  imports: [FormsModule, InputComponent, JsonPipe, InputTest],
+  imports: [FormsModule, InputComponent, JsonPipe],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './app.html',
   styleUrl: './app.css',

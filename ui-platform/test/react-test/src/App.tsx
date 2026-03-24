@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { UiInput } from "@ui-platform/react";
-import InputTest from "./test/input.test";
 
 const App = () => {
   const [value, setValue] = useState("");
@@ -22,7 +21,6 @@ const App = () => {
         setDisabled or enabled toggle
       </button>
       <button onClick={() => setValue("!disabled")}>set default value</button>
-      <InputTest />
     </div>
   );
 };

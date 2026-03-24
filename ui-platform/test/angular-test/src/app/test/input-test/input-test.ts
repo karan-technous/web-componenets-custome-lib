@@ -25,7 +25,7 @@ export class InputTest {
     })),
   );
 
-  // 🔥 Update single input
+  //  Update single input
   updateValue(index: number, value: string) {
     this.inputs.update((arr) => {
       const copy = [...arr];
@@ -34,7 +34,7 @@ export class InputTest {
     });
   }
 
-  // 🔥 Toggle one
+  // Toggle one
   toggleOne(index: number) {
     this.inputs.update((arr) => {
       const copy = [...arr];
@@ -46,7 +46,7 @@ export class InputTest {
     });
   }
 
-  // 🔥 Update ALL placeholders
+  // Update ALL placeholders
   updateAllPlaceholders() {
     this.inputs.update((arr) =>
       arr.map((item, i) => ({
@@ -56,7 +56,7 @@ export class InputTest {
     );
   }
 
-  // 🔥 Fill all values
+  // Fill all values
   fillAll() {
     this.inputs.update((arr) =>
       arr.map((item, i) => ({
