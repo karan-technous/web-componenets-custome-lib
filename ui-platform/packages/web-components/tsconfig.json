@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "jsx": "react",
+    "jsxFactory": "h",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": false,
+    "moduleResolution": "node",
+    "types": ["@stencil/core"]
+  },
+  "include": ["src"]
+}

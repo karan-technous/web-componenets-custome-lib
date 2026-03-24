@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",
+    "declaration": true,
+    "jsx": "react-jsx",
+    "module": "ESNext",
+    "target": "ESNext",
+    "moduleResolution": "bundler",
+    "skipLibCheck": true,
+    "esModuleInterop": true
+  },
+  "include": ["src"]   // ✅ MUST include types folder
+}

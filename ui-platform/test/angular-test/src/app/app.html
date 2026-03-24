@@ -1,0 +1,24 @@
+<h1>working app component</h1>
+<ui-input (valueChange)="onChange($event)"></ui-input>
+
+<h2>angular support</h2>
+<h2>✅ CVA Test - ui-input</h2>
+
+<ui-input-angular
+  [(ngModel)]="name"
+  #ctrl="ngModel"
+  [placeholder]="'Enter the number'"
+></ui-input-angular>
+
+<hr />
+<p>Value: {{ name }}</p>
+<p>Touched: {{ ctrl.touched }}</p>
+<p>Dirty: {{ ctrl.dirty }}</p>
+<p>Pristine: {{ ctrl.pristine }}</p>
+<p>Valid: {{ ctrl.valid }}</p>
+<p>Invalid: {{ ctrl.invalid }}</p>
+<button (click)="name = 'Karn'">Set Value Programmatically</button>
+<button (click)="name = ''">Reset</button>
+<button (click)="ctrl.control.disable()">Disable</button>
+<button (click)="ctrl.control.enable()">Enable</button>
+<p>Errors: {{ ctrl.errors | json }}</p>
