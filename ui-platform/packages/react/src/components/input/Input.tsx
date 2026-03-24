@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 
 type UiInputProps = {
   value?: string;
@@ -8,48 +8,50 @@ type UiInputProps = {
   onBlur?: () => void;
 };
 
-export const UiInput = ({
-  value,
-  placeholder,
-  disabled,
-  onChange,
-  onBlur,
-}: UiInputProps) => {
-  const ref = useRef<any>(null);
+export const UiInput = React.memo(
+  ({ value, placeholder, disabled, onChange, onBlur }: UiInputProps) => {
+    const ref = useRef<any>(null);
 
-  useEffect(() => {
-    if (ref.current && ref.current.value !== value) {
+    // Stable refs
+    const onChangeRef = useRef(onChange);
+    const onBlurRef = useRef(onBlur);
+
+    useEffect(() => {
+      onChangeRef.current = onChange;
+      onBlurRef.current = onBlur;
+    });
+
+    // Set properties (no re-render)
+    useEffect(() => {
+      if (!ref.current) return;
+
       ref.current.value = value ?? "";
-    }
-  }, [value]);
-
-  useEffect(() => {
-    if (ref.current) {
       ref.current.placeholder = placeholder ?? "";
       ref.current.disabled = !!disabled;
-    }
-  }, [placeholder, disabled]);
+    }, [value, placeholder, disabled]);
 
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
+    // Attach listeners ONCE
+    useEffect(() => {
+      const el = ref.current;
+      if (!el) return;
 
-    const handleChange = (e: any) => {
-      onChange?.(e.detail);
-    };
+      const handleChange = (e: any) => {
+        onChangeRef.current?.(e.detail);
+      };
 
-    const handleBlur = () => {
-      onBlur?.();
-    };
+      const handleBlur = () => {
+        onBlurRef.current?.();
+      };
 
-    el.addEventListener("valueChange", handleChange);
-    el.addEventListener("uiBlur", handleBlur);
+      el.addEventListener("valueChange", handleChange);
+      el.addEventListener("uiBlur", handleBlur);
 
-    return () => {
-      el.removeEventListener("valueChange", handleChange);
-      el.removeEventListener("uiBlur", handleBlur);
-    };
-  }, [onChange, onBlur]);
+      return () => {
+        el.removeEventListener("valueChange", handleChange);
+        el.removeEventListener("uiBlur", handleBlur);
+      };
+    }, []);
 
-  return <ui-input ref={ref}></ui-input>;
-};
+    return <ui-input ref={ref}></ui-input>;
+  },
+);
