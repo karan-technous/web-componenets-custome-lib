@@ -1,13 +1,21 @@
 import { useState } from "react";
-import { UiInput } from "@ui-platform/react";
+import { UiButton, UiInput } from "@ui-platform/react";
 
 const App = () => {
   const [value, setValue] = useState("");
   const [disabled, setDisabled] = useState(false);
+  const [loader, setLoader] = useState(false);
+
+  const handleLoadingState = () => {
+    setLoader(true);
+
+    setTimeout(() => {
+      setLoader(false);
+    }, 2000);
+  };
   return (
     <div>
       <h2>Custom Input</h2>
-
       <UiInput
         value={value}
         placeholder="Enter your name"
@@ -15,12 +23,18 @@ const App = () => {
         disabled={disabled}
         onBlur={() => console.log("Blur event")}
       />
-
       <p>Value: {value}</p>
-      <button onClick={() => setDisabled(!disabled)}>
+      <UiButton onClick={() => setDisabled(!disabled)}>
         setDisabled or enabled toggle
-      </button>
-      <button onClick={() => setValue("!disabled")}>set default value</button>
+      </UiButton>
+      <br /> <br />
+      <UiButton onClick={() => setValue("!disabled")}>
+        set default value
+      </UiButton>
+      <br /> <br />
+      <UiButton loading={loader} onClick={handleLoadingState}>
+        Preview
+      </UiButton>
     </div>
   );
 };

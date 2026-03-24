@@ -1,0 +1,94 @@
+:host {
+  display: inline-block;
+}
+
+:host([fullWidth]) {
+  display: block;
+}
+
+:host([fullWidth]) .btn {
+  width: 100%;
+}
+
+.loader {
+  width: 16px;
+  height: 16px;
+  border: 2px solid white;
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+/* Base */
+.btn {
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  border-radius: var(--ui-border-radius);
+  transition: all 0.2s ease;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Sizes */
+.btn.sm {
+  padding: 4px 8px;
+  font-size: 12px;
+}
+
+.btn.md {
+  padding: 8px 12px;
+  font-size: 14px;
+}
+
+.btn.lg {
+  padding: 12px 16px;
+  font-size: 16px;
+}
+
+/* Variants */
+
+/* Primary */
+.btn.primary {
+  background: var(--ui-primary);
+  color: white;
+}
+
+.btn.primary:hover {
+  background: var(--ui-primary-hover);
+}
+
+/* Secondary */
+.btn.secondary {
+  background: var(--ui-bg);
+  color: var(--ui-text);
+  border: 1px solid var(--ui-primary);
+}
+
+.btn.secondary:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* Outline */
+.btn.outline {
+  background: transparent;
+  color: var(--ui-primary);
+  border: 1px solid var(--ui-primary);
+}
+
+.btn.outline:hover {
+  background: rgba(59, 130, 246, 0.1);
+}
+
+/* Disabled */
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

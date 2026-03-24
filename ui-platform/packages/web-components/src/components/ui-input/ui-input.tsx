@@ -3,6 +3,7 @@ import { Component, Prop, Event, EventEmitter, h, Element } from '@stencil/core'
 @Component({
   tag: 'ui-input',
   shadow: true,
+  styleUrl: 'ui-input.css',
 })
 export class UiInput {
   @Element() el: HTMLElement;
@@ -28,15 +29,13 @@ export class UiInput {
         this.inputEl.value = this.value || '';
       }
 
-      // 🔥 FIX: disabled sync
+      //  FIX: disabled sync
       this.inputEl.disabled = this.disabled;
     }
   }
 
   onInput = (e: any) => {
     const val = e.target.value;
-    console.log('Stencil Input:', val);
-
     // prevent unnecessary emits
     if (val !== this.value) {
       this.valueChange.emit(val);
@@ -44,6 +43,6 @@ export class UiInput {
   };
 
   render() {
-    return <input placeholder={this.placeholder || ''} disabled={this.disabled} onInput={this.onInput} onBlur={() => this.uiBlur.emit()} />;
+    return <input class="input" placeholder={this.placeholder || ''} disabled={this.disabled} onInput={this.onInput} onBlur={() => this.uiBlur.emit()} />;
   }
 }

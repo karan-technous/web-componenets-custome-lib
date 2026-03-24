@@ -1,7 +1,14 @@
 <ui-button
-  [attr.type]="type"
-  [attr.disabled]="disabled"
+  [variant]="variant"
+  [size]="size"
+  [disabled]="disabled"
+  [loading]="loading"
+  [fullWidth]="fullWidth"
   (clicked)="handleClick()"
 >
+  <ng-content select="[start]" slot="start"></ng-content>
+
   <ng-content></ng-content>
+
+  <ng-content select="[end]" slot="end"></ng-content>
 </ui-button>

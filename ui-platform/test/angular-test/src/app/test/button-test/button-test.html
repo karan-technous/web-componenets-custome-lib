@@ -1,0 +1,78 @@
+<h2>🔥 Angular Button Full Test</h2>
+
+<ui-button-angular variant="primary" (clicked)="handleClick()">
+  Primary Button
+</ui-button-angular>
+
+<br /><br />
+
+<ui-button-angular variant="secondary">
+  Secondary Button
+</ui-button-angular>
+
+<br /><br />
+
+<ui-button-angular variant="outline">
+  Outline Button
+</ui-button-angular>
+
+<br /><br />
+
+<ui-button-angular size="sm">Small</ui-button-angular>
+<ui-button-angular size="md">Medium</ui-button-angular>
+<ui-button-angular size="lg">Large</ui-button-angular>
+
+<br /><br />
+
+<ui-button-angular [disabled]="true">
+  Disabled Button
+</ui-button-angular>
+
+<br /><br />
+
+<ui-button-angular
+  [loading]="loading()"
+  (clicked)="handleClick()"
+>
+  Loading Button
+</ui-button-angular>
+
+<br /><br />
+
+<ui-button-angular [fullWidth]="true">
+  Full Width Button
+</ui-button-angular>
+
+<br /><br />
+
+<ui-button-angular>
+  <span start>🔥</span>
+  With Start Icon
+</ui-button-angular>
+
+<br /><br />
+
+<ui-button-angular>
+  With End Icon
+  <span end>➡️</span>
+</ui-button-angular>
+
+<br /><br />
+
+<ui-button-angular
+  variant="primary"
+  size="lg"
+  [loading]="loading()"
+  [fullWidth]="true"
+  (clicked)="handleClick()"
+>
+  <span start>🚀</span>
+  Full Feature Button
+  <span end>✨</span>
+</ui-button-angular>
+
+<br /><br />
+
+<button (click)="toggleLoading()">
+  Toggle Loading (External Control)
+</button>

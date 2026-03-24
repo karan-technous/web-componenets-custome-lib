@@ -1,16 +1,42 @@
-import { Component, Event, EventEmitter, h } from '@stencil/core';
+import { Component, Event, EventEmitter, h, Prop } from '@stencil/core';
 
 @Component({
   tag: 'ui-button',
+  styleUrl: 'ui-button.css',
   shadow: true,
 })
 export class UiButton {
+  @Prop() variant: 'primary' | 'secondary' | 'outline' = 'primary';
+  @Prop() size: 'sm' | 'md' | 'lg' = 'md';
+  @Prop({ reflect: true }) disabled: boolean = false;
+
+  @Prop() loading: boolean = false;
+  @Prop({ reflect: true }) fullWidth: boolean = false;
+
   @Event() clicked: EventEmitter<void>;
+
+  handleClick = () => {
+    if (!this.disabled && !this.loading) {
+      this.clicked.emit();
+    }
+  };
 
   render() {
     return (
-      <button onClick={() => this.clicked.emit()}>
-        <slot></slot>
+      <button
+        class={`btn ${this.variant} ${this.size}`}
+        disabled={this.disabled || this.loading}
+        onClick={this.handleClick}
+      >
+        {this.loading ? (
+          <span class="loader"></span>
+        ) : (
+          [
+            <slot name="start"></slot>,
+            <slot></slot>,
+            <slot name="end"></slot>,
+          ]
+        )}
       </button>
     );
   }

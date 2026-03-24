@@ -7,6 +7,26 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface UiButton {
+        /**
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * @default false
+         */
+        "fullWidth": boolean;
+        /**
+          * @default false
+         */
+        "loading": boolean;
+        /**
+          * @default 'md'
+         */
+        "size": 'sm' | 'md' | 'lg';
+        /**
+          * @default 'primary'
+         */
+        "variant": 'primary' | 'secondary' | 'outline';
     }
     interface UiInput {
         /**
@@ -68,7 +88,27 @@ declare global {
 }
 declare namespace LocalJSX {
     interface UiButton {
+        /**
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * @default false
+         */
+        "fullWidth"?: boolean;
+        /**
+          * @default false
+         */
+        "loading"?: boolean;
         "onClicked"?: (event: UiButtonCustomEvent<void>) => void;
+        /**
+          * @default 'md'
+         */
+        "size"?: 'sm' | 'md' | 'lg';
+        /**
+          * @default 'primary'
+         */
+        "variant"?: 'primary' | 'secondary' | 'outline';
     }
     interface UiInput {
         /**
@@ -81,6 +121,13 @@ declare namespace LocalJSX {
         "value"?: string;
     }
 
+    interface UiButtonAttributes {
+        "variant": 'primary' | 'secondary' | 'outline';
+        "size": 'sm' | 'md' | 'lg';
+        "disabled": boolean;
+        "loading": boolean;
+        "fullWidth": boolean;
+    }
     interface UiInputAttributes {
         "value": string;
         "placeholder": string;
@@ -88,7 +135,7 @@ declare namespace LocalJSX {
     }
 
     interface IntrinsicElements {
-        "ui-button": UiButton;
+        "ui-button": Omit<UiButton, keyof UiButtonAttributes> & { [K in keyof UiButton & keyof UiButtonAttributes]?: UiButton[K] } & { [K in keyof UiButton & keyof UiButtonAttributes as `attr:${K}`]?: UiButtonAttributes[K] } & { [K in keyof UiButton & keyof UiButtonAttributes as `prop:${K}`]?: UiButton[K] };
         "ui-input": Omit<UiInput, keyof UiInputAttributes> & { [K in keyof UiInput & keyof UiInputAttributes]?: UiInput[K] } & { [K in keyof UiInput & keyof UiInputAttributes as `attr:${K}`]?: UiInputAttributes[K] } & { [K in keyof UiInput & keyof UiInputAttributes as `prop:${K}`]?: UiInput[K] };
     }
 }

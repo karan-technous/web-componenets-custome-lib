@@ -30,6 +30,7 @@
     "@angular/router": "^20.3.0",
     "@ui-platform/web-components": "workspace:*",
     "@ui-platform/angular": "workspace:*",
+    "@ui-platform/core": "workspace:*",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },

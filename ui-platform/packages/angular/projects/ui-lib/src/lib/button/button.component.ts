@@ -1,4 +1,10 @@
-import { Component, Input, Output, EventEmitter, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  CUSTOM_ELEMENTS_SCHEMA,
+} from '@angular/core';
 
 @Component({
   selector: 'ui-button-angular',
@@ -7,8 +13,11 @@ import { Component, Input, Output, EventEmitter, CUSTOM_ELEMENTS_SCHEMA } from '
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class ButtonComponent {
-  @Input() type: string = 'primary';
+  @Input() variant: 'primary' | 'secondary' | 'outline' = 'primary';
+  @Input() size: 'sm' | 'md' | 'lg' = 'md';
   @Input() disabled: boolean = false;
+  @Input() loading: boolean = false;
+  @Input() fullWidth: boolean = false;
 
   @Output() clicked = new EventEmitter<void>();
 

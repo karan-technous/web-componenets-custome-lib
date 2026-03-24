@@ -157,6 +157,9 @@ importers:
       '@ui-platform/angular':
         specifier: workspace:*
         version: link:../../packages/angular/projects/ui-lib
+      '@ui-platform/core':
+        specifier: workspace:*
+        version: link:../../packages/core
       '@ui-platform/web-components':
         specifier: workspace:*
         version: link:../../packages/web-components
@@ -203,6 +206,9 @@ importers:
 
   test/react-test:
     dependencies:
+      '@ui-platform/core':
+        specifier: workspace:*
+        version: link:../../packages/core
       '@ui-platform/react':
         specifier: workspace:*
         version: link:../../packages/react

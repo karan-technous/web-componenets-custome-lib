@@ -1,0 +1,17 @@
+:host {
+  display: inline-block;
+}
+
+.input {
+  width: 100%;
+  padding: 8px;
+  background: var(--ui-bg);
+  color: var(--ui-text);
+  border: 1px solid var(--ui-primary);
+  border-radius: var(--ui-border-radius);
+  outline: none;
+}
+
+.input:focus {
+  border-color: var(--ui-primary-hover);
+}
