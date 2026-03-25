@@ -1,7 +1,7 @@
 <ui-input
-  [value]="value"
-  [placeholder]="placeholder"
-  [disabled]="isDisabled"
+  [value]="value()"
+  [placeholder]="placeholder()"
+  [disabled]="isDisabled()"
   (valueChange)="handleInput($event)"
   (uiBlur)="handleBlur()"
 ></ui-input>

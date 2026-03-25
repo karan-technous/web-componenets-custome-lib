@@ -1,9 +1,9 @@
 <ui-button
-  [variant]="variant"
-  [size]="size"
-  [disabled]="disabled"
-  [loading]="loading"
-  [fullWidth]="fullWidth"
+  [variant]="variant()"
+  [size]="size()"
+  [disabled]="disabled()"
+  [loading]="loading()"
+  [fullWidth]="fullWidth()"
   (clicked)="handleClick()"
 >
   <ng-content select="[start]" slot="start"></ng-content>

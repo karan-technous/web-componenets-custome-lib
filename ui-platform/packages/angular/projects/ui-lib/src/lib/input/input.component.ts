@@ -1,10 +1,10 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   CUSTOM_ELEMENTS_SCHEMA,
   forwardRef,
-  Input,
+  input,
+  signal,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -23,24 +23,20 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   ],
 })
 export class InputComponent implements ControlValueAccessor {
-  @Input() placeholder?: string;
+  placeholder = input<string>();
 
-  isDisabled: boolean = false;
-  value: string = '';
-
-  constructor(private cdr: ChangeDetectorRef) {}
+  value = signal<string>('');
+  isDisabled = signal<boolean>(false);
 
   onChange = (value: any) => {};
-  onTouched = () => {}; 
+  onTouched = () => {};
 
   writeValue(value: string): void {
-    this.value = value;
-    this.cdr.markForCheck();
+    this.value.set(value);
   }
 
   setDisabledState(isDisabled: boolean): void {
-    this.isDisabled = isDisabled;
-    this.cdr.markForCheck();
+    this.isDisabled.set(isDisabled);
   }
 
   registerOnChange(fn: any): void {
@@ -53,7 +49,7 @@ export class InputComponent implements ControlValueAccessor {
 
   handleInput(event: any) {
     const value = event.detail;
-    this.value = value;
+    this.value.set(value);
     this.onChange(value);
   }
 

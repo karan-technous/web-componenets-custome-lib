@@ -1,9 +1,9 @@
 import {
+  ChangeDetectionStrategy,
   Component,
-  Input,
-  Output,
-  EventEmitter,
   CUSTOM_ELEMENTS_SCHEMA,
+  input,
+  output,
 } from '@angular/core';
 
 @Component({
@@ -11,15 +11,16 @@ import {
   templateUrl: './button.component.html',
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ButtonComponent {
-  @Input() variant: 'primary' | 'secondary' | 'outline' = 'primary';
-  @Input() size: 'sm' | 'md' | 'lg' = 'md';
-  @Input() disabled: boolean = false;
-  @Input() loading: boolean = false;
-  @Input() fullWidth: boolean = false;
+  variant = input<'primary' | 'secondary' | 'outline'>('primary');
+  size = input<'sm' | 'md' | 'lg'>('md');
+  disabled = input<boolean>(false);
+  loading = input<boolean>(false);
+  fullWidth = input<boolean>(false);
 
-  @Output() clicked = new EventEmitter<void>();
+  clicked = output<void>();
 
   handleClick() {
     this.clicked.emit();
