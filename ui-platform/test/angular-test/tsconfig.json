@@ -17,6 +17,9 @@
     "paths": {
       "@ui-platform/angular": [
         "../../packages/angular/projects/ui-lib/src/public-api.ts"
+      ],
+      "@ui-platform/web-components":[
+        "../../packages/web-components"
       ]
     }
   },

@@ -8,6 +8,7 @@
     "dist"
   ],
   "scripts": {
+    "dev": "tsc --watch",
     "build": "tsc"
   },
   "keywords": [],
