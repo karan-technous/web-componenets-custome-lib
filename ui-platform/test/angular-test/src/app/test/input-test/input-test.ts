@@ -11,7 +11,7 @@ type InputItem = {
 @Component({
   selector: 'app-input-test',
   standalone: true,
-  imports: [FormsModule, InputComponent],
+  imports: [InputComponent],
   templateUrl: './input-test.html',
 })
 export class InputTest {

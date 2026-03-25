@@ -3,7 +3,24 @@
   "version": "1.0.0",
   "description": "",
   "private": "true",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/types/components.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./loader": "./dist/loader/index.js",
+    "./react": "./dist/react/index.js",
+    "./angular": {
+      "default": "./dist/angular/ui-lib"
+    },
+    "./core": "./dist/core/index.js"
+  },
+  "typesVersions": {
+    "*": {
+      "angular": [
+        "dist/angular/ui-lib/types"
+      ]
+    }
+  },
   "scripts": {
     "build": "pnpm -r build",
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -31,6 +48,7 @@
     "zone.js": "^0.16.1"
   },
   "devDependencies": {
-    "@angular/cli": "^21.2.3"
+    "@angular/cli": "^21.2.3",
+    "fs-extra": "^11.3.4"
   }
 }

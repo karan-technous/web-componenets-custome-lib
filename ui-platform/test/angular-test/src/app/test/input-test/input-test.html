@@ -1,28 +1,21 @@
 <h2>Angular v21 Advanced Stress Test</h2>
 
-<button (click)="updateAllPlaceholders()">
-  Update All Placeholders
-</button>
+<button (click)="updateAllPlaceholders()">Update All Placeholders</button>
 
-<button (click)="fillAll()">
-  Fill All Values
-</button>
+<button (click)="fillAll()">Fill All Values</button>
 
-<div style="height: 500px; overflow: auto;">
+<div style="height: 500px; overflow: auto">
   @for (item of inputs(); track $index) {
-
     <div>
-      <ui-input-angular
+      <!-- <ui-input-angular
         [ngModel]="item.value"
         (ngModelChange)="updateValue($index, $event)"
         [placeholder]="item.placeholder"
         [disabled]="item.disabled"
-      ></ui-input-angular>
+      ></ui-input-angular> -->
+      <ui-input-angular [placeholder]="item.placeholder"></ui-input-angular>
 
-      <button (click)="toggleOne($index)">
-        Toggle #{{ $index }}
-      </button>
+      <button (click)="toggleOne($index)">Toggle #{{ $index }}</button>
     </div>
-
   }
 </div>

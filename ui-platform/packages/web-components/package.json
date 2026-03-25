@@ -28,8 +28,7 @@
     "url": "https://github.com/stenciljs/component-starter.git"
   },
   "files": [
-    "dist/",
-    "loader/"
+    "dist/"
   ],
   "scripts": {
     "build": "stencil build",

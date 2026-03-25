@@ -4,11 +4,12 @@
 <h2>angular support</h2>
 <h2>✅ CVA Test - ui-input</h2>
 
-<ui-input-angular [(ngModel)]="name" #ctrl="ngModel" [placeholder]="'tedst'"></ui-input-angular>
+<!-- <ui-input-angular [(ngModel)]="name" #ctrl="ngModel" [placeholder]="'tedst'"></ui-input-angular> -->
+<ui-input-angular [(ngModel)]="name" [placeholder]="'tedst'"></ui-input-angular>
 
 <hr />
 <p>Value: {{ name }}</p>
-<p>Touched: {{ ctrl.touched }}</p>
+<!-- <p>Touched: {{ ctrl.touched }}</p>
 <p>Dirty: {{ ctrl.dirty }}</p>
 
 <p>Pristine: {{ ctrl.pristine }}</p>
@@ -18,7 +19,7 @@
 <button (click)="name = ''">Reset</button>
 <button (click)="ctrl.control.disable()">Disable</button>
 <button (click)="ctrl.control.enable()">Enable</button>
-<p>Errors: {{ ctrl.errors | json }}</p>
+<p>Errors: {{ ctrl.errors | json }}</p> -->
 
 <h1>button testing starting here</h1>
 
