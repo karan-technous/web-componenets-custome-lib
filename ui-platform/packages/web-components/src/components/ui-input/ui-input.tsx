@@ -50,6 +50,7 @@ export class UiInput {
         disabled={this.disabled}
         onInput={this.onInput}
         onBlur={() => this.uiBlur.emit()}
+        
       />
     );
   }

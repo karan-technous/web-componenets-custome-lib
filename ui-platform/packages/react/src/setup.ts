@@ -1,1 +1,3 @@
-// import "@ui-platform/web-components/dist/web-components/web-components.esm.js";
+import { defineCustomElements } from "@ui-platform/web-components/loader";
+
+void defineCustomElements();

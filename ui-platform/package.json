@@ -1,33 +1,83 @@
 {
   "name": "ui-platform",
   "version": "1.0.0",
-  "description": "",
-  "private": "true",
-  "main": "dist/index.js",
-  "types": "dist/types/components.d.ts",
+  "description": "Stencil web components, Angular wrappers, React wrappers, and core theme utilities. Tarball: pnpm run build && npm pack",
+  "private": false,
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/types/components.d.ts",
   "exports": {
-    ".": "./dist/index.js",
-    "./loader": "./dist/loader/index.js",
-    "./react": "./dist/react/index.js",
-    "./angular": {
-      "default": "./dist/angular/ui-lib"
+    ".": {
+      "types": "./dist/types/components.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs.js"
     },
-    "./core": "./dist/core/index.js"
+    "./loader": {
+      "types": "./dist/loader/index.d.ts",
+      "import": "./dist/loader/index.js",
+      "require": "./dist/loader/index.cjs.js"
+    },
+    "./components": {
+      "types": "./dist/types/components.d.ts",
+      "import": "./dist/web-components/web-components.esm.js",
+      "default": "./dist/web-components/web-components.esm.js"
+    },
+    "./react": {
+      "types": "./dist/react/index.d.ts",
+      "import": "./dist/react/index.js",
+      "default": "./dist/react/index.js"
+    },
+    "./angular": {
+      "types": "./dist/angular/ui-lib/types/ui-platform-angular.d.ts",
+      "import": "./dist/angular/ui-lib/fesm2022/ui-platform-angular.mjs",
+      "default": "./dist/angular/ui-lib/fesm2022/ui-platform-angular.mjs"
+    },
+    "./core": {
+      "types": "./dist/core/index.d.ts",
+      "import": "./dist/core/index.js",
+      "default": "./dist/core/index.js"
+    },
+    "./package.json": "./package.json"
   },
-  "typesVersions": {
-    "*": {
-      "angular": [
-        "dist/angular/ui-lib/types"
-      ]
-    }
-  },
+  "sideEffects": [
+    "./dist/web-components/*.js",
+    "./dist/loader/*.js",
+    "./dist/react/setup.js",
+    "./dist/react/index.js"
+  ],
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "build": "pnpm -r build",
+    "build": "pnpm -r build && node scripts/build-all.js",
+    "pack:tarball": "pnpm run build && npm pack --ignore-scripts",
+    "prepack": "pnpm -r build && node scripts/build-all.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "ui-library": "pnpm -r --parallel run dev"
   },
   "keywords": [],
   "author": "",
+  "peerDependencies": {
+    "@angular/common": "^21.0.0",
+    "@angular/core": "^21.0.0",
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@angular/common": {
+      "optional": true
+    },
+    "@angular/core": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    }
+  },
   "pnpm": {
     "overrides": {
       "@angular/*": "21.2.3"
@@ -35,8 +85,9 @@
   },
   "license": "ISC",
   "packageManager": "pnpm@10.32.1",
-  "dependencies": {
+  "devDependencies": {
     "@angular/build": "^21.2.3",
+    "@angular/cli": "^21.2.3",
     "@angular/common": "^21.2.3",
     "@angular/compiler": "^21.2.3",
     "@angular/core": "^21.2.3",
@@ -44,11 +95,8 @@
     "@angular/platform-browser": "^21.2.3",
     "@angular/platform-browser-dynamic": "^21.2.3",
     "@stencil/core": "^4.43.3",
+    "fs-extra": "^11.3.4",
     "rxjs": "~7.8.2",
     "zone.js": "^0.16.1"
-  },
-  "devDependencies": {
-    "@angular/cli": "^21.2.3",
-    "fs-extra": "^11.3.4"
   }
 }
