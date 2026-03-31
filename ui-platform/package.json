@@ -1,15 +1,15 @@
 {
   "name": "ui-platform",
   "version": "1.0.0",
-  "description": "Stencil web components, Angular wrappers, React wrappers, and core theme utilities. Tarball: pnpm run build && npm pack",
+  "description": "Stencil web components with Angular and React wrappers. Tarball: pnpm run build && npm pack",
   "private": false,
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
-  "types": "./dist/types/components.d.ts",
+  "types": "./dist/types/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/types/components.d.ts",
+      "types": "./dist/types/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs.js"
     },

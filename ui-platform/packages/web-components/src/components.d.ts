@@ -32,7 +32,7 @@ export namespace Components {
     }
     interface UiIcon {
         /**
-          * @default 'white'
+          * @default 'currentColor'
          */
         "color": string;
         "name": IconName;
@@ -174,7 +174,7 @@ declare namespace LocalJSX {
     }
     interface UiIcon {
         /**
-          * @default 'white'
+          * @default 'currentColor'
          */
         "color"?: string;
         "name": IconName;

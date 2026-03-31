@@ -5,6 +5,9 @@ import {
   input,
   output,
 } from '@angular/core';
+import { ensureCustomElements } from '../register-custom-elements';
+
+ensureCustomElements();
 
 @Component({
   selector: 'ui-button-angular',

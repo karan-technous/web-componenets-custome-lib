@@ -7,7 +7,7 @@
   padding: 8px;
   background: var(--ui-bg);
   color: var(--ui-text);
-  border: 1px solid var(--ui-primary);
+  border: 1px solid var(--ui-border-color);
   border-radius: var(--ui-border-radius);
   outline: none;
 }

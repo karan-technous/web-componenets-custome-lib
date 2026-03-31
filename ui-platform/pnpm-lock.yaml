@@ -76,7 +76,7 @@ importers:
         specifier: ^21.2.3
         version: 21.2.6(@angular/common@21.2.6(@angular/core@21.2.6(@angular/compiler@21.2.6)(rxjs@7.8.2)(zone.js@0.16.1))(rxjs@7.8.2))(@angular/core@21.2.6(@angular/compiler@21.2.6)(rxjs@7.8.2)(zone.js@0.16.1))(@angular/platform-browser@21.2.6(@angular/common@21.2.6(@angular/core@21.2.6(@angular/compiler@21.2.6)(rxjs@7.8.2)(zone.js@0.16.1))(rxjs@7.8.2))(@angular/core@21.2.6(@angular/compiler@21.2.6)(rxjs@7.8.2)(zone.js@0.16.1)))(rxjs@7.8.2)
       '@ui-platform/web-components':
-        specifier: workspace:*
+        specifier: 1.0.0
         version: link:../web-components
       rxjs:
         specifier: ~7.8.0
@@ -97,9 +97,6 @@ importers:
       '@types/jasmine':
         specifier: ~5.1.0
         version: 5.1.15
-      '@ui-platform/core':
-        specifier: workspace:*
-        version: link:../core
       jasmine-core:
         specifier: ~5.9.0
         version: 5.9.0
@@ -133,9 +130,9 @@ importers:
       '@angular/core':
         specifier: ^21.2.3
         version: 21.2.6(@angular/compiler@21.2.6)(rxjs@7.8.2)(zone.js@0.16.1)
-      '@ui-platform/core':
-        specifier: workspace:*
-        version: link:../../../core
+      '@ui-platform/web-components':
+        specifier: 1.0.0
+        version: link:../../../web-components
       tslib:
         specifier: ^2.3.0
         version: 2.8.1
@@ -148,11 +145,8 @@ importers:
 
   packages/react:
     dependencies:
-      '@ui-platform/core':
-        specifier: workspace:*
-        version: link:../core
       '@ui-platform/web-components':
-        specifier: workspace:*
+        specifier: 1.0.0
         version: link:../web-components
       react:
         specifier: ^19.2.4
@@ -170,9 +164,6 @@ importers:
 
   packages/web-components:
     dependencies:
-      '@ui-platform/core':
-        specifier: workspace:*
-        version: link:../core
       lucide:
         specifier: ^1.7.0
         version: 1.7.0
@@ -217,13 +208,10 @@ importers:
         specifier: ^21.2.3
         version: 21.2.6(@angular/common@21.2.6(@angular/core@21.2.6(@angular/compiler@21.2.6)(rxjs@7.8.2)(zone.js@0.16.1))(rxjs@7.8.2))(@angular/core@21.2.6(@angular/compiler@21.2.6)(rxjs@7.8.2)(zone.js@0.16.1))(@angular/platform-browser@21.2.6(@angular/common@21.2.6(@angular/core@21.2.6(@angular/compiler@21.2.6)(rxjs@7.8.2)(zone.js@0.16.1))(rxjs@7.8.2))(@angular/core@21.2.6(@angular/compiler@21.2.6)(rxjs@7.8.2)(zone.js@0.16.1)))(rxjs@7.8.2)
       '@ui-platform/angular':
-        specifier: workspace:*
+        specifier: 1.0.0
         version: link:../../packages/angular/projects/ui-lib
-      '@ui-platform/core':
-        specifier: workspace:*
-        version: link:../../packages/core
       '@ui-platform/web-components':
-        specifier: workspace:*
+        specifier: 1.0.0
         version: link:../../packages/web-components
       rxjs:
         specifier: ~7.8.0
@@ -268,15 +256,9 @@ importers:
 
   test/react-test:
     dependencies:
-      '@ui-platform/core':
-        specifier: workspace:*
-        version: link:../../packages/core
       '@ui-platform/react':
-        specifier: workspace:*
+        specifier: 1.0.0
         version: link:../../packages/react
-      '@ui-platform/web-components':
-        specifier: workspace:*
-        version: link:../../packages/web-components
       react:
         specifier: ^19.2.4
         version: 19.2.4

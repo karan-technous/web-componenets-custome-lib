@@ -10,9 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@ui-platform/core": "workspace:*",
-    "@ui-platform/react": "workspace:*",
-    "@ui-platform/web-components": "workspace:*",
+    "@ui-platform/react": "1.0.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4"
   },

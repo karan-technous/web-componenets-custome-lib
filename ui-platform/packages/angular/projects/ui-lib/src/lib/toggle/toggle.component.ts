@@ -11,6 +11,9 @@ import {
   ChangeDetectionStrategy,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
+import { ensureCustomElements } from '../register-custom-elements';
+
+ensureCustomElements();
 
 @Component({
   selector: 'ui-toggle-angular',

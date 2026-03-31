@@ -1,13 +1,13 @@
 {
   "name": "@ui-platform/angular",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "peerDependencies": {
     "@angular/common": "^21.2.3",
     "@angular/core": "^21.2.3"
   },
   "dependencies": {
     "tslib": "^2.3.0",
-    "@ui-platform/core": "workspace:*"
+    "@ui-platform/web-components": "1.0.0"
   },
   "sideEffects": false
 }

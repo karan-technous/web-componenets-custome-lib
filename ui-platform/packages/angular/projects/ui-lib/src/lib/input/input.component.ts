@@ -7,6 +7,9 @@ import {
   signal,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ensureCustomElements } from '../register-custom-elements';
+
+ensureCustomElements();
 
 @Component({
   selector: 'ui-input-angular',

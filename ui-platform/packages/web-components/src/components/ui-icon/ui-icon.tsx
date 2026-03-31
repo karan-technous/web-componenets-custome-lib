@@ -10,7 +10,7 @@ export class UiIcon {
   @Prop() name!: IconName;
   @Prop() size: 'sm' | 'md' | 'lg' = 'md';
   @Prop() stroke: number = 2;
-  @Prop() color: string = 'white';
+  @Prop() color: string = 'currentColor';
 
   private renderIcon() {
     const icon = ICONS[this.name];

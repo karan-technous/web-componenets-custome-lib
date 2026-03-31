@@ -13,7 +13,7 @@
 .loader {
   width: 16px;
   height: 16px;
-  border: 2px solid white;
+  border: 2px solid var(--ui-spinner-color);
   border-top: 2px solid transparent;
   border-radius: 50%;
   animation: spin 0.6s linear infinite;
@@ -58,7 +58,7 @@
 /* Primary */
 .btn.primary {
   background: var(--ui-primary);
-  color: white;
+  color: var(--ui-text-on-primary);
 }
 
 .btn.primary:hover {
@@ -69,11 +69,11 @@
 .btn.secondary {
   background: var(--ui-bg);
   color: var(--ui-text);
-  border: 1px solid var(--ui-primary);
+  border: 1px solid var(--ui-border-color);
 }
 
 .btn.secondary:hover {
-  background: rgba(0, 0, 0, 0.05);
+  background: var(--ui-secondary-hover-bg);
 }
 
 /* Outline */
@@ -84,7 +84,7 @@
 }
 
 .btn.outline:hover {
-  background: rgba(59, 130, 246, 0.1);
+  background: var(--ui-outline-hover-bg);
 }
 
 /* Disabled */

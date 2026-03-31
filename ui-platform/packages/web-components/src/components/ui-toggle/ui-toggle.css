@@ -7,7 +7,11 @@
   border-radius: 20px;
   position: relative;
   transition: all 0.2s;
-  background-color: #414141;
+  background-color: var(--ui-toggle-track-bg);
+}
+
+.checked-icon {
+  color: var(--ui-toggle-icon-color);
 }
 
 /* Sizes */
@@ -29,7 +33,7 @@
 /* Thumb */
 .toggle__thumb {
   position: absolute;
-  background: white;
+  background: var(--ui-toggle-thumb-bg);
   border-radius: 50%;
   transition: all 0.2s;
 }
@@ -57,7 +61,7 @@
 }
 
 .toggle--checked {
-  background-color: #006404 !important;
+  background-color: var(--ui-toggle-track-checked-bg) !important;
 }
 
 .toggle--checked .toggle__thumb {
@@ -68,5 +72,5 @@
 .toggle--disabled {
   opacity: 0.5;
   pointer-events: none;
-  background-color: #9d9d9d !important;
+  background-color: var(--ui-toggle-track-disabled-bg) !important;
 }

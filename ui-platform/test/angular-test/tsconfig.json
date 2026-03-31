@@ -18,8 +18,11 @@
       "@ui-platform/angular": [
         "../../packages/angular/projects/ui-lib/src/public-api.ts"
       ],
-      "@ui-platform/web-components":[
-        "../../packages/web-components"
+      "@ui-platform/web-components": [
+        "../../packages/web-components/src/index.ts"
+      ],
+      "@ui-platform/web-components/loader": [
+        "../../packages/web-components/dist/loader"
       ]
     }
   },

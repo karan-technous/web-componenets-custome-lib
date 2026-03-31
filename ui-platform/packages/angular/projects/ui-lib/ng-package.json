@@ -5,6 +5,6 @@
     "entryFile": "src/public-api.ts"
   },
   "allowedNonPeerDependencies": [
-    "@ui-platform/core"
+    "@ui-platform/web-components"
   ]
 }

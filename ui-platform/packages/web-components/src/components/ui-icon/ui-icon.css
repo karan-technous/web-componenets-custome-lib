@@ -1,3 +1,7 @@
+:host {
+  color: inherit;
+}
+
 .icon-svg {
   position: absolute;
   width: 16px;
