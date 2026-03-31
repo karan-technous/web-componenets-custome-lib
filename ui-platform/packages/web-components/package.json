@@ -2,8 +2,8 @@
   "name": "@ui-platform/web-components",
   "version": "1.0.0",
   "description": "Stencil Component Starter",
-  "main": "dist/web-components/index.esm.js",
-  "module": "dist/web-components/index.esm.js",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.js",
   "types": "dist/types/index.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
@@ -11,14 +11,13 @@
   "exports": {
     ".": {
       "types": "./dist/types/index.d.ts",
-      "import": "./dist/web-components/index.esm.js",
-      "default": "./dist/web-components/index.esm.js"
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs.js"
     },
     "./loader": {
-      "types": "./loader/index.d.ts",
-      "import": "./loader/index.js",
-      "require": "./loader/index.cjs.js",
-      "default": "./loader/index.js"
+      "types": "./dist/loader/index.d.ts",
+      "import": "./dist/loader/index.js",
+      "require": "./dist/loader/index.cjs.js"
     },
     "./web-components": {
       "types": "./dist/types/components.d.ts",
@@ -39,8 +38,7 @@
     "url": "https://github.com/stenciljs/component-starter.git"
   },
   "files": [
-    "dist/",
-    "loader/"
+    "dist/"
   ],
   "scripts": {
     "build": "stencil build",

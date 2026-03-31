@@ -4,22 +4,27 @@
   "description": "Stencil web components with Angular and React wrappers. Tarball: pnpm run build && npm pack",
   "private": false,
   "type": "module",
-  "main": "./dist/web-components/index.esm.js",
-  "module": "./dist/web-components/index.esm.js",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
   "types": "./dist/types/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/types/index.d.ts",
-      "import": "./dist/web-components/index.esm.js",
-      "default": "./dist/web-components/index.esm.js"
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs.js"
     },
     "./loader": {
       "types": "./dist/loader/index.d.ts",
       "import": "./dist/loader/index.js",
-      "require": "./dist/loader/index.cjs.js",
-      "default": "./dist/loader/index.js"
+      "require": "./dist/loader/index.cjs.js"
     },
     "./components": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs.js",
+      "default": "./dist/index.js"
+    },
+    "./web-components": {
       "types": "./dist/types/components.d.ts",
       "import": "./dist/web-components/web-components.esm.js",
       "default": "./dist/web-components/web-components.esm.js"

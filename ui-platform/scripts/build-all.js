@@ -13,10 +13,6 @@ async function build() {
     path.join(root, "dist")
   );
   await fs.copy(
-    path.join(root, "packages/web-components/loader"),
-    path.join(root, "dist/loader")
-  );
-  await fs.copy(
     path.join(root, "packages/react/dist"),
     path.join(root, "dist/react")
   );
