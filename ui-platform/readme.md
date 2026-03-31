@@ -22,6 +22,7 @@ ui-platform/
 │   │   │       │   │   │   ├── input.component.ts
 │   │   │       │   │   │   └── input.component.html
 │   │   │       │   │   │
+│   │   │       │   │   ├── register-custom-elements.ts
 │   │   │       │   │   ├── ui-lib.module.ts
 │   │   │       │   │   ├── ui-lib.ts
 │   │   │       │   │   └── ui-lib.spec.ts
