@@ -18,7 +18,8 @@
   "dependencies": {
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
-    "@ui-platform/web-components": "workspace:*"
+    "@ui-platform/web-components": "workspace:*",
+    "@ui-platform/core": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "^19.2.14",

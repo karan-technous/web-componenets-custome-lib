@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { UiButton, UiInput } from "@ui-platform/react";
+import { UiButton, UiInput, Toggle } from "@ui-platform/react";
+import { ToggleTest } from "./test/toggle.test";
 
 const App = () => {
   const [value, setValue] = useState("");
@@ -35,6 +36,9 @@ const App = () => {
       <UiButton loading={loader} onClick={handleLoadingState}>
         Preview
       </UiButton>
+      <Toggle />
+      <h1>testing start here</h1>
+      <ToggleTest />
     </div>
   );
 };

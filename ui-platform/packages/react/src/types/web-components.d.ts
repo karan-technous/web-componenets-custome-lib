@@ -16,6 +16,14 @@ declare module "react" {
         React.HTMLAttributes<HTMLElement>,
         HTMLElement
       >;
+
+      "ui-toggle": React.DetailedHTMLProps<
+        React.HTMLAttributes<HTMLElement>,
+        HTMLElement
+      > & {
+        checked?: boolean;
+        disabled?: boolean;
+      };
     }
   }
 }

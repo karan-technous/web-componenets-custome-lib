@@ -5,6 +5,8 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { IconName } from "./components/icons/icon.registry";
+export { IconName } from "./components/icons/icon.registry";
 export namespace Components {
     interface UiButton {
         /**
@@ -28,6 +30,21 @@ export namespace Components {
          */
         "variant": 'primary' | 'secondary' | 'outline';
     }
+    interface UiIcon {
+        /**
+          * @default 'white'
+         */
+        "color": string;
+        "name": IconName;
+        /**
+          * @default 'md'
+         */
+        "size": 'sm' | 'md' | 'lg';
+        /**
+          * @default 2
+         */
+        "stroke": number;
+    }
     interface UiInput {
         /**
           * @default false
@@ -35,6 +52,20 @@ export namespace Components {
         "disabled": boolean;
         "placeholder": string;
         "value": string;
+    }
+    interface UiToggle {
+        /**
+          * @default false
+         */
+        "checked": boolean;
+        /**
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * @default 'md'
+         */
+        "size": 'sm' | 'md' | 'lg';
     }
 }
 export interface UiButtonCustomEvent<T> extends CustomEvent<T> {
@@ -44,6 +75,10 @@ export interface UiButtonCustomEvent<T> extends CustomEvent<T> {
 export interface UiInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLUiInputElement;
+}
+export interface UiToggleCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLUiToggleElement;
 }
 declare global {
     interface HTMLUiButtonElementEventMap {
@@ -63,6 +98,12 @@ declare global {
         prototype: HTMLUiButtonElement;
         new (): HTMLUiButtonElement;
     };
+    interface HTMLUiIconElement extends Components.UiIcon, HTMLStencilElement {
+    }
+    var HTMLUiIconElement: {
+        prototype: HTMLUiIconElement;
+        new (): HTMLUiIconElement;
+    };
     interface HTMLUiInputElementEventMap {
         "valueChange": string;
         "uiBlur": void;
@@ -81,12 +122,33 @@ declare global {
         prototype: HTMLUiInputElement;
         new (): HTMLUiInputElement;
     };
+    interface HTMLUiToggleElementEventMap {
+        "toggleChange": boolean;
+    }
+    interface HTMLUiToggleElement extends Components.UiToggle, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLUiToggleElementEventMap>(type: K, listener: (this: HTMLUiToggleElement, ev: UiToggleCustomEvent<HTMLUiToggleElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLUiToggleElementEventMap>(type: K, listener: (this: HTMLUiToggleElement, ev: UiToggleCustomEvent<HTMLUiToggleElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLUiToggleElement: {
+        prototype: HTMLUiToggleElement;
+        new (): HTMLUiToggleElement;
+    };
     interface HTMLElementTagNameMap {
         "ui-button": HTMLUiButtonElement;
+        "ui-icon": HTMLUiIconElement;
         "ui-input": HTMLUiInputElement;
+        "ui-toggle": HTMLUiToggleElement;
     }
 }
 declare namespace LocalJSX {
+    type OneOf<K extends string, PropT, AttrT = PropT> = { [P in K]: PropT } & { [P in `attr:${K}` | `prop:${K}`]?: never } | { [P in `attr:${K}`]: AttrT } & { [P in K | `prop:${K}`]?: never } | { [P in `prop:${K}`]: PropT } & { [P in K | `attr:${K}`]?: never };
+
     interface UiButton {
         /**
           * @default false
@@ -110,6 +172,21 @@ declare namespace LocalJSX {
          */
         "variant"?: 'primary' | 'secondary' | 'outline';
     }
+    interface UiIcon {
+        /**
+          * @default 'white'
+         */
+        "color"?: string;
+        "name": IconName;
+        /**
+          * @default 'md'
+         */
+        "size"?: 'sm' | 'md' | 'lg';
+        /**
+          * @default 2
+         */
+        "stroke"?: number;
+    }
     interface UiInput {
         /**
           * @default false
@@ -120,6 +197,21 @@ declare namespace LocalJSX {
         "placeholder"?: string;
         "value"?: string;
     }
+    interface UiToggle {
+        /**
+          * @default false
+         */
+        "checked"?: boolean;
+        /**
+          * @default false
+         */
+        "disabled"?: boolean;
+        "onToggleChange"?: (event: UiToggleCustomEvent<boolean>) => void;
+        /**
+          * @default 'md'
+         */
+        "size"?: 'sm' | 'md' | 'lg';
+    }
 
     interface UiButtonAttributes {
         "variant": 'primary' | 'secondary' | 'outline';
@@ -128,15 +220,28 @@ declare namespace LocalJSX {
         "loading": boolean;
         "fullWidth": boolean;
     }
+    interface UiIconAttributes {
+        "name": IconName;
+        "size": 'sm' | 'md' | 'lg';
+        "stroke": number;
+        "color": string;
+    }
     interface UiInputAttributes {
         "value": string;
         "placeholder": string;
         "disabled": boolean;
     }
+    interface UiToggleAttributes {
+        "checked": boolean;
+        "disabled": boolean;
+        "size": 'sm' | 'md' | 'lg';
+    }
 
     interface IntrinsicElements {
         "ui-button": Omit<UiButton, keyof UiButtonAttributes> & { [K in keyof UiButton & keyof UiButtonAttributes]?: UiButton[K] } & { [K in keyof UiButton & keyof UiButtonAttributes as `attr:${K}`]?: UiButtonAttributes[K] } & { [K in keyof UiButton & keyof UiButtonAttributes as `prop:${K}`]?: UiButton[K] };
+        "ui-icon": Omit<UiIcon, keyof UiIconAttributes> & { [K in keyof UiIcon & keyof UiIconAttributes]?: UiIcon[K] } & { [K in keyof UiIcon & keyof UiIconAttributes as `attr:${K}`]?: UiIconAttributes[K] } & { [K in keyof UiIcon & keyof UiIconAttributes as `prop:${K}`]?: UiIcon[K] } & OneOf<"name", UiIcon["name"], UiIconAttributes["name"]>;
         "ui-input": Omit<UiInput, keyof UiInputAttributes> & { [K in keyof UiInput & keyof UiInputAttributes]?: UiInput[K] } & { [K in keyof UiInput & keyof UiInputAttributes as `attr:${K}`]?: UiInputAttributes[K] } & { [K in keyof UiInput & keyof UiInputAttributes as `prop:${K}`]?: UiInput[K] };
+        "ui-toggle": Omit<UiToggle, keyof UiToggleAttributes> & { [K in keyof UiToggle & keyof UiToggleAttributes]?: UiToggle[K] } & { [K in keyof UiToggle & keyof UiToggleAttributes as `attr:${K}`]?: UiToggleAttributes[K] } & { [K in keyof UiToggle & keyof UiToggleAttributes as `prop:${K}`]?: UiToggle[K] };
     }
 }
 export { LocalJSX as JSX };
@@ -144,7 +249,9 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "ui-button": LocalJSX.IntrinsicElements["ui-button"] & JSXBase.HTMLAttributes<HTMLUiButtonElement>;
+            "ui-icon": LocalJSX.IntrinsicElements["ui-icon"] & JSXBase.HTMLAttributes<HTMLUiIconElement>;
             "ui-input": LocalJSX.IntrinsicElements["ui-input"] & JSXBase.HTMLAttributes<HTMLUiInputElement>;
+            "ui-toggle": LocalJSX.IntrinsicElements["ui-toggle"] & JSXBase.HTMLAttributes<HTMLUiToggleElement>;
         }
     }
 }
