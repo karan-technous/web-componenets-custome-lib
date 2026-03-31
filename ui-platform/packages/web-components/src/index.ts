@@ -8,10 +8,10 @@
  * to consume components of this package as outlined in the `README.md`.
  */
 
-import { defaultTheme, getThemeVariables, initializeTheme } from './theme';
+import { initializeTheme } from './theme';
 
 initializeTheme();
 
 export { format } from './utils/utils';
-export { defaultTheme, getThemeVariables, initializeTheme } from './theme';
+export * from './theme';
 export type * from './components.d.ts';

@@ -259,6 +259,9 @@ importers:
       '@ui-platform/react':
         specifier: 1.0.0
         version: link:../../packages/react
+      '@ui-platform/web-components':
+        specifier: 1.0.0
+        version: link:../../packages/web-components
       react:
         specifier: ^19.2.4
         version: 19.2.4
