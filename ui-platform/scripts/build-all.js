@@ -29,8 +29,43 @@ async function build() {
   await rewriteLoaderImportsForUnifiedTarball(
     path.join(root, "dist/angular/ui-lib")
   );
+  await createGuardedFrameworkEntrypoints();
 
   console.log("Unified dist ready");
+}
+
+async function createGuardedFrameworkEntrypoints() {
+  await createReactGuardEntrypoint(path.join(root, "dist/react"));
+  await createAngularGuardEntrypoint(path.join(root, "dist/angular"));
+}
+
+async function createReactGuardEntrypoint(reactDistDir) {
+  const entryFile = path.join(reactDistDir, "index.js");
+  const exists = await fs.pathExists(entryFile);
+  if (!exists) return;
+
+  const internalEntryFile = path.join(reactDistDir, "index.internal.js");
+  const sourceEntryFile = path.join(root, "packages/react/dist/index.js");
+  const internalSource = (await fs.pathExists(sourceEntryFile))
+    ? sourceEntryFile
+    : entryFile;
+  await fs.copy(internalSource, internalEntryFile, { overwrite: true });
+  await fs.writeFile(entryFile, getReactGuardEntrypoint(), "utf8");
+}
+
+async function createAngularGuardEntrypoint(angularDistDir) {
+  const bundleFile = path.join(
+    angularDistDir,
+    "ui-lib/fesm2022/ui-platform-angular.mjs"
+  );
+  const exists = await fs.pathExists(bundleFile);
+  if (!exists) return;
+
+  await fs.writeFile(
+    path.join(angularDistDir, "index.js"),
+    getAngularGuardEntrypoint(),
+    "utf8"
+  );
 }
 
 /**
@@ -98,6 +133,58 @@ async function collectTextFiles(dir, out = []) {
 
 function toPosixPath(filePath) {
   return filePath.split(path.sep).join("/");
+}
+
+function getReactGuardEntrypoint() {
+  return `import { createRequire } from "node:module";
+
+const require = createRequire(import.meta.url);
+
+function ensureReactRuntime() {
+  try {
+    require.resolve("react");
+    require.resolve("react-dom");
+  } catch {
+    throw new Error(
+      "[ui-platform] React wrapper used but React is not installed.\\nRun: npm install react react-dom"
+    );
+  }
+}
+
+ensureReactRuntime();
+
+const mod = await import("./index.internal.js");
+
+export const UiButton = mod.UiButton;
+export const UiInput = mod.UiInput;
+export const Toggle = mod.Toggle;
+`;
+}
+
+function getAngularGuardEntrypoint() {
+  return `import { createRequire } from "node:module";
+
+const require = createRequire(import.meta.url);
+
+function ensureAngularRuntime() {
+  try {
+    require.resolve("@angular/core");
+  } catch {
+    throw new Error(
+      "[ui-platform] Angular wrapper used but Angular is not installed.\\nRun: npm install @angular/core"
+    );
+  }
+}
+
+ensureAngularRuntime();
+
+const mod = await import("./ui-lib/fesm2022/ui-platform-angular.mjs");
+
+export const ButtonComponent = mod.ButtonComponent;
+export const InputComponent = mod.InputComponent;
+export const UiLibModule = mod.UiLibModule;
+export const UiToggleComponent = mod.UiToggleComponent;
+`;
 }
 
 build();

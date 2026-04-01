@@ -4,6 +4,9 @@
   "description": "Stencil web components with Angular and React wrappers. Tarball: pnpm run build && npm pack",
   "private": false,
   "type": "module",
+  "bin": {
+    "ui-platform": "./bin/cli.js"
+  },
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/types/index.d.ts",
@@ -43,8 +46,7 @@
       "types": "./dist/core/index.d.ts",
       "import": "./dist/core/index.js",
       "default": "./dist/core/index.js"
-    },
-    "./package.json": "./package.json"
+    }
   },
   "sideEffects": [
     "./dist/web-components/*.js",
@@ -53,12 +55,16 @@
     "./dist/react/index.js"
   ],
   "files": [
-    "dist"
+    "dist",
+    "bin",
+    "scripts/detect.js",
+    "scripts/install-config.js"
   ],
   "scripts": {
     "build": "pnpm -r build && node scripts/build-all.js",
     "pack:tarball": "pnpm run build && npm pack --ignore-scripts",
     "prepack": "pnpm -r build && node scripts/build-all.js",
+    "postinstall": "node scripts/detect.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "ui-library": "pnpm -r --parallel run dev"
   },
@@ -67,6 +73,7 @@
   "peerDependencies": {
     "@angular/common": "^21.0.0",
     "@angular/core": "^21.0.0",
+    "@angular/forms": "^21.0.0",
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0"
   },
@@ -75,6 +82,9 @@
       "optional": true
     },
     "@angular/core": {
+      "optional": true
+    },
+    "@angular/forms": {
       "optional": true
     },
     "react": {
