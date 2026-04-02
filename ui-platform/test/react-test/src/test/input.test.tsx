@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { UiInput } from "@ui-platform/react";
+import { UiInput } from "@karan9186/react";
 
 const TOTAL = 500;
 

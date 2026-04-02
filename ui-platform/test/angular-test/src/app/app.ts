@@ -1,8 +1,8 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
-import { InputComponent } from '@ui-platform/angular';
-import { UiToggleComponent } from '@ui-platform/angular';
+import { InputComponent } from '@karan9186/angular';
+import { UiToggleComponent } from '@karan9186/angular';
 import { ButtonTestComponent } from './test/button-test/button-test';
 
 @Component({

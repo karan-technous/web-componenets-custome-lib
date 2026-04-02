@@ -2,3 +2,5 @@
 **/.angular
 **/dist
 **/.vscode
+/.publish-check
+/.publish

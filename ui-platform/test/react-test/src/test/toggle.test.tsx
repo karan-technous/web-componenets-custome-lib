@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Toggle } from "@ui-platform/react";
+import { Toggle } from "@karan9186/react";
 
 export const ToggleTest = () => {
   // Controlled state

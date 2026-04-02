@@ -56,7 +56,7 @@ async function createReactGuardEntrypoint(reactDistDir) {
 async function createAngularGuardEntrypoint(angularDistDir) {
   const bundleFile = path.join(
     angularDistDir,
-    "ui-lib/fesm2022/ui-platform-angular.mjs"
+    "ui-lib/fesm2022/karan9186-angular.mjs"
   );
   const exists = await fs.pathExists(bundleFile);
   if (!exists) return;
@@ -92,14 +92,14 @@ async function rewriteLoaderImportsForUnifiedTarball(packageDistDir) {
       ? rootImport
       : `./${rootImport}`;
 
-    const fromRe = /from\s+["']@ui-platform\/web-components\/loader["']/g;
-    const importRe = /import\s+["']@ui-platform\/web-components\/loader["']/g;
+    const fromRe = /from\s+["']@karan9186\/web-components\/loader["']/g;
+    const importRe = /import\s+["']@karan9186\/web-components\/loader["']/g;
     const dynamicImportRe =
-      /import\(\s*["']@ui-platform\/web-components\/loader["']\s*\)/g;
-    const rootFromRe = /from\s+["']@ui-platform\/web-components["']/g;
-    const rootImportRe = /import\s+["']@ui-platform\/web-components["']/g;
+      /import\(\s*["']@karan9186\/web-components\/loader["']\s*\)/g;
+    const rootFromRe = /from\s+["']@karan9186\/web-components["']/g;
+    const rootImportRe = /import\s+["']@karan9186\/web-components["']/g;
     const rootDynamicImportRe =
-      /import\(\s*["']@ui-platform\/web-components["']\s*\)/g;
+      /import\(\s*["']@karan9186\/web-components["']\s*\)/g;
 
     const text = await fs.readFile(file, "utf8");
     const next = text
@@ -146,7 +146,7 @@ function ensureReactRuntime() {
     require.resolve("react-dom");
   } catch {
     throw new Error(
-      "[ui-platform] React wrapper used but React is not installed.\\nRun: npm install react react-dom"
+      "[karan9186] React wrapper used but React is not installed.\\nRun: npm install react react-dom"
     );
   }
 }
@@ -171,14 +171,14 @@ function ensureAngularRuntime() {
     require.resolve("@angular/core");
   } catch {
     throw new Error(
-      "[ui-platform] Angular wrapper used but Angular is not installed.\\nRun: npm install @angular/core"
+      "[karan9186] Angular wrapper used but Angular is not installed.\\nRun: npm install @angular/core"
     );
   }
 }
 
 ensureAngularRuntime();
 
-const mod = await import("./ui-lib/fesm2022/ui-platform-angular.mjs");
+const mod = await import("./ui-lib/fesm2022/karan9186-angular.mjs");
 
 export const ButtonComponent = mod.ButtonComponent;
 export const InputComponent = mod.InputComponent;

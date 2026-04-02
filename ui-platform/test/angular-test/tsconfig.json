@@ -15,13 +15,13 @@
     "target": "ES2022",
     "module": "preserve",
     "paths": {
-      "@ui-platform/angular": [
+      "@karan9186/angular": [
         "../../packages/angular/projects/ui-lib/src/public-api.ts"
       ],
-      "@ui-platform/web-components": [
+      "@karan9186/web-components": [
         "../../packages/web-components/src/index.ts"
       ],
-      "@ui-platform/web-components/loader": [
+      "@karan9186/web-components/loader": [
         "../../packages/web-components/dist/loader"
       ]
     }

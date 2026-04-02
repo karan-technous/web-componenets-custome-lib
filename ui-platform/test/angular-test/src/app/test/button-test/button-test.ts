@@ -1,5 +1,5 @@
 import { Component, signal } from '@angular/core';
-import { ButtonComponent } from '@ui-platform/angular';
+import { ButtonComponent } from '@karan9186/angular';
 
 @Component({
   selector: 'app-button-test',

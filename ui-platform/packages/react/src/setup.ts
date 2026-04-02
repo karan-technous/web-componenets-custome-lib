@@ -1,5 +1,5 @@
-import { initializeTheme } from "@ui-platform/web-components";
-import { defineCustomElements } from "@ui-platform/web-components/loader";
+import { initializeTheme } from "@karan9186/web-components";
+import { defineCustomElements } from "@karan9186/web-components/loader";
 
 let customElementsRegistered = false;
 

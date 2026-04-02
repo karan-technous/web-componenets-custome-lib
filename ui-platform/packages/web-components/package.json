@@ -1,6 +1,6 @@
 {
-  "name": "@ui-platform/web-components",
-  "version": "1.0.0",
+  "name": "@karan9186/web-components",
+  "version": "1.0.3",
   "description": "Stencil Component Starter",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -41,6 +41,7 @@
     "dist/"
   ],
   "scripts": {
+    "prebuild": "node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\"",
     "build": "stencil build",
     "dev": "stencil build --watch --serve",
     "start": "stencil build --dev --watch --serve",
@@ -56,6 +57,9 @@
     "vitest": "^4.0.0"
   },
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "lucide": "^1.7.0"
   }

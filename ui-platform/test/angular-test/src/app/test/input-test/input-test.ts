@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { InputComponent } from '@ui-platform/angular';
+import { InputComponent } from '@karan9186/angular';
 
 type InputItem = {
   value: string;

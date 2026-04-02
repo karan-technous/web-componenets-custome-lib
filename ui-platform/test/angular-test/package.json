@@ -30,8 +30,8 @@
     "@angular/platform-browser": "^21.2.3",
     "@angular/platform-browser-dynamic": "^21.2.3",
     "@angular/router": "^21.2.3",
-    "@ui-platform/angular": "1.0.0",
-    "@ui-platform/web-components": "1.0.0",
+    "@karan9186/angular": "1.0.0",
+    "@karan9186/main": "1.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },

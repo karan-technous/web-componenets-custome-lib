@@ -1,13 +1,16 @@
 {
-  "name": "@ui-platform/angular",
-  "version": "1.0.0",
+  "name": "@karan9186/angular",
+  "version": "1.0.3",
   "peerDependencies": {
     "@angular/common": "^21.2.3",
     "@angular/core": "^21.2.3"
   },
   "dependencies": {
     "tslib": "^2.3.0",
-    "@ui-platform/web-components": "1.0.0"
+    "@karan9186/web-components": "1.0.3"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  }
 }

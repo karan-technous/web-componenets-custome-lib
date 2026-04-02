@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { UiButton, UiInput, Toggle } from "@ui-platform/react";
+import { UiButton, UiInput, Toggle } from "@karan9186/react";
 import { ToggleTest } from "./test/toggle.test";
 
 const App = () => {

@@ -1,98 +1,20 @@
 {
-  "name": "ui-platform",
-  "version": "1.0.0",
-  "description": "Stencil web components with Angular and React wrappers. Tarball: pnpm run build && npm pack",
-  "private": false,
+  "name": "@karan9186/workspace",
+  "version": "1.0.3",
+  "description": "Monorepo workspace for the UI Library design system.",
+  "private": true,
   "type": "module",
-  "bin": {
-    "ui-platform": "./bin/cli.js"
-  },
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/types/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/types/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs.js"
-    },
-    "./loader": {
-      "types": "./dist/loader/index.d.ts",
-      "import": "./dist/loader/index.js",
-      "require": "./dist/loader/index.cjs.js"
-    },
-    "./components": {
-      "types": "./dist/types/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs.js",
-      "default": "./dist/index.js"
-    },
-    "./web-components": {
-      "types": "./dist/types/components.d.ts",
-      "import": "./dist/web-components/web-components.esm.js",
-      "default": "./dist/web-components/web-components.esm.js"
-    },
-    "./react": {
-      "types": "./dist/react/index.d.ts",
-      "import": "./dist/react/index.js",
-      "default": "./dist/react/index.js"
-    },
-    "./angular": {
-      "types": "./dist/angular/ui-lib/types/ui-platform-angular.d.ts",
-      "import": "./dist/angular/ui-lib/fesm2022/ui-platform-angular.mjs",
-      "default": "./dist/angular/ui-lib/fesm2022/ui-platform-angular.mjs"
-    },
-    "./core": {
-      "types": "./dist/core/index.d.ts",
-      "import": "./dist/core/index.js",
-      "default": "./dist/core/index.js"
-    }
-  },
-  "sideEffects": [
-    "./dist/web-components/*.js",
-    "./dist/loader/*.js",
-    "./dist/react/setup.js",
-    "./dist/react/index.js"
-  ],
-  "files": [
-    "dist",
-    "bin",
-    "scripts/detect.js",
-    "scripts/install-config.js"
-  ],
   "scripts": {
-    "build": "pnpm -r build && node scripts/build-all.js",
-    "pack:tarball": "pnpm run build && npm pack --ignore-scripts",
+    "build": "pnpm --filter ./packages/core --filter ./packages/web-components --filter ./packages/react --filter ./packages/angular -r build",
+    "dev": "pnpm --filter ./packages/core --filter ./packages/web-components --filter ./packages/react --filter ./packages/angular -r --parallel run dev",
+    "publish:prepare": "pnpm run build && node scripts/prepare-publish.js",
+    "publish:dry-run": "node scripts/publish-packages.js --dry-run",
+    "publish:all": "node scripts/publish-packages.js",
+    "test": "echo \"No root test runner configured\"",
+    "build2": "pnpm -r build && node scripts/build-all.js",
+    "pack:tarball": "pnpm run build2 && npm pack --ignore-scripts",
     "prepack": "pnpm -r build && node scripts/build-all.js",
-    "postinstall": "node scripts/detect.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "ui-library": "pnpm -r --parallel run dev"
-  },
-  "keywords": [],
-  "author": "",
-  "peerDependencies": {
-    "@angular/common": "^21.0.0",
-    "@angular/core": "^21.0.0",
-    "@angular/forms": "^21.0.0",
-    "react": ">=18.0.0",
-    "react-dom": ">=18.0.0"
-  },
-  "peerDependenciesMeta": {
-    "@angular/common": {
-      "optional": true
-    },
-    "@angular/core": {
-      "optional": true
-    },
-    "@angular/forms": {
-      "optional": true
-    },
-    "react": {
-      "optional": true
-    },
-    "react-dom": {
-      "optional": true
-    }
+    "karan9186": "pnpm -r --parallel run dev"
   },
   "pnpm": {
     "overrides": {

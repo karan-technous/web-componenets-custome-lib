@@ -1,0 +1,54 @@
+{
+  "name": "@karan9186/main",
+  "version": "1.0.3",
+  "description": "Base package and CLI for the UI Library design system.",
+  "type": "module",
+  "bin": {
+    "karan9186": "cli.js"
+  },
+  "exports": {
+    "./core": {
+      "types": "./core.d.ts",
+      "import": "./core.js",
+      "default": "./core.js"
+    },
+    "./web-components": {
+      "types": "./web-components.d.ts",
+      "import": "./web-components.js",
+      "default": "./web-components.js"
+    },
+    "./loader": {
+      "types": "./loader.d.ts",
+      "import": "./loader.js",
+      "default": "./loader.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "cli.js",
+    "core.js",
+    "core.d.ts",
+    "web-components.js",
+    "web-components.d.ts",
+    "loader.js",
+    "loader.d.ts"
+  ],
+  "keywords": [
+    "design-system",
+    "karan9186",
+    "web-components",
+    "cli"
+  ],
+  "author": "",
+  "license": "ISC",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@karan9186/core": "1.0.3",
+    "@karan9186/web-components": "1.0.3",
+    "chalk": "^5.6.2",
+    "ora": "^8.2.0",
+    "prompts": "^2.4.2"
+  }
+}
