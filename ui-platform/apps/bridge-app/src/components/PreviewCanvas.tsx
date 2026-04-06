@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ExternalLink } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { Framework } from "../state/frameworkStore";
-import type { SelectedStory } from "../state/storyStore";
+import type { SelectedStory, StoryRendererBindings } from "../state/storyTypes";
 
 interface PreviewCanvasProps {
   framework: Framework;
@@ -31,6 +31,7 @@ function buildShareUrl(framework: Framework, selection: SelectedStory) {
     component: selection.component,
     story: selection.storyName,
     props: JSON.stringify(selection.props),
+    renderers: JSON.stringify(selection.renderers ?? {}),
   });
 
   return `${rendererUrls[framework]}?${params.toString()}`;
@@ -43,6 +44,7 @@ function sendToPreview(
     component: string;
     story: string;
     props: Record<string, string | boolean>;
+    renderers?: StoryRendererBindings;
   },
 ) {
   if (!iframe?.contentWindow) {
@@ -86,6 +88,7 @@ export function PreviewCanvas({
     component: string;
     story: string;
     props: Record<string, string | boolean>;
+    renderers?: StoryRendererBindings;
   } | null>(null);
 
   useEffect(() => {
@@ -132,6 +135,7 @@ export function PreviewCanvas({
       component: selection.component,
       story: selection.storyName,
       props: selection.props,
+      renderers: selection.renderers,
     };
 
     pendingPayloadRef.current = payload;
@@ -183,7 +187,7 @@ export function PreviewCanvas({
           <span className="text-slate-700">{selection.storyName}</span>
         </p>
         <a
-          href={src}
+          href={shareUrl}
           target="_blank"
           rel="noreferrer"
           className="inline-flex items-center gap-1 rounded px-1.5 py-1 text-xs text-slate-600 transition hover:bg-slate-100"

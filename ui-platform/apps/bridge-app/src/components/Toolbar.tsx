@@ -12,6 +12,8 @@ import type { ReactNode } from "react";
 
 interface ToolbarProps {
   zoom: number;
+  mode: "preview" | "docs";
+  onModeChange: (mode: "preview" | "docs") => void;
   onZoomIn: () => void;
   onZoomOut: () => void;
   onResetZoom: () => void;
@@ -47,6 +49,8 @@ function ToolButton({
 
 export function Toolbar({
   zoom,
+  mode,
+  onModeChange,
   onZoomIn,
   onZoomOut,
   onResetZoom,
@@ -57,7 +61,22 @@ export function Toolbar({
 }: ToolbarProps) {
   return (
     <div className="flex items-center justify-between rounded-md border border-slate-200 bg-[color:var(--bridge-ui-surface)] px-2 py-1 shadow-sm">
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-2">
+        <div className="flex rounded-md border border-slate-200 bg-white p-0.5 text-xs">
+          <button
+            onClick={() => onModeChange("preview")}
+            className={`rounded px-2 py-1 ${mode === "preview" ? "font-semibold text-slate-900 bg-slate-100" : "text-slate-500"}`}
+          >
+            Preview
+          </button>
+          <button
+            onClick={() => onModeChange("docs")}
+            className={`rounded px-2 py-1 ${mode === "docs" ? "font-semibold text-slate-900 bg-slate-100" : "text-slate-500"}`}
+          >
+            Docs
+          </button>
+        </div>
+        <div className="flex items-center gap-1">
         <ToolButton label="Zoom in" onClick={onZoomIn}>
           <ZoomIn size={14} />
         </ToolButton>
@@ -79,6 +98,7 @@ export function Toolbar({
             className={showPanel ? "text-[color:var(--bridge-ui-primary)]" : ""}
           />
         </ToolButton>
+        </div>
       </div>
       <span className="text-xs text-slate-500">{Math.round(zoom * 100)}%</span>
     </div>

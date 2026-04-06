@@ -1,30 +1,19 @@
 import { useEffect, useRef, useState } from 'react';
-import type { StoryProps } from '../state/storyStore';
+import type { PropConfig, StoryProps } from '../state/storyTypes';
 
 interface ControlsTableProps {
   propsValue: StoryProps;
+  propsConfig: Record<string, PropConfig>;
   onPropChange: (key: string, value: string | boolean) => void;
 }
 
-const variantOptions = ['primary', 'secondary', 'outline', 'ghost'];
-
-function describeProp(key: string): string {
-  const normalized = key.toLowerCase();
-  if (normalized === 'variant') return 'Visual variant';
-  if (normalized === 'label') return 'Text label';
-  if (normalized === 'disabled') return 'Disable flag';
-  if (normalized === 'placeholder') return 'Placeholder text';
-  if (normalized === 'value') return 'Current value';
-  return 'Story prop';
-}
-
-function inferControlType(key: string, value: string | boolean): 'text' | 'select' | 'boolean' {
-  if (typeof value === 'boolean') return 'boolean';
-  if (key.toLowerCase() === 'variant') return 'select';
+function mapControlType(type: PropConfig["type"]): 'text' | 'select' | 'boolean' {
+  if (type === 'boolean') return 'boolean';
+  if (type === 'select') return 'select';
   return 'text';
 }
 
-export function ControlsTable({ propsValue, onPropChange }: ControlsTableProps) {
+export function ControlsTable({ propsValue, propsConfig, onPropChange }: ControlsTableProps) {
   const [draftProps, setDraftProps] = useState<StoryProps>(propsValue);
   const timersRef = useRef<Record<string, number>>({});
 
@@ -48,7 +37,7 @@ export function ControlsTable({ propsValue, onPropChange }: ControlsTableProps) 
     }, 120);
   };
 
-  const entries = Object.entries(draftProps);
+  const entries = Object.entries(propsConfig);
 
   if (entries.length === 0) {
     return <p className="px-2 py-4 text-xs text-slate-500">No controls available for this story.</p>;
@@ -62,12 +51,14 @@ export function ControlsTable({ propsValue, onPropChange }: ControlsTableProps) 
         <span>Control</span>
       </div>
       <div>
-        {entries.map(([key, value]) => {
-          const controlType = inferControlType(key, value);
+        {entries.map(([key, config]) => {
+          const value = draftProps[key] ?? config.default;
+          const controlType = mapControlType(config.type);
+          const options = config.options ?? [];
           return (
             <div key={key} className="grid grid-cols-[1fr_1.2fr_1.2fr] items-center border-t border-slate-100 px-2 py-1.5">
               <span className="text-xs font-medium capitalize text-slate-800">{key}</span>
-              <span className="text-xs text-slate-500">{describeProp(key)}</span>
+              <span className="text-xs text-slate-500">{config.description ?? 'Story prop'}</span>
               <div>
                 {controlType === 'boolean' ? (
                   <input
@@ -90,7 +81,7 @@ export function ControlsTable({ propsValue, onPropChange }: ControlsTableProps) 
                     }}
                     className="w-full rounded border border-slate-200 px-2 py-1 text-xs outline-none focus:ring-2 focus:ring-[color:var(--bridge-ui-ring)]"
                   >
-                    {variantOptions.map((option) => (
+                    {options.map((option) => (
                       <option key={option} value={option}>
                         {option}
                       </option>

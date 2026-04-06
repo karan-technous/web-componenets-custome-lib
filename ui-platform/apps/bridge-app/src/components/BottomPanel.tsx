@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { ActionsPanel, type ActionLogEntry } from './ActionsPanel';
 import { ControlsTable } from './ControlsTable';
-import type { StoryProps } from '../state/storyStore';
+import type { PropConfig, StoryProps } from '../state/storyTypes';
 
 export type BottomTab = 'controls' | 'actions' | 'interactions';
 
@@ -9,6 +9,7 @@ interface BottomPanelProps {
   show: boolean;
   activeTab: BottomTab;
   propsValue: StoryProps;
+  propsConfig: Record<string, PropConfig>;
   actionLogs: ActionLogEntry[];
   onTabChange: (tab: BottomTab) => void;
   onPropChange: (key: string, value: string | boolean) => void;
@@ -20,7 +21,7 @@ const tabs: Array<{ id: BottomTab; label: string }> = [
   { id: 'interactions', label: 'Interactions' }
 ];
 
-export function BottomPanel({ show, activeTab, propsValue, actionLogs, onTabChange, onPropChange }: BottomPanelProps) {
+export function BottomPanel({ show, activeTab, propsValue, propsConfig, actionLogs, onTabChange, onPropChange }: BottomPanelProps) {
   return (
     <AnimatePresence>
       {show && (
@@ -50,7 +51,7 @@ export function BottomPanel({ show, activeTab, propsValue, actionLogs, onTabChan
           </div>
 
           <div className="h-[calc(100%-33px)] overflow-auto">
-            {activeTab === 'controls' && <ControlsTable propsValue={propsValue} onPropChange={onPropChange} />}
+            {activeTab === 'controls' && <ControlsTable propsValue={propsValue} propsConfig={propsConfig} onPropChange={onPropChange} />}
             {activeTab === 'actions' && <ActionsPanel logs={actionLogs} />}
             {activeTab === 'interactions' && (
               <p className="px-2 py-4 text-xs text-slate-500">No interactions defined</p>

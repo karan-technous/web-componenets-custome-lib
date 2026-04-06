@@ -49,38 +49,47 @@ type StoryPayload = {
   component: string;
   story: string;
   props: Record<string, string | boolean>;
+  renderers?: {
+    wc?: {
+      tagName?: string;
+      textProp?: string;
+    };
+  };
 };
 
 function renderComponent(payload: StoryPayload) {
   controls.innerHTML = "";
+  const binding = payload.renderers?.wc;
+  const tagName = binding?.tagName ?? `ui-${payload.component}`;
+  const textProp =
+    binding?.textProp ??
+    (Object.prototype.hasOwnProperty.call(payload.props, "label")
+      ? "label"
+      : undefined);
 
-  const registry: Record<string, () => HTMLElement> = {
-    input: () => {
-      const el = document.createElement("ui-input");
-      applyProps(el, payload.props);
-      return el;
-    },
-    button: () => {
-      const el = document.createElement("ui-button");
-      applyProps(el, payload.props);
-      el.textContent = String(payload.props.label ?? "Button");
-      return el;
-    },
-  };
+  const el = document.createElement(tagName);
+  const props = { ...payload.props };
 
-  const create = registry[payload.component] ?? registry.button;
-  controls.appendChild(create());
+  if (textProp && typeof props[textProp] !== "undefined") {
+    el.textContent = String(props[textProp]);
+    delete props[textProp];
+  }
+
+  applyProps(el, props);
+  controls.appendChild(el);
 }
 
 function parseInitialPayload(): StoryPayload {
   const params = new URLSearchParams(window.location.search);
   const component = params.get("component") ?? "button";
   const story = params.get("story") ?? "Primary";
+  const renderersRaw = params.get("renderers");
   let props: Record<string, string | boolean> = {
     label: "Click Me",
     variant: "primary",
     disabled: false,
   };
+  let renderers: StoryPayload["renderers"] | undefined;
 
   try {
     const raw = params.get("props");
@@ -90,12 +99,20 @@ function parseInitialPayload(): StoryPayload {
   } catch {
     props = { label: "Click Me", variant: "primary", disabled: false };
   }
+  try {
+    if (renderersRaw) {
+      renderers = JSON.parse(renderersRaw) as StoryPayload["renderers"];
+    }
+  } catch {
+    renderers = undefined;
+  }
 
   return {
     framework: "wc",
     component,
     story,
     props,
+    renderers,
   };
 }
 

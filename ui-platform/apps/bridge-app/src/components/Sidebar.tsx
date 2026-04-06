@@ -2,21 +2,21 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Atom, Boxes, ChevronDown, ChevronRight, Search, Triangle } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import type { Framework } from '../state/frameworkStore';
-import type { StoryGroup } from '../state/storyStore';
+import type { StoryEntry } from '../state/storyTypes';
 
 interface SidebarProps {
-  stories: StoryGroup[];
+  stories: StoryEntry[];
   framework: Framework;
-  selectedComponent: string;
+  selectedStoryId: string;
   selectedStory: string;
   onFrameworkChange: (framework: Framework) => void;
-  onSelectStory: (componentTitle: string, storyName: string) => void;
+  onSelectStory: (storyId: string, storyName: string) => void;
 }
 
 export function Sidebar({
   stories,
   framework,
-  selectedComponent,
+  selectedStoryId,
   selectedStory,
   onFrameworkChange,
   onSelectStory
@@ -24,7 +24,7 @@ export function Sidebar({
   const initialGroups = useMemo(
     () =>
       stories.reduce<Record<string, boolean>>((acc, group) => {
-        acc[group.meta.title] = true;
+        acc[group.definition.id] = true;
         return acc;
       }, {}),
     [stories]
@@ -90,8 +90,8 @@ export function Sidebar({
 
       <div className="h-[calc(100vh-145px)] space-y-1 overflow-y-auto pr-1">
         {stories.map((group) => {
-          const matchesGroup = group.meta.title.toLowerCase().includes(query.toLowerCase());
-          const filteredStories = group.stories.filter((story) =>
+          const matchesGroup = group.definition.title.toLowerCase().includes(query.toLowerCase());
+          const filteredStories = group.variants.filter((story) =>
             story.name.toLowerCase().includes(query.toLowerCase())
           );
 
@@ -99,19 +99,19 @@ export function Sidebar({
             return null;
           }
 
-          const isOpen = openGroups[group.meta.title] ?? true;
-          const isActiveGroup = selectedComponent === group.meta.title;
+          const isOpen = openGroups[group.definition.id] ?? true;
+          const isActiveGroup = selectedStoryId === group.definition.id;
 
           return (
-            <div key={group.meta.title} className="rounded-md border border-slate-200/70 bg-white/75">
+            <div key={group.definition.id} className="rounded-md border border-slate-200/70 bg-white/75">
               <button
-                onClick={() => toggleGroup(group.meta.title)}
+                onClick={() => toggleGroup(group.definition.id)}
                 className="flex w-full items-center justify-between rounded-md px-2 py-1.5 text-left hover:bg-white"
               >
                 <div className="flex items-center gap-2">
                   <Boxes size={13} className={isActiveGroup ? 'text-[color:var(--bridge-ui-primary)]' : 'text-slate-500'} />
                   <span className={`text-xs ${isActiveGroup ? 'font-semibold text-slate-900' : 'text-slate-700'}`}>
-                    {group.meta.title}
+                    {group.definition.title}
                   </span>
                 </div>
                 {isOpen ? <ChevronDown size={14} className="text-slate-500" /> : <ChevronRight size={14} className="text-slate-500" />}
@@ -128,12 +128,12 @@ export function Sidebar({
                   >
                     <div className="space-y-0.5 border-l border-slate-200 pl-1.5">
                       {filteredStories.map((story) => {
-                        const active = selectedComponent === group.meta.title && selectedStory === story.name;
+                        const active = selectedStoryId === group.definition.id && selectedStory === story.name;
                         return (
                           <motion.button
                             key={story.name}
                             whileHover={{ x: 2 }}
-                            onClick={() => onSelectStory(group.meta.title, story.name)}
+                            onClick={() => onSelectStory(group.definition.id, story.name)}
                             className={`w-full rounded-md px-2 py-1 text-left text-xs transition ${
                               active
                                 ? 'font-medium text-slate-900'
