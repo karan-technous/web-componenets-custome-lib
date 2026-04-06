@@ -2,6 +2,8 @@ import { jsx as _jsx } from "react/jsx-runtime";
 import { useEffect, useMemo, useState } from 'react';
 import { UiButton as Button, UiInput as Input } from '@karan9186/react';
 import './theme.css';
+const ButtonWrapper = Button;
+const InputWrapper = Input;
 const initialPayload = {
     framework: 'react',
     component: 'button',
@@ -57,8 +59,8 @@ export default function App() {
         return () => window.removeEventListener('message', handler);
     }, []);
     const componentRegistry = useMemo(() => ({
-        input: () => (_jsx(Input, { value: inputValue, placeholder: String(payload.props.placeholder ?? 'Type here'), disabled: Boolean(payload.props.disabled ?? false), onChange: setInputValue })),
-        button: () => (_jsx(Button, { variant: String(payload.props.variant ?? 'primary'), disabled: Boolean(payload.props.disabled ?? false), children: String(payload.props.label ?? 'Button') }))
+        input: () => (_jsx(InputWrapper, { value: inputValue, placeholder: String(payload.props.placeholder ?? 'Type here'), disabled: Boolean(payload.props.disabled ?? false), onChange: setInputValue })),
+        button: () => (_jsx(ButtonWrapper, { variant: String(payload.props.variant ?? 'primary'), disabled: Boolean(payload.props.disabled ?? false), children: String(payload.props.label ?? 'Button') }))
     }), [inputValue, payload.props]);
     const renderComponent = componentRegistry[payload.component] ?? componentRegistry.button;
     return (_jsx("main", { className: "page", children: _jsx("section", { className: "canvas", children: _jsx("div", { className: "controls", children: renderComponent() }) }) }));

@@ -4,7 +4,6 @@ import {
   NgZone,
   OnDestroy,
   OnInit,
-  Type,
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
@@ -32,9 +31,12 @@ export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('container', { read: ViewContainerRef, static: true })
   private container!: ViewContainerRef;
 
-  private readonly registry: Record<string, Type<unknown>> = {
-    button: ButtonComponent,
-    input: InputComponent
+  private readonly wrapperRenderers: Record<
+    string,
+    (props: Record<string, string | boolean>) => void
+  > = {
+    button: (props) => this.renderButtonWrapper(props),
+    input: (props) => this.renderInputWrapper(props)
   };
 
   private readonly handleMessage = (event: MessageEvent) => {
@@ -99,28 +101,30 @@ export class AppComponent implements OnInit, OnDestroy {
     story: string;
     props: Record<string, string | boolean>;
   }): void {
-    const componentKey = payload.component in this.registry ? payload.component : 'button';
-    const componentType = this.registry[componentKey];
+    const componentKey = payload.component in this.wrapperRenderers ? payload.component : 'button';
+    const renderWrapper = this.wrapperRenderers[componentKey];
 
     this.container.clear();
+    renderWrapper(payload.props);
+  }
 
-    if (componentKey === 'button') {
-      const label = String(payload.props.label ?? 'Button');
-      const ref = this.container.createComponent(ButtonComponent, {
-        projectableNodes: [[document.createTextNode(label)]]
-      });
+  private renderButtonWrapper(props: Record<string, string | boolean>): void {
+    const label = String(props.label ?? 'Button');
+    const ref = this.container.createComponent(ButtonComponent, {
+      projectableNodes: [[document.createTextNode(label)]]
+    });
 
-      const variant = String(payload.props.variant ?? 'primary');
-      ref.setInput('variant', variant === 'secondary' || variant === 'outline' ? variant : 'primary');
-      ref.setInput('disabled', this.toBoolean(payload.props.disabled));
-      ref.changeDetectorRef.detectChanges();
-      return;
-    }
+    const variant = String(props.variant ?? 'primary');
+    ref.setInput('variant', variant === 'secondary' || variant === 'outline' ? variant : 'primary');
+    ref.setInput('disabled', this.toBoolean(props.disabled));
+    ref.changeDetectorRef.detectChanges();
+  }
 
-    const ref = this.container.createComponent(componentType as Type<InputComponent>);
-    ref.setInput('placeholder', String(payload.props.placeholder ?? 'Type here'));
-    ref.instance.writeValue(String(payload.props.value ?? ''));
-    ref.instance.setDisabledState(this.toBoolean(payload.props.disabled));
+  private renderInputWrapper(props: Record<string, string | boolean>): void {
+    const ref = this.container.createComponent(InputComponent);
+    ref.setInput('placeholder', String(props.placeholder ?? 'Type here'));
+    ref.instance.writeValue(String(props.value ?? ''));
+    ref.instance.setDisabledState(this.toBoolean(props.disabled));
     ref.changeDetectorRef.detectChanges();
   }
 

@@ -2,6 +2,9 @@ import { useEffect, useMemo, useState, type ReactElement } from 'react';
 import { UiButton as Button, UiInput as Input } from '@karan9186/react';
 import './theme.css';
 
+const ButtonWrapper = Button;
+const InputWrapper = Input;
+
 type StoryPayload = {
   framework: 'angular' | 'react' | 'wc';
   component: string;
@@ -75,7 +78,7 @@ export default function App() {
   const componentRegistry: Record<string, () => ReactElement> = useMemo(
     () => ({
       input: () => (
-        <Input
+        <InputWrapper
           value={inputValue}
           placeholder={String(payload.props.placeholder ?? 'Type here')}
           disabled={Boolean(payload.props.disabled ?? false)}
@@ -83,12 +86,12 @@ export default function App() {
         />
       ),
       button: () => (
-        <Button
+        <ButtonWrapper
           variant={String(payload.props.variant ?? 'primary') as 'primary' | 'secondary' | 'outline'}
           disabled={Boolean(payload.props.disabled ?? false)}
         >
           {String(payload.props.label ?? 'Button')}
-        </Button>
+        </ButtonWrapper>
       )
     }),
     [inputValue, payload.props]
