@@ -1,12 +1,8 @@
 :root {
-  --bridge-ui-primary: #111827;
-  --bridge-ui-bg: #f9fafb;
+  --bridge-ui-primary: #3b82f6;
+  --bridge-ui-bg: #eef2ff;
   --bridge-ui-surface: #ffffff;
-  --bridge-ui-ring: rgba(17, 24, 39, 0.3);
-  --ui-primary: var(--bridge-ui-primary);
-  --ui-bg: var(--bridge-ui-bg);
-  --ui-surface: var(--bridge-ui-surface);
-  --ui-ring: var(--bridge-ui-ring);
+  --bridge-ui-ring: rgba(59, 130, 246, 0.3);
 }
 
 html,
@@ -26,7 +22,6 @@ body,
 .page {
   height: 100%;
   width: 100%;
-  background: var(--bridge-ui-bg);
   overflow: hidden;
   padding: 16px;
 }

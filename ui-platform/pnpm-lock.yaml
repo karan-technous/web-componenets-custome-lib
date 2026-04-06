@@ -141,7 +141,7 @@ importers:
   apps/wc-renderer:
     dependencies:
       '@karan9186/web-components':
-        specifier: workspace:*
+        specifier: 1.0.3
         version: link:../../packages/web-components
     devDependencies:
       kill-port:
