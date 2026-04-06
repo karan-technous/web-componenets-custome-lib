@@ -1,5 +1,11 @@
 ui-platform/
 │
+├── meta/
+|     |── karan9186/ (cli)
+├── scripts/
+|     |── build-all.js
+|     |── prepare-publish.js
+|     |── publish-packages.js
 ├── test/
 |     |── angular-test/
 |     |── angular-test/

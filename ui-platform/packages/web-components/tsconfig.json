@@ -6,7 +6,7 @@
     "jsxFactory": "h",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": false,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "types": ["@stencil/core"]
   },
   "include": ["src"],
