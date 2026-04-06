@@ -74,6 +74,7 @@ function renderDynamicComponent(payload) {
         return (_jsxs("div", { className: "text-sm text-slate-500", children: ["No React wrapper found for \"", payload.component, "\"."] }));
     }
     const props = { ...payload.props };
+    const renderKey = `${payload.component}:${payload.story}:${JSON.stringify(payload.props)}`;
     let children;
     const childrenProp = binding?.childrenProp ??
         (Object.prototype.hasOwnProperty.call(props, "label") ? "label" : undefined);
@@ -81,7 +82,13 @@ function renderDynamicComponent(payload) {
         children = String(props[childrenProp]);
         delete props[childrenProp];
     }
-    return createElement(Wrapper, props, children);
+    if (payload.component === "input") {
+        props.value = String(props.value ?? "");
+        if (typeof props.onChange !== "function") {
+            props.onChange = () => { };
+        }
+    }
+    return createElement(Wrapper, { ...props, key: renderKey }, children);
 }
 export default function App() {
     const [payload, setPayload] = useState(parsePayloadFromUrl());

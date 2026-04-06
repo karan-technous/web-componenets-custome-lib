@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@karan9186/web-components": "1.0.3"
+    "@karan9186/web-components": "workspace:*"
   },
   "devDependencies": {
     "kill-port": "^2.0.1",

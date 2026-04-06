@@ -19,6 +19,8 @@ export class UiInput {
 
   componentDidLoad() {
     this.inputEl = this.el.shadowRoot.querySelector('input')!;
+    this.inputEl.value = this.value || '';
+    this.inputEl.disabled = this.disabled;
   }
 
   // Only update DOM when prop changes
@@ -46,6 +48,7 @@ export class UiInput {
     return (
       <input
         class="input"
+        value={this.value || ''}
         placeholder={this.placeholder === undefined || this.placeholder === null || this.placeholder == '' ? 'Type something...' : this.placeholder}
         disabled={this.disabled}
         onInput={this.onInput}

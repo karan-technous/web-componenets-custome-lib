@@ -47,6 +47,13 @@ const buttonStory: StoryDefinition = {
         disabled: true,
       },
     },
+    Outline: {
+      props: {
+        label: "Learn More",
+        variant: "outline",
+        disabled: false,
+      },
+    },
   },
   docs: {
     description:

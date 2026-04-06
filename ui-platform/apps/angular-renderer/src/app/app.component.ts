@@ -146,6 +146,16 @@ export class AppComponent implements OnInit, OnDestroy {
       if (projectedProp && key === projectedProp) {
         continue;
       }
+      if (key === "checked") {
+        continue;
+      }
+      if (key === "disabled") {
+        try {
+          ref.setInput("disabledInput", this.toBoolean(value));
+        } catch {
+          // Ignore wrappers that don't expose disabledInput.
+        }
+      }
 
       try {
         ref.setInput(key, value as never);
@@ -159,8 +169,12 @@ export class AppComponent implements OnInit, OnDestroy {
       setDisabledState?: (disabled: boolean) => void;
     };
 
-    if (typeof instance.writeValue === "function" && "value" in payload.props) {
-      instance.writeValue(payload.props.value);
+    if (typeof instance.writeValue === "function") {
+      if ("value" in payload.props) {
+        instance.writeValue(payload.props.value);
+      } else if ("checked" in payload.props) {
+        instance.writeValue(this.toBoolean(payload.props.checked));
+      }
     }
 
     if (
@@ -215,4 +229,3 @@ export class AppComponent implements OnInit, OnDestroy {
     return false;
   }
 }
-

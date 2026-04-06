@@ -112,6 +112,7 @@ function renderDynamicComponent(payload: StoryPayload): ReactElement {
   }
 
   const props: Record<string, unknown> = { ...payload.props };
+  const renderKey = `${payload.component}:${payload.story}:${JSON.stringify(payload.props)}`;
   let children: string | undefined;
 
   const childrenProp =
@@ -123,7 +124,14 @@ function renderDynamicComponent(payload: StoryPayload): ReactElement {
     delete props[childrenProp];
   }
 
-  return createElement(Wrapper, props, children);
+  if (payload.component === "input") {
+    props.value = String(props.value ?? "");
+    if (typeof props.onChange !== "function") {
+      props.onChange = () => {};
+    }
+  }
+
+  return createElement(Wrapper, { ...props, key: renderKey }, children);
 }
 
 export default function App() {

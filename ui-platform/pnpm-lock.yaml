@@ -144,7 +144,7 @@ importers:
   apps/wc-renderer:
     dependencies:
       '@karan9186/web-components':
-        specifier: 1.0.3
+        specifier: workspace:*
         version: link:../../packages/web-components
     devDependencies:
       kill-port:
@@ -196,7 +196,7 @@ importers:
         specifier: ^21.2.3
         version: 21.2.6(@angular/common@21.2.6(@angular/core@21.2.6(@angular/compiler@21.2.6)(rxjs@7.8.2)(zone.js@0.16.1))(rxjs@7.8.2))(@angular/core@21.2.6(@angular/compiler@21.2.6)(rxjs@7.8.2)(zone.js@0.16.1))(@angular/platform-browser@21.2.6(@angular/common@21.2.6(@angular/core@21.2.6(@angular/compiler@21.2.6)(rxjs@7.8.2)(zone.js@0.16.1))(rxjs@7.8.2))(@angular/core@21.2.6(@angular/compiler@21.2.6)(rxjs@7.8.2)(zone.js@0.16.1)))(rxjs@7.8.2)
       '@karan9186/web-components':
-        specifier: 1.0.3
+        specifier: workspace:*
         version: link:../web-components
       rxjs:
         specifier: ~7.8.0
@@ -266,7 +266,7 @@ importers:
   packages/react:
     dependencies:
       '@karan9186/web-components':
-        specifier: 1.0.3
+        specifier: workspace:*
         version: link:../web-components
     devDependencies:
       '@types/react':
