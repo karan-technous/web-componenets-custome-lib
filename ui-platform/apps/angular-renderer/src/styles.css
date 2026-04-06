@@ -1,0 +1,47 @@
+:root {
+  --bridge-ui-primary: #e11d48;
+  --bridge-ui-bg: #ffffff;
+  --bridge-ui-surface: #ffffff;
+  --bridge-ui-ring: rgba(225, 29, 72, 0.3);
+  --ui-primary: var(--bridge-ui-primary);
+  --ui-bg: var(--bridge-ui-bg);
+  --ui-surface: var(--bridge-ui-surface);
+  --ui-ring: var(--bridge-ui-ring);
+}
+
+html,
+body,
+app-root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  font-family:
+    Segoe UI,
+    Arial,
+    sans-serif;
+}
+
+.preview-root {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background: var(--bridge-ui-bg);
+  padding: 16px;
+}
+
+.page {
+  max-width: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  gap: 10px;
+}
+
+.controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  max-width: 100%;
+  overflow: hidden;
+}

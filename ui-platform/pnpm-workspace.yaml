@@ -1,7 +1,7 @@
 linkWorkspacePackages: true
 
 packages:
+  - "apps/*"
   - "packages/*"
   - "meta/*"
-  - "test/*"
   - "packages/angular/projects/*"

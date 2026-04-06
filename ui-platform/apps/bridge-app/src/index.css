@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bridge-ui-primary: #e11d48;
+  --bridge-ui-bg: #fff8f9;
+  --bridge-ui-surface: #ffffff;
+  --bridge-ui-sidebar: #fff4f6;
+  --bridge-ui-ring: rgba(225, 29, 72, 0.26);
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-size: 13px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--bridge-ui-bg) 86%, white),
+    var(--bridge-ui-bg)
+  );
+  color: #0f172a;
+  transition: background 150ms ease;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.focus-ring {
+  box-shadow: 0 0 0 3px var(--bridge-ui-ring);
+}
+
+*::-webkit-scrollbar {
+  display: none !important;
+}
+
+* {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}

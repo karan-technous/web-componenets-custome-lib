@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "build": "pnpm --filter ./packages/core --filter ./packages/web-components --filter ./packages/react --filter ./packages/angular -r build",
-    "dev": "pnpm --filter ./packages/core --filter ./packages/web-components --filter ./packages/react --filter ./packages/angular -r --parallel run dev",
+    "dev": "concurrently -k -n bridge,react,angular,wc \"pnpm --filter bridge-app dev\" \"pnpm --filter react-renderer dev\" \"pnpm --filter angular-renderer dev\" \"pnpm --filter wc-renderer dev\"",
+    "dev:packages": "pnpm --filter ./packages/core --filter ./packages/web-components --filter ./packages/react --filter ./packages/angular -r --parallel run dev",
     "publish:prepare": "pnpm run build && node scripts/prepare-publish.js",
     "publish:dry-run": "node scripts/publish-packages.js --dry-run",
     "publish:all": "node scripts/publish-packages.js",
