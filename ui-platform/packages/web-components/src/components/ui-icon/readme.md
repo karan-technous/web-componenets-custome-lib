@@ -19,13 +19,11 @@
 
 ### Used by
 
- - [ui-checkbox](../ui-checkbox)
  - [ui-toggle](../ui-toggle)
 
 ### Graph
 ```mermaid
 graph TD;
-  ui-checkbox --> ui-icon
   ui-toggle --> ui-icon
   style ui-icon fill:#f9f,stroke:#333,stroke-width:4px
 ```

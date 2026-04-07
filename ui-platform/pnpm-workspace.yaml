@@ -5,3 +5,4 @@ packages:
   - "packages/*"
   - "meta/*"
   - "packages/angular/projects/*"
+  - "test/*"

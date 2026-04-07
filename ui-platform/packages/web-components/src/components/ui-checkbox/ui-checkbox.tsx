@@ -10,8 +10,8 @@ export class UiCheckbox {
   @Prop({ reflect: true }) disabled: boolean = false;
   @Prop({ reflect: true }) size: 'sm' | 'md' | 'lg' = 'md';
 
-  @Event() checkboxChange: EventEmitter<boolean>;
-  @Event() uiBlur: EventEmitter<void>;
+  @Event() checkboxChange!: EventEmitter<boolean>;
+  @Event() uiBlur!: EventEmitter<void>;
 
   @Watch('checked')
   onCheckedChange(value: boolean) {
@@ -31,21 +31,18 @@ export class UiCheckbox {
     return (
       <label
         class={{
-          checkbox: true,
+          'checkbox': true,
           [`checkbox--${this.size}`]: true,
           'checkbox--disabled': this.disabled,
         }}
       >
-        <input
-          class="checkbox__input"
-          type="checkbox"
-          checked={this.checked}
-          disabled={this.disabled}
-          onInput={this.onInput}
-          onBlur={this.onBlur}
-        />
+        <input class="checkbox__input" type="checkbox" checked={this.checked} disabled={this.disabled} onInput={this.onInput} onBlur={this.onBlur} />
         <span class="checkbox__control" aria-hidden="true">
-          {this.checked ? <ui-icon name="Check" size={this.size}></ui-icon> : null}
+          {this.checked ? (
+            <svg class="checkbox__mark" viewBox="0 0 24 24" fill="none">
+              <path d="M20 6L9 17L4 12" />
+            </svg>
+          ) : null}
         </span>
         <span class="checkbox__label">
           <slot></slot>

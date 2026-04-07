@@ -15,6 +15,17 @@
 <ui-input-angular [(ngModel)]="name" [placeholder]="'tedst'"></ui-input-angular>
 <hr />
 <p>Value: {{ name }}</p>
+
+<h2>✅ CVA Test - ui-checkbox</h2>
+<ui-checkbox-angular [(ngModel)]="checkboxValue" [disabledInput]="checkboxDisabled">
+  Accept terms and conditions
+</ui-checkbox-angular>
+<p>Checkbox Value: {{ checkboxValue }}</p>
+<button (click)="checkboxValue = !checkboxValue">Toggle from parent</button>
+<button (click)="checkboxDisabled = !checkboxDisabled">
+  {{ checkboxDisabled ? 'Enable' : 'Disable' }} checkbox
+</button>
+<hr />
 <!-- <p>Touched: {{ ctrl.touched }}</p>
 <p>Dirty: {{ ctrl.dirty }}</p>
 

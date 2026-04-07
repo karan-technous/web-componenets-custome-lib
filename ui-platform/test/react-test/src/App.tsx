@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { UiButton, UiInput, Toggle } from "@karan9186/react";
+import { UiButton, UiCheckbox, UiInput, Toggle } from "@karan9186/react";
 import { ToggleTest } from "./test/toggle.test";
+import { CheckboxTest } from "./test/checkbox.test";
 
 const App = () => {
   const [value, setValue] = useState("");
@@ -36,9 +37,18 @@ const App = () => {
       <UiButton loading={loader} onClick={handleLoadingState}>
         Preview
       </UiButton>
+      <br /> <br />
+      <h1>checking checkbox</h1>
+      <UiCheckbox
+        defaultChecked
+        onChange={(checked) => console.log("App checkbox:", checked)}
+      >
+        Quick checkbox smoke test
+      </UiCheckbox>
       <Toggle />
       <h1>testing start here</h1>
       <ToggleTest />
+      <CheckboxTest />
     </div>
   );
 };

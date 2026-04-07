@@ -10,8 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@karan9186/react": "1.0.0",
-    "@karan9186/main": "1.0.0",
+    "@karan9186/react": "workspace:*",
+    "@karan9186/main": "workspace:*",
     "react": "^19.2.4",
     "react-dom": "^19.2.4"
   },

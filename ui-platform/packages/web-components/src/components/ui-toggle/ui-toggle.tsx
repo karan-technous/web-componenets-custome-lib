@@ -10,7 +10,7 @@ export class UiToggle {
   @Prop() disabled: boolean = false;
   @Prop({ reflect: true }) size: 'sm' | 'md' | 'lg' = 'md';
 
-  @Event() toggleChange: EventEmitter<boolean>;
+  @Event() toggleChange!: EventEmitter<boolean>;
 
   @Watch('checked')
   handleChange(newValue: boolean) {

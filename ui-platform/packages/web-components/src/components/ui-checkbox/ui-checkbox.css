@@ -1,5 +1,7 @@
 :host {
-  display: inline-block;
+  display: inline-flex;
+  vertical-align: top;
+  line-height: 1;
 }
 
 .checkbox {
@@ -8,6 +10,7 @@
   gap: 8px;
   cursor: pointer;
   color: var(--ui-text);
+  line-height: 1;
 }
 
 .checkbox--disabled {
@@ -27,14 +30,31 @@
 }
 
 .checkbox__control {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
+  overflow: hidden;
   border: 1px solid var(--ui-border-color);
   border-radius: 6px;
   background: var(--ui-bg);
-  color: var(--ui-text-on-primary);
-  transition: background 0.2s ease, border-color 0.2s ease;
+  color: var(--ui-text-on-primary, #fff);
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+  line-height: 0;
+}
+
+.checkbox__mark {
+  display: block;
+  flex: 0 0 auto;
+  width: 14px;
+  height: 16px;
+  stroke: currentColor;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .checkbox__label {
