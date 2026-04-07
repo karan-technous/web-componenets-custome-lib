@@ -26,6 +26,11 @@ const checkboxStory: StoryDefinition = {
       default: "md",
       description: "Toggle size",
     },
+    label: {
+      type: "string",
+      default: "",
+      description: "Checkbox label",
+    },
   },
   stories: {
     Default: {
@@ -42,6 +47,13 @@ const checkboxStory: StoryDefinition = {
       props: {
         checked: false,
         disabled: true,
+      },
+    },
+    Label: {
+      props: {
+        checked: true,
+        disabled: false,
+        label: "I agree to the terms and conditions",
       },
     },
   },

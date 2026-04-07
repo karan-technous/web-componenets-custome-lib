@@ -40,6 +40,10 @@ export namespace Components {
          */
         "disabled": boolean;
         /**
+          * @default ''
+         */
+        "label": string;
+        /**
           * @default 'md'
          */
         "size": 'sm' | 'md' | 'lg';
@@ -218,6 +222,10 @@ declare namespace LocalJSX {
           * @default false
          */
         "disabled"?: boolean;
+        /**
+          * @default ''
+         */
+        "label"?: string;
         "onCheckboxChange"?: (event: UiCheckboxCustomEvent<boolean>) => void;
         "onUiBlur"?: (event: UiCheckboxCustomEvent<void>) => void;
         /**
@@ -277,6 +285,7 @@ declare namespace LocalJSX {
         "checked": boolean;
         "disabled": boolean;
         "size": 'sm' | 'md' | 'lg';
+        "label": string;
     }
     interface UiIconAttributes {
         "name": IconName;
