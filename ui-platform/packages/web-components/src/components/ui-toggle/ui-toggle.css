@@ -11,7 +11,19 @@
 }
 
 .checked-icon {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+  pointer-events: none;
   color: var(--ui-toggle-icon-color);
+}
+
+.checked-icon ui-icon {
+  display: block;
 }
 
 /* Sizes */
