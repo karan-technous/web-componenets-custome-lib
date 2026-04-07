@@ -24,6 +24,15 @@ declare module "react" {
         checked?: boolean;
         disabled?: boolean;
       };
+
+      "ui-checkbox": React.DetailedHTMLProps<
+        React.HTMLAttributes<HTMLElement>,
+        HTMLElement
+      > & {
+        checked?: boolean;
+        disabled?: boolean;
+        size?: "sm" | "md" | "lg";
+      };
     }
   }
 }
