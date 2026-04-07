@@ -1,4 +1,7 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap");
+
 :root {
+  --bridge-font-ui: "Nunito Sans", "Segoe UI", "Inter", system-ui, sans-serif;
   --bridge-ui-primary: #f43f5e;
   --bridge-primary: var(--bridge-ui-primary);
   --bridge-bg-main: #0f172a;
@@ -47,7 +50,8 @@
 body {
   background: var(--bridge-bg-main);
   color: var(--bridge-text-primary);
-  font-family: Inter, system-ui, sans-serif;
+  font-family: var(--bridge-font-ui);
+  letter-spacing: 0.01em;
 }
 
 * {
