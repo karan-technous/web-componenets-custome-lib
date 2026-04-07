@@ -62,26 +62,26 @@ export function Sidebar({
       initial={{ x: -8, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       transition={{ duration: 0.15 }}
-      className="sticky top-0 h-screen w-[240px] overflow-hidden border-r border-slate-200 bg-[color:var(--bridge-ui-sidebar)]/96 p-2"
+      className="sidebar glass-without-border-radius glass sticky top-0 overflow-hidden"
     >
-      <div className="mb-2 px-1">
-        <h2 className="text-sm font-semibold text-slate-800">UI Platform</h2>
+      <div className="mb-1 px-1">
+        <h2 className="text-sm font-semibold text-primary">UI Platform</h2>
       </div>
 
-      <div className="relative mb-2">
+      <div className="relative mb-1">
         <Search
           size={13}
-          className="pointer-events-none absolute left-2 top-2 text-slate-400"
+          className="text-secondary pointer-events-none absolute left-2 top-[10px] z-10"
         />
         <input
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           placeholder="Find by name"
-          className="w-full rounded-md border border-slate-200 bg-white py-1.5 pl-7 pr-2 text-xs outline-none focus:ring-2 focus:ring-[color:var(--bridge-ui-ring)]"
+          className="sidebar-search surface-input w-full rounded-md text-sm outline-none focus:ring-2 focus:ring-[color:var(--bridge-ui-ring)]"
         />
       </div>
 
-      <div className="mb-2 grid grid-cols-1 gap-1">
+      <div className="mb-1 grid grid-cols-1 gap-1">
         {frameworkOptions.map((item) => {
           const Icon = item.icon;
           const active = framework === item.value;
@@ -91,19 +91,7 @@ export function Sidebar({
               whileHover={{ x: 1 }}
               transition={{ duration: 0.15 }}
               onClick={() => onFrameworkChange(item.value)}
-              className={`flex items-center gap-2 rounded-md px-2 py-1.5 text-xs transition ${
-                active
-                  ? "font-semibold text-slate-900"
-                  : "text-slate-600 hover:bg-white/70"
-              }`}
-              style={
-                active
-                  ? {
-                      backgroundColor:
-                        "color-mix(in srgb, var(--bridge-ui-primary) 14%, white)",
-                    }
-                  : undefined
-              }
+              className={`framework-item text-sm ${active ? "active font-semibold" : ""}`}
             >
               <Icon size={13} />
               <span>{item.label}</span>
@@ -112,7 +100,7 @@ export function Sidebar({
         })}
       </div>
 
-      <div className="h-[calc(100vh-182px)] space-y-1 overflow-y-auto pr-1">
+      <div className="min-h-0 flex-1 space-y-2 overflow-y-auto pr-1">
         {stories.map((group) => {
           const matchesGroup = group.definition.title
             .toLowerCase()
@@ -129,33 +117,28 @@ export function Sidebar({
           const isActiveGroup = selectedStoryId === group.definition.id;
 
           return (
-            <div
-              key={group.definition.id}
-              className="rounded-md border border-slate-200/70 bg-white/75"
-            >
+            <div key={group.definition.id} className="component-card">
               <button
                 onClick={() => toggleGroup(group.definition.id)}
-                className="flex w-full items-center justify-between rounded-md px-2 py-1.5 text-left hover:bg-white"
+                className={`component-header ${isActiveGroup ? "active" : ""}`}
               >
                 <div className="flex items-center gap-2">
                   <Boxes
                     size={13}
                     className={
-                      isActiveGroup
-                        ? "text-[color:var(--bridge-ui-primary)]"
-                        : "text-slate-500"
+                      isActiveGroup ? "text-primary" : "text-secondary"
                     }
                   />
                   <span
-                    className={`text-xs ${isActiveGroup ? "font-semibold text-slate-900" : "text-slate-700"}`}
+                    className={`text-xs ${isActiveGroup ? "text-primary font-semibold" : "text-secondary"}`}
                   >
                     {group.definition.title}
                   </span>
                 </div>
                 {isOpen ? (
-                  <ChevronDown size={14} className="text-slate-500" />
+                  <ChevronDown size={14} className="text-secondary" />
                 ) : (
-                  <ChevronRight size={14} className="text-slate-500" />
+                  <ChevronRight size={14} className="text-secondary" />
                 )}
               </button>
 
@@ -166,9 +149,9 @@ export function Sidebar({
                     animate={{ height: "auto", opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.22 }}
-                    className="overflow-hidden px-1 pb-1"
+                    className="overflow-hidden px-0.5 pb-0.5"
                   >
-                    <div className="space-y-0.5 border-l border-slate-200 pl-1.5">
+                    <div className="story-list border-l border-[color:var(--bridge-border)] pl-1.5">
                       {filteredStories.map((story) => {
                         const active =
                           selectedStoryId === group.definition.id &&
@@ -180,19 +163,7 @@ export function Sidebar({
                             onClick={() =>
                               onSelectStory(group.definition.id, story.name)
                             }
-                            className={`w-full rounded-md px-2 py-1 text-left text-xs transition ${
-                              active
-                                ? "font-medium text-slate-900"
-                                : "text-slate-600 hover:bg-slate-100/80 hover:text-slate-900"
-                            }`}
-                            style={
-                              active
-                                ? {
-                                    backgroundColor:
-                                      "color-mix(in srgb, var(--bridge-ui-primary) 14%, white)",
-                                  }
-                                : undefined
-                            }
+                            className={`story-item w-full text-left text-sm ${active ? "active font-medium" : ""}`}
                           >
                             {story.name}
                           </motion.button>

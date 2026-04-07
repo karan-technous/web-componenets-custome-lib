@@ -140,7 +140,7 @@ export default function App() {
 
   return (
     <main className="h-screen overflow-hidden">
-      <div className="grid h-full grid-cols-[240px_1fr]">
+      <div className="grid h-full grid-cols-[280px_1fr]">
         <Sidebar
           stories={filteredStories}
           framework={framework}

@@ -30,19 +30,16 @@ export function BottomPanel({ show, activeTab, propsValue, propsConfig, actionLo
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 220, opacity: 0 }}
           transition={{ duration: 0.2 }}
-          className="absolute bottom-0 left-0 right-0 z-20 h-[32%] rounded-t-md border border-slate-200 bg-[color:var(--bridge-ui-surface)] shadow-sm"
+          className="preview absolute bottom-0 left-0 right-0 z-20 h-[32%] rounded-t-md"
         >
-          <div className="flex items-center gap-1 border-b border-slate-200 px-2 py-1">
+          <div className="flex items-center gap-1 border-b border-[color:var(--border-subtle)] px-2 py-1">
             {tabs.map((tab) => {
               const active = activeTab === tab.id;
               return (
                 <button
                   key={tab.id}
                   onClick={() => onTabChange(tab.id)}
-                  className={`rounded px-2 py-1 text-xs transition ${
-                    active ? 'font-semibold text-slate-900' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-700'
-                  }`}
-                  style={active ? { backgroundColor: 'color-mix(in srgb, var(--bridge-ui-primary) 14%, white)' } : undefined}
+                  className={`tab text-xs ${active ? 'active font-semibold' : ''}`}
                 >
                   {tab.label}
                 </button>
@@ -54,7 +51,7 @@ export function BottomPanel({ show, activeTab, propsValue, propsConfig, actionLo
             {activeTab === 'controls' && <ControlsTable propsValue={propsValue} propsConfig={propsConfig} onPropChange={onPropChange} />}
             {activeTab === 'actions' && <ActionsPanel logs={actionLogs} />}
             {activeTab === 'interactions' && (
-              <p className="px-2 py-4 text-xs text-slate-500">No interactions defined</p>
+              <p className="text-secondary px-2 py-4 text-xs">No interactions defined</p>
             )}
           </div>
         </motion.section>

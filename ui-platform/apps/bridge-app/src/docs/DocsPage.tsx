@@ -141,7 +141,7 @@ function MarkdownBlock({ content }: { content: string }) {
   const html = useMemo(() => marked.parse(content) as string, [content]);
   return (
     <div
-      className="prose prose-sm max-w-none text-slate-700"
+      className="prose prose-sm max-w-none text-secondary"
       dangerouslySetInnerHTML={{ __html: html }}
     />
   );
@@ -150,8 +150,8 @@ function MarkdownBlock({ content }: { content: string }) {
 export function DocsPage({ framework, story }: DocsPageProps) {
   if (!story) {
     return (
-      <section className="flex min-h-0 flex-1 items-center justify-center rounded-md border border-dashed border-slate-300 bg-[color:var(--bridge-ui-surface)] p-8">
-        <p className="text-sm text-slate-500">Select a story to view docs.</p>
+      <section className="preview flex min-h-0 flex-1 items-center justify-center">
+        <p className="text-secondary text-sm">Select a story to view docs.</p>
       </section>
     );
   }
@@ -165,18 +165,18 @@ export function DocsPage({ framework, story }: DocsPageProps) {
   const usage = story.docs?.usage;
 
   return (
-    <section className="h-full overflow-auto rounded-md border border-slate-200 bg-[color:var(--bridge-ui-surface)] p-4">
+    <section className="preview h-full overflow-auto">
       <div className="mb-4">
-        <h1 className="text-lg font-semibold text-slate-900">{story.componentTitle}</h1>
+        <h1 className="text-primary text-lg font-semibold">{story.componentTitle}</h1>
         {story.docs?.description ? (
           <MarkdownBlock content={story.docs.description} />
         ) : (
-          <p className="mt-1 text-sm text-slate-500">No description provided.</p>
+          <p className="text-secondary mt-1 text-sm">No description provided.</p>
         )}
       </div>
 
-      <div className="mb-5 overflow-hidden rounded-md border border-slate-200">
-        <div className="grid grid-cols-[1fr_120px_160px] bg-slate-50 px-2 py-1 text-[11px] font-semibold uppercase tracking-wide text-slate-500">
+      <div className="card mb-5 overflow-hidden rounded-md">
+        <div className="grid grid-cols-[1fr_120px_160px] bg-[color:var(--hover-bg)] px-2 py-1 text-[11px] font-semibold uppercase tracking-wide text-secondary">
           <span>Name</span>
           <span>Type</span>
           <span>Default</span>
@@ -184,7 +184,7 @@ export function DocsPage({ framework, story }: DocsPageProps) {
         {Object.entries(story.propsConfig).map(([name, config]) => (
           <div
             key={name}
-            className="grid grid-cols-[1fr_120px_160px] border-t border-slate-100 px-2 py-1.5 text-xs text-slate-700"
+            className="text-primary grid grid-cols-[1fr_120px_160px] border-t border-[color:var(--border-subtle)] px-2 py-1.5 text-xs"
           >
             <span className="font-medium">{name}</span>
             <span>{config.type}</span>
@@ -199,12 +199,12 @@ export function DocsPage({ framework, story }: DocsPageProps) {
             const exampleProps = example.props ?? story.props;
             const previewUrl = buildPreviewUrl(framework, story, exampleProps);
             return (
-              <article key={example.title} className="rounded-md border border-slate-200 bg-white p-3">
-                <h3 className="mb-1 text-sm font-semibold text-slate-900">{example.title}</h3>
+              <article key={example.title} className="card p-3">
+                <h3 className="text-primary mb-1 text-sm font-semibold">{example.title}</h3>
                 {example.description ? (
-                  <p className="mb-2 text-xs text-slate-500">{example.description}</p>
+                  <p className="text-secondary mb-2 text-xs">{example.description}</p>
                 ) : null}
-                <div className="mb-2 h-48 overflow-hidden rounded-md border border-slate-200 bg-slate-50">
+                <div className="card mb-2 h-48 overflow-hidden rounded-md">
                   <iframe
                     title={`${story.component}-${example.title}`}
                     src={previewUrl}
@@ -220,23 +220,23 @@ export function DocsPage({ framework, story }: DocsPageProps) {
         )}
       </div>
 
-      <div className="mt-5 rounded-md border border-slate-200 bg-white p-3">
-        <h3 className="mb-2 text-sm font-semibold text-slate-900">Usage</h3>
+      <div className="card mt-5 rounded-md p-3">
+        <h3 className="text-primary mb-2 text-sm font-semibold">Usage</h3>
         <div className="space-y-2">
           <div>
-            <p className="mb-1 text-xs font-medium text-slate-600">React</p>
+            <p className="text-secondary mb-1 text-xs font-medium">React</p>
             <pre className="overflow-auto rounded bg-slate-900 p-2 text-xs text-slate-100">
               <code>{usage?.react ?? generateCode("react", story.component, story.props, story.renderers)}</code>
             </pre>
           </div>
           <div>
-            <p className="mb-1 text-xs font-medium text-slate-600">Angular</p>
+            <p className="text-secondary mb-1 text-xs font-medium">Angular</p>
             <pre className="overflow-auto rounded bg-slate-900 p-2 text-xs text-slate-100">
               <code>{usage?.angular ?? generateCode("angular", story.component, story.props, story.renderers)}</code>
             </pre>
           </div>
           <div>
-            <p className="mb-1 text-xs font-medium text-slate-600">Web Components</p>
+            <p className="text-secondary mb-1 text-xs font-medium">Web Components</p>
             <pre className="overflow-auto rounded bg-slate-900 p-2 text-xs text-slate-100">
               <code>{usage?.wc ?? generateCode("wc", story.component, story.props, story.renderers)}</code>
             </pre>

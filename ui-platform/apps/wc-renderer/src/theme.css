@@ -1,8 +1,22 @@
 :root {
-  --bridge-ui-primary: #3b82f6;
-  --bridge-ui-bg: #eef2ff;
+  --bridge-ui-primary: #10b981;
+  --bridge-ui-bg: #ffffff;
   --bridge-ui-surface: #ffffff;
-  --bridge-ui-ring: rgba(59, 130, 246, 0.3);
+  --bridge-ui-ring: rgba(16, 185, 129, 0.3);
+
+  --bridge-primary: var(--bridge-ui-primary);
+  --bridge-bg-main: #0f172a;
+  --bridge-text-primary: rgba(255, 255, 255, 0.95);
+  --bridge-text-secondary: rgba(255, 255, 255, 0.65);
+  --bridge-hover: color-mix(in srgb, var(--bridge-primary) 16%, transparent);
+  --bridge-active: color-mix(in srgb, var(--bridge-primary) 26%, transparent);
+  --bridge-border: rgba(255, 255, 255, 0.08);
+  --bridge-glow: color-mix(in srgb, var(--bridge-primary) 45%, transparent);
+  --bridge-gradient-start: color-mix(in srgb, var(--bridge-primary) 70%, #6d28d9);
+  --bridge-gradient-end: color-mix(in srgb, var(--bridge-primary) 60%, #ec4899);
+  --bridge-glass-bg: rgba(255, 255, 255, 0.08);
+  --bridge-glass-border: rgba(255, 255, 255, 0.12);
+  --bridge-glass-highlight: rgba(255, 255, 255, 0.25);
 }
 
 html,
@@ -23,7 +37,8 @@ body,
   height: 100%;
   width: 100%;
   overflow: hidden;
-  padding: 16px;
+  padding: 10px;
+  background: var(--bridge-bg-main);
 }
 
 .canvas {

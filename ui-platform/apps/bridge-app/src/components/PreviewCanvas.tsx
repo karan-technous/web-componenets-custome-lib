@@ -160,12 +160,12 @@ export function PreviewCanvas({
 
   if (!selection) {
     return (
-      <section className="flex min-h-0 flex-1 items-center justify-center rounded-md border border-dashed border-slate-300 bg-[color:var(--bridge-ui-surface)] p-8">
+      <section className="preview flex min-h-0 flex-1 items-center justify-center">
         <div className="text-center">
-          <p className="text-sm font-medium text-slate-700">
+          <p className="text-primary text-sm font-medium">
             No story selected
           </p>
-          <p className="mt-1 text-xs text-slate-500">
+          <p className="text-secondary mt-1 text-xs">
             Select a story from the explorer.
           </p>
         </div>
@@ -179,18 +179,18 @@ export function PreviewCanvas({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.15 }}
-      className="flex h-full min-h-0 flex-col overflow-hidden rounded-md border border-slate-200 bg-[color:var(--bridge-ui-surface)] shadow-sm"
+      className="preview flex h-full min-h-0 flex-col overflow-hidden"
     >
-      <div className="flex items-center justify-between border-b border-slate-200 px-2 py-1">
-        <p className="text-xs text-slate-500">
+      <div className="flex items-center justify-between border-b border-[color:var(--border-subtle)] px-2 py-1">
+        <p className="text-secondary text-xs">
           {selection.componentTitle} /{" "}
-          <span className="text-slate-700">{selection.storyName}</span>
+          <span className="text-primary">{selection.storyName}</span>
         </p>
         <a
           href={shareUrl}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex items-center gap-1 rounded px-1.5 py-1 text-xs text-slate-600 transition hover:bg-slate-100"
+          className="sidebar-item inline-flex items-center gap-1 px-1.5 py-1 text-xs"
         >
           <ExternalLink size={12} />
           Open
@@ -205,16 +205,16 @@ export function PreviewCanvas({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.15 }}
-              className="absolute inset-3 z-10 flex items-center justify-center rounded-md border border-slate-200 bg-white/85"
+              className="glass absolute inset-3 z-10 flex items-center justify-center"
             >
-              <span className="text-xs text-slate-600">Loading preview...</span>
+              <span className="text-secondary text-xs">Loading preview...</span>
             </motion.div>
           )}
         </AnimatePresence>
 
         <div className="flex h-full w-full items-center justify-center overflow-hidden">
           <div
-            className={`overflow-hidden rounded-md border border-slate-200 bg-white shadow-sm w-full h-full`}
+            className={`card overflow-hidden w-full h-full`}
             style={{
               transition: "width 150ms ease, height 150ms ease",
             }}

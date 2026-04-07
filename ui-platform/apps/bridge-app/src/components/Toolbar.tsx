@@ -4,7 +4,6 @@ import {
   PanelBottom,
   RefreshCw,
   RotateCcw,
-  Smartphone,
   ZoomIn,
   ZoomOut,
 } from "lucide-react";
@@ -38,7 +37,7 @@ function ToolButton({
       whileTap={{ scale: 0.98 }}
       transition={{ duration: 0.15 }}
       onClick={onClick}
-      className="rounded-md border border-transparent p-1.5 text-slate-600 transition hover:border-slate-200 hover:bg-white hover:text-slate-900"
+      className="bridge-btn secondary icon-button rounded-md p-1.5 transition"
       title={label}
       aria-label={label}
     >
@@ -60,47 +59,47 @@ export function Toolbar({
   onTogglePanel,
 }: ToolbarProps) {
   return (
-    <div className="flex items-center justify-between rounded-md border border-slate-200 bg-[color:var(--bridge-ui-surface)] px-2 py-1 shadow-sm">
+    <div className="glass navbar flex items-center justify-between px-2 py-1">
       <div className="flex items-center gap-2">
-        <div className="flex rounded-md border border-slate-200 bg-white p-0.5 text-xs">
+        <div className="glass flex gap-2 rounded-md p-0.5 text-xs">
           <button
             onClick={() => onModeChange("preview")}
-            className={`rounded px-2 py-1 ${mode === "preview" ? "font-semibold text-slate-900 bg-slate-100" : "text-slate-500"}`}
+            className={`tab ${mode === "preview" ? "active font-semibold" : ""}`}
           >
             Preview
           </button>
           <button
             onClick={() => onModeChange("docs")}
-            className={`rounded px-2 py-1 ${mode === "docs" ? "font-semibold text-slate-900 bg-slate-100" : "text-slate-500"}`}
+            className={`tab ${mode === "docs" ? "active font-semibold" : ""}`}
           >
             Docs
           </button>
         </div>
         <div className="flex items-center gap-1">
-        <ToolButton label="Zoom in" onClick={onZoomIn}>
-          <ZoomIn size={14} />
-        </ToolButton>
-        <ToolButton label="Zoom out" onClick={onZoomOut}>
-          <ZoomOut size={14} />
-        </ToolButton>
-        <ToolButton label="Reset zoom" onClick={onResetZoom}>
-          <RotateCcw size={14} />
-        </ToolButton>
-        <ToolButton label="Refresh preview" onClick={onRefresh}>
-          <RefreshCw size={14} />
-        </ToolButton>
-        <ToolButton label="Open in new tab" onClick={onOpenNewTab}>
-          <ExternalLink size={14} />
-        </ToolButton>
-        <ToolButton label="Toggle Panel" onClick={onTogglePanel}>
-          <PanelBottom
-            size={14}
-            className={showPanel ? "text-[color:var(--bridge-ui-primary)]" : ""}
-          />
-        </ToolButton>
+          <ToolButton label="Zoom in" onClick={onZoomIn}>
+            <ZoomIn size={14} />
+          </ToolButton>
+          <ToolButton label="Zoom out" onClick={onZoomOut}>
+            <ZoomOut size={14} />
+          </ToolButton>
+          <ToolButton label="Reset zoom" onClick={onResetZoom}>
+            <RotateCcw size={14} />
+          </ToolButton>
+          <ToolButton label="Refresh preview" onClick={onRefresh}>
+            <RefreshCw size={14} />
+          </ToolButton>
+          <ToolButton label="Open in new tab" onClick={onOpenNewTab}>
+            <ExternalLink size={14} />
+          </ToolButton>
+          <ToolButton label="Toggle Panel" onClick={onTogglePanel}>
+            <PanelBottom
+              size={14}
+              className={showPanel ? "text-primary" : ""}
+            />
+          </ToolButton>
         </div>
       </div>
-      <span className="text-xs text-slate-500">{Math.round(zoom * 100)}%</span>
+      <span className="text-secondary text-xs">{Math.round(zoom * 100)}%</span>
     </div>
   );
 }

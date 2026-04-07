@@ -1,5 +1,5 @@
 import "./theme.css";
-import { initializeTheme, lightTheme } from "@karan9186/web-components";
+import { initializeTheme } from "@karan9186/web-components";
 import { defineCustomElements } from "@karan9186/web-components/loader";
 defineCustomElements();
 const root = document.getElementById("app");
@@ -7,11 +7,11 @@ if (!root) {
     throw new Error("Missing #app root");
 }
 document.documentElement.style.height = "100%";
-document.documentElement.style.setProperty("--bridge-ui-primary", "#3b82f6");
-document.documentElement.style.setProperty("--bridge-ui-bg", "#eef2ff");
+document.documentElement.style.setProperty("--bridge-ui-primary", "#10b981");
+document.documentElement.style.setProperty("--bridge-ui-bg", "#ffffff");
 document.documentElement.style.setProperty("--bridge-ui-surface", "#ffffff");
-document.documentElement.style.setProperty("--bridge-ui-ring", "rgba(59, 130, 246, 0.3)");
-initializeTheme(lightTheme);
+document.documentElement.style.setProperty("--bridge-ui-ring", "rgba(16, 185, 129, 0.3)");
+initializeTheme();
 document.body.style.height = "100%";
 document.body.style.margin = "0";
 document.body.style.overflow = "hidden";

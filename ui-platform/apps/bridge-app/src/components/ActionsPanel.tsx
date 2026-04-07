@@ -11,18 +11,18 @@ interface ActionsPanelProps {
 
 export function ActionsPanel({ logs }: ActionsPanelProps) {
   if (logs.length === 0) {
-    return <p className="px-2 py-4 text-xs text-slate-500">No actions logged yet.</p>;
+    return <p className="text-secondary px-2 py-4 text-xs">No actions logged yet.</p>;
   }
 
   return (
     <div className="space-y-1 p-2">
       {logs.map((entry) => (
-        <div key={entry.id} className="rounded border border-slate-200 bg-white px-2 py-1.5 text-xs">
-          <div className="flex items-center justify-between text-slate-700">
+        <div key={entry.id} className="card rounded px-2 py-1.5 text-xs">
+          <div className="text-primary flex items-center justify-between">
             <span className="font-medium">{entry.name}</span>
-            <span className="text-slate-400">{entry.time}</span>
+            <span className="text-muted">{entry.time}</span>
           </div>
-          <p className="mt-1 text-slate-500">{entry.payload}</p>
+          <p className="text-secondary mt-1">{entry.payload}</p>
         </div>
       ))}
     </div>

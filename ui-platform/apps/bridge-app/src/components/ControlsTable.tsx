@@ -40,12 +40,12 @@ export function ControlsTable({ propsValue, propsConfig, onPropChange }: Control
   const entries = Object.entries(propsConfig);
 
   if (entries.length === 0) {
-    return <p className="px-2 py-4 text-xs text-slate-500">No controls available for this story.</p>;
+    return <p className="text-secondary px-2 py-4 text-xs">No controls available for this story.</p>;
   }
 
   return (
-    <div className="overflow-hidden rounded-md border border-slate-200">
-      <div className="grid grid-cols-[1fr_1.2fr_1.2fr] bg-slate-50 px-2 py-1 text-[11px] font-semibold uppercase tracking-wide text-slate-500">
+    <div className="card overflow-hidden rounded-md">
+      <div className="text-secondary grid grid-cols-[1fr_1.2fr_1.2fr] bg-[color:var(--hover-bg)] px-2 py-1 text-[11px] font-semibold uppercase tracking-wide">
         <span>Name</span>
         <span>Description</span>
         <span>Control</span>
@@ -56,9 +56,9 @@ export function ControlsTable({ propsValue, propsConfig, onPropChange }: Control
           const controlType = mapControlType(config.type);
           const options = config.options ?? [];
           return (
-            <div key={key} className="grid grid-cols-[1fr_1.2fr_1.2fr] items-center border-t border-slate-100 px-2 py-1.5">
-              <span className="text-xs font-medium capitalize text-slate-800">{key}</span>
-              <span className="text-xs text-slate-500">{config.description ?? 'Story prop'}</span>
+            <div key={key} className="grid grid-cols-[1fr_1.2fr_1.2fr] items-center border-t border-[color:var(--border-subtle)] px-2 py-1.5">
+              <span className="text-primary text-xs font-medium capitalize">{key}</span>
+              <span className="text-secondary text-xs">{config.description ?? 'Story prop'}</span>
               <div>
                 {controlType === 'boolean' ? (
                   <input
@@ -79,7 +79,7 @@ export function ControlsTable({ propsValue, propsConfig, onPropChange }: Control
                       setDraftProps((current) => ({ ...current, [key]: nextValue }));
                       commitChange(key, nextValue);
                     }}
-                    className="w-full rounded border border-slate-200 px-2 py-1 text-xs outline-none focus:ring-2 focus:ring-[color:var(--bridge-ui-ring)]"
+                    className="surface-input w-full rounded px-2 py-1 text-xs outline-none focus:ring-2 focus:ring-[color:var(--bridge-ui-ring)]"
                   >
                     {options.map((option) => (
                       <option key={option} value={option}>
@@ -95,7 +95,7 @@ export function ControlsTable({ propsValue, propsConfig, onPropChange }: Control
                       setDraftProps((current) => ({ ...current, [key]: nextValue }));
                       commitChange(key, nextValue);
                     }}
-                    className="w-full rounded border border-slate-200 px-2 py-1 text-xs outline-none focus:ring-2 focus:ring-[color:var(--bridge-ui-ring)]"
+                    className="surface-input w-full rounded px-2 py-1 text-xs outline-none focus:ring-2 focus:ring-[color:var(--bridge-ui-ring)]"
                   />
                 )}
               </div>

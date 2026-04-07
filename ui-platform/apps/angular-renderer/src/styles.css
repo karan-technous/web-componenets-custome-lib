@@ -1,12 +1,22 @@
 :root {
-  --bridge-ui-primary: #e11d48;
+  --bridge-ui-primary: #f43f5e;
   --bridge-ui-bg: #ffffff;
   --bridge-ui-surface: #ffffff;
   --bridge-ui-ring: rgba(225, 29, 72, 0.3);
-  --ui-primary: var(--bridge-ui-primary);
-  --ui-bg: var(--bridge-ui-bg);
-  --ui-surface: var(--bridge-ui-surface);
-  --ui-ring: var(--bridge-ui-ring);
+
+  --bridge-primary: var(--bridge-ui-primary);
+  --bridge-bg-main: #0f172a;
+  --bridge-text-primary: rgba(255, 255, 255, 0.95);
+  --bridge-text-secondary: rgba(255, 255, 255, 0.65);
+  --bridge-hover: color-mix(in srgb, var(--bridge-primary) 16%, transparent);
+  --bridge-active: color-mix(in srgb, var(--bridge-primary) 26%, transparent);
+  --bridge-border: rgba(255, 255, 255, 0.08);
+  --bridge-glow: color-mix(in srgb, var(--bridge-primary) 45%, transparent);
+  --bridge-gradient-start: color-mix(in srgb, var(--bridge-primary) 70%, #6d28d9);
+  --bridge-gradient-end: color-mix(in srgb, var(--bridge-primary) 60%, #ec4899);
+  --bridge-glass-bg: rgba(255, 255, 255, 0.08);
+  --bridge-glass-border: rgba(255, 255, 255, 0.12);
+  --bridge-glass-highlight: rgba(255, 255, 255, 0.25);
 }
 
 html,
@@ -27,8 +37,8 @@ app-root {
   height: 100vh;
   width: 100vw;
   overflow: hidden;
-  background: var(--bridge-ui-bg);
-  padding: 16px;
+  padding: 10px;
+  background: var(--bridge-bg-main);
 }
 
 .page {
