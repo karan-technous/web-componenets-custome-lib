@@ -1,8 +1,15 @@
-import { AnimatePresence, motion } from 'framer-motion';
-import { Atom, Boxes, ChevronDown, ChevronRight, Search, Triangle } from 'lucide-react';
-import { useMemo, useState } from 'react';
-import type { Framework } from '../state/frameworkStore';
-import type { StoryEntry } from '../state/storyTypes';
+import { AnimatePresence, motion } from "framer-motion";
+import {
+  Atom,
+  Boxes,
+  ChevronDown,
+  ChevronRight,
+  Search,
+  Triangle,
+} from "lucide-react";
+import { useMemo, useState } from "react";
+import type { Framework } from "../state/frameworkStore";
+import type { StoryEntry } from "../state/storyTypes";
 
 interface SidebarProps {
   stories: StoryEntry[];
@@ -19,7 +26,7 @@ export function Sidebar({
   selectedStoryId,
   selectedStory,
   onFrameworkChange,
-  onSelectStory
+  onSelectStory,
 }: SidebarProps) {
   const initialGroups = useMemo(
     () =>
@@ -27,21 +34,26 @@ export function Sidebar({
         acc[group.definition.id] = true;
         return acc;
       }, {}),
-    [stories]
+    [stories],
   );
-  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>(initialGroups);
-  const [query, setQuery] = useState('');
+  const [openGroups, setOpenGroups] =
+    useState<Record<string, boolean>>(initialGroups);
+  const [query, setQuery] = useState("");
 
-  const frameworkOptions: Array<{ value: Framework; label: string; icon: typeof Atom }> = [
-    { value: 'angular', label: 'Angular', icon: Triangle },
-    { value: 'react', label: 'React', icon: Atom },
-    { value: 'wc', label: 'Web Components', icon: Boxes }
+  const frameworkOptions: Array<{
+    value: Framework;
+    label: string;
+    icon: typeof Atom;
+  }> = [
+    { value: "angular", label: "Angular", icon: Triangle },
+    { value: "react", label: "React", icon: Atom },
+    { value: "wc", label: "Web Components", icon: Boxes },
   ];
 
   const toggleGroup = (title: string) => {
     setOpenGroups((current) => ({
       ...current,
-      [title]: !current[title]
+      [title]: !current[title],
     }));
   };
 
@@ -57,7 +69,10 @@ export function Sidebar({
       </div>
 
       <div className="relative mb-2">
-        <Search size={13} className="pointer-events-none absolute left-2 top-2 text-slate-400" />
+        <Search
+          size={13}
+          className="pointer-events-none absolute left-2 top-2 text-slate-400"
+        />
         <input
           value={query}
           onChange={(event) => setQuery(event.target.value)}
@@ -77,9 +92,18 @@ export function Sidebar({
               transition={{ duration: 0.15 }}
               onClick={() => onFrameworkChange(item.value)}
               className={`flex items-center gap-2 rounded-md px-2 py-1.5 text-xs transition ${
-                active ? 'font-semibold text-slate-900' : 'text-slate-600 hover:bg-white/70'
+                active
+                  ? "font-semibold text-slate-900"
+                  : "text-slate-600 hover:bg-white/70"
               }`}
-              style={active ? { backgroundColor: 'color-mix(in srgb, var(--bridge-ui-primary) 14%, white)' } : undefined}
+              style={
+                active
+                  ? {
+                      backgroundColor:
+                        "color-mix(in srgb, var(--bridge-ui-primary) 14%, white)",
+                    }
+                  : undefined
+              }
             >
               <Icon size={13} />
               <span>{item.label}</span>
@@ -88,11 +112,13 @@ export function Sidebar({
         })}
       </div>
 
-      <div className="h-[calc(100vh-145px)] space-y-1 overflow-y-auto pr-1">
+      <div className="h-[calc(100vh-182px)] space-y-1 overflow-y-auto pr-1">
         {stories.map((group) => {
-          const matchesGroup = group.definition.title.toLowerCase().includes(query.toLowerCase());
+          const matchesGroup = group.definition.title
+            .toLowerCase()
+            .includes(query.toLowerCase());
           const filteredStories = group.variants.filter((story) =>
-            story.name.toLowerCase().includes(query.toLowerCase())
+            story.name.toLowerCase().includes(query.toLowerCase()),
           );
 
           if (!matchesGroup && filteredStories.length === 0) {
@@ -103,43 +129,70 @@ export function Sidebar({
           const isActiveGroup = selectedStoryId === group.definition.id;
 
           return (
-            <div key={group.definition.id} className="rounded-md border border-slate-200/70 bg-white/75">
+            <div
+              key={group.definition.id}
+              className="rounded-md border border-slate-200/70 bg-white/75"
+            >
               <button
                 onClick={() => toggleGroup(group.definition.id)}
                 className="flex w-full items-center justify-between rounded-md px-2 py-1.5 text-left hover:bg-white"
               >
                 <div className="flex items-center gap-2">
-                  <Boxes size={13} className={isActiveGroup ? 'text-[color:var(--bridge-ui-primary)]' : 'text-slate-500'} />
-                  <span className={`text-xs ${isActiveGroup ? 'font-semibold text-slate-900' : 'text-slate-700'}`}>
+                  <Boxes
+                    size={13}
+                    className={
+                      isActiveGroup
+                        ? "text-[color:var(--bridge-ui-primary)]"
+                        : "text-slate-500"
+                    }
+                  />
+                  <span
+                    className={`text-xs ${isActiveGroup ? "font-semibold text-slate-900" : "text-slate-700"}`}
+                  >
                     {group.definition.title}
                   </span>
                 </div>
-                {isOpen ? <ChevronDown size={14} className="text-slate-500" /> : <ChevronRight size={14} className="text-slate-500" />}
+                {isOpen ? (
+                  <ChevronDown size={14} className="text-slate-500" />
+                ) : (
+                  <ChevronRight size={14} className="text-slate-500" />
+                )}
               </button>
 
               <AnimatePresence initial={false}>
                 {isOpen && (
                   <motion.div
                     initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
+                    animate={{ height: "auto", opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.22 }}
                     className="overflow-hidden px-1 pb-1"
                   >
                     <div className="space-y-0.5 border-l border-slate-200 pl-1.5">
                       {filteredStories.map((story) => {
-                        const active = selectedStoryId === group.definition.id && selectedStory === story.name;
+                        const active =
+                          selectedStoryId === group.definition.id &&
+                          selectedStory === story.name;
                         return (
                           <motion.button
                             key={story.name}
                             whileHover={{ x: 2 }}
-                            onClick={() => onSelectStory(group.definition.id, story.name)}
+                            onClick={() =>
+                              onSelectStory(group.definition.id, story.name)
+                            }
                             className={`w-full rounded-md px-2 py-1 text-left text-xs transition ${
                               active
-                                ? 'font-medium text-slate-900'
-                                : 'text-slate-600 hover:bg-slate-100/80 hover:text-slate-900'
+                                ? "font-medium text-slate-900"
+                                : "text-slate-600 hover:bg-slate-100/80 hover:text-slate-900"
                             }`}
-                            style={active ? { backgroundColor: 'color-mix(in srgb, var(--bridge-ui-primary) 14%, white)' } : undefined}
+                            style={
+                              active
+                                ? {
+                                    backgroundColor:
+                                      "color-mix(in srgb, var(--bridge-ui-primary) 14%, white)",
+                                  }
+                                : undefined
+                            }
                           >
                             {story.name}
                           </motion.button>

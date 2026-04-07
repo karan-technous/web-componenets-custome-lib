@@ -26,6 +26,11 @@ const buttonStory: StoryDefinition = {
       default: false,
       description: "Disable interaction",
     },
+    loading: {
+      type: "boolean",
+      default: false,
+      description: "Show loading state",
+    },
   },
   stories: {
     Primary: {
@@ -45,6 +50,14 @@ const buttonStory: StoryDefinition = {
         label: "hello",
         variant: "primary",
         disabled: true,
+      },
+    },
+    Loading: {
+      props: {
+        label: "hello",
+        variant: "primary",
+        disabled: false,
+        loading: true,
       },
     },
     Outline: {
@@ -71,7 +84,8 @@ const buttonStory: StoryDefinition = {
       },
       {
         title: "Disabled Button",
-        description: "Use when an action is unavailable until prerequisites are met.",
+        description:
+          "Use when an action is unavailable until prerequisites are met.",
         props: { variant: "primary", label: "Submit", disabled: true },
       },
     ],
