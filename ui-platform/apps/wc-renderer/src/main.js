@@ -51,10 +51,17 @@ function renderComponent(payload) {
     applyProps(el, props);
     controls.appendChild(el);
 }
+function applyAppearance(appearance) {
+    document.documentElement.dataset.appearance = appearance;
+    const isLight = appearance === "light";
+    document.documentElement.style.setProperty("--bridge-ui-bg", isLight ? "#ffffff" : "#0b1020");
+    document.documentElement.style.setProperty("--bridge-ui-surface", isLight ? "#ffffff" : "#12182a");
+}
 function parseInitialPayload() {
     const params = new URLSearchParams(window.location.search);
     const component = params.get("component") ?? "button";
     const story = params.get("story") ?? "Primary";
+    const appearance = params.get("appearance") === "light" ? "light" : "dark";
     const renderersRaw = params.get("renderers");
     let props = {
         label: "Click Me",
@@ -84,10 +91,12 @@ function parseInitialPayload() {
         component,
         story,
         props,
+        appearance,
         renderers,
     };
 }
 const initialPayload = parseInitialPayload();
+applyAppearance(initialPayload.appearance ?? "dark");
 renderComponent(initialPayload);
 window.parent.postMessage({ type: "IFRAME_READY" }, "*");
 window.addEventListener("message", (event) => {
@@ -99,6 +108,7 @@ window.addEventListener("message", (event) => {
         return;
     }
     console.log("Received ->", event.data);
+    applyAppearance(payload.appearance ?? "dark");
     renderComponent(payload);
 });
 canvas.appendChild(controls);

@@ -65,7 +65,7 @@ export function Sidebar({
       initial={{ x: -8, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       transition={{ duration: 0.2 }}
-      className="relative flex h-full min-h-0 flex-col overflow-hidden border border-white/[0.05] bg-[linear-gradient(180deg,rgba(11,15,25,0.97)_0%,rgba(8,11,20,0.98)_100%)] shadow-[0_22px_44px_rgba(0,0,0,0.38),inset_0_1px_0_rgba(255,255,255,0.05)]"
+      className="relative flex h-full min-h-0 flex-col overflow-hidden border border-[color:var(--bride-border-subtle)] bg-[var(--bride-glass-dark)] shadow-[0_22px_44px_var(--bride-glow),inset_0_1px_0_var(--bride-border-subtle)]"
     >
       <div
         className="absolute inset-0 pointer-events-none"
@@ -95,14 +95,14 @@ export function Sidebar({
         90deg,
         transparent 0%,
         color-mix(in srgb, var(--bride-primary) 60%, transparent) 40%,
-        color-mix(in srgb, var(--bride-primary) 80%, white) 70%,
+        color-mix(in srgb, var(--bride-primary) 80%, var(--bride-text)) 70%,
         transparent 100%
       )
     `,
         }}
       />
       <div className="relative z-10 flex h-full min-h-0 flex-col px-3 pb-3 pt-3">
-        <div className="mb-4 flex items-center justify-between border-b border-white/[0.05] pb-2">
+        <div className="mb-4 flex items-center justify-between border-b border-[color:var(--bride-border-subtle)] pb-2">
           <div className="flex gap-3">
             <div
               className="relative flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl"
@@ -117,7 +117,7 @@ export function Sidebar({
                 border: "1px solid rgba(var(--bride-primary-rgb), 0.26)",
                 boxShadow: `
                   0 0 12px rgba(var(--bride-primary-rgb), 0.14),
-                  inset 0 1px 0 rgba(255,255,255,0.12)
+                  inset 0 1px 0 var(--bride-border-subtle)
                 `,
               }}
             >
@@ -132,7 +132,7 @@ export function Sidebar({
                   background: `
         linear-gradient(
           135deg,
-          rgba(255,255,255,0.18) 0%,
+          color-mix(in srgb, var(--bride-text) 18%, transparent) 0%,
           transparent 60%
         )
       `,
@@ -143,7 +143,7 @@ export function Sidebar({
               <p className="font-[var(--bride-font-display)] text-[15px] font-semibold tracking-[-0.02em] text-[color:var(--bride-text)]">
                 UI Platform
               </p>
-              <p className="text-[10px] uppercase tracking-[0.08em] text-[#7d808c]">
+              <p className="text-[10px] uppercase tracking-[0.08em] text-[color:var(--bride-text-muted)]">
                 Design System
               </p>
             </div>
@@ -162,20 +162,20 @@ export function Sidebar({
         <div className="relative mb-4">
           <Search
             size={14}
-            className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-white/22"
+            className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[color:var(--bride-text-muted)]"
           />
           <input
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Search components..."
-            className="h-10 w-full rounded-[13px] border border-white/[0.07] bg-white/[0.025] pl-9 pr-3 text-sm text-white/62 outline-none transition placeholder:text-white/24 focus:border-[color:rgba(var(--bride-primary-rgb),0.18)] focus:bg-[rgba(var(--bride-primary-rgb),0.035)] focus:shadow-[0_0_0_3px_rgba(var(--bride-primary-rgb),0.08)]"
+            className="bride-input h-10 w-full rounded-[13px] pl-9 pr-3 text-sm outline-none transition placeholder:text-[color:var(--bride-text-muted)] focus:border-[color:rgba(var(--bride-primary-rgb),0.18)] focus:bg-[rgba(var(--bride-primary-rgb),0.035)] focus:shadow-[0_0_0_3px_rgba(var(--bride-primary-rgb),0.08)]"
           />
         </div>
         <div className="min-h-0 flex-1 space-y-2 overflow-y-auto sidebar-scroll">
           <div
             className="px-1 mb-2 flex items-center gap-2"
             style={{
-              color: "rgba(255,255,255,0.18)",
+              color: "var(--bride-text-muted)",
               fontSize: "10px",
               letterSpacing: "0.1em",
             }}
@@ -215,8 +215,8 @@ export function Sidebar({
                   onClick={() => onFrameworkChange(item.value)}
                   className={`group relative flex items-center justify-between overflow-hidden rounded-[16px] border px-3 py-2.5 text-left transition-all ${
                     active
-                      ? "border-[color:rgba(var(--bride-primary-rgb),0.42)] bg-[linear-gradient(90deg,rgba(var(--bride-primary-rgb),0.15)_0%,rgba(var(--bride-primary-rgb),0.05)_100%)] shadow-[0_0_18px_rgba(var(--bride-primary-rgb),0.08),inset_0_1px_0_rgba(255,255,255,0.05)]"
-                      : "border-transparent bg-transparent hover:border-white/[0.06] hover:bg-white/[0.03]"
+                      ? "border-[color:rgba(var(--bride-primary-rgb),0.42)] bg-[linear-gradient(90deg,rgba(var(--bride-primary-rgb),0.15)_0%,rgba(var(--bride-primary-rgb),0.05)_100%)] shadow-[0_0_18px_rgba(var(--bride-primary-rgb),0.08),inset_0_1px_0_var(--bride-border-subtle)]"
+                      : "border-transparent bg-transparent hover:border-[color:var(--bride-border-subtle)] hover:bg-[color:var(--docs-accent-surface)]"
                   }`}
                 >
                   {active ? (
@@ -230,7 +230,7 @@ export function Sidebar({
                       className={`flex h-7 w-7 items-center justify-center rounded-[10px] border ${
                         active
                           ? "border-[rgba(var(--bride-primary-rgb),0.22)] bg-[rgba(var(--bride-primary-rgb),0.12)]"
-                          : "border-white/[0.06] bg-white/[0.03]"
+                          : "border-[color:var(--bride-border-subtle)] bg-[color:var(--bride-field-bg)]"
                       }`}
                     >
                       <Icon
@@ -238,7 +238,7 @@ export function Sidebar({
                         className={
                           active
                             ? "text-[color:var(--bride-primary)]"
-                            : "text-white/24"
+                            : "text-[color:var(--bride-text-muted)]"
                         }
                       />
                     </span>
@@ -246,7 +246,7 @@ export function Sidebar({
                       className={
                         active
                           ? "font-medium text-[color:var(--bride-primary)]"
-                          : "text-white/42"
+                          : "text-[color:var(--bride-text-soft)]"
                       }
                     >
                       {item.label}
@@ -256,7 +256,7 @@ export function Sidebar({
                     className={`rounded-full px-2 py-0.5 text-[9px] font-semibold ${
                       active
                         ? "border border-[rgba(var(--bride-primary-rgb),0.14)] bg-[rgba(var(--bride-primary-rgb),0.1)] text-[color:var(--bride-primary)]"
-                        : "border border-white/[0.04] bg-white/[0.03] text-white/18"
+                        : "border border-[color:var(--bride-border-subtle)] bg-[color:var(--bride-field-bg)] text-[color:var(--bride-text-muted)]"
                     }`}
                   >
                     {item.version}
@@ -269,7 +269,7 @@ export function Sidebar({
           <div
             className="px-1 mb-2 flex items-center gap-2"
             style={{
-              color: "rgba(255,255,255,0.18)",
+              color: "var(--bride-text-muted)",
               fontSize: "10px",
               letterSpacing: "0.1em",
             }}
@@ -320,8 +320,8 @@ export function Sidebar({
                     onClick={() => toggleGroup(group.definition.id)}
                     className={`relative flex w-full items-center justify-between rounded-[14px] border px-3 py-2 text-left transition-all ${
                       isActiveGroup
-                        ? "border-[rgba(var(--bride-primary-rgb),0.18)] bg-[linear-gradient(90deg,rgba(var(--bride-primary-rgb),0.12)_0%,rgba(var(--bride-primary-rgb),0.04)_100%)] shadow-[0_0_12px_rgba(var(--bride-primary-rgb),0.05),inset_0_1px_0_rgba(255,255,255,0.05)]"
-                        : "border-transparent hover:border-white/[0.05] hover:bg-white/[0.03]"
+                        ? "border-[rgba(var(--bride-primary-rgb),0.18)] bg-[linear-gradient(90deg,rgba(var(--bride-primary-rgb),0.12)_0%,rgba(var(--bride-primary-rgb),0.04)_100%)] shadow-[0_0_12px_rgba(var(--bride-primary-rgb),0.05),inset_0_1px_0_var(--bride-border-subtle)]"
+                        : "border-transparent hover:border-[color:var(--bride-border-subtle)] hover:bg-[color:var(--docs-accent-surface)]"
                     }`}
                   >
                     {isActiveGroup ? (
@@ -334,7 +334,7 @@ export function Sidebar({
                           className={
                             isActiveGroup
                               ? "text-[color:var(--bride-primary)]"
-                              : "text-white/20"
+                              : "text-[color:var(--bride-text-muted)]"
                           }
                         />
                       ) : (
@@ -343,7 +343,7 @@ export function Sidebar({
                           className={
                             isActiveGroup
                               ? "text-[color:var(--bride-primary)]"
-                              : "text-white/20"
+                              : "text-[color:var(--bride-text-muted)]"
                           }
                         />
                       )}
@@ -351,14 +351,14 @@ export function Sidebar({
                         className={`h-1.5 w-1.5 rounded-full ${
                           isActiveGroup
                             ? "bg-[color:var(--bride-primary)] shadow-[0_0_6px_rgba(var(--bride-primary-rgb),0.7)]"
-                            : "bg-white/15"
+                            : "bg-[color:var(--bride-text-muted)]"
                         }`}
                       />
                       <span
                         className={`text-xs ${
                           isActiveGroup
                             ? "font-medium text-[color:var(--bride-primary)]"
-                            : "text-white/46"
+                            : "text-[color:var(--bride-text-soft)]"
                         }`}
                       >
                         {group.definition.title}
@@ -368,7 +368,7 @@ export function Sidebar({
                       className={`rounded-full px-2 py-0.5 text-[9px] font-semibold ${
                         isActiveGroup
                           ? "bg-[rgba(var(--bride-primary-rgb),0.08)] text-[color:var(--bride-primary)]"
-                          : "bg-white/[0.03] text-white/18"
+                          : "bg-[color:var(--bride-field-bg)] text-[color:var(--bride-text-muted)]"
                       }`}
                     >
                       {group.variants.length}
@@ -399,7 +399,7 @@ export function Sidebar({
                                 className={`w-full rounded-[12px] border px-3 py-1.5 text-left text-sm transition-all ${
                                   active
                                     ? "border-[rgba(var(--bride-primary-rgb),0.24)] bg-[linear-gradient(90deg,rgba(var(--bride-primary-rgb),0.12)_0%,rgba(var(--bride-primary-rgb),0.06)_100%)] text-[color:var(--bride-primary-light)]"
-                                    : "border-transparent text-white/28 hover:bg-white/[0.03]"
+                                    : "border-transparent text-[color:var(--bride-text-muted)] hover:bg-[color:var(--docs-accent-surface)]"
                                 }`}
                               >
                                 <span className="flex items-center gap-2">
@@ -407,7 +407,7 @@ export function Sidebar({
                                     className={`h-1 w-1 rounded-full ${
                                       active
                                         ? "bg-[color:var(--bride-primary)] shadow-[0_0_4px_rgba(var(--bride-primary-rgb),0.7)]"
-                                        : "bg-white/12"
+                                        : "bg-[color:var(--bride-text-muted)]"
                                     }`}
                                   />
                                   {story.name}
@@ -424,9 +424,9 @@ export function Sidebar({
             })}
           </div>
         </div>
-        <div className="relative mt-3 flex items-center justify-between border-t border-white/[0.04] px-1 pt-3">
-          <div className="flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.02] px-3 py-1.5 text-[11px] text-white/22">
-            <Hexagon size={11} className="text-white/20" />
+        <div className="relative mt-3 flex items-center justify-between border-t border-[color:var(--bride-border-subtle)] px-1 pt-3">
+          <div className="flex items-center gap-2 rounded-full border border-[color:var(--bride-border-subtle)] bg-[color:var(--bride-field-bg)] px-3 py-1.5 text-[11px] text-[color:var(--bride-text-muted)]">
+            <Hexagon size={11} className="text-[color:var(--bride-text-muted)]" />
             <span>v2.5.0</span>
           </div>
           <div className="flex items-center gap-1.5 rounded-full border border-[rgba(var(--bride-primary-rgb),0.12)] bg-[rgba(var(--bride-primary-rgb),0.06)] px-3 py-1.5">

@@ -17,6 +17,7 @@ type StoryPayload = {
   component: string;
   story: string;
   props: StoryProps;
+  appearance?: "dark" | "light";
   renderers?: {
     angular?: {
       exportName?: string;
@@ -78,6 +79,8 @@ export class AppComponent implements OnInit, OnDestroy {
     const params = new URLSearchParams(window.location.search);
     const component = params.get("component") ?? "button";
     const story = params.get("story") ?? "Primary";
+    const appearance =
+      params.get("appearance") === "light" ? "light" : "dark";
     const renderersRaw = params.get("renderers");
     let props: StoryProps = {
       label: "Click Me",
@@ -108,11 +111,13 @@ export class AppComponent implements OnInit, OnDestroy {
       component,
       story,
       props,
+      appearance,
       renderers,
     };
   }
 
   private applyPayload(payload: StoryPayload): void {
+    document.documentElement.dataset.appearance = payload.appearance ?? "dark";
     const binding = payload.renderers?.angular;
     const componentType = this.resolveWrapperType(
       payload.component,

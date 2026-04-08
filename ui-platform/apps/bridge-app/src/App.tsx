@@ -16,7 +16,12 @@ import {
   resolveStorySelection,
 } from "./state/storyStore";
 import type { SelectedStory } from "./state/storyTypes";
-import { applyTheme } from "./theme/themeManager";
+import {
+  applyTheme,
+  getAppearance,
+  setAppearance,
+  type AppearanceMode,
+} from "./theme/themeManager";
 
 export default function App() {
   const [framework, setFrameworkState] = useState<Framework>(getFramework());
@@ -26,6 +31,8 @@ export default function App() {
   );
   const [activeTab, setActiveTab] = useState<BottomTab>("controls");
   const [mode, setMode] = useState<"preview" | "docs">("preview");
+  const [appearance, setAppearanceState] =
+    useState<AppearanceMode>(getAppearance());
   const [showPanel, setShowPanel] = useState(true);
   const [panelHeight, setPanelHeight] = useState(300);
   const [zoom, setZoom] = useState(1);
@@ -34,8 +41,8 @@ export default function App() {
   const [actionLogs, setActionLogs] = useState<ActionLogEntry[]>([]);
 
   useEffect(() => {
-    applyTheme(framework);
-  }, [framework]);
+    applyTheme(framework, appearance);
+  }, [framework, appearance]);
 
   useEffect(() => {
     const handler = (event: KeyboardEvent) => {
@@ -139,6 +146,12 @@ export default function App() {
     }
   };
 
+  const handleAppearanceChange = (value: AppearanceMode) => {
+    setAppearance(value);
+    setAppearanceState(value);
+    addAction("onAppearanceChange", value);
+  };
+
   return (
     <main className="h-screen overflow-hidden">
       <div className="grid h-full grid-cols-[256px_1fr]">
@@ -156,7 +169,9 @@ export default function App() {
             framework={framework}
             selection={selection}
             currentUrl={currentUrl}
+            appearance={appearance}
             onFrameworkChange={handleFrameworkChange}
+            onAppearanceChange={handleAppearanceChange}
             zoom={zoom}
             mode={mode}
             onModeChange={setMode}

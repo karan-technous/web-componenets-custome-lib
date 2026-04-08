@@ -4,9 +4,11 @@ import {
   Atom,
   Boxes,
   ExternalLink,
+  Moon,
   PanelBottom,
   RefreshCw,
   RotateCcw,
+  Sun,
   Triangle,
   ZoomIn,
   ZoomOut,
@@ -14,12 +16,15 @@ import {
 import type { ReactNode } from "react";
 import type { Framework } from "../state/frameworkStore";
 import type { SelectedStory } from "../state/storyTypes";
+import type { AppearanceMode } from "../theme/themeManager";
 
 interface ToolbarProps {
   framework: Framework;
   selection: SelectedStory | null;
   currentUrl: string;
+  appearance: AppearanceMode;
   onFrameworkChange: (framework: Framework) => void;
+  onAppearanceChange: (appearance: AppearanceMode) => void;
   zoom: number;
   mode: "preview" | "docs";
   onModeChange: (mode: "preview" | "docs") => void;
@@ -70,7 +75,9 @@ export function Toolbar({
   framework,
   selection,
   currentUrl,
+  appearance,
   onFrameworkChange,
+  onAppearanceChange,
   zoom,
   mode,
   onModeChange,
@@ -135,6 +142,32 @@ export function Toolbar({
           </div>
 
           <div className="flex items-center gap-2">
+            <div className="hidden items-center rounded-xl border border-[color:var(--bride-border-subtle)] bg-[color:var(--bride-bg-elevated)] p-1 shadow-[inset_0_1px_0_var(--bride-border-subtle)] md:flex">
+              <button
+                type="button"
+                onClick={() => onAppearanceChange("dark")}
+                className={`bride-focus-ring inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-all duration-200 ${
+                  appearance === "dark"
+                    ? "border border-[color:var(--docs-accent-border)] bg-[color:var(--docs-accent-surface)] text-[color:var(--docs-accent-strong)] shadow-[0_0_16px_var(--docs-accent-glow)]"
+                    : "border border-transparent text-[color:var(--bride-text-muted)] hover:text-[color:var(--bride-text)]"
+                }`}
+              >
+                <Moon size={12} />
+                Dark
+              </button>
+              <button
+                type="button"
+                onClick={() => onAppearanceChange("light")}
+                className={`bride-focus-ring inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-all duration-200 ${
+                  appearance === "light"
+                    ? "border border-[color:var(--docs-accent-border)] bg-[color:var(--docs-accent-surface)] text-[color:var(--docs-accent-strong)] shadow-[0_0_16px_var(--docs-accent-glow)]"
+                    : "border border-transparent text-[color:var(--bride-text-muted)] hover:text-[color:var(--bride-text)]"
+                }`}
+              >
+                <Sun size={12} />
+                Light
+              </button>
+            </div>
             <div className="hidden items-center gap-1 md:flex">
               <ToolButton label="Zoom in" onClick={onZoomIn}>
                 <ZoomIn size={14} />

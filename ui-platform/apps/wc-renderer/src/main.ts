@@ -49,6 +49,7 @@ type StoryPayload = {
   component: string;
   story: string;
   props: Record<string, string | boolean>;
+  appearance?: "dark" | "light";
   renderers?: {
     wc?: {
       tagName?: string;
@@ -79,10 +80,25 @@ function renderComponent(payload: StoryPayload) {
   controls.appendChild(el);
 }
 
+function applyAppearance(appearance: "dark" | "light") {
+  document.documentElement.dataset.appearance = appearance;
+  const isLight = appearance === "light";
+  document.documentElement.style.setProperty(
+    "--bridge-ui-bg",
+    isLight ? "#ffffff" : "#0b1020",
+  );
+  document.documentElement.style.setProperty(
+    "--bridge-ui-surface",
+    isLight ? "#ffffff" : "#12182a",
+  );
+}
+
 function parseInitialPayload(): StoryPayload {
   const params = new URLSearchParams(window.location.search);
   const component = params.get("component") ?? "button";
   const story = params.get("story") ?? "Primary";
+  const appearance =
+    params.get("appearance") === "light" ? "light" : "dark";
   const renderersRaw = params.get("renderers");
   let props: Record<string, string | boolean> = {
     label: "Click Me",
@@ -112,11 +128,13 @@ function parseInitialPayload(): StoryPayload {
     component,
     story,
     props,
+    appearance,
     renderers,
   };
 }
 
 const initialPayload = parseInitialPayload();
+applyAppearance(initialPayload.appearance ?? "dark");
 renderComponent(initialPayload);
 window.parent.postMessage({ type: "IFRAME_READY" }, "*");
 
@@ -131,6 +149,7 @@ window.addEventListener("message", (event: MessageEvent) => {
   }
 
   console.log("Received ->", event.data);
+  applyAppearance(payload.appearance ?? "dark");
   renderComponent(payload);
 });
 

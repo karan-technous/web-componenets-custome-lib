@@ -1,5 +1,7 @@
 import type { Framework } from '../state/frameworkStore';
 
+export type AppearanceMode = 'dark' | 'light';
+
 type ThemeColors = {
   primary: string;
   primaryRgb: string;
@@ -66,7 +68,26 @@ const frameworkToTheme: Record<Framework, keyof typeof themeConfig> = {
   wc: 'webcomponents',
 };
 
-export function applyTheme(framework: Framework) {
+const APPEARANCE_STORAGE_KEY = 'bridge-appearance';
+
+export function getAppearance(): AppearanceMode {
+  if (typeof window === 'undefined') {
+    return 'dark';
+  }
+
+  const stored = window.localStorage.getItem(APPEARANCE_STORAGE_KEY);
+  return stored === 'light' ? 'light' : 'dark';
+}
+
+export function setAppearance(mode: AppearanceMode) {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  window.localStorage.setItem(APPEARANCE_STORAGE_KEY, mode);
+}
+
+export function applyTheme(framework: Framework, appearance: AppearanceMode) {
   const root = document.documentElement;
   const palette = themeConfig[frameworkToTheme[framework]];
 
@@ -83,4 +104,5 @@ export function applyTheme(framework: Framework) {
   root.style.setProperty('--bride-glow-strong', palette.glowStrong);
   root.style.setProperty('--bride-framework-name', `"${palette.name}"`);
   root.dataset.framework = framework;
+  root.dataset.appearance = appearance;
 }

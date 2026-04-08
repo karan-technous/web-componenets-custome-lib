@@ -127,6 +127,7 @@ function buildPreviewUrl(
     story: story.storyName,
     props: JSON.stringify(props),
     renderers: JSON.stringify(story.renderers ?? {}),
+    appearance: "dark",
   });
 
   return `${rendererUrls[framework]}?${params.toString()}`;
@@ -400,13 +401,13 @@ function StoryPreviewCard({
   return (
     <article className="space-y-4">
       <div className="flex flex-wrap items-center gap-3">
-        <h3 className="text-[18px] font-semibold leading-none tracking-[-0.03em] text-white">
+        <h3 className="text-[18px] font-semibold leading-none tracking-[-0.03em] text-[color:var(--docs-heading)]">
           {example.title}
         </h3>
         <button
           type="button"
           onClick={() => onOpenStory(example.storyName ?? example.title)}
-          className="inline-flex items-center gap-2 rounded-lg px-2 py-1 border border-[color:var(--docs-accent-border)] bg-[color:var(--docs-code-chip-bg)] text-xs font-semibold text-[color:var(--docs-accent)] transition hover:border-[color:var(--docs-accent-strong)] hover:bg-[color:var(--docs-accent-surface)]"
+          className="inline-flex items-center gap-2 rounded-lg border border-[color:var(--docs-accent-border)] bg-[color:var(--docs-accent-surface)] px-2 py-1 text-xs font-semibold text-[color:var(--docs-accent-strong)] transition hover:border-[color:var(--docs-accent-strong)] hover:bg-[color:var(--docs-accent-surface-strong)]"
         >
           <span className="h-2 w-2 rounded-full bg-[color:var(--docs-accent)]" />
           Open Story
@@ -414,15 +415,15 @@ function StoryPreviewCard({
       </div>
 
       {example.description ? (
-        <p className="max-w-3xl text-[15px] leading-7 text-white/42">
+        <p className="max-w-3xl text-[15px] leading-7 text-[color:var(--docs-body)]">
           {example.description}
         </p>
       ) : null}
 
-      <div className="relative overflow-hidden rounded-[20px] border border-[color:var(--docs-preview-border)] bg-[color:var(--bride-bg-elevated)] px-8 py-8 shadow-[inset_0_1px_0_var(--bride-border-subtle)]">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_50%,var(--docs-accent-surface),transparent_26%)] opacity-45" />
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_82%_20%,var(--docs-accent-surface),transparent_20%)] opacity-25" />
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle,rgba(255,255,255,0.50)_1px,transparent_1.5px)] bg-[size:24px_24px] opacity-[0.14]" />
+      <div className="relative overflow-hidden rounded-[20px] border border-[color:var(--docs-preview-border)] bg-[color:var(--docs-preview-bg)] px-8 py-8 shadow-[inset_0_1px_0_var(--bride-border-subtle)]">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_50%,var(--docs-accent-surface),transparent_26%)] opacity-28" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_82%_20%,var(--docs-accent-surface),transparent_20%)] opacity-16" />
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(var(--bride-border-subtle)_1px,transparent_1px),linear-gradient(90deg,var(--bride-border-subtle)_1px,transparent_1px)] bg-[size:24px_24px] opacity-[0.08]" />
         <iframe
           title={`${story.component}-${example.title}`}
           src={previewUrl}
@@ -598,8 +599,8 @@ export function DocsPage({ framework, story, onOpenStory }: DocsPageProps) {
 
         <section className="space-y-4">
           <div className="flex items-center justify-between gap-4">
-            <div className="flex items-center gap-4">
-              <div className="h-px bg-[var(--bride-primary)] w-16 bg-white/8" />
+          <div className="flex items-center gap-4">
+              <div className="h-px w-16 bg-[color:var(--bride-border-subtle)]" />
               <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[color:var(--docs-muted)]">
                 Usage
               </span>
@@ -608,7 +609,7 @@ export function DocsPage({ framework, story, onOpenStory }: DocsPageProps) {
               href={buildPreviewUrl(framework, story, story.props)}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 text-[13px] text-white/35 transition hover:text-white/70"
+              className="inline-flex items-center gap-2 text-[13px] text-[color:var(--bride-text-muted)] transition hover:text-[color:var(--bride-text)]"
             >
               <ExternalLink size={14} />
               Open in full
@@ -624,7 +625,7 @@ export function DocsPage({ framework, story, onOpenStory }: DocsPageProps) {
                 className={`rounded-full border px-4 py-2 text-[13px] font-semibold transition ${
                   activeUsage === tab
                     ? "border-[color:var(--docs-accent-border)] bg-[color:var(--docs-code-chip-bg)] text-[color:var(--docs-accent)]"
-                    : "border-white/8 bg-white/[0.02] text-white/35 hover:text-white/65"
+                    : "border-[color:var(--bride-border-subtle)] bg-[color:var(--bride-bg-elevated)] text-[color:var(--bride-text-muted)] hover:text-[color:var(--bride-text)]"
                 }`}
               >
                 {tab === "wc"

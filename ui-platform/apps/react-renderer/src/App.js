@@ -39,6 +39,7 @@ function parsePayloadFromUrl() {
     const params = new URLSearchParams(window.location.search);
     const component = params.get("component") ?? initialPayload.component;
     const story = params.get("story") ?? initialPayload.story;
+    const appearance = params.get("appearance") === "light" ? "light" : "dark";
     const propsRaw = params.get("props");
     const renderersRaw = params.get("renderers");
     let parsedProps = initialPayload.props;
@@ -64,6 +65,7 @@ function parsePayloadFromUrl() {
         component,
         story,
         props: parsedProps,
+        appearance,
         renderers: parsedRenderers,
     };
 }
@@ -92,6 +94,9 @@ function renderDynamicComponent(payload) {
 }
 export default function App() {
     const [payload, setPayload] = useState(parsePayloadFromUrl());
+    useEffect(() => {
+        document.documentElement.dataset.appearance = payload.appearance ?? "dark";
+    }, [payload.appearance]);
     useEffect(() => {
         const handler = (event) => {
             if (event.data?.type !== "UPDATE_STORY") {

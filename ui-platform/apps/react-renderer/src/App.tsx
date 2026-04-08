@@ -15,6 +15,7 @@ type StoryPayload = {
   component: string;
   story: string;
   props: StoryProps;
+  appearance?: "dark" | "light";
   renderers?: {
     react?: {
       exportName?: string;
@@ -70,6 +71,8 @@ function parsePayloadFromUrl(): StoryPayload {
   const params = new URLSearchParams(window.location.search);
   const component = params.get("component") ?? initialPayload.component;
   const story = params.get("story") ?? initialPayload.story;
+  const appearance =
+    params.get("appearance") === "light" ? "light" : "dark";
   const propsRaw = params.get("props");
   const renderersRaw = params.get("renderers");
 
@@ -96,6 +99,7 @@ function parsePayloadFromUrl(): StoryPayload {
     component,
     story,
     props: parsedProps,
+    appearance,
     renderers: parsedRenderers,
   };
 }
@@ -136,6 +140,10 @@ function renderDynamicComponent(payload: StoryPayload): ReactElement {
 
 export default function App() {
   const [payload, setPayload] = useState<StoryPayload>(parsePayloadFromUrl());
+
+  useEffect(() => {
+    document.documentElement.dataset.appearance = payload.appearance ?? "dark";
+  }, [payload.appearance]);
 
   useEffect(() => {
     const handler = (event: MessageEvent) => {

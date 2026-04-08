@@ -23,6 +23,18 @@
   --bridge-glass-highlight: rgba(255, 255, 255, 0.25);
 }
 
+:root[data-appearance="dark"] {
+  --bridge-ui-bg: #0b1020;
+  --bridge-ui-surface: #12182a;
+  --bridge-border: rgba(255, 255, 255, 0.08);
+}
+
+:root[data-appearance="light"] {
+  --bridge-ui-bg: #ffffff;
+  --bridge-ui-surface: #ffffff;
+  --bridge-border: rgba(15, 23, 42, 0.08);
+}
+
 html,
 body,
 #app {
@@ -42,7 +54,6 @@ body,
   width: 100%;
   overflow: hidden;
   padding: 10px;
-  /* background: var(--bridge-bg-main); */
 }
 
 .canvas {
