@@ -501,30 +501,34 @@ export function DocsPage({ framework, story, onOpenStory }: DocsPageProps) {
               {descriptionParts.intro}
             </p>
           ) : null}
-
-          <div className="rounded-[20px] border border-[color:var(--bride-border-subtle)] bg-[color:var(--bride-bg-elevated)] px-5 py-5 shadow-[inset_0_1px_0_var(--bride-border-subtle)]">
-            <div className="mb-4 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-[color:var(--docs-muted)]">
-              <Sparkles size={13} className="text-[color:var(--docs-accent)]" />
-              Guidelines
+          {descriptionParts.bullets.length > 0 || descriptionParts.closing ? (
+            <div className="rounded-[20px] border border-[color:var(--bride-border-subtle)] bg-[color:var(--bride-bg-elevated)] px-5 py-5 shadow-[inset_0_1px_0_var(--bride-border-subtle)]">
+              <div className="mb-4 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-[color:var(--docs-muted)]">
+                <Sparkles
+                  size={13}
+                  className="text-[color:var(--docs-accent)]"
+                />
+                Guidelines
+              </div>
+              <div className="space-y-3">
+                {descriptionParts.bullets.map((bullet) => (
+                  <div
+                    key={bullet}
+                    className="flex items-start gap-3 text-[14px] leading-7 text-[color:var(--docs-body)]"
+                  >
+                    <span className="mt-[9px] h-1.5 w-1.5 rounded-full bg-[color:var(--docs-accent)]" />
+                    <p>{formatInlineCode(bullet)}</p>
+                  </div>
+                ))}
+                {descriptionParts.closing ? (
+                  <div className="flex items-start gap-3 text-[14px] leading-7 text-[color:var(--docs-body)]">
+                    <span className="mt-[9px] h-1.5 w-1.5 rounded-full bg-[color:var(--docs-accent)]" />
+                    <p>{formatInlineCode(descriptionParts.closing)}</p>
+                  </div>
+                ) : null}
+              </div>
             </div>
-            <div className="space-y-3">
-              {descriptionParts.bullets.map((bullet) => (
-                <div
-                  key={bullet}
-                  className="flex items-start gap-3 text-[14px] leading-7 text-[color:var(--docs-body)]"
-                >
-                  <span className="mt-[9px] h-1.5 w-1.5 rounded-full bg-[color:var(--docs-accent)]" />
-                  <p>{formatInlineCode(bullet)}</p>
-                </div>
-              ))}
-              {descriptionParts.closing ? (
-                <div className="flex items-start gap-3 text-[14px] leading-7 text-[color:var(--docs-body)]">
-                  <span className="mt-[9px] h-1.5 w-1.5 rounded-full bg-[color:var(--docs-accent)]" />
-                  <p>{formatInlineCode(descriptionParts.closing)}</p>
-                </div>
-              ) : null}
-            </div>
-          </div>
+          ) : null}
         </header>
 
         <section className="space-y-6">
@@ -599,7 +603,7 @@ export function DocsPage({ framework, story, onOpenStory }: DocsPageProps) {
 
         <section className="space-y-4">
           <div className="flex items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4">
               <div className="h-px w-16 bg-[color:var(--bride-border-subtle)]" />
               <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[color:var(--docs-muted)]">
                 Usage

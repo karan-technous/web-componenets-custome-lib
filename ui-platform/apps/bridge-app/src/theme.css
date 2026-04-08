@@ -144,6 +144,39 @@
   --docs-token-name: #ff8f93;
 }
 
+:root[data-appearance="light"][data-framework="wc"] {
+  --docs-preview-border: color-mix(
+    in srgb,
+    var(--docs-accent) 24%,
+    var(--bride-border-subtle)
+  );
+  --docs-preview-bg: color-mix(in srgb, var(--docs-accent) 3%, #ffffff);
+  --docs-inline-code-bg: color-mix(in srgb, var(--docs-accent) 4%, #f8fcff);
+  --docs-code-chip-bg: color-mix(in srgb, var(--docs-accent) 5%, #f8fcff);
+}
+
+:root[data-appearance="light"][data-framework="react"] {
+  --docs-preview-border: color-mix(
+    in srgb,
+    var(--docs-accent) 24%,
+    var(--bride-border-subtle)
+  );
+  --docs-preview-bg: color-mix(in srgb, var(--docs-accent) 3%, #ffffff);
+  --docs-inline-code-bg: color-mix(in srgb, var(--docs-accent) 4%, #f8faff);
+  --docs-code-chip-bg: color-mix(in srgb, var(--docs-accent) 5%, #f8faff);
+}
+
+:root[data-appearance="light"][data-framework="angular"] {
+  --docs-preview-border: color-mix(
+    in srgb,
+    var(--docs-accent) 24%,
+    var(--bride-border-subtle)
+  );
+  --docs-preview-bg: color-mix(in srgb, var(--docs-accent) 3%, #ffffff);
+  --docs-inline-code-bg: color-mix(in srgb, var(--docs-accent) 4%, #fff8f9);
+  --docs-code-chip-bg: color-mix(in srgb, var(--docs-accent) 5%, #fff8f9);
+}
+
 html,
 body,
 #root {
