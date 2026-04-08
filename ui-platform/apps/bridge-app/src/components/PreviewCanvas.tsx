@@ -1,5 +1,4 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { ExternalLink } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { Framework } from "../state/frameworkStore";
 import type { SelectedStory, StoryRendererBindings } from "../state/storyTypes";
@@ -51,7 +50,6 @@ function sendToPreview(
     return;
   }
 
-  console.log("Sending ->", payload);
   iframe.contentWindow.postMessage(
     {
       type: "UPDATE_STORY",
@@ -92,8 +90,6 @@ export function PreviewCanvas({
   } | null>(null);
 
   useEffect(() => {
-    // Only show loading overlay when iframe src actually changes.
-    // Control/story updates are message-based and should not force spinner.
     if (src !== previousSrcRef.current) {
       setIsLoading(true);
       setIsReady(false);
@@ -111,7 +107,6 @@ export function PreviewCanvas({
         return;
       }
 
-      console.log("Bridge <- IFRAME_READY");
       setIsReady(true);
       setIsLoading(false);
     };
@@ -160,12 +155,12 @@ export function PreviewCanvas({
 
   if (!selection) {
     return (
-      <section className="preview flex min-h-0 flex-1 items-center justify-center">
+      <section className="flex min-h-0 flex-1 items-center justify-center bg-[var(--bride-glass-dark)]">
         <div className="text-center">
-          <p className="text-primary text-sm font-medium">
+          <p className="text-sm font-medium text-[color:var(--bride-text)]">
             No story selected
           </p>
-          <p className="text-secondary mt-1 text-xs">
+          <p className="mt-1 text-xs text-[color:var(--bride-text-soft)]">
             Select a story from the explorer.
           </p>
         </div>
@@ -178,26 +173,32 @@ export function PreviewCanvas({
       key={`${framework}-${refreshToken}`}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.15 }}
-      className="preview flex h-full min-h-0 flex-col overflow-hidden"
+      transition={{ duration: 0.18 }}
+      className="relative flex h-full min-h-0 flex-col overflow-hidden bg-[var(--bride-glass-dark)]"
     >
-      <div className="flex items-center justify-between border-b border-[color:var(--border-subtle)] px-2 py-1">
-        <p className="text-secondary text-xs">
-          {selection.componentTitle} /{" "}
-          <span className="text-primary">{selection.storyName}</span>
-        </p>
-        <a
-          href={shareUrl}
-          target="_blank"
-          rel="noreferrer"
-          className="sidebar-item inline-flex items-center gap-1 px-1.5 py-1 text-xs"
-        >
-          <ExternalLink size={12} />
-          Open
-        </a>
-      </div>
+      <div
+        className="pointer-events-none absolute inset-0 opacity-60"
+        style={{
+          background:
+            "radial-gradient(circle at 50% 180px, var(--docs-accent-glow), transparent 40%)",
+        }}
+      />
+      <div className="relative h-full overflow-hidden">
+        <div
+          className="pointer-events-none absolute inset-0 opacity-55"
+          style={{
+            background:
+              "radial-gradient(circle at 50% 180px, var(--docs-accent-glow), transparent 52%)",
+          }}
+        />
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(circle at calc(50% + 180px) 96px, var(--docs-accent-surface), transparent 44%)",
+          }}
+        />
 
-      <div className="relative h-full overflow-hidden p-3">
         <AnimatePresence>
           {isLoading && (
             <motion.div
@@ -205,19 +206,20 @@ export function PreviewCanvas({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.15 }}
-              className="glass absolute inset-3 z-10 flex items-center justify-center"
+              className="absolute inset-6 z-20 flex items-center justify-center rounded-xl border border-[color:var(--bride-border-subtle)] bg-[var(--bride-glass-dark)] shadow-[inset_0_1px_0_var(--bride-border-subtle)] backdrop-blur-[18px]"
             >
-              <span className="text-secondary text-xs">Loading preview...</span>
+              <span className="text-xs text-[color:var(--bride-text-soft)]">
+                Loading preview...
+              </span>
             </motion.div>
           )}
         </AnimatePresence>
 
-        <div className="flex h-full w-full items-center justify-center overflow-hidden">
+        <div className="relative z-10 flex h-full w-full items-center justify-center overflow-hidden bg-[var(--bride-glass-dark)] shadow-[inset_0_1px_0_var(--bride-border-subtle)] p-7">
+          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(var(--bride-border-subtle)_1px,transparent_1px),linear-gradient(90deg,var(--bride-border-subtle)_1px,transparent_1px)] bg-[size:24px_24px] opacity-15" />
           <div
-            className={`card overflow-hidden w-full h-full`}
-            style={{
-              transition: "width 150ms ease, height 150ms ease",
-            }}
+            className="relative h-full w-full overflow-hidden"
+            style={{ transition: "width 150ms ease, height 150ms ease" }}
           >
             <iframe
               id="preview-iframe"
@@ -227,10 +229,8 @@ export function PreviewCanvas({
               onLoad={() => {
                 // Waiting for explicit renderer handshake.
               }}
-              className="h-full w-full border-0"
+              className="h-full w-full border-0 opacity-[0.98]"
               style={{
-                // Browser-like zoom behavior (Chrome supports CSS zoom).
-                // Fallback transform keeps parity in engines without zoom.
                 zoom: zoom,
                 transform: `scale(${zoom})`,
                 transformOrigin: "top left",

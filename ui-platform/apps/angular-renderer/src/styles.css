@@ -12,7 +12,11 @@
   --bridge-active: color-mix(in srgb, var(--bridge-primary) 26%, transparent);
   --bridge-border: rgba(255, 255, 255, 0.08);
   --bridge-glow: color-mix(in srgb, var(--bridge-primary) 45%, transparent);
-  --bridge-gradient-start: color-mix(in srgb, var(--bridge-primary) 70%, #6d28d9);
+  --bridge-gradient-start: color-mix(
+    in srgb,
+    var(--bridge-primary) 70%,
+    #6d28d9
+  );
   --bridge-gradient-end: color-mix(in srgb, var(--bridge-primary) 60%, #ec4899);
   --bridge-glass-bg: rgba(255, 255, 255, 0.08);
   --bridge-glass-border: rgba(255, 255, 255, 0.12);
@@ -38,7 +42,7 @@ app-root {
   width: 100vw;
   overflow: hidden;
   padding: 10px;
-  background: var(--bridge-bg-main);
+  /* background: var(--bridge-bg-main); */
 }
 
 .page {

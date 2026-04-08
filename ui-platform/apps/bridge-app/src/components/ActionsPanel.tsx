@@ -11,21 +11,27 @@ interface ActionsPanelProps {
 
 export function ActionsPanel({ logs }: ActionsPanelProps) {
   if (logs.length === 0) {
-    return <p className="text-secondary px-2 py-4 text-xs">No actions logged yet.</p>;
+    return (
+      <p className="text-xs text-[color:var(--bride-text-soft)]">
+        No actions logged yet.
+      </p>
+    );
   }
 
   return (
-    <div className="space-y-1 p-2">
+    <div className="space-y-3">
       {logs.map((entry) => (
-        <div key={entry.id} className="card rounded px-2 py-1.5 text-xs">
-          <div className="text-primary flex items-center justify-between">
+        <div
+          key={entry.id}
+          className="rounded-xl border border-[color:var(--bride-border-subtle)] bg-[var(--bride-glass-surface)] px-4 py-3 text-xs shadow-[inset_0_1px_0_var(--bride-border-subtle)] backdrop-blur-[12px]"
+        >
+          <div className="flex items-center justify-between text-[color:var(--docs-accent-strong)]">
             <span className="font-medium">{entry.name}</span>
-            <span className="text-muted">{entry.time}</span>
+            <span className="text-[color:var(--bride-text-muted)]">{entry.time}</span>
           </div>
-          <p className="text-secondary mt-1">{entry.payload}</p>
+          <p className="mt-1 text-[color:var(--bride-text-soft)]">{entry.payload}</p>
         </div>
       ))}
     </div>
   );
 }
-

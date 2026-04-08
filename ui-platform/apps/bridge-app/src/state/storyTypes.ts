@@ -18,6 +18,7 @@ export interface StoryVariantConfig {
 
 export interface StoryDocsExample {
   title: string;
+  storyName?: string;
   props?: Partial<StoryProps>;
   description?: string;
 }
@@ -28,10 +29,19 @@ export interface StoryDocsUsage {
   wc?: string;
 }
 
+export interface StoryDocsPropRow {
+  name: string;
+  type: string;
+  defaultValue: string;
+  description: string;
+  required?: boolean;
+}
+
 export interface StoryDocs {
   description?: string;
   examples?: StoryDocsExample[];
   usage?: StoryDocsUsage;
+  api?: StoryDocsPropRow[];
 }
 
 export interface ReactRendererBinding {

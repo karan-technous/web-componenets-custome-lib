@@ -26,7 +26,8 @@ export default function App() {
   );
   const [activeTab, setActiveTab] = useState<BottomTab>("controls");
   const [mode, setMode] = useState<"preview" | "docs">("preview");
-  const [showPanel, setShowPanel] = useState(false);
+  const [showPanel, setShowPanel] = useState(true);
+  const [panelHeight, setPanelHeight] = useState(300);
   const [zoom, setZoom] = useState(1);
   const [refreshToken, setRefreshToken] = useState(0);
   const [currentUrl, setCurrentUrl] = useState("");
@@ -140,7 +141,7 @@ export default function App() {
 
   return (
     <main className="h-screen overflow-hidden">
-      <div className="grid h-full grid-cols-[280px_1fr]">
+      <div className="grid h-full grid-cols-[256px_1fr]">
         <Sidebar
           stories={filteredStories}
           framework={framework}
@@ -150,8 +151,12 @@ export default function App() {
           onSelectStory={handleStorySelect}
         />
 
-        <div className="flex min-h-0 flex-col gap-2 p-2">
+        <div className="relative z-10 flex min-h-0 flex-col overflow-hidden bg-[color:var(--bride-bg)]">
           <Toolbar
+            framework={framework}
+            selection={selection}
+            currentUrl={currentUrl}
+            onFrameworkChange={handleFrameworkChange}
             zoom={zoom}
             mode={mode}
             onModeChange={setMode}
@@ -163,18 +168,23 @@ export default function App() {
             showPanel={showPanel}
             onTogglePanel={() => setShowPanel((prev) => !prev)}
           />
-          <div className="relative min-h-0 flex-1">
+
+          <div className="relative min-h-0 flex-1 overflow-hidden">
             {mode === "preview" ? (
-              <>
-                <PreviewCanvas
-                  framework={framework}
-                  selection={selection}
-                  zoom={zoom}
-                  refreshToken={refreshToken}
-                  onCurrentUrlChange={setCurrentUrl}
-                />
+              <div className="flex h-full min-h-0 flex-col">
+                <div className="min-h-0 flex-1">
+                  <PreviewCanvas
+                    framework={framework}
+                    selection={selection}
+                    zoom={zoom}
+                    refreshToken={refreshToken}
+                    onCurrentUrlChange={setCurrentUrl}
+                  />
+                </div>
                 <BottomPanel
                   show={showPanel}
+                  height={panelHeight}
+                  onHeightChange={setPanelHeight}
                   activeTab={activeTab}
                   onTabChange={setActiveTab}
                   propsValue={selection?.props ?? {}}
@@ -182,9 +192,16 @@ export default function App() {
                   onPropChange={handlePropChange}
                   actionLogs={actionLogs}
                 />
-              </>
+              </div>
             ) : (
-              <DocsPage framework={framework} story={selection} />
+              <DocsPage
+                framework={framework}
+                story={selection}
+                onOpenStory={(storyName) => {
+                  handleStorySelect(selection?.storyId ?? "", storyName);
+                  setMode("preview");
+                }}
+              />
             )}
           </div>
         </div>

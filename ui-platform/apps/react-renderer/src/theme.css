@@ -38,7 +38,7 @@ body,
   width: 100%;
   overflow: hidden;
   padding: 10px;
-  background: var(--bridge-bg-main);
+  /* background: var(--bridge-bg-main); */
 }
 
 .canvas {
