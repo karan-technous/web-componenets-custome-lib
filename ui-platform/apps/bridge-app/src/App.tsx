@@ -39,6 +39,7 @@ export default function App() {
   const [refreshToken, setRefreshToken] = useState(0);
   const [currentUrl, setCurrentUrl] = useState("");
   const [actionLogs, setActionLogs] = useState<ActionLogEntry[]>([]);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   useEffect(() => {
     applyTheme(framework, appearance);
@@ -154,12 +155,21 @@ export default function App() {
 
   return (
     <main className="h-screen overflow-hidden">
-      <div className="grid h-full grid-cols-[256px_1fr]">
+      <div
+        className="grid h-full transition-[grid-template-columns] duration-300 ease-out"
+        style={{
+          gridTemplateColumns: isSidebarCollapsed ? "88px 1fr" : "256px 1fr",
+        }}
+      >
         <Sidebar
           stories={filteredStories}
           framework={framework}
           selectedStoryId={selection?.storyId ?? ""}
           selectedStory={selection?.storyName ?? ""}
+          isCollapsed={isSidebarCollapsed}
+          onToggleCollapse={() =>
+            setIsSidebarCollapsed((collapsed) => !collapsed)
+          }
           onFrameworkChange={handleFrameworkChange}
           onSelectStory={handleStorySelect}
         />

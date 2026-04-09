@@ -2,10 +2,10 @@ import { AnimatePresence, motion } from "framer-motion";
 import {
   Atom,
   Boxes,
+  ChevronLeft,
   ChevronDown,
   ChevronRight,
   Hexagon,
-  Layers,
   Search,
   Triangle,
 } from "lucide-react";
@@ -18,6 +18,8 @@ interface SidebarProps {
   framework: Framework;
   selectedStoryId: string;
   selectedStory: string;
+  isCollapsed: boolean;
+  onToggleCollapse: () => void;
   onFrameworkChange: (framework: Framework) => void;
   onSelectStory: (storyId: string, storyName: string) => void;
 }
@@ -33,11 +35,18 @@ const frameworkOptions: Array<{
   { value: "wc", label: "Web Components", version: "v1", icon: Boxes },
 ];
 
+function getCompactLabel(value: string): string {
+  const letters = value.match(/[A-Za-z0-9]/g) ?? [];
+  return letters[0]?.toUpperCase() ?? "?";
+}
+
 export function Sidebar({
   stories,
   framework,
   selectedStoryId,
   selectedStory,
+  isCollapsed,
+  onToggleCollapse,
   onFrameworkChange,
   onSelectStory,
 }: SidebarProps) {
@@ -65,7 +74,7 @@ export function Sidebar({
       initial={{ x: -8, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       transition={{ duration: 0.2 }}
-      className="relative flex h-full min-h-0 flex-col overflow-hidden border border-[color:var(--bride-border-subtle)] bg-[var(--bride-glass-dark)] shadow-[0_22px_44px_var(--bride-glow),inset_0_1px_0_var(--bride-border-subtle)]"
+      className="relative flex h-full min-h-0 flex-col overflow-visible border border-[color:var(--bride-border-subtle)] bg-[var(--bride-glass-dark)] shadow-[0_22px_44px_var(--bride-glow),inset_0_1px_0_var(--bride-border-subtle)] transition-[width] duration-300 ease-out"
     >
       <div
         className="absolute inset-0 pointer-events-none"
@@ -101,8 +110,35 @@ export function Sidebar({
     `,
         }}
       />
-      <div className="relative z-10 flex h-full min-h-0 flex-col px-3 pb-3 pt-3">
-        <div className="mb-4 flex items-center justify-between border-b border-[color:var(--bride-border-subtle)] pb-2">
+      <button
+        type="button"
+        onClick={onToggleCollapse}
+        aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+        className="absolute right-0 top-11 z-30 flex h-7 w-7 translate-x-1/2 items-center justify-center rounded-full border text-[color:var(--bride-primary-light)] transition hover:scale-[1.03]"
+        style={{
+          borderColor: "rgba(var(--bride-primary-rgb), 0.7)",
+          background:
+            "radial-gradient(circle at 30% 30%, rgba(var(--bride-primary-rgb), 0.24), var(--bride-bg-elevated) 72%)",
+          boxShadow: `
+            0 0 0 2px var(--bride-bg),
+            0 0 0 4px rgba(var(--bride-primary-rgb), 0.18),
+            0 12px 28px rgba(var(--bride-primary-rgb), 0.16),
+            0 0 18px rgba(var(--bride-primary-rgb), 0.28)
+          `,
+        }}
+      >
+        {isCollapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
+      </button>
+      <div
+        className={`relative z-10 flex h-full min-h-0 flex-col px-3 pb-3 pt-3 ${
+          isCollapsed ? "items-center" : ""
+        }`}
+      >
+        <div
+          className={`mb-4 flex border-b border-[color:var(--bride-border-subtle)] pb-2 ${
+            isCollapsed ? "justify-center" : "items-center justify-between"
+          }`}
+        >
           <div className="flex gap-3">
             <div
               className="relative flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl"
@@ -130,80 +166,90 @@ export function Sidebar({
                 className="absolute inset-0 rounded-lg pointer-events-none"
                 style={{
                   background: `
-        linear-gradient(
-          135deg,
-          color-mix(in srgb, var(--bride-text) 18%, transparent) 0%,
-          transparent 60%
-        )
-      `,
+                  linear-gradient(
+                    135deg,
+                    color-mix(in srgb, var(--bride-text) 18%, transparent) 0%,
+                    transparent 60%
+                  )
+                `,
                 }}
               />
             </div>
-            <div>
-              <p className="font-[var(--bride-font-display)] text-[15px] font-semibold tracking-[-0.02em] text-[color:var(--bride-text)]">
-                UI Platform
-              </p>
-              <p className="text-[10px] uppercase tracking-[0.08em] text-[color:var(--bride-text-muted)]">
-                Design System
-              </p>
-            </div>
+            {!isCollapsed ? (
+              <div>
+                <p className="font-[var(--bride-font-display)] text-[15px] font-semibold tracking-[-0.02em] text-[color:var(--bride-text)]">
+                  UI Platform
+                </p>
+                <p className="text-[10px] uppercase tracking-[0.08em] text-[color:var(--bride-text-muted)]">
+                  Design System
+                </p>
+              </div>
+            ) : null}
           </div>
 
-          <div
-            className="mt-1 h-1.5 w-1.5 rounded-full"
-            style={{
-              background: "var(--bride-primary)",
-              boxShadow: "0 0 6px rgba(var(--bride-primary-rgb), 0.5)",
-              animation: "pulse-glow 2s ease-in-out infinite",
-            }}
-          />
-        </div>
-
-        <div className="relative mb-4">
-          <Search
-            size={14}
-            className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[color:var(--bride-text-muted)]"
-          />
-          <input
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder="Search components..."
-            className="bride-input h-10 w-full rounded-[13px] pl-9 pr-3 text-sm outline-none transition placeholder:text-[color:var(--bride-text-muted)] focus:border-[color:rgba(var(--bride-primary-rgb),0.18)] focus:bg-[rgba(var(--bride-primary-rgb),0.035)] focus:shadow-[0_0_0_3px_rgba(var(--bride-primary-rgb),0.08)]"
-          />
-        </div>
-        <div className="min-h-0 flex-1 space-y-2 overflow-y-auto sidebar-scroll">
-          <div
-            className="px-1 mb-2 flex items-center gap-2"
-            style={{
-              color: "var(--bride-text-muted)",
-              fontSize: "10px",
-              letterSpacing: "0.1em",
-            }}
-          >
+          {!isCollapsed ? (
             <div
-              className="flex-1 h-px"
+              className="mt-1 h-1.5 w-1.5 rounded-full"
               style={{
-                background: "var(--bride-border-subtle)",
+                background: "var(--bride-primary)",
+                boxShadow: "0 0 6px rgba(var(--bride-primary-rgb), 0.5)",
+                animation: "pulse-glow 2s ease-in-out infinite",
               }}
             />
+          ) : null}
+        </div>
 
-            <span
+        {!isCollapsed ? (
+          <div className="relative mb-4">
+            <Search
+              size={14}
+              className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[color:var(--bride-text-muted)]"
+            />
+            <input
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="Search components..."
+              className="bride-input h-10 w-full rounded-[13px] pl-9 pr-3 text-sm outline-none transition placeholder:text-[color:var(--bride-text-muted)] focus:border-[color:rgba(var(--bride-primary-rgb),0.18)] focus:bg-[rgba(var(--bride-primary-rgb),0.035)] focus:shadow-[0_0_0_3px_rgba(var(--bride-primary-rgb),0.08)]"
+            />
+          </div>
+        ) : null}
+        <div className="min-h-0 flex-1 space-y-2 overflow-y-auto sidebar-scroll">
+          {!isCollapsed ? (
+            <div
+              className="px-1 mb-2 flex items-center gap-2"
               style={{
-                textTransform: "uppercase",
-                fontWeight: 600,
+                color: "var(--bride-text-muted)",
+                fontSize: "10px",
+                letterSpacing: "0.1em",
               }}
             >
-              Framework
-            </span>
+              <div
+                className="flex-1 h-px"
+                style={{
+                  background: "var(--bride-border-subtle)",
+                }}
+              />
 
-            <div
-              className="flex-1 h-px"
-              style={{
-                background: "var(--bride-border-subtle)",
-              }}
-            />
-          </div>
-          <div className="mb-4 grid gap-2">
+              <span
+                style={{
+                  textTransform: "uppercase",
+                  fontWeight: 600,
+                }}
+              >
+                Framework
+              </span>
+
+              <div
+                className="flex-1 h-px"
+                style={{
+                  background: "var(--bride-border-subtle)",
+                }}
+              />
+            </div>
+          ) : null}
+          <div
+            className={`mb-4 grid gap-2 ${isCollapsed ? "justify-items-center border-b border-[var(--bride-border-subtle)] pb-3" : ""}`}
+          >
             {frameworkOptions.map((item) => {
               const Icon = item.icon;
               const active = framework === item.value;
@@ -213,10 +259,15 @@ export function Sidebar({
                   whileHover={{ x: 1 }}
                   transition={{ duration: 0.16 }}
                   onClick={() => onFrameworkChange(item.value)}
-                  className={`group relative flex items-center justify-between overflow-hidden rounded-[16px] border px-3 py-2.5 text-left transition-all ${
+                  title={item.label}
+                  className={`group relative flex items-center overflow-hidden rounded-[16px] border text-left transition-all ${
                     active
                       ? "border-[color:rgba(var(--bride-primary-rgb),0.42)] bg-[linear-gradient(90deg,rgba(var(--bride-primary-rgb),0.15)_0%,rgba(var(--bride-primary-rgb),0.05)_100%)] shadow-[0_0_18px_rgba(var(--bride-primary-rgb),0.08),inset_0_1px_0_var(--bride-border-subtle)]"
                       : "border-transparent bg-transparent hover:border-[color:var(--bride-border-subtle)] hover:bg-[color:var(--docs-accent-surface)]"
+                  } ${
+                    isCollapsed
+                      ? "h-12 w-12 justify-center rounded-[14px] px-0 py-0"
+                      : "justify-between px-3 py-2.5"
                   }`}
                 >
                   {active ? (
@@ -225,7 +276,9 @@ export function Sidebar({
                       <div className="pointer-events-none absolute inset-[2px] rounded-[14px] border border-[rgba(var(--bride-primary-rgb),0.16)]" />
                     </>
                   ) : null}
-                  <span className="flex items-center gap-2 text-sm">
+                  <span
+                    className={`flex items-center text-sm ${isCollapsed ? "justify-center" : "gap-2"}`}
+                  >
                     <span
                       className={`flex h-7 w-7 items-center justify-center rounded-[10px] border ${
                         active
@@ -242,63 +295,71 @@ export function Sidebar({
                         }
                       />
                     </span>
+                    {!isCollapsed ? (
+                      <span
+                        className={
+                          active
+                            ? "font-medium text-[color:var(--bride-primary)]"
+                            : "text-[color:var(--bride-text-soft)]"
+                        }
+                      >
+                        {item.label}
+                      </span>
+                    ) : null}
+                  </span>
+                  {!isCollapsed ? (
                     <span
-                      className={
+                      className={`rounded-full px-2 py-0.5 text-[9px] font-semibold ${
                         active
-                          ? "font-medium text-[color:var(--bride-primary)]"
-                          : "text-[color:var(--bride-text-soft)]"
-                      }
+                          ? "border border-[rgba(var(--bride-primary-rgb),0.14)] bg-[rgba(var(--bride-primary-rgb),0.1)] text-[color:var(--bride-primary)]"
+                          : "border border-[color:var(--bride-border-subtle)] bg-[color:var(--bride-field-bg)] text-[color:var(--bride-text-muted)]"
+                      }`}
                     >
-                      {item.label}
+                      {item.version}
                     </span>
-                  </span>
-                  <span
-                    className={`rounded-full px-2 py-0.5 text-[9px] font-semibold ${
-                      active
-                        ? "border border-[rgba(var(--bride-primary-rgb),0.14)] bg-[rgba(var(--bride-primary-rgb),0.1)] text-[color:var(--bride-primary)]"
-                        : "border border-[color:var(--bride-border-subtle)] bg-[color:var(--bride-field-bg)] text-[color:var(--bride-text-muted)]"
-                    }`}
-                  >
-                    {item.version}
-                  </span>
+                  ) : null}
                 </motion.button>
               );
             })}
           </div>
 
-          <div
-            className="px-1 mb-2 flex items-center gap-2"
-            style={{
-              color: "var(--bride-text-muted)",
-              fontSize: "10px",
-              letterSpacing: "0.1em",
-            }}
-          >
+          {!isCollapsed ? (
             <div
-              className="flex-1 h-px"
+              className="px-1 mb-2 flex items-center gap-2"
               style={{
-                background: "var(--bride-border-subtle)",
-              }}
-            />
-
-            <span
-              style={{
-                textTransform: "uppercase",
-                fontWeight: 600,
+                color: "var(--bride-text-muted)",
+                fontSize: "10px",
+                letterSpacing: "0.1em",
               }}
             >
-              Components
-            </span>
+              <div
+                className="flex-1 h-px"
+                style={{
+                  background: "var(--bride-border-subtle)",
+                }}
+              />
 
-            <div
-              className="flex-1 h-px"
-              style={{
-                background: "var(--bride-border-subtle)",
-              }}
-            />
-          </div>
+              <span
+                style={{
+                  textTransform: "uppercase",
+                  fontWeight: 600,
+                }}
+              >
+                Components
+              </span>
 
-          <div className="min-h-0 flex-1 space-y-2 pr-1">
+              <div
+                className="flex-1 h-px"
+                style={{
+                  background: "var(--bride-border-subtle)",
+                }}
+              />
+            </div>
+          ) : null}
+
+          <div
+            className={`min-h-0 flex-1 space-y-2 ${isCollapsed ? "" : "pr-1"}`}
+          >
             {stories.map((group) => {
               const matchesGroup = group.definition.title
                 .toLowerCase()
@@ -313,70 +374,108 @@ export function Sidebar({
 
               const isOpen = openGroups[group.definition.id] ?? true;
               const isActiveGroup = selectedStoryId === group.definition.id;
+              const compactStory =
+                group.variants.find((story) => story.name === selectedStory) ??
+                filteredStories[0] ??
+                group.variants[0];
+              const compactLabel = getCompactLabel(group.definition.title);
 
               return (
                 <div key={group.definition.id} className="mb-0.5">
                   <button
-                    onClick={() => toggleGroup(group.definition.id)}
-                    className={`relative flex w-full items-center justify-between rounded-[14px] border px-3 py-2 text-left transition-all ${
+                    onClick={() => {
+                      if (isCollapsed) {
+                        if (compactStory) {
+                          onSelectStory(group.definition.id, compactStory.name);
+                        }
+                        return;
+                      }
+                      toggleGroup(group.definition.id);
+                    }}
+                    title={group.definition.title}
+                    className={`relative flex w-full items-center rounded-[14px] border text-left transition-all ${
                       isActiveGroup
                         ? "border-[rgba(var(--bride-primary-rgb),0.18)] bg-[linear-gradient(90deg,rgba(var(--bride-primary-rgb),0.12)_0%,rgba(var(--bride-primary-rgb),0.04)_100%)] shadow-[0_0_12px_rgba(var(--bride-primary-rgb),0.05),inset_0_1px_0_var(--bride-border-subtle)]"
                         : "border-transparent hover:border-[color:var(--bride-border-subtle)] hover:bg-[color:var(--docs-accent-surface)]"
+                    } ${
+                      isCollapsed
+                        ? "mx-auto h-12 w-12 justify-center rounded-[14px] px-0 py-0"
+                        : "justify-between px-3 py-2"
                     }`}
                   >
                     {isActiveGroup ? (
                       <div className="absolute left-0 top-1/2 h-[55%] w-[2.5px] -translate-y-1/2 rounded-r-full bg-[color:var(--bride-primary-light)] shadow-[0_0_5px_rgba(var(--bride-primary-rgb),0.32)]" />
                     ) : null}
-                    <div className="flex items-center gap-2">
-                      {isOpen ? (
-                        <ChevronDown
-                          size={12}
-                          className={
+                    <div
+                      className={`flex items-center ${isCollapsed ? "" : "gap-2"}`}
+                    >
+                      {!isCollapsed ? (
+                        isOpen ? (
+                          <ChevronDown
+                            size={12}
+                            className={
+                              isActiveGroup
+                                ? "text-[color:var(--bride-primary)]"
+                                : "text-[color:var(--bride-text-muted)]"
+                            }
+                          />
+                        ) : (
+                          <ChevronRight
+                            size={12}
+                            className={
+                              isActiveGroup
+                                ? "text-[color:var(--bride-primary)]"
+                                : "text-[color:var(--bride-text-muted)]"
+                            }
+                          />
+                        )
+                      ) : null}
+                      {isCollapsed ? (
+                        <span
+                          className={`flex h-8 w-8 items-center justify-center rounded-[10px] border text-[13px] font-semibold tracking-[0.02em] ${
                             isActiveGroup
-                              ? "text-[color:var(--bride-primary)]"
-                              : "text-[color:var(--bride-text-muted)]"
-                          }
-                        />
+                              ? "border-[rgba(var(--bride-primary-rgb),0.35)] bg-[rgba(var(--bride-primary-rgb),0.14)] text-[color:var(--bride-primary-light)] shadow-[0_0_14px_rgba(var(--bride-primary-rgb),0.22)]"
+                              : "border-[color:var(--bride-border-subtle)] bg-[color:var(--bride-field-bg)] text-[color:var(--bride-text-muted)] shadow-[inset_0_1px_0_var(--bride-border-subtle)]"
+                          }`}
+                        >
+                          {compactLabel}
+                        </span>
                       ) : (
-                        <ChevronRight
-                          size={12}
-                          className={
+                        <div
+                          className={`h-1.5 w-1.5 rounded-full ${
                             isActiveGroup
-                              ? "text-[color:var(--bride-primary)]"
-                              : "text-[color:var(--bride-text-muted)]"
-                          }
+                              ? "bg-[color:var(--bride-primary)] shadow-[0_0_6px_rgba(var(--bride-primary-rgb),0.7)]"
+                              : "bg-[color:var(--bride-text-muted)]"
+                          }`}
                         />
                       )}
-                      <div
-                        className={`h-1.5 w-1.5 rounded-full ${
-                          isActiveGroup
-                            ? "bg-[color:var(--bride-primary)] shadow-[0_0_6px_rgba(var(--bride-primary-rgb),0.7)]"
-                            : "bg-[color:var(--bride-text-muted)]"
-                        }`}
-                      />
+                      {!isCollapsed ? (
+                        <span
+                          className={`text-xs ${
+                            isActiveGroup
+                              ? "font-medium text-[color:var(--bride-primary)]"
+                              : "text-[color:var(--bride-text-soft)]"
+                          }`}
+                        >
+                          {group.definition.title}
+                        </span>
+                      ) : null}
+                    </div>
+                    {!isCollapsed ? (
                       <span
-                        className={`text-xs ${
+                        className={`rounded-full px-2 py-0.5 text-[9px] font-semibold ${
                           isActiveGroup
-                            ? "font-medium text-[color:var(--bride-primary)]"
-                            : "text-[color:var(--bride-text-soft)]"
+                            ? "bg-[rgba(var(--bride-primary-rgb),0.08)] text-[color:var(--bride-primary)]"
+                            : "bg-[color:var(--bride-field-bg)] text-[color:var(--bride-text-muted)]"
                         }`}
                       >
-                        {group.definition.title}
+                        {group.variants.length}
                       </span>
-                    </div>
-                    <span
-                      className={`rounded-full px-2 py-0.5 text-[9px] font-semibold ${
-                        isActiveGroup
-                          ? "bg-[rgba(var(--bride-primary-rgb),0.08)] text-[color:var(--bride-primary)]"
-                          : "bg-[color:var(--bride-field-bg)] text-[color:var(--bride-text-muted)]"
-                      }`}
-                    >
-                      {group.variants.length}
-                    </span>
+                    ) : null}
                   </button>
 
                   <AnimatePresence initial={false}>
-                    {isOpen && (
+                    {isOpen && !isCollapsed && (
                       <motion.div
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
@@ -424,17 +523,26 @@ export function Sidebar({
             })}
           </div>
         </div>
-        <div className="relative mt-3 flex items-center justify-between border-t border-[color:var(--bride-border-subtle)] px-1 pt-3">
+        <div
+          className={`relative mt-3 flex border-t border-[color:var(--bride-border-subtle)] px-1 pt-3 ${
+            isCollapsed ? "justify-center" : "items-center justify-between"
+          }`}
+        >
           <div className="flex items-center gap-2 rounded-full border border-[color:var(--bride-border-subtle)] bg-[color:var(--bride-field-bg)] px-3 py-1.5 text-[11px] text-[color:var(--bride-text-muted)]">
-            <Hexagon size={11} className="text-[color:var(--bride-text-muted)]" />
-            <span>v2.5.0</span>
+            <Hexagon
+              size={11}
+              className="text-[color:var(--bride-text-muted)]"
+            />
+            {!isCollapsed ? <span>v2.5.0</span> : null}
           </div>
-          <div className="flex items-center gap-1.5 rounded-full border border-[rgba(var(--bride-primary-rgb),0.12)] bg-[rgba(var(--bride-primary-rgb),0.06)] px-3 py-1.5">
-            <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--bride-primary)] shadow-[0_0_4px_rgba(var(--bride-primary-rgb),0.45)]" />
-            <span className="text-[9px] font-bold tracking-[0.08em] text-[color:var(--bride-primary)]">
-              LIVE
-            </span>
-          </div>
+          {!isCollapsed ? (
+            <div className="flex items-center gap-1.5 rounded-full border border-[rgba(var(--bride-primary-rgb),0.12)] bg-[rgba(var(--bride-primary-rgb),0.06)] px-3 py-1.5">
+              <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--bride-primary)] shadow-[0_0_4px_rgba(var(--bride-primary-rgb),0.45)]" />
+              <span className="text-[9px] font-bold tracking-[0.08em] text-[color:var(--bride-primary)]">
+                LIVE
+              </span>
+            </div>
+          ) : null}
         </div>
       </div>
     </motion.aside>
