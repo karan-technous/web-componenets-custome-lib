@@ -91,8 +91,8 @@ export function BottomPanel({
             onValueChange={(value) => onTabChange(value as BottomTab)}
             className="h-full bg-[var(--bride-glass-surface)] shadow-[inset_0_1px_0_var(--bride-border-subtle)] backdrop-blur-[12px]"
           >
-            <div className="flex items-center justify-between border-b border-[color:var(--bride-border-subtle)] px-4 py-3">
-              <Tabs.List className="flex items-center gap-2">
+            <div className="flex flex-col gap-3 border-b border-[color:var(--bride-border-subtle)] px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+              <Tabs.List className="flex flex-wrap items-center gap-2">
                 {tabs.map((tab) => {
                   const Icon = tab.icon;
                   return (
@@ -107,7 +107,7 @@ export function BottomPanel({
                   );
                 })}
               </Tabs.List>
-              <div className="rounded-full border border-[color:var(--docs-accent-border)] bg-[color:var(--docs-accent-surface)] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.08em] text-[color:var(--docs-accent-strong)]">
+              <div className="w-fit rounded-full border border-[color:var(--docs-accent-border)] bg-[color:var(--docs-accent-surface)] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.08em] text-[color:var(--docs-accent-strong)]">
                 Props
                 <span className="ml-2 text-[color:var(--bride-text-muted)]">
                   {propsCount} props

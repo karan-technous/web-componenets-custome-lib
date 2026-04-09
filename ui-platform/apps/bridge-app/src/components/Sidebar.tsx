@@ -114,7 +114,7 @@ export function Sidebar({
         type="button"
         onClick={onToggleCollapse}
         aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-        className="absolute right-0 top-11 z-30 flex h-7 w-7 translate-x-1/2 items-center justify-center rounded-full border text-[color:var(--bride-primary-light)] transition hover:scale-[1.03]"
+        className="absolute right-0 top-11 z-30 hidden h-7 w-7 translate-x-1/2 items-center justify-center rounded-full border text-[color:var(--bride-primary-light)] transition hover:scale-[1.03] lg:flex"
         style={{
           borderColor: "rgba(var(--bride-primary-rgb), 0.7)",
           background:
@@ -533,7 +533,7 @@ export function Sidebar({
               size={11}
               className="text-[color:var(--bride-text-muted)]"
             />
-            {!isCollapsed ? <span>v2.5.0</span> : null}
+            {!isCollapsed ? <span>v1.0.1</span> : null}
           </div>
           {!isCollapsed ? (
             <div className="flex items-center gap-1.5 rounded-full border border-[rgba(var(--bride-primary-rgb),0.12)] bg-[rgba(var(--bride-primary-rgb),0.06)] px-3 py-1.5">

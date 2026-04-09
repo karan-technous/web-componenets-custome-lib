@@ -206,7 +206,7 @@ export function PreviewCanvas({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.15 }}
-              className="absolute inset-6 z-20 flex items-center justify-center rounded-xl border border-[color:var(--bride-border-subtle)] bg-[var(--bride-glass-dark)] shadow-[inset_0_1px_0_var(--bride-border-subtle)] backdrop-blur-[18px]"
+              className="absolute inset-3 z-20 flex items-center justify-center rounded-xl border border-[color:var(--bride-border-subtle)] bg-[var(--bride-glass-dark)] shadow-[inset_0_1px_0_var(--bride-border-subtle)] backdrop-blur-[18px] sm:inset-6"
             >
               <span className="text-xs text-[color:var(--bride-text-soft)]">
                 Loading preview...
@@ -215,7 +215,7 @@ export function PreviewCanvas({
           )}
         </AnimatePresence>
 
-        <div className="relative z-10 flex h-full w-full items-center justify-center overflow-hidden bg-[var(--bride-glass-dark)] shadow-[inset_0_1px_0_var(--bride-border-subtle)] p-7">
+        <div className="relative z-10 flex h-full w-full items-center justify-center overflow-hidden bg-[var(--bride-glass-dark)] p-3 shadow-[inset_0_1px_0_var(--bride-border-subtle)] sm:p-5 lg:p-7">
           <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(var(--bride-border-subtle)_1px,transparent_1px),linear-gradient(90deg,var(--bride-border-subtle)_1px,transparent_1px)] bg-[size:24px_24px] opacity-15" />
           <div
             className="relative h-full w-full overflow-hidden"

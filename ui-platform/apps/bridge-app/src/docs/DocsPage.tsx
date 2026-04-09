@@ -420,14 +420,14 @@ function StoryPreviewCard({
         </p>
       ) : null}
 
-      <div className="relative overflow-hidden rounded-[20px] border border-[color:var(--docs-preview-border)] bg-[color:var(--docs-preview-bg)] px-8 py-8 shadow-[inset_0_1px_0_var(--bride-border-subtle)]">
+      <div className="relative overflow-hidden rounded-[20px] border border-[color:var(--docs-preview-border)] px-4 py-5 shadow-[inset_0_1px_0_var(--bride-border-subtle)] sm:px-6 sm:py-6 lg:px-8 lg:py-8">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_50%,var(--docs-accent-surface),transparent_26%)] opacity-28" />
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_82%_20%,var(--docs-accent-surface),transparent_20%)] opacity-16" />
-        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(var(--bride-border-subtle)_1px,transparent_1px),linear-gradient(90deg,var(--bride-border-subtle)_1px,transparent_1px)] bg-[size:24px_24px] opacity-[0.08]" />
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(var(--bride-text-muted)_1px,transparent_1px),linear-gradient(90deg,var(--bride-text-muted)_1px,transparent_1px)] bg-[size:24px_24px] opacity-[0.08]" />
         <iframe
           title={`${story.component}-${example.title}`}
           src={previewUrl}
-          className="relative z-10 h-[72px] w-full border-0 bg-transparent"
+          className="relative z-10 h-[72px] w-full min-w-0 border-0 bg-transparent"
         />
       </div>
 
@@ -480,7 +480,7 @@ export function DocsPage({ framework, story, onOpenStory }: DocsPageProps) {
 
   return (
     <section className="h-full overflow-auto bg-[color:var(--bride-bg)]">
-      <div className="mx-auto flex w-full max-w-[920px] flex-col gap-10 px-8 py-8">
+      <div className="mx-auto flex w-full max-w-[920px] flex-col gap-8 px-4 py-5 sm:px-6 sm:py-6 lg:gap-10 lg:px-8 lg:py-8">
         <header className="space-y-5">
           <div className="flex items-center gap-4">
             <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-[color:var(--docs-accent-border)] bg-[color:var(--docs-code-chip-bg)] text-[color:var(--docs-accent)] shadow-[0_0_18px_var(--docs-accent-glow)]">
@@ -541,7 +541,7 @@ export function DocsPage({ framework, story, onOpenStory }: DocsPageProps) {
           </div>
 
           <div className="overflow-hidden rounded-[20px] border border-[color:var(--bride-border-subtle)] bg-[color:var(--bride-bg-elevated)] shadow-[inset_0_1px_0_var(--bride-border-subtle)]">
-            <div className="grid grid-cols-[1.15fr_2fr_0.85fr_1.7fr] border-b border-[color:var(--bride-border-subtle)] bg-white/[0.02] px-4 py-4 text-[11px] font-semibold uppercase tracking-[0.1em] text-[color:var(--docs-table-head)]">
+            <div className="hidden grid-cols-[1.15fr_2fr_0.85fr_1.7fr] border-b border-[color:var(--bride-border-subtle)] bg-white/[0.02] px-4 py-4 text-[11px] font-semibold uppercase tracking-[0.1em] text-[color:var(--docs-table-head)] md:grid">
               <span>Name</span>
               <span>Type</span>
               <span>Default</span>
@@ -550,7 +550,7 @@ export function DocsPage({ framework, story, onOpenStory }: DocsPageProps) {
             {apiRows.map((row, index) => (
               <div
                 key={row.name}
-                className={`grid grid-cols-[1.15fr_2fr_0.85fr_1.7fr] px-4 py-4 text-[13px] text-white/78 ${
+                className={`grid gap-2 px-4 py-4 text-[13px] text-white/78 md:grid-cols-[1.15fr_2fr_0.85fr_1.7fr] ${
                   index > 0 ? "border-t border-white/6" : ""
                 }`}
               >
@@ -562,13 +562,13 @@ export function DocsPage({ framework, story, onOpenStory }: DocsPageProps) {
                     </span>
                   ) : null}
                 </div>
-                <div className="font-mono text-[color:var(--docs-token-type)]">
+                <div className="font-mono text-[color:var(--docs-token-type)] md:before:hidden before:mr-2 before:font-[var(--bride-font-ui)] before:text-[11px] before:font-semibold before:uppercase before:tracking-[0.1em] before:text-[color:var(--docs-muted)] before:content-['Type']">
                   {row.type}
                 </div>
-                <div className="font-mono text-[color:var(--docs-token-default)]">
+                <div className="font-mono text-[color:var(--docs-token-default)] md:before:hidden before:mr-2 before:font-[var(--bride-font-ui)] before:text-[11px] before:font-semibold before:uppercase before:tracking-[0.1em] before:text-[color:var(--docs-muted)] before:content-['Default']">
                   {row.defaultValue}
                 </div>
-                <div className="text-[color:var(--docs-table-desc)]">
+                <div className="text-[color:var(--docs-table-desc)] md:before:hidden before:mr-2 before:font-[var(--bride-font-ui)] before:text-[11px] before:font-semibold before:uppercase before:tracking-[0.1em] before:text-[color:var(--docs-muted)] before:content-['Description']">
                   {row.description}
                 </div>
               </div>

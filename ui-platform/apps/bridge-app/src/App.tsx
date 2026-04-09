@@ -40,10 +40,32 @@ export default function App() {
   const [currentUrl, setCurrentUrl] = useState("");
   const [actionLogs, setActionLogs] = useState<ActionLogEntry[]>([]);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
   useEffect(() => {
     applyTheme(framework, appearance);
   }, [framework, appearance]);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 1023px)");
+    const updateLayout = () => {
+      const mobile = mediaQuery.matches;
+      setIsMobile(mobile);
+      if (!mobile) {
+        setIsMobileSidebarOpen(false);
+      }
+      if (mobile) {
+        setIsSidebarCollapsed(false);
+        setShowPanel(false);
+        setPanelHeight(260);
+      }
+    };
+
+    updateLayout();
+    mediaQuery.addEventListener("change", updateLayout);
+    return () => mediaQuery.removeEventListener("change", updateLayout);
+  }, []);
 
   useEffect(() => {
     const handler = (event: KeyboardEvent) => {
@@ -84,12 +106,18 @@ export default function App() {
       return getInitialSelectedStory(value);
     });
     addAction("onFrameworkChange", value);
+    if (isMobile) {
+      setIsMobileSidebarOpen(false);
+    }
   };
 
   const handleStorySelect = (storyId: string, storyName: string) => {
     const next = resolveStorySelection(storyId, storyName);
     setSelection(next);
     addAction("onClick", `${storyId}/${storyName}`);
+    if (isMobile) {
+      setIsMobileSidebarOpen(false);
+    }
   };
 
   const handlePropChange = (key: string, value: string | boolean) => {
@@ -156,23 +184,56 @@ export default function App() {
   return (
     <main className="h-screen overflow-hidden">
       <div
-        className="grid h-full transition-[grid-template-columns] duration-300 ease-out"
+        className="relative grid h-full transition-[grid-template-columns] duration-300 ease-out"
         style={{
-          gridTemplateColumns: isSidebarCollapsed ? "88px 1fr" : "256px 1fr",
+          gridTemplateColumns: isMobile
+            ? "1fr"
+            : isSidebarCollapsed
+              ? "88px 1fr"
+              : "256px 1fr",
         }}
       >
-        <Sidebar
-          stories={filteredStories}
-          framework={framework}
-          selectedStoryId={selection?.storyId ?? ""}
-          selectedStory={selection?.storyName ?? ""}
-          isCollapsed={isSidebarCollapsed}
-          onToggleCollapse={() =>
-            setIsSidebarCollapsed((collapsed) => !collapsed)
-          }
-          onFrameworkChange={handleFrameworkChange}
-          onSelectStory={handleStorySelect}
-        />
+        {isMobile ? (
+          <>
+            <div
+              className={`absolute inset-0 z-30 bg-[rgb(6, 12, 26)] backdrop-blur-[4px] transition-opacity duration-300 ${
+                isMobileSidebarOpen
+                  ? "pointer-events-auto opacity-100"
+                  : "pointer-events-none opacity-0"
+              }`}
+              onClick={() => setIsMobileSidebarOpen(false)}
+            />
+            <div
+              className={`absolute left-0 top-0 z-40 h-full w-[320px] max-w-full transition-transform duration-300 ease-out bg-[var(--bride-bg)] ${
+                isMobileSidebarOpen ? "translate-x-0" : "-translate-x-full"
+              }`}
+            >
+              <Sidebar
+                stories={filteredStories}
+                framework={framework}
+                selectedStoryId={selection?.storyId ?? ""}
+                selectedStory={selection?.storyName ?? ""}
+                isCollapsed={false}
+                onToggleCollapse={() => setIsMobileSidebarOpen(false)}
+                onFrameworkChange={handleFrameworkChange}
+                onSelectStory={handleStorySelect}
+              />
+            </div>
+          </>
+        ) : (
+          <Sidebar
+            stories={filteredStories}
+            framework={framework}
+            selectedStoryId={selection?.storyId ?? ""}
+            selectedStory={selection?.storyName ?? ""}
+            isCollapsed={isSidebarCollapsed}
+            onToggleCollapse={() =>
+              setIsSidebarCollapsed((collapsed) => !collapsed)
+            }
+            onFrameworkChange={handleFrameworkChange}
+            onSelectStory={handleStorySelect}
+          />
+        )}
 
         <div className="relative z-10 flex min-h-0 flex-col overflow-hidden bg-[color:var(--bride-bg)]">
           <Toolbar
@@ -192,6 +253,9 @@ export default function App() {
             onOpenNewTab={handleOpenNewTab}
             showPanel={showPanel}
             onTogglePanel={() => setShowPanel((prev) => !prev)}
+            showSidebarToggle={isMobile}
+            isSidebarOpen={isMobileSidebarOpen}
+            onToggleSidebar={() => setIsMobileSidebarOpen((open) => !open)}
           />
 
           <div className="relative min-h-0 flex-1 overflow-hidden">

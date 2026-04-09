@@ -59,8 +59,8 @@ export function ControlsTable({
   }
 
   return (
-    <div className="overflow-hidden">
-      <div className="grid grid-cols-[1fr_1.4fr_1fr] border-b border-[color:var(--bride-border-subtle)] px-4 py-3 text-[11px] font-semibold uppercase tracking-wide text-[color:var(--bride-text-muted)]">
+    <div className="overflow-x-auto">
+      <div className="hidden grid-cols-[1fr_1.4fr_1fr] border-b border-[color:var(--bride-border-subtle)] px-4 py-3 text-[11px] font-semibold uppercase tracking-wide text-[color:var(--bride-text-muted)] md:grid">
         <span>Name</span>
         <span>Description</span>
         <span className="text-right">Control</span>
@@ -73,7 +73,7 @@ export function ControlsTable({
           return (
             <div
               key={key}
-              className="grid grid-cols-[1fr_1.4fr_1fr] items-center border-b border-[color:var(--bride-border-subtle)] px-4 py-4 last:border-b-0"
+              className="grid gap-3 border-b border-[color:var(--bride-border-subtle)] px-4 py-4 last:border-b-0 md:grid-cols-[1fr_1.4fr_1fr] md:items-center"
             >
               <div className="space-y-1">
                 <span className="block text-sm font-medium capitalize text-[color:var(--bride-text)]">
@@ -86,7 +86,7 @@ export function ControlsTable({
               <span className="text-xs leading-6 text-[color:var(--bride-text-muted)]">
                 {config.description ?? "Story prop"}
               </span>
-              <div className="justify-self-end">
+              <div className="md:justify-self-end">
                 {controlType === "boolean" ? (
                   <Switch.Root
                     checked={Boolean(value)}
@@ -112,7 +112,7 @@ export function ControlsTable({
                       commitChange(key, nextValue);
                     }}
                   >
-                    <Select.Trigger className="inline-flex h-10 min-w-[200px] items-center justify-between gap-2 rounded-[10px] border border-[color:var(--bride-border-subtle)] bg-[color:var(--bride-field-bg)] px-3 text-sm capitalize text-[color:var(--bride-text)] shadow-[inset_0_1px_0_var(--bride-border-subtle)] outline-none transition-all duration-200 focus:border-[color:var(--docs-accent)] focus:shadow-[0_0_0_2px_var(--docs-accent-glow)]">
+                    <Select.Trigger className="inline-flex h-10 w-full min-w-0 items-center justify-between gap-2 rounded-[10px] border border-[color:var(--bride-border-subtle)] bg-[color:var(--bride-field-bg)] px-3 text-sm capitalize text-[color:var(--bride-text)] shadow-[inset_0_1px_0_var(--bride-border-subtle)] outline-none transition-all duration-200 focus:border-[color:var(--docs-accent)] focus:shadow-[0_0_0_2px_var(--docs-accent-glow)] md:min-w-[200px]">
                       <Select.Value />
                       <Select.Icon>
                         <ChevronDown
@@ -125,7 +125,7 @@ export function ControlsTable({
                       <Select.Content
                         position="popper"
                         sideOffset={8}
-                        className="z-50 min-w-[200px] overflow-hidden rounded-xl border border-[color:var(--bride-border-subtle)] bg-[var(--bride-glass-dark)] shadow-[inset_0_1px_0_var(--bride-border-subtle)] backdrop-blur-[18px]"
+                        className="z-50 min-w-[min(200px,calc(100vw-32px))] overflow-hidden rounded-xl border border-[color:var(--bride-border-subtle)] bg-[var(--bride-glass-dark)] shadow-[inset_0_1px_0_var(--bride-border-subtle)] backdrop-blur-[18px]"
                       >
                         <Select.Viewport className="p-1">
                           {options.map((option) => (
@@ -158,7 +158,7 @@ export function ControlsTable({
                       }));
                       commitChange(key, nextValue);
                     }}
-                    className="h-10 min-w-[200px] rounded-[10px] border border-[color:var(--bride-border-subtle)] bg-[color:var(--bride-field-bg)] px-3 text-sm text-[color:var(--bride-text)] shadow-[inset_0_1px_0_var(--bride-border-subtle)] outline-none transition-all duration-200 placeholder:text-[color:var(--bride-text-muted)] focus:border-[color:var(--docs-accent)] focus:shadow-[0_0_0_2px_var(--docs-accent-glow)]"
+                    className="h-10 w-full min-w-0 rounded-[10px] border border-[color:var(--bride-border-subtle)] bg-[color:var(--bride-field-bg)] px-3 text-sm text-[color:var(--bride-text)] shadow-[inset_0_1px_0_var(--bride-border-subtle)] outline-none transition-all duration-200 placeholder:text-[color:var(--bride-text-muted)] focus:border-[color:var(--docs-accent)] focus:shadow-[0_0_0_2px_var(--docs-accent-glow)] md:min-w-[200px]"
                   />
                 )}
               </div>
