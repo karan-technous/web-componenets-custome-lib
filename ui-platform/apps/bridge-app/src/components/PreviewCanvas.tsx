@@ -216,7 +216,11 @@ export function PreviewCanvas({
         </AnimatePresence>
 
         <div className="relative z-10 flex h-full w-full items-center justify-center overflow-hidden bg-[var(--bride-glass-dark)] p-3 shadow-[inset_0_1px_0_var(--bride-border-subtle)] sm:p-5 lg:p-7">
-          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(var(--bride-border-subtle)_1px,transparent_1px),linear-gradient(90deg,var(--bride-border-subtle)_1px,transparent_1px)] bg-[size:24px_24px] opacity-15" />
+          <div
+            className="pointer-events-none absolute inset-0 
+            bg-[radial-gradient(circle,var(--bride-text-muted)_1px,transparent_1px)] 
+            bg-[size:20px_20px] opacity-[0.14]"
+          />
           <div
             className="relative h-full w-full overflow-hidden"
             style={{ transition: "width 150ms ease, height 150ms ease" }}
