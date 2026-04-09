@@ -15,6 +15,7 @@ type ThemeColors = {
   gradientFrom: string;
   gradientTo: string;
   name: string;
+  light?: Partial<Omit<ThemeColors, 'name' | 'light'>>;
 };
 
 const themeConfig: Record<'webcomponents' | 'react' | 'angular', ThemeColors> = {
@@ -31,6 +32,19 @@ const themeConfig: Record<'webcomponents' | 'react' | 'angular', ThemeColors> = 
     gradientFrom: '#00f5d0',
     gradientTo: '#14b8ff',
     name: 'Web Components',
+    light: {
+      primary: '#0f766e',
+      primaryRgb: '15, 118, 110',
+      primaryLight: '#0d9488',
+      primaryDark: '#115e59',
+      secondary: '#155e75',
+      secondaryRgb: '21, 94, 117',
+      glow: 'rgba(15, 118, 110, 0.16)',
+      glowStrong: 'rgba(13, 148, 136, 0.28)',
+      gradient: 'linear-gradient(135deg, #0d9488 0%, #155e75 100%)',
+      gradientFrom: '#0d9488',
+      gradientTo: '#155e75',
+    },
   },
   react: {
     primary: '#5b8cff',
@@ -45,6 +59,19 @@ const themeConfig: Record<'webcomponents' | 'react' | 'angular', ThemeColors> = 
     gradientFrom: '#75a2ff',
     gradientTo: '#5b8cff',
     name: 'React',
+    light: {
+      primary: '#2563eb',
+      primaryRgb: '37, 99, 235',
+      primaryLight: '#3b82f6',
+      primaryDark: '#1d4ed8',
+      secondary: '#1d4ed8',
+      secondaryRgb: '29, 78, 216',
+      glow: 'rgba(37, 99, 235, 0.16)',
+      glowStrong: 'rgba(59, 130, 246, 0.28)',
+      gradient: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
+      gradientFrom: '#3b82f6',
+      gradientTo: '#1d4ed8',
+    },
   },
   angular: {
     primary: '#ff5d63',
@@ -59,6 +86,19 @@ const themeConfig: Record<'webcomponents' | 'react' | 'angular', ThemeColors> = 
     gradientFrom: '#ff7a7f',
     gradientTo: '#ff5d63',
     name: 'Angular',
+    light: {
+      primary: '#dc2626',
+      primaryRgb: '220, 38, 38',
+      primaryLight: '#ef4444',
+      primaryDark: '#b91c1c',
+      secondary: '#be123c',
+      secondaryRgb: '190, 18, 60',
+      glow: 'rgba(220, 38, 38, 0.16)',
+      glowStrong: 'rgba(239, 68, 68, 0.28)',
+      gradient: 'linear-gradient(135deg, #ef4444 0%, #be123c 100%)',
+      gradientFrom: '#ef4444',
+      gradientTo: '#be123c',
+    },
   },
 };
 
@@ -89,7 +129,9 @@ export function setAppearance(mode: AppearanceMode) {
 
 export function applyTheme(framework: Framework, appearance: AppearanceMode) {
   const root = document.documentElement;
-  const palette = themeConfig[frameworkToTheme[framework]];
+  const theme = themeConfig[frameworkToTheme[framework]];
+  const palette =
+    appearance === 'light' && theme.light ? { ...theme, ...theme.light } : theme;
 
   root.style.setProperty('--bride-primary', palette.primary);
   root.style.setProperty('--bride-primary-rgb', palette.primaryRgb);

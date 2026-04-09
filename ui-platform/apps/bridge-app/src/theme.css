@@ -145,6 +145,13 @@
 }
 
 :root[data-appearance="light"][data-framework="wc"] {
+  --docs-accent: #0f766e;
+  --docs-accent-strong: #0d9488;
+  --docs-accent-border: rgba(15, 118, 110, 0.22);
+  --docs-accent-surface: rgba(15, 118, 110, 0.08);
+  --docs-accent-surface-strong: rgba(15, 118, 110, 0.12);
+  --docs-accent-glow: rgba(15, 118, 110, 0.12);
+  --docs-token-name: #0f766e;
   --docs-preview-border: color-mix(
     in srgb,
     var(--docs-accent) 24%,
@@ -156,6 +163,13 @@
 }
 
 :root[data-appearance="light"][data-framework="react"] {
+  --docs-accent: #2563eb;
+  --docs-accent-strong: #3b82f6;
+  --docs-accent-border: rgba(37, 99, 235, 0.22);
+  --docs-accent-surface: rgba(37, 99, 235, 0.08);
+  --docs-accent-surface-strong: rgba(37, 99, 235, 0.12);
+  --docs-accent-glow: rgba(37, 99, 235, 0.12);
+  --docs-token-name: #2563eb;
   --docs-preview-border: color-mix(
     in srgb,
     var(--docs-accent) 24%,
@@ -167,6 +181,13 @@
 }
 
 :root[data-appearance="light"][data-framework="angular"] {
+  --docs-accent: #dc2626;
+  --docs-accent-strong: #ef4444;
+  --docs-accent-border: rgba(220, 38, 38, 0.22);
+  --docs-accent-surface: rgba(220, 38, 38, 0.08);
+  --docs-accent-surface-strong: rgba(220, 38, 38, 0.12);
+  --docs-accent-glow: rgba(220, 38, 38, 0.12);
+  --docs-token-name: #dc2626;
   --docs-preview-border: color-mix(
     in srgb,
     var(--docs-accent) 24%,

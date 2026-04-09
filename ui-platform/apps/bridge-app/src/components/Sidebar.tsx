@@ -8,6 +8,8 @@ import {
   Hexagon,
   Search,
   Triangle,
+  Book,
+  BookOpenText,
 } from "lucide-react";
 import { useMemo, useState } from "react";
 import type { Framework } from "../state/frameworkStore";
@@ -321,33 +323,15 @@ export function Sidebar({
                           />
                         )
                       ) : null}
-                      {isCollapsed ? (
-                        <span
-                          className={`flex h-7 w-7 items-center justify-center rounded-[9px] border text-[13px] font-semibold tracking-[0.02em] ${
-                            isActiveGroup
-                              ? "border-[rgba(var(--bride-primary-rgb),0.35)] bg-[rgba(var(--bride-primary-rgb),0.14)] text-[color:var(--bride-primary-light)] shadow-[0_0_14px_rgba(var(--bride-primary-rgb),0.22)]"
-                              : "border-[color:var(--bride-border-subtle)] bg-[color:var(--bride-field-bg)] text-[color:var(--bride-text-muted)] shadow-[inset_0_1px_0_var(--bride-border-subtle)]"
-                          }`}
-                        >
-                          {compactLabel}
-                        </span>
-                      ) : (
-                        <div
-                          className={`h-1.5 w-1.5 rounded-full ${
-                            isActiveGroup
-                              ? "bg-[color:var(--bride-primary)] shadow-[0_0_6px_rgba(var(--bride-primary-rgb),0.7)]"
-                              : "bg-[color:var(--bride-text-muted)]"
-                          }`}
-                        />
-                      )}
                       {!isCollapsed ? (
                         <span
-                          className={`text-xs ${
+                          className={`text-xs flex items-center gap-2 ${
                             isActiveGroup
                               ? "font-medium text-[color:var(--bride-primary)]"
                               : "text-[color:var(--bride-text-soft)]"
                           }`}
                         >
+                          <Book size={20} />
                           {group.definition.title}
                         </span>
                       ) : null}
@@ -393,13 +377,7 @@ export function Sidebar({
                                 }`}
                               >
                                 <span className="flex items-center gap-2">
-                                  <span
-                                    className={`h-1 w-1 rounded-full ${
-                                      active
-                                        ? "bg-[color:var(--bride-primary)] shadow-[0_0_4px_rgba(var(--bride-primary-rgb),0.7)]"
-                                        : "bg-[color:var(--bride-text-muted)]"
-                                    }`}
-                                  />
+                                  <BookOpenText size={20} />
                                   {story.name}
                                 </span>
                               </motion.button>
