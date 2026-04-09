@@ -21,7 +21,7 @@
       }
     ]
   },
-  "private": true,
+  "private": false,
   "dependencies": {
     "@angular/common": "^21.2.3",
     "@angular/compiler": "^21.2.3",

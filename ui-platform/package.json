@@ -1,8 +1,8 @@
 {
   "name": "@karan9186/workspace",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Monorepo workspace for the UI Library design system.",
-  "private": true,
+  "private": "false",
   "type": "module",
   "scripts": {
     "build": "pnpm --filter ./packages/core --filter ./packages/web-components --filter ./packages/react --filter ./packages/angular -r build",
