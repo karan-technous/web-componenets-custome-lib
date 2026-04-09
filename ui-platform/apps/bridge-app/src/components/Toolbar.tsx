@@ -68,11 +68,105 @@ function ToolButton({
 const frameworks: Array<{
   value: Framework;
   label: string;
-  icon: typeof Triangle;
+  icon: any;
 }> = [
-  { value: "angular", label: "Angular", icon: Triangle },
-  { value: "react", label: "React", icon: Atom },
-  { value: "wc", label: "Web Components", icon: Boxes },
+  {
+    value: "angular",
+    label: "Angular",
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 223 236" height="14">
+        <defs>
+          <linearGradient
+            id="a"
+            x1="49.009"
+            x2="225.829"
+            y1="213.75"
+            y2="129.722"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop stop-color="#E40035" />
+            <stop offset=".24" stop-color="#F60A48" />
+            <stop offset=".352" stop-color="#F20755" />
+            <stop offset=".494" stop-color="#DC087D" />
+            <stop offset=".745" stop-color="#9717E7" />
+            <stop offset="1" stop-color="#6C00F5" />
+          </linearGradient>
+
+          <linearGradient
+            id="b"
+            x1="41.025"
+            x2="156.741"
+            y1="28.344"
+            y2="160.344"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop stop-color="#FF31D9" />
+            <stop offset="1" stop-color="#FF5BE1" stop-opacity="0" />
+          </linearGradient>
+        </defs>
+
+        <g>
+          <path
+            fill="url(#a)"
+            d="m222.077 39.192-8.019 125.923L137.387 0l84.69 39.192Zm-53.105 162.825-57.933 33.056-57.934-33.056 11.783-28.556h92.301l11.783 28.556ZM111.039 62.675l30.357 73.803H80.681l30.358-73.803ZM7.937 165.115 0 39.192 84.69 0 7.937 165.115Z"
+          />
+
+          <path
+            fill="url(#b)"
+            d="m222.077 39.192-8.019 125.923L137.387 0l84.69 39.192Zm-53.105 162.825-57.933 33.056-57.934-33.056 11.783-28.556h92.301l11.783 28.556ZM111.039 62.675l30.357 73.803H80.681l30.358-73.803ZM7.937 165.115 0 39.192 84.69 0 7.937 165.115Z"
+          />
+        </g>
+      </svg>
+    ),
+  },
+  {
+    value: "react",
+    label: "React",
+    icon: (
+      <svg
+        viewBox="-11.5 -10.23174 23 20.46348"
+        xmlns="http://www.w3.org/2000/svg"
+        height={14}
+      >
+        <rect
+          x="-11.5"
+          y="-10.23174"
+          width="23"
+          height="20.46348"
+          fill="#20232a00"
+        />
+
+        <title>React Logo</title>
+        <circle cx="0" cy="0" r="2.05" fill="#61DAFB" />
+        <g stroke="#61DAFB" stroke-width="1" fill="none">
+          <ellipse rx="11" ry="4.2" />
+          <ellipse rx="11" ry="4.2" transform="rotate(60)" />
+          <ellipse rx="11" ry="4.2" transform="rotate(120)" />
+        </g>
+      </svg>
+    ),
+  },
+  {
+    value: "wc",
+    label: "Web Components",
+    icon: (
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" height={20}>
+        <title>Web Components Icon</title>
+        <path
+          fill="#263238"
+          d="M21 16.5C21 16.88 20.79 17.21 20.47 17.38L12.57 21.82C12.41 21.94 12.21 22 12 22C11.79 22 11.59 21.94 11.43 21.82L3.53 17.38C3.21 17.21 3 16.88 3 16.5V7.5C3 7.12 3.21 6.79 3.53 6.62L11.43 2.18C11.59 2.06 11.79 2 12 2C12.21 2 12.41 2.06 12.57 2.18L20.47 6.62C20.79 6.79 21 7.12 21 7.5V16.5Z"
+          opacity=".1"
+        />
+
+        <path
+          fill="#536DFE"
+          d="M12 2L3.5 6.84V17.16L12 22L20.5 17.16V6.84L12 2ZM19 16.3L12 20.3L5 16.3V7.7L12 3.7L19 7.7V16.3Z"
+        />
+
+        <path fill="#536DFE" d="M12 8L8 10.3V14.8L12 17.1L16 14.8V10.3L12 8Z" />
+      </svg>
+    ),
+  },
 ];
 
 export function Toolbar({
@@ -111,7 +205,9 @@ export function Toolbar({
                 <Menu
                   size={14}
                   className={
-                    isSidebarOpen ? "text-[color:var(--bride-primary-light)]" : ""
+                    isSidebarOpen
+                      ? "text-[color:var(--bride-primary-light)]"
+                      : ""
                   }
                 />
               </ToolButton>
@@ -130,7 +226,7 @@ export function Toolbar({
                       value={item.value}
                       className="bride-focus-ring inline-flex items-center gap-1.5 rounded-xl border border-transparent px-2.5 py-1.5 text-xs font-medium text-[color:var(--bride-text-muted)] transition-all duration-200 hover:text-[color:var(--bride-text)] data-[state=active]:border-[color:var(--docs-accent-border)] data-[state=active]:bg-[color:var(--docs-accent-surface)] data-[state=active]:text-[color:var(--bride-primary)] data-[state=active]:shadow-[0_0_18px_var(--docs-accent-glow)] sm:px-3"
                     >
-                      <Icon size={12} />
+                      <div>{Icon}</div>
                       <span className="hidden sm:inline">{item.label}</span>
                     </Tabs.Trigger>
                   );

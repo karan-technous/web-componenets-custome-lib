@@ -236,115 +236,6 @@ export function Sidebar({
                   fontWeight: 600,
                 }}
               >
-                Framework
-              </span>
-
-              <div
-                className="flex-1 h-px"
-                style={{
-                  background: "var(--bride-border-subtle)",
-                }}
-              />
-            </div>
-          ) : null}
-          <div
-            className={`mb-4 grid gap-2 ${isCollapsed ? "justify-items-center border-b border-[var(--bride-border-subtle)] pb-3" : ""}`}
-          >
-            {frameworkOptions.map((item) => {
-              const Icon = item.icon;
-              const active = framework === item.value;
-              return (
-                <motion.button
-                  key={item.value}
-                  whileHover={{ x: 1 }}
-                  transition={{ duration: 0.16 }}
-                  onClick={() => onFrameworkChange(item.value)}
-                  title={item.label}
-                  className={`group relative flex items-center overflow-hidden rounded-[16px] border text-left transition-all ${
-                    active
-                      ? "border-[color:rgba(var(--bride-primary-rgb),0.42)] bg-[linear-gradient(90deg,rgba(var(--bride-primary-rgb),0.15)_0%,rgba(var(--bride-primary-rgb),0.05)_100%)] shadow-[0_0_18px_rgba(var(--bride-primary-rgb),0.08),inset_0_1px_0_var(--bride-border-subtle)]"
-                      : "border-transparent bg-transparent hover:border-[color:var(--bride-border-subtle)] hover:bg-[color:var(--docs-accent-surface)]"
-                  } ${
-                    isCollapsed
-                      ? "h-12 w-12 justify-center rounded-[14px] px-0 py-0"
-                      : "justify-between px-3 py-2.5"
-                  }`}
-                >
-                  {active ? (
-                    <>
-                      <div className="absolute left-0 top-1/2 h-[60%] w-[3px] -translate-y-1/2 rounded-r-full bg-[color:var(--bride-primary-light)] shadow-[0_0_6px_rgba(var(--bride-primary-rgb),0.38)]" />
-                      <div className="pointer-events-none absolute inset-[2px] rounded-[14px] border border-[rgba(var(--bride-primary-rgb),0.16)]" />
-                    </>
-                  ) : null}
-                  <span
-                    className={`flex items-center text-sm ${isCollapsed ? "justify-center" : "gap-2"}`}
-                  >
-                    <span
-                      className={`flex h-7 w-7 items-center justify-center rounded-[10px] border ${
-                        active
-                          ? "border-[rgba(var(--bride-primary-rgb),0.22)] bg-[rgba(var(--bride-primary-rgb),0.12)]"
-                          : "border-[color:var(--bride-border-subtle)] bg-[color:var(--bride-field-bg)]"
-                      }`}
-                    >
-                      <Icon
-                        size={14}
-                        className={
-                          active
-                            ? "text-[color:var(--bride-primary)]"
-                            : "text-[color:var(--bride-text-muted)]"
-                        }
-                      />
-                    </span>
-                    {!isCollapsed ? (
-                      <span
-                        className={
-                          active
-                            ? "font-medium text-[color:var(--bride-primary)]"
-                            : "text-[color:var(--bride-text-soft)]"
-                        }
-                      >
-                        {item.label}
-                      </span>
-                    ) : null}
-                  </span>
-                  {!isCollapsed ? (
-                    <span
-                      className={`rounded-full px-2 py-0.5 text-[9px] font-semibold ${
-                        active
-                          ? "border border-[rgba(var(--bride-primary-rgb),0.14)] bg-[rgba(var(--bride-primary-rgb),0.1)] text-[color:var(--bride-primary)]"
-                          : "border border-[color:var(--bride-border-subtle)] bg-[color:var(--bride-field-bg)] text-[color:var(--bride-text-muted)]"
-                      }`}
-                    >
-                      {item.version}
-                    </span>
-                  ) : null}
-                </motion.button>
-              );
-            })}
-          </div>
-
-          {!isCollapsed ? (
-            <div
-              className="px-1 mb-2 flex items-center gap-2"
-              style={{
-                color: "var(--bride-text-muted)",
-                fontSize: "10px",
-                letterSpacing: "0.1em",
-              }}
-            >
-              <div
-                className="flex-1 h-px"
-                style={{
-                  background: "var(--bride-border-subtle)",
-                }}
-              />
-
-              <span
-                style={{
-                  textTransform: "uppercase",
-                  fontWeight: 600,
-                }}
-              >
                 Components
               </span>
 
@@ -399,7 +290,7 @@ export function Sidebar({
                         : "border-transparent hover:border-[color:var(--bride-border-subtle)] hover:bg-[color:var(--docs-accent-surface)]"
                     } ${
                       isCollapsed
-                        ? "mx-auto h-12 w-12 justify-center rounded-[14px] px-0 py-0"
+                        ? "mx-auto h-10 w-10 justify-center rounded-[14px] px-0 py-0"
                         : "justify-between px-3 py-2"
                     }`}
                   >
@@ -432,7 +323,7 @@ export function Sidebar({
                       ) : null}
                       {isCollapsed ? (
                         <span
-                          className={`flex h-8 w-8 items-center justify-center rounded-[10px] border text-[13px] font-semibold tracking-[0.02em] ${
+                          className={`flex h-7 w-7 items-center justify-center rounded-[9px] border text-[13px] font-semibold tracking-[0.02em] ${
                             isActiveGroup
                               ? "border-[rgba(var(--bride-primary-rgb),0.35)] bg-[rgba(var(--bride-primary-rgb),0.14)] text-[color:var(--bride-primary-light)] shadow-[0_0_14px_rgba(var(--bride-primary-rgb),0.22)]"
                               : "border-[color:var(--bride-border-subtle)] bg-[color:var(--bride-field-bg)] text-[color:var(--bride-text-muted)] shadow-[inset_0_1px_0_var(--bride-border-subtle)]"
