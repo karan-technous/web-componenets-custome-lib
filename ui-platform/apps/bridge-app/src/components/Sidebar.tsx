@@ -116,7 +116,7 @@ export function Sidebar({
         type="button"
         onClick={onToggleCollapse}
         aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-        className="absolute right-0 top-11 z-30 hidden h-7 w-7 translate-x-1/2 items-center justify-center rounded-full border text-[color:var(--bride-primary-light)] transition hover:scale-[1.03] lg:flex"
+        className="absolute right-0 top-12 z-30 hidden h-5 w-5 translate-x-1/2 items-center justify-center rounded-full border text-[color:var(--bride-primary-light)] transition hover:scale-[1.03] lg:flex"
         style={{
           borderColor: "rgba(var(--bride-primary-rgb), 0.7)",
           background:
@@ -322,6 +322,17 @@ export function Sidebar({
                             }
                           />
                         )
+                      ) : null}
+                      {isCollapsed ? (
+                        <span
+                          className={`flex h-7 w-7 items-center justify-center rounded-[9px] border text-[13px] font-semibold tracking-[0.02em] ${
+                            isActiveGroup
+                              ? "border-[rgba(var(--bride-primary-rgb),0.35)] bg-[rgba(var(--bride-primary-rgb),0.14)] text-[color:var(--bride-primary-light)] shadow-[0_0_14px_rgba(var(--bride-primary-rgb),0.22)]"
+                              : "border-[color:var(--bride-border-subtle)] bg-[color:var(--bride-field-bg)] text-[color:var(--bride-text-muted)] shadow-[inset_0_1px_0_var(--bride-border-subtle)]"
+                          }`}
+                        >
+                          {compactLabel}
+                        </span>
                       ) : null}
                       {!isCollapsed ? (
                         <span
