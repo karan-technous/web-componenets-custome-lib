@@ -26,16 +26,17 @@ ensureCustomElements();
   ],
 })
 export class InputComponent implements ControlValueAccessor {
-  placeholder = input<string>();
+  placeholder = input<string>('');
+  type = input<'text' | 'number'>('text');
 
   value = signal<string>('');
   isDisabled = signal<boolean>(false);
 
-  onChange = (value: any) => {};
+  onChange = (value: string) => {};
   onTouched = () => {};
 
   writeValue(value: string): void {
-    this.value.set(value);
+    this.value.set(value || '');
   }
 
   setDisabledState(isDisabled: boolean): void {
@@ -50,8 +51,9 @@ export class InputComponent implements ControlValueAccessor {
     this.onTouched = fn;
   }
 
-  handleInput(event: any) {
-    const value = event.detail;
+  handleInput(event: Event) {
+    const value = (event as CustomEvent<string>).detail;
+
     this.value.set(value);
     this.onChange(value);
   }

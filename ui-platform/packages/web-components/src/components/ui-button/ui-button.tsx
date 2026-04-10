@@ -23,22 +23,8 @@ export class UiButton {
 
   render() {
     return (
-      <button
-        class={`btn ${this.variant} ${this.size}`}
-        disabled={this.disabled || this.loading}
-        onClick={this.handleClick}
-        aria-disabled={this.disabled}
-        aria-busy={this.loading}
-      >
-        {this.loading ? (
-          <span class="loader"></span>
-        ) : (
-          [
-            <slot name="start"></slot>,
-            <slot></slot>,
-            <slot name="end"></slot>,
-          ]
-        )}
+      <button class={`btn ${this.variant} ${this.size}`} disabled={this.disabled || this.loading} onClick={this.handleClick} aria-disabled={this.disabled} aria-busy={this.loading}>
+        {this.loading ? <span class="loader"></span> : [<slot name="start"></slot>, <slot></slot>, <slot name="end"></slot>]}
       </button>
     );
   }

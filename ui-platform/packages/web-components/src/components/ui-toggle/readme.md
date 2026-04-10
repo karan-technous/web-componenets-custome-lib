@@ -7,11 +7,12 @@
 
 ## Properties
 
-| Property   | Attribute  | Description | Type                   | Default |
-| ---------- | ---------- | ----------- | ---------------------- | ------- |
-| `checked`  | `checked`  |             | `boolean`              | `false` |
-| `disabled` | `disabled` |             | `boolean`              | `false` |
-| `size`     | `size`     |             | `"lg" \| "md" \| "sm"` | `'md'`  |
+| Property         | Attribute         | Description | Type                   | Default     |
+| ---------------- | ----------------- | ----------- | ---------------------- | ----------- |
+| `checked`        | `checked`         |             | `boolean`              | `undefined` |
+| `defaultChecked` | `default-checked` |             | `boolean`              | `false`     |
+| `disabled`       | `disabled`        |             | `boolean`              | `false`     |
+| `size`           | `size`            |             | `"lg" \| "md" \| "sm"` | `'md'`      |
 
 
 ## Events

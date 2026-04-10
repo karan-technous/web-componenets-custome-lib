@@ -1,16 +1,41 @@
-import React, { useEffect, useRef } from "react";
+import {
+  forwardRef,
+  useEffect,
+  useRef,
+  useState,
+  useImperativeHandle,
+} from "react";
 
 type UiInputProps = {
   value?: string;
+  defaultValue?: string;
   placeholder?: string;
   disabled?: boolean;
+  type?: "text" | "number";
   onChange?: (value: string) => void;
   onBlur?: () => void;
 };
 
-export const UiInput = React.memo(
-  ({ value, placeholder, disabled, onChange, onBlur }: UiInputProps) => {
+export const UiInput = forwardRef<HTMLElement, UiInputProps>(
+  (
+    {
+      value,
+      defaultValue = "",
+      placeholder,
+      disabled,
+      type = "text",
+      onChange,
+      onBlur,
+    },
+    forwardedRef,
+  ) => {
     const ref = useRef<any>(null);
+
+    // Controlled vs uncontrolled
+    const isControlled = value !== undefined;
+    const [internalValue, setInternalValue] = useState(defaultValue);
+
+    const currentValue = isControlled ? value : internalValue;
 
     // Stable refs
     const onChangeRef = useRef(onChange);
@@ -21,22 +46,30 @@ export const UiInput = React.memo(
       onBlurRef.current = onBlur;
     });
 
-    // Set properties (no re-render)
+    // Sync props → Web Component
     useEffect(() => {
-      if (!ref.current) return;
+      const el = ref.current;
+      if (!el) return;
 
-      ref.current.value = value ?? "";
-      ref.current.placeholder = placeholder ?? "";
-      ref.current.disabled = !!disabled;
-    }, [value, placeholder, disabled]);
+      el.value = currentValue ?? "";
+      el.placeholder = placeholder ?? "";
+      el.disabled = !!disabled;
+      el.type = type;
+    }, [currentValue, placeholder, disabled, type]);
 
-    // Attach listeners ONCE
+    // Events
     useEffect(() => {
       const el = ref.current;
       if (!el) return;
 
       const handleChange = (e: any) => {
-        onChangeRef.current?.(e.detail);
+        const val = e.detail;
+
+        if (!isControlled) {
+          setInternalValue(val);
+        }
+
+        onChangeRef.current?.(val);
       };
 
       const handleBlur = () => {
@@ -50,8 +83,12 @@ export const UiInput = React.memo(
         el.removeEventListener("valueChange", handleChange);
         el.removeEventListener("uiBlur", handleBlur);
       };
-    }, []);
+    }, [isControlled]);
+
+    useImperativeHandle(forwardedRef, () => ref.current);
 
     return <ui-input ref={ref}></ui-input>;
   },
 );
+
+UiInput.displayName = "UiInput";

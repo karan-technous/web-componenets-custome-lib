@@ -1,4 +1,4 @@
-import { Component, Prop, Event, EventEmitter, h, Element } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter, h, Watch } from '@stencil/core';
 
 @Component({
   tag: 'ui-input',
@@ -6,39 +6,26 @@ import { Component, Prop, Event, EventEmitter, h, Element } from '@stencil/core'
   styleUrl: 'ui-input.css',
 })
 export class UiInput {
-  @Element() el: HTMLElement;
-
-  @Prop() value: string;
-  @Prop({ reflect: true }) placeholder: string;
+  @Prop() value: string = '';
+  @Prop({ reflect: true }) placeholder: string = '';
   @Prop({ reflect: true }) disabled: boolean = false;
+  @Prop({ reflect: true }) type: 'text' | 'number' = 'text';
 
-  @Event() valueChange: EventEmitter<string>;
-  @Event() uiBlur: EventEmitter<void>;
+  @Event() valueChange!: EventEmitter<string>;
+  @Event() uiBlur!: EventEmitter<void>;
 
   private inputEl!: HTMLInputElement;
 
-  componentDidLoad() {
-    this.inputEl = this.el.shadowRoot.querySelector('input')!;
-    this.inputEl.value = this.value || '';
-    this.inputEl.disabled = this.disabled;
-  }
-
-  // Only update DOM when prop changes
-  componentDidUpdate() {
-    if (this.inputEl) {
-      // value sync
-      if (this.inputEl.value !== this.value) {
-        this.inputEl.value = this.value || '';
-      }
-
-      // disabled sync
-      this.inputEl.disabled = this.disabled;
+  @Watch('value')
+  handleValueChange(newValue: string) {
+    if (this.inputEl && this.inputEl.value !== newValue) {
+      this.inputEl.value = newValue || '';
     }
   }
 
-  onInput = (e: any) => {
-    const val = e.target.value;
-    // prevent unnecessary emits
+  onInput = (e: Event) => {
+    const val = (e.target as HTMLInputElement).value;
+
     if (val !== this.value) {
       this.valueChange.emit(val);
     }
@@ -47,13 +34,14 @@ export class UiInput {
   render() {
     return (
       <input
+        ref={(el) => (this.inputEl = el as HTMLInputElement)}
         class="input"
+        type={this.type}
         value={this.value || ''}
-        placeholder={this.placeholder === undefined || this.placeholder === null || this.placeholder == '' ? 'Type something...' : this.placeholder}
+        placeholder={this.placeholder || 'Type something...'}
         disabled={this.disabled}
         onInput={this.onInput}
         onBlur={() => this.uiBlur.emit()}
-        
       />
     );
   }

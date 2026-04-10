@@ -68,14 +68,25 @@ export namespace Components {
           * @default false
          */
         "disabled": boolean;
+        /**
+          * @default ''
+         */
         "placeholder": string;
+        /**
+          * @default 'text'
+         */
+        "type": 'text' | 'number';
+        /**
+          * @default ''
+         */
         "value": string;
     }
     interface UiToggle {
+        "checked"?: boolean;
         /**
           * @default false
          */
-        "checked": boolean;
+        "defaultChecked": boolean;
         /**
           * @default false
          */
@@ -255,14 +266,25 @@ declare namespace LocalJSX {
         "disabled"?: boolean;
         "onUiBlur"?: (event: UiInputCustomEvent<void>) => void;
         "onValueChange"?: (event: UiInputCustomEvent<string>) => void;
+        /**
+          * @default ''
+         */
         "placeholder"?: string;
+        /**
+          * @default 'text'
+         */
+        "type"?: 'text' | 'number';
+        /**
+          * @default ''
+         */
         "value"?: string;
     }
     interface UiToggle {
+        "checked"?: boolean;
         /**
           * @default false
          */
-        "checked"?: boolean;
+        "defaultChecked"?: boolean;
         /**
           * @default false
          */
@@ -297,9 +319,11 @@ declare namespace LocalJSX {
         "value": string;
         "placeholder": string;
         "disabled": boolean;
+        "type": 'text' | 'number';
     }
     interface UiToggleAttributes {
         "checked": boolean;
+        "defaultChecked": boolean;
         "disabled": boolean;
         "size": 'sm' | 'md' | 'lg';
     }

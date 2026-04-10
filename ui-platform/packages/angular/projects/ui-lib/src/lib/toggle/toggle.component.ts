@@ -4,11 +4,12 @@ import {
   forwardRef,
   input,
   output,
-  effect,
   signal,
   viewChild,
   CUSTOM_ELEMENTS_SCHEMA,
   ChangeDetectionStrategy,
+  AfterViewInit,
+  OnDestroy,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { ensureCustomElements } from '../register-custom-elements';
@@ -29,11 +30,14 @@ ensureCustomElements();
     },
   ],
 })
-export class UiToggleComponent implements ControlValueAccessor {
+export class UiToggleComponent
+  implements ControlValueAccessor, AfterViewInit, OnDestroy
+{
   wc = viewChild<ElementRef>('wc');
 
   size = input<'sm' | 'md' | 'lg'>('md');
   disabledInput = input(false);
+  defaultChecked = input(false);
 
   checked = signal(false);
   disabled = signal(false);
@@ -43,37 +47,36 @@ export class UiToggleComponent implements ControlValueAccessor {
   private onChange = (value: boolean) => {};
   private onTouched = () => {};
 
-  constructor() {
-    effect(() => {
-      this.disabled.set(this.disabledInput());
-    });
+  private cleanup?: () => void;
 
-    effect(() => {
-      const el = this.wc()?.nativeElement as any;
-      if (!el) return;
+  ngAfterViewInit() {
+    const el = this.wc()?.nativeElement as any;
+    if (!el) return;
 
-      el.checked = this.checked();
-      el.disabled = this.disabled();
-      el.size = this.size();
-    });
+    // initial
+    el.checked = this.checked() ?? this.defaultChecked();
+    el.disabled = this.disabledInput();
+    el.size = this.size();
 
-    effect(() => {
-      const el = this.wc()?.nativeElement as any;
-      if (!el) return;
+    // listener (ONLY ONCE)
+    const handler = (e: any) => {
+      const value = e.detail;
 
-      const handler = (e: any) => {
-        const value = e.detail;
+      this.checked.set(value);
+      this.onChange(value);
+      this.changed.emit(value);
+      this.onTouched();
+    };
 
-        this.checked.set(value);
-        this.onChange(value);
-        this.changed.emit(value);
-        this.onTouched();
-      };
+    el.addEventListener('toggleChange', handler);
 
-      el.addEventListener('toggleChange', handler);
+    this.cleanup = () => {
+      el.removeEventListener('toggleChange', handler);
+    };
+  }
 
-      return () => el.removeEventListener('toggleChange', handler);
-    });
+  ngOnDestroy() {
+    this.cleanup?.();
   }
 
   writeValue(value: boolean): void {

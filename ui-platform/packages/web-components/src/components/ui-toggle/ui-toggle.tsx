@@ -1,4 +1,4 @@
-import { Component, h, Prop, Event, EventEmitter, Watch } from '@stencil/core';
+import { Component, h, Prop, Event, EventEmitter } from '@stencil/core';
 
 @Component({
   tag: 'ui-toggle',
@@ -6,29 +6,47 @@ import { Component, h, Prop, Event, EventEmitter, Watch } from '@stencil/core';
   styleUrl: 'ui-toggle.css',
 })
 export class UiToggle {
-  @Prop({ mutable: true, reflect: true }) checked: boolean = false;
-  @Prop() disabled: boolean = false;
+  @Prop({ mutable: true, reflect: true }) checked?: boolean;
+  @Prop() defaultChecked: boolean = false;
+
+  @Prop({ reflect: true }) disabled: boolean = false;
   @Prop({ reflect: true }) size: 'sm' | 'md' | 'lg' = 'md';
 
   @Event() toggleChange!: EventEmitter<boolean>;
 
-  @Watch('checked')
-  handleChange(newValue: boolean) {
-    this.toggleChange.emit(newValue);
+  private internalChecked = false;
+
+  componentWillLoad() {
+    this.internalChecked = this.checked ?? this.defaultChecked ?? false;
+  }
+
+  private isControlled() {
+    return this.checked !== undefined;
   }
 
   private onToggle = () => {
     if (this.disabled) return;
-    this.checked = !this.checked;
+
+    const newValue = !this.internalChecked;
+
+    if (!this.isControlled()) {
+      this.internalChecked = newValue;
+    }
+
+    this.toggleChange.emit(newValue);
   };
 
   render() {
+    const isChecked = this.isControlled()
+      ? this.checked
+      : this.internalChecked;
+
     return (
       <div
         class={{
-          'toggle': true,
+          toggle: true,
           [`toggle--${this.size}`]: true,
-          'toggle--checked': this.checked,
+          'toggle--checked': !!isChecked,
           'toggle--disabled': this.disabled,
         }}
         onClick={this.onToggle}
