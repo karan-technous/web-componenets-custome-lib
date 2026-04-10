@@ -4,13 +4,14 @@ import React, {
   useImperativeHandle,
   useRef,
   useState,
-} from 'react';
+} from "react";
 
 type UiCheckboxProps = {
   checked?: boolean;
   defaultChecked?: boolean;
   disabled?: boolean;
-  size?: 'sm' | 'md' | 'lg';
+  size?: "sm" | "md" | "lg";
+  label?: string;
   onChange?: (checked: boolean) => void;
   onBlur?: () => void;
   children?: React.ReactNode;
@@ -22,7 +23,8 @@ export const UiCheckbox = forwardRef<HTMLElement, UiCheckboxProps>(
       checked,
       defaultChecked = false,
       disabled = false,
-      size = 'md',
+      size = "md",
+      label,
       onChange,
       onBlur,
       children,
@@ -30,9 +32,14 @@ export const UiCheckbox = forwardRef<HTMLElement, UiCheckboxProps>(
     forwardedRef,
   ) => {
     const ref = useRef<any>(null);
+
+    // Controlled vs uncontrolled
     const controlled = checked !== undefined;
     const [internalChecked, setInternalChecked] = useState(defaultChecked);
 
+    const currentValue = controlled ? checked : internalChecked;
+
+    // Stable refs for events
     const onChangeRef = useRef(onChange);
     const onBlurRef = useRef(onBlur);
 
@@ -41,8 +48,7 @@ export const UiCheckbox = forwardRef<HTMLElement, UiCheckboxProps>(
       onBlurRef.current = onBlur;
     }, [onChange, onBlur]);
 
-    const currentValue = controlled ? checked : internalChecked;
-
+    // Sync props → web component
     useEffect(() => {
       const el = ref.current;
       if (!el) return;
@@ -50,39 +56,42 @@ export const UiCheckbox = forwardRef<HTMLElement, UiCheckboxProps>(
       el.checked = !!currentValue;
       el.disabled = !!disabled;
       el.size = size;
-    }, [currentValue, disabled, size]);
+      el.label = label || "";
+    }, [currentValue, disabled, size, label]);
 
+    // Event normalization
     useEffect(() => {
       const el = ref.current;
       if (!el) return;
 
       const handleChange = (event: any) => {
-        const nextChecked = !!event.detail;
+        const next = !!event.detail;
 
         if (!controlled) {
-          setInternalChecked(nextChecked);
+          setInternalChecked(next);
         }
 
-        onChangeRef.current?.(nextChecked);
+        onChangeRef.current?.(next);
       };
 
       const handleBlur = () => {
         onBlurRef.current?.();
       };
 
-      el.addEventListener('checkboxChange', handleChange);
-      el.addEventListener('uiBlur', handleBlur);
+      el.addEventListener("onChange", handleChange);
+      el.addEventListener("onBlur", handleBlur);
 
       return () => {
-        el.removeEventListener('checkboxChange', handleChange);
-        el.removeEventListener('uiBlur', handleBlur);
+        el.removeEventListener("onChange", handleChange);
+        el.removeEventListener("onBlur", handleBlur);
       };
     }, [controlled]);
 
-    useImperativeHandle(forwardedRef, () => ref.current as HTMLElement, []);
+    // Forward ref
+    useImperativeHandle(forwardedRef, () => ref.current, []);
 
     return <ui-checkbox ref={ref}>{children}</ui-checkbox>;
   },
 );
 
-UiCheckbox.displayName = 'UiCheckbox';
+UiCheckbox.displayName = "UiCheckbox";

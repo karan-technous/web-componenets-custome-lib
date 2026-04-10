@@ -28,23 +28,31 @@ ensureCustomElements();
   ],
 })
 export class UiCheckboxComponent implements ControlValueAccessor {
+  // Inputs (same API)
   size = input<'sm' | 'md' | 'lg'>('md');
   disabledInput = input(false);
+  label = input<string>('');
 
+  // Internal state
   checked = signal(false);
   disabled = signal(false);
 
-  changed = output<boolean>();
+  // Outputs (normalized API)
+  onChangeEvent = output<boolean>();
+  onBlurEvent = output<void>();
 
+  // CVA callbacks
   private onChange = (value: boolean) => {};
   private onTouched = () => {};
 
   constructor() {
+    // Sync disabled input
     effect(() => {
       this.disabled.set(this.disabledInput());
     });
   }
 
+  // CVA methods
   writeValue(value: boolean): void {
     this.checked.set(!!value);
   }
@@ -61,14 +69,17 @@ export class UiCheckboxComponent implements ControlValueAccessor {
     this.disabled.set(isDisabled);
   }
 
-  handleCheckboxChange(event: CustomEvent<boolean>): void {
-    const value = !!event.detail;
+  // Event handlers
+  handleCheckboxChange(event: Event): void {
+    const value = !!(event as CustomEvent<boolean>).detail;
+
     this.checked.set(value);
     this.onChange(value);
-    this.changed.emit(value);
+    this.onChangeEvent.emit(value);
   }
 
   handleBlur(): void {
     this.onTouched();
+    this.onBlurEvent.emit();
   }
 }

@@ -17,10 +17,10 @@
 
 ## Events
 
-| Event            | Description | Type                   |
-| ---------------- | ----------- | ---------------------- |
-| `checkboxChange` |             | `CustomEvent<boolean>` |
-| `uiBlur`         |             | `CustomEvent<void>`    |
+| Event      | Description | Type                   |
+| ---------- | ----------- | ---------------------- |
+| `onBlur`   |             | `CustomEvent<void>`    |
+| `onChange` |             | `CustomEvent<boolean>` |
 
 
 ## Dependencies

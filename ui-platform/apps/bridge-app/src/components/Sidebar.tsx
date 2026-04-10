@@ -300,7 +300,7 @@ export function Sidebar({
                       <div className="absolute left-0 top-1/2 h-[55%] w-[2.5px] -translate-y-1/2 rounded-r-full bg-[color:var(--bride-primary-light)] shadow-[0_0_5px_rgba(var(--bride-primary-rgb),0.32)]" />
                     ) : null}
                     <div
-                      className={`flex items-center ${isCollapsed ? "" : "gap-2"}`}
+                      className={`flex items-center ${isCollapsed ? "p-1" : "gap-2"}`}
                     >
                       {!isCollapsed ? (
                         isOpen ? (

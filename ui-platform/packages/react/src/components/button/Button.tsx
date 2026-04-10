@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
 
 type Props = {
   children?: any;
@@ -10,38 +10,47 @@ type Props = {
   onClick?: () => void;
 };
 
-export const UiButton = ({
-  children,
-  variant = "primary",
-  size = "md",
-  disabled,
-  loading,
-  fullWidth,
-  onClick,
-}: Props) => {
-  const ref = useRef<any>(null);
+export const UiButton = forwardRef<any, Props>(
+  (
+    {
+      children,
+      variant = "primary",
+      size = "md",
+      disabled,
+      loading,
+      fullWidth,
+      onClick,
+    },
+    ref,
+  ) => {
+    const innerRef = useRef<any>(null);
 
-  // Sync props
-  useEffect(() => {
-    if (!ref.current) return;
+    // expose ref
+    useImperativeHandle(ref, () => innerRef.current);
 
-    ref.current.variant = variant;
-    ref.current.size = size;
-    ref.current.disabled = !!disabled;
-    ref.current.loading = !!loading;
-    ref.current.fullWidth = !!fullWidth;
-  }, [variant, size, disabled, loading, fullWidth]);
+    // sync props
+    useEffect(() => {
+      const el = innerRef.current;
+      if (!el) return;
 
-  // Events
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
+      el.variant = variant;
+      el.size = size;
+      el.disabled = !!disabled;
+      el.loading = !!loading;
+      el.fullWidth = !!fullWidth;
+    }, [variant, size, disabled, loading, fullWidth]);
 
-    const handler = () => onClick?.();
+    // event binding (standardized)
+    useEffect(() => {
+      const el = innerRef.current;
+      if (!el) return;
 
-    el.addEventListener("clicked", handler);
-    return () => el.removeEventListener("clicked", handler);
-  }, [onClick]);
+      const handler = () => onClick?.();
 
-  return <ui-button ref={ref}>{children}</ui-button>;
-};
+      el.addEventListener("onClick", handler);
+      return () => el.removeEventListener("onClick", handler);
+    }, [onClick]);
+
+    return <ui-button ref={innerRef}>{children}</ui-button>;
+  },
+);

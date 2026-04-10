@@ -20,7 +20,7 @@
 
 | Event     | Description | Type                |
 | --------- | ----------- | ------------------- |
-| `clicked` |             | `CustomEvent<void>` |
+| `onClick` |             | `CustomEvent<void>` |
 
 
 ----------------------------------------------

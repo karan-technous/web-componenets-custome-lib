@@ -2,8 +2,9 @@
   [checked]="checked()"
   [disabled]="disabled()"
   [size]="size()"
-  (checkboxChange)="handleCheckboxChange($event)"
-  (uiBlur)="handleBlur()"
+  [label]="label()"
+  (onChange)="handleCheckboxChange($event)"
+  (onBlur)="handleBlur()"
 >
   <ng-content></ng-content>
 </ui-checkbox>

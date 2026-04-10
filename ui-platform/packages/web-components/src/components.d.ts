@@ -104,7 +104,7 @@ export interface UiToggleCustomEvent<T> extends CustomEvent<T> {
 }
 declare global {
     interface HTMLUiButtonElementEventMap {
-        "clicked": void;
+        "onClick": void;
     }
     interface HTMLUiButtonElement extends Components.UiButton, HTMLStencilElement {
         addEventListener<K extends keyof HTMLUiButtonElementEventMap>(type: K, listener: (this: HTMLUiButtonElement, ev: UiButtonCustomEvent<HTMLUiButtonElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -121,8 +121,8 @@ declare global {
         new (): HTMLUiButtonElement;
     };
     interface HTMLUiCheckboxElementEventMap {
-        "checkboxChange": boolean;
-        "uiBlur": void;
+        "onChange": boolean;
+        "onBlur": void;
     }
     interface HTMLUiCheckboxElement extends Components.UiCheckbox, HTMLStencilElement {
         addEventListener<K extends keyof HTMLUiCheckboxElementEventMap>(type: K, listener: (this: HTMLUiCheckboxElement, ev: UiCheckboxCustomEvent<HTMLUiCheckboxElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -203,7 +203,7 @@ declare namespace LocalJSX {
           * @default false
          */
         "loading"?: boolean;
-        "onClicked"?: (event: UiButtonCustomEvent<void>) => void;
+        "onOnClick"?: (event: UiButtonCustomEvent<void>) => void;
         /**
           * @default 'md'
          */
@@ -226,8 +226,8 @@ declare namespace LocalJSX {
           * @default ''
          */
         "label"?: string;
-        "onCheckboxChange"?: (event: UiCheckboxCustomEvent<boolean>) => void;
-        "onUiBlur"?: (event: UiCheckboxCustomEvent<void>) => void;
+        "onOnBlur"?: (event: UiCheckboxCustomEvent<void>) => void;
+        "onOnChange"?: (event: UiCheckboxCustomEvent<boolean>) => void;
         /**
           * @default 'md'
          */

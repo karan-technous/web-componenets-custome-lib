@@ -8,16 +8,16 @@ import { Component, Event, EventEmitter, h, Prop } from '@stencil/core';
 export class UiButton {
   @Prop() variant: 'primary' | 'secondary' | 'outline' = 'primary';
   @Prop() size: 'sm' | 'md' | 'lg' = 'md';
-  @Prop({ reflect: true }) disabled: boolean = false;
 
+  @Prop({ reflect: true }) disabled: boolean = false;
   @Prop() loading: boolean = false;
   @Prop({ reflect: true }) fullWidth: boolean = false;
 
-  @Event() clicked!: EventEmitter<void>;
+  @Event() onClick!: EventEmitter<void>;
 
-  handleClick = () => {
+  private handleClick = (e: MouseEvent) => {
     if (!this.disabled && !this.loading) {
-      this.clicked.emit();
+      this.onClick.emit();
     }
   };
 
@@ -27,6 +27,8 @@ export class UiButton {
         class={`btn ${this.variant} ${this.size}`}
         disabled={this.disabled || this.loading}
         onClick={this.handleClick}
+        aria-disabled={this.disabled}
+        aria-busy={this.loading}
       >
         {this.loading ? (
           <span class="loader"></span>

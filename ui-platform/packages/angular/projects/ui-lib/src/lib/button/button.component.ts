@@ -23,9 +23,5 @@ export class ButtonComponent {
   loading = input<boolean>(false);
   fullWidth = input<boolean>(false);
 
-  clicked = output<void>();
-
-  handleClick() {
-    this.clicked.emit();
-  }
+  onClick = output<void>();
 }
