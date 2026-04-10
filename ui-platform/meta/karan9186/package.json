@@ -1,6 +1,6 @@
 {
   "name": "@karan9186/main",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "description": "Base package and CLI for the UI Library design system.",
   "type": "module",
   "bin": {
@@ -45,8 +45,8 @@
     "node": ">=18.0.0"
   },
   "dependencies": {
-    "@karan9186/core": "1.0.4",
-    "@karan9186/web-components": "1.0.4",
+    "@karan9186/core": "1.0.6",
+    "@karan9186/web-components": "1.0.6",
     "chalk": "^5.6.2",
     "ora": "^8.2.0",
     "prompts": "^2.4.2"

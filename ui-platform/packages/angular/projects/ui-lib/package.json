@@ -1,13 +1,13 @@
 {
   "name": "@karan9186/angular",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "peerDependencies": {
     "@angular/common": "^21.2.3",
     "@angular/core": "^21.2.3"
   },
   "dependencies": {
     "tslib": "^2.3.0",
-    "@karan9186/web-components": "1.0.4"
+    "@karan9186/web-components": "1.0.6"
   },
   "sideEffects": false,
   "publishConfig": {
