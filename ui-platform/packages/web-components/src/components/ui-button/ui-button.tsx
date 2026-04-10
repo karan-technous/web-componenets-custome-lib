@@ -13,11 +13,11 @@ export class UiButton {
   @Prop() loading: boolean = false;
   @Prop({ reflect: true }) fullWidth: boolean = false;
 
-  @Event() onClick!: EventEmitter<void>;
+  @Event() uiClick!: EventEmitter<void>;
 
   private handleClick = (e: MouseEvent) => {
     if (!this.disabled && !this.loading) {
-      this.onClick.emit();
+      this.uiClick.emit();
     }
   };
 

@@ -47,8 +47,8 @@ export const UiButton = forwardRef<any, Props>(
 
       const handler = () => onClick?.();
 
-      el.addEventListener("onClick", handler);
-      return () => el.removeEventListener("onClick", handler);
+      el.addEventListener("uiClick", handler);
+      return () => el.removeEventListener("uiClick", handler);
     }, [onClick]);
 
     return <ui-button ref={innerRef}>{children}</ui-button>;

@@ -78,12 +78,12 @@ export const UiCheckbox = forwardRef<HTMLElement, UiCheckboxProps>(
         onBlurRef.current?.();
       };
 
-      el.addEventListener("onChange", handleChange);
-      el.addEventListener("onBlur", handleBlur);
+      el.addEventListener("uiChange", handleChange);
+      el.addEventListener("uiBlur", handleBlur);
 
       return () => {
-        el.removeEventListener("onChange", handleChange);
-        el.removeEventListener("onBlur", handleBlur);
+        el.removeEventListener("uiChange", handleChange);
+        el.removeEventListener("uiBlur", handleBlur);
       };
     }, [controlled]);
 

@@ -20,7 +20,7 @@
 
 | Event     | Description | Type                |
 | --------- | ----------- | ------------------- |
-| `onClick` |             | `CustomEvent<void>` |
+| `uiClick` |             | `CustomEvent<void>` |
 
 
 ----------------------------------------------

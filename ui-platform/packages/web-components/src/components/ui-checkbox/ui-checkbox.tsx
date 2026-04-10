@@ -11,12 +11,12 @@ export class UiCheckbox {
   @Prop({ reflect: true }) size: 'sm' | 'md' | 'lg' = 'md';
   @Prop() label: string = '';
 
-  @Event() onChange!: EventEmitter<boolean>;
-  @Event() onBlur!: EventEmitter<void>;
+  @Event() uiChange!: EventEmitter<boolean>;
+  @Event() uiBlur!: EventEmitter<void>;
 
   @Watch('checked')
   onCheckedChange(value: boolean) {
-    this.onChange.emit(value);
+    this.uiChange.emit(value);
   }
 
   private onInput = (event: Event) => {
@@ -25,7 +25,7 @@ export class UiCheckbox {
   };
 
   private onBlurFun = () => {
-    this.onBlur.emit();
+    this.uiBlur.emit();
   };
 
   render() {

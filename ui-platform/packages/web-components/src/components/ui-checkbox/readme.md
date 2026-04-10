@@ -19,8 +19,8 @@
 
 | Event      | Description | Type                   |
 | ---------- | ----------- | ---------------------- |
-| `onBlur`   |             | `CustomEvent<void>`    |
-| `onChange` |             | `CustomEvent<boolean>` |
+| `uiBlur`   |             | `CustomEvent<void>`    |
+| `uiChange` |             | `CustomEvent<boolean>` |
 
 
 ## Dependencies
