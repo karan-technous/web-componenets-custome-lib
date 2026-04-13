@@ -19,7 +19,7 @@ const POSITIONS: ToastPosition[] = ['top-left', 'top-right', 'bottom-left', 'bot
 
 const EXIT_ANIMATION_MS = 180;
 const SWIPE_DISMISS_THRESHOLD = 90;
-
+const STACK_EXIT_DELAY = 1000; // 1 sec
 const ICON_BY_TYPE: Record<ToastType, string> = {
   success: 'CircleCheck',
   error: 'CircleAlert',
@@ -141,7 +141,15 @@ export class UiToast {
     });
 
     if (activeItem.duration > 0) {
-      this.startTimer(activeItem.id, activeItem.duration);
+      const positionToasts = this.activeToasts.filter(t => t.position === activeItem.position);
+
+      // index in stack (top = last visually)
+      const index = positionToasts.length - 1;
+
+      // delay based on stack order
+      const delayWithStack = activeItem.duration + index * STACK_EXIT_DELAY;
+
+      this.startTimer(activeItem.id, delayWithStack);
     }
 
     this.announce(activeItem);
