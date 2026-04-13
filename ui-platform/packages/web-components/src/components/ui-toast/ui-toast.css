@@ -22,6 +22,17 @@
 .viewport--bottom-left {
   flex-direction: column-reverse;
 }
+
+.viewport--bottom-right {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+.viewport--bottom-left {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
 /* RIGHT */
 .viewport--top-right .toast,
 .viewport--bottom-right .toast {
@@ -35,10 +46,17 @@
 }
 
 /* CENTER */
-.viewport--center .toast {
-  left: 50%;
-  transform: translateX(-50%);
+.viewport--center {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translateY(-50%);
 }
+
 /* Toast card */
 .toast {
   position: absolute;
