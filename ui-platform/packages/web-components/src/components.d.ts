@@ -6,7 +6,9 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { IconName } from "./components/icons/icon.registry";
+import { ToastLifecycleDetail, ToastShowOptions } from "@karan9186/core";
 export { IconName } from "./components/icons/icon.registry";
+export { ToastLifecycleDetail, ToastShowOptions } from "@karan9186/core";
 export namespace Components {
     interface UiButton {
         /**
@@ -81,6 +83,30 @@ export namespace Components {
          */
         "value": string;
     }
+    interface UiToast {
+        /**
+          * @default 4000
+         */
+        "defaultDuration": number;
+        "dismiss": (id?: string) => Promise<void>;
+        /**
+          * @default 4
+         */
+        "maxVisible": number;
+        /**
+          * @default true
+         */
+        "pauseOnHover": boolean;
+        "show": (options: ToastShowOptions) => Promise<string>;
+        /**
+          * @default 10
+         */
+        "stackGap": number;
+        /**
+          * @default false
+         */
+        "swipeDismiss": boolean;
+    }
     interface UiToggle {
         "checked"?: boolean;
         /**
@@ -108,6 +134,10 @@ export interface UiCheckboxCustomEvent<T> extends CustomEvent<T> {
 export interface UiInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLUiInputElement;
+}
+export interface UiToastCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLUiToastElement;
 }
 export interface UiToggleCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -173,6 +203,24 @@ declare global {
         prototype: HTMLUiInputElement;
         new (): HTMLUiInputElement;
     };
+    interface HTMLUiToastElementEventMap {
+        "toastShow": ToastLifecycleDetail;
+        "toastClose": ToastLifecycleDetail;
+    }
+    interface HTMLUiToastElement extends Components.UiToast, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLUiToastElementEventMap>(type: K, listener: (this: HTMLUiToastElement, ev: UiToastCustomEvent<HTMLUiToastElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLUiToastElementEventMap>(type: K, listener: (this: HTMLUiToastElement, ev: UiToastCustomEvent<HTMLUiToastElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLUiToastElement: {
+        prototype: HTMLUiToastElement;
+        new (): HTMLUiToastElement;
+    };
     interface HTMLUiToggleElementEventMap {
         "toggleChange": boolean;
     }
@@ -195,6 +243,7 @@ declare global {
         "ui-checkbox": HTMLUiCheckboxElement;
         "ui-icon": HTMLUiIconElement;
         "ui-input": HTMLUiInputElement;
+        "ui-toast": HTMLUiToastElement;
         "ui-toggle": HTMLUiToggleElement;
     }
 }
@@ -279,6 +328,30 @@ declare namespace LocalJSX {
          */
         "value"?: string;
     }
+    interface UiToast {
+        /**
+          * @default 4000
+         */
+        "defaultDuration"?: number;
+        /**
+          * @default 4
+         */
+        "maxVisible"?: number;
+        "onToastClose"?: (event: UiToastCustomEvent<ToastLifecycleDetail>) => void;
+        "onToastShow"?: (event: UiToastCustomEvent<ToastLifecycleDetail>) => void;
+        /**
+          * @default true
+         */
+        "pauseOnHover"?: boolean;
+        /**
+          * @default 10
+         */
+        "stackGap"?: number;
+        /**
+          * @default false
+         */
+        "swipeDismiss"?: boolean;
+    }
     interface UiToggle {
         "checked"?: boolean;
         /**
@@ -321,6 +394,13 @@ declare namespace LocalJSX {
         "disabled": boolean;
         "type": 'text' | 'number';
     }
+    interface UiToastAttributes {
+        "maxVisible": number;
+        "defaultDuration": number;
+        "pauseOnHover": boolean;
+        "stackGap": number;
+        "swipeDismiss": boolean;
+    }
     interface UiToggleAttributes {
         "checked": boolean;
         "defaultChecked": boolean;
@@ -333,6 +413,7 @@ declare namespace LocalJSX {
         "ui-checkbox": Omit<UiCheckbox, keyof UiCheckboxAttributes> & { [K in keyof UiCheckbox & keyof UiCheckboxAttributes]?: UiCheckbox[K] } & { [K in keyof UiCheckbox & keyof UiCheckboxAttributes as `attr:${K}`]?: UiCheckboxAttributes[K] } & { [K in keyof UiCheckbox & keyof UiCheckboxAttributes as `prop:${K}`]?: UiCheckbox[K] };
         "ui-icon": Omit<UiIcon, keyof UiIconAttributes> & { [K in keyof UiIcon & keyof UiIconAttributes]?: UiIcon[K] } & { [K in keyof UiIcon & keyof UiIconAttributes as `attr:${K}`]?: UiIconAttributes[K] } & { [K in keyof UiIcon & keyof UiIconAttributes as `prop:${K}`]?: UiIcon[K] } & OneOf<"name", UiIcon["name"], UiIconAttributes["name"]>;
         "ui-input": Omit<UiInput, keyof UiInputAttributes> & { [K in keyof UiInput & keyof UiInputAttributes]?: UiInput[K] } & { [K in keyof UiInput & keyof UiInputAttributes as `attr:${K}`]?: UiInputAttributes[K] } & { [K in keyof UiInput & keyof UiInputAttributes as `prop:${K}`]?: UiInput[K] };
+        "ui-toast": Omit<UiToast, keyof UiToastAttributes> & { [K in keyof UiToast & keyof UiToastAttributes]?: UiToast[K] } & { [K in keyof UiToast & keyof UiToastAttributes as `attr:${K}`]?: UiToastAttributes[K] } & { [K in keyof UiToast & keyof UiToastAttributes as `prop:${K}`]?: UiToast[K] };
         "ui-toggle": Omit<UiToggle, keyof UiToggleAttributes> & { [K in keyof UiToggle & keyof UiToggleAttributes]?: UiToggle[K] } & { [K in keyof UiToggle & keyof UiToggleAttributes as `attr:${K}`]?: UiToggleAttributes[K] } & { [K in keyof UiToggle & keyof UiToggleAttributes as `prop:${K}`]?: UiToggle[K] };
     }
 }
@@ -344,6 +425,7 @@ declare module "@stencil/core" {
             "ui-checkbox": LocalJSX.IntrinsicElements["ui-checkbox"] & JSXBase.HTMLAttributes<HTMLUiCheckboxElement>;
             "ui-icon": LocalJSX.IntrinsicElements["ui-icon"] & JSXBase.HTMLAttributes<HTMLUiIconElement>;
             "ui-input": LocalJSX.IntrinsicElements["ui-input"] & JSXBase.HTMLAttributes<HTMLUiInputElement>;
+            "ui-toast": LocalJSX.IntrinsicElements["ui-toast"] & JSXBase.HTMLAttributes<HTMLUiToastElement>;
             "ui-toggle": LocalJSX.IntrinsicElements["ui-toggle"] & JSXBase.HTMLAttributes<HTMLUiToggleElement>;
         }
     }

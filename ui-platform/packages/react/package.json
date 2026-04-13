@@ -19,6 +19,7 @@
   },
   "packageManager": "pnpm@10.32.1",
   "dependencies": {
+    "@karan9186/core": "workspace:*",
     "@karan9186/web-components": "workspace:*"
   },
   "peerDependencies": {

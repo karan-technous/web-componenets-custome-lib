@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { UiButton, UiCheckbox, UiInput, Toggle } from "@karan9186/react";
+import {
+  UiButton,
+  UiCheckbox,
+  UiInput,
+  Toggle,
+  useToast,
+} from "@karan9186/react";
 import { ToggleTest } from "./test/toggle.test";
 import { CheckboxTest } from "./test/checkbox.test";
 
@@ -7,7 +13,7 @@ const App = () => {
   const [value, setValue] = useState("");
   const [disabled, setDisabled] = useState(false);
   const [loader, setLoader] = useState(false);
-
+  const toast = useToast();
   const handleLoadingState = () => {
     setLoader(true);
 
@@ -26,7 +32,17 @@ const App = () => {
         onBlur={() => console.log("Blur event")}
       />
       <p>Value: {value}</p>
-      <UiButton onClick={() => setDisabled(!disabled)}>
+      <UiButton
+        onClick={() => {
+          setDisabled(!disabled);
+          toast.show({
+            message: "Hello Toast 🚀",
+            type: "info",
+            position: "top-right",
+            duration: 1000000,
+          });
+        }}
+      >
         setDisabled or enabled toggle
       </UiButton>
       <br /> <br />
@@ -34,6 +50,7 @@ const App = () => {
         set default value
       </UiButton>
       <br /> <br />
+      <h1>sdfhsdfhksdhfksdhfksdhfkhsdfhsdhfi---------------------</h1>
       <UiButton loading={loader} onClick={handleLoadingState}>
         Preview
       </UiButton>

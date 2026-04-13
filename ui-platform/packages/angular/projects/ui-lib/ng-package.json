@@ -5,6 +5,7 @@
     "entryFile": "src/public-api.ts"
   },
   "allowedNonPeerDependencies": [
+    "@karan9186/core",
     "@karan9186/web-components"
   ]
 }

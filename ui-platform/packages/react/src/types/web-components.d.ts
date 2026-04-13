@@ -33,6 +33,11 @@ declare module "react" {
         disabled?: boolean;
         size?: "sm" | "md" | "lg";
       };
+
+      "ui-toast": React.DetailedHTMLProps<
+        React.HTMLAttributes<HTMLElement>,
+        HTMLElement
+      >;
     }
   }
 }

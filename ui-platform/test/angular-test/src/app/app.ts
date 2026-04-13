@@ -4,6 +4,7 @@ import { InputComponent } from '@karan9186/angular';
 import { UiCheckboxComponent } from '@karan9186/angular';
 import { UiToggleComponent } from '@karan9186/angular';
 import { ButtonTestComponent } from './test/button-test/button-test';
+import { InputTest } from "./test/input-test/input-test";
 
 @Component({
   selector: 'app-root',
@@ -13,7 +14,8 @@ import { ButtonTestComponent } from './test/button-test/button-test';
     UiCheckboxComponent,
     ButtonTestComponent,
     UiToggleComponent,
-  ],
+    InputTest
+],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './app.html',
   styleUrl: './app.css',

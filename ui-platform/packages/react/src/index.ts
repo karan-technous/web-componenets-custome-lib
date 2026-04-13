@@ -5,3 +5,4 @@ export * from "./components/button/Button.js";
 export * from "./components/input/Input.js";
 export * from "./components/toggle/Toggle.js";
 export * from "./components/checkbox/Checkbox.js";
+export * from "./components/toast/index.js";

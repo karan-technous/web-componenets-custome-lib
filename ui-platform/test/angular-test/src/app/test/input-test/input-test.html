@@ -19,3 +19,20 @@
     </div>
   }
 </div>
+
+<h1>toaster here</h1>
+<ui-toast-angular></ui-toast-angular>
+<button
+  [toastTrigger]="{
+    message: 'Hello Directive 🚀',
+    type: 'success',
+    position: 'top-right',
+  }"
+>
+  Show via Directive
+</button>
+
+<br /><br />
+
+<!-- Service usage -->
+<button (click)="manual()">Manual Toast</button>

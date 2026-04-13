@@ -1,6 +1,11 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { InputComponent } from '@karan9186/angular';
+import {
+  InputComponent,
+  ToastService,
+  ToastTriggerDirective,
+  UiToastComponent,
+} from '@karan9186/angular';
 
 type InputItem = {
   value: string;
@@ -11,12 +16,13 @@ type InputItem = {
 @Component({
   selector: 'app-input-test',
   standalone: true,
-  imports: [InputComponent],
+  imports: [InputComponent, UiToastComponent, ToastTriggerDirective],
   templateUrl: './input-test.html',
 })
 export class InputTest {
   TOTAL = 500;
 
+  constructor(private toast: ToastService) {}
   inputs = signal<InputItem[]>(
     Array.from({ length: this.TOTAL }, (_, i) => ({
       value: '',
@@ -64,5 +70,9 @@ export class InputTest {
         value: `Value ${i}`,
       })),
     );
+  }
+
+  manual() {
+    this.toast.success('Manual trigger 🔥');
   }
 }

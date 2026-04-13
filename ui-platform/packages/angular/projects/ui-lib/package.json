@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "tslib": "^2.3.0",
+    "@karan9186/core": "1.0.6",
     "@karan9186/web-components": "1.0.6"
   },
   "sideEffects": false,
