@@ -11,44 +11,38 @@
 
 /* Viewport positions */
 .viewport {
-  position: absolute;
-  pointer-events: none;
-  padding: 20px; /* creates hover-safe zone */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  pointer-events: auto;
+  margin: 20px;
 }
 
-.viewport--top-right {
-  top: 16px;
-  right: 16px;
-  align-items: flex-end;
-}
-
-.viewport--top-left {
-  top: 16px;
-  left: 16px;
-}
-
-.viewport--bottom-right {
-  bottom: 16px;
-  right: 16px;
-  align-items: flex-end;
-}
-
+.viewport--bottom-right,
 .viewport--bottom-left {
-  bottom: 16px;
-  left: 16px;
+  flex-direction: column-reverse;
+}
+/* RIGHT */
+.viewport--top-right .toast,
+.viewport--bottom-right .toast {
+  right: 0;
 }
 
-.viewport--center {
-  top: 50%;
+/* LEFT */
+.viewport--top-left .toast,
+.viewport--bottom-left .toast {
+  left: 0;
+}
+
+/* CENTER */
+.viewport--center .toast {
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
 }
-
 /* Toast card */
 .toast {
   position: absolute;
   display: flex;
-  right: 0;
   align-items: center;
   gap: 12px;
   min-width: 280px;

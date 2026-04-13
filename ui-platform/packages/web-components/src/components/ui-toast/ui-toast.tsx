@@ -255,6 +255,10 @@ export class UiToast {
 
   private getAllToastsForPosition(position: ToastPosition) {
     const active = this.activeToasts.filter(t => t.position === position);
+
+    //  only show queued on hover
+    if (!this.isHovered) return active;
+
     const queued = this.positionQueues[position];
 
     return [...active, ...queued];
@@ -507,13 +511,16 @@ export class UiToast {
   }
 
   private renderToast(toastItem: ActiveToast, index: number, total: number) {
+    const isBottom = toastItem.position.includes('bottom');
     const isActive = this.activeToasts.some(t => t.id === toastItem.id);
     const iconName = ICON_BY_TYPE[toastItem.type];
 
     const offset = total - index - 1;
 
     // Sonner-style physics
-    const y = offset * (this.isHovered ? 57 : 8);
+    const direction = isBottom ? -1 : 1;
+
+    const y = direction * offset * (this.isHovered ? 57 : 8);
     const scale = this.isHovered ? 1 : 1 - offset * 0.04;
     const opacity = this.isHovered ? 1 : 1 - offset * 0.15;
     const blur = this.isHovered ? 0 : offset * 1.5;
