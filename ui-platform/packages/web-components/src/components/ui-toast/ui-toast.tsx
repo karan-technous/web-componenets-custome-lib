@@ -253,6 +253,13 @@ export class UiToast {
     return POSITIONS.some(position => this.positionQueues[position].some(toastItem => toastItem.dedupeToken === request.dedupeToken));
   }
 
+  private getAllToastsForPosition(position: ToastPosition) {
+    const active = this.activeToasts.filter(t => t.position === position);
+    const queued = this.positionQueues[position];
+
+    return [...active, ...queued];
+  }
+
   private getMaxVisible() {
     if (!Number.isFinite(this.maxVisible)) {
       return 4;
@@ -469,7 +476,38 @@ export class UiToast {
     this.resumeToast(id);
   };
 
+  private hoverTimeout?: any;
+
+  private handleMouseEnter = () => {
+    clearTimeout(this.hoverTimeout);
+    this.isHovered = true;
+  };
+
+  private handleMouseLeave = () => {
+    clearTimeout(this.hoverTimeout);
+
+    // small delay prevents flicker when crossing gaps
+    this.hoverTimeout = setTimeout(() => {
+      this.isHovered = false;
+    }, 80); // tweak 60–120ms
+  };
+
+  private toRenderableToast(toast: QueuedToast | ActiveToast): ActiveToast {
+    if ('phase' in toast) {
+      return toast; // already ActiveToast
+    }
+
+    // convert QueuedToast → ActiveToast (virtual)
+    return {
+      ...toast,
+      phase: 'visible', // fake but safe
+      remaining: toast.duration,
+      swipeX: 0,
+    };
+  }
+
   private renderToast(toastItem: ActiveToast, index: number, total: number) {
+    const isActive = this.activeToasts.some(t => t.id === toastItem.id);
     const iconName = ICON_BY_TYPE[toastItem.type];
 
     const offset = total - index - 1;
@@ -501,13 +539,13 @@ export class UiToast {
         data-toast-id={toastItem.id}
         tabIndex={0}
         role={toastItem.type === 'error' ? 'alert' : 'status'}
-        onMouseEnter={() => this.pauseToast(toastItem.id)}
-        onMouseLeave={() => this.resumeToast(toastItem.id)}
+        onMouseEnter={() => isActive && this.pauseToast(toastItem.id)}
+        onMouseLeave={() => isActive && this.resumeToast(toastItem.id)}
+        onPointerDown={e => isActive && this.onSwipeStart(e, toastItem.id)}
+        onPointerMove={e => isActive && this.onSwipeMove(e, toastItem.id)}
+        onPointerUp={e => isActive && this.onSwipeEnd(e, toastItem.id)}
+        onPointerCancel={() => isActive && this.onSwipeCancel(toastItem.id)}
         onFocusin={() => this.onToastFocus(toastItem.id)}
-        onPointerDown={e => this.onSwipeStart(e, toastItem.id)}
-        onPointerMove={e => this.onSwipeMove(e, toastItem.id)}
-        onPointerUp={e => this.onSwipeEnd(e, toastItem.id)}
-        onPointerCancel={() => this.onSwipeCancel(toastItem.id)}
       >
         <div class="toast__rail" />
 
@@ -519,7 +557,7 @@ export class UiToast {
           <slot name={toastItem.slot || `toast-${toastItem.id}`}>{toastItem.message}</slot>
         </div>
 
-        {toastItem.closable && (
+        {toastItem.closable && isActive && (
           <button class="toast__close" onClick={() => this.beginClose(toastItem.id, 'manual')}>
             <ui-icon name="X" size="sm" />
           </button>
@@ -539,16 +577,15 @@ export class UiToast {
         </div>
 
         {POSITIONS.map(position => {
-          const toastsForPosition = this.activeToasts.filter(t => t.position === position);
-
+          const toastsForPosition = this.getAllToastsForPosition(position);
           if (!toastsForPosition.length) return null;
 
           return (
-            <section key={position} class={`viewport viewport--${position}`} onMouseEnter={() => (this.isHovered = true)} onMouseLeave={() => (this.isHovered = false)}>
+            <section key={position} class={`viewport viewport--${position}`} onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave}>
               {toastsForPosition
                 .slice() // copy
                 .reverse() // IMPORTANT
-                .map((toastItem, index) => this.renderToast(toastItem, index, toastsForPosition.length))}
+                .map((toastItem, index) => this.renderToast(this.toRenderableToast(toastItem), index, toastsForPosition.length))}
             </section>
           );
         })}

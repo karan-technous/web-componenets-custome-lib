@@ -13,6 +13,7 @@
 .viewport {
   position: absolute;
   pointer-events: none;
+  padding: 20px; /* creates hover-safe zone */
 }
 
 .viewport--top-right {
