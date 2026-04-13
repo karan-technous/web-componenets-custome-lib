@@ -121,13 +121,6 @@ export class UiToast {
       return;
     }
 
-    const activeCountForPosition = this.activeToasts.filter(toastItem => toastItem.position === normalized.position).length;
-
-    if (activeCountForPosition >= this.getMaxVisible()) {
-      this.positionQueues[normalized.position].push(normalized);
-      return;
-    }
-
     this.activate(normalized);
   }
 
@@ -215,10 +208,9 @@ export class UiToast {
   }
 
   private promoteQueued(position: ToastPosition) {
-    const maxVisible = this.getMaxVisible();
     let activeCount = this.activeToasts.filter(toastItem => toastItem.position === position).length;
 
-    while (activeCount < maxVisible && this.positionQueues[position].length > 0) {
+    while (activeCount && this.positionQueues[position].length > 0) {
       const next = this.positionQueues[position].shift();
       if (!next) {
         break;
@@ -262,14 +254,6 @@ export class UiToast {
     const queued = this.positionQueues[position];
 
     return [...active, ...queued];
-  }
-
-  private getMaxVisible() {
-    if (!Number.isFinite(this.maxVisible)) {
-      return 4;
-    }
-
-    return Math.max(1, Math.floor(this.maxVisible));
   }
 
   private startTimer(id: string, delayMs: number) {
@@ -519,16 +503,31 @@ export class UiToast {
 
     // Sonner-style physics
     const direction = isBottom ? -1 : 1;
+    let baseEnterY = 0;
 
-    const y = direction * offset * (this.isHovered ? 57 : 8);
+    if (toastItem.phase === 'entering') {
+      if (toastItem.position.includes('top')) {
+        baseEnterY = -40; // from top
+      } else if (toastItem.position.includes('bottom')) {
+        baseEnterY = 40; // from bottom
+      } else {
+        baseEnterY = 10; // center subtle
+      }
+    }
+
+    const y = baseEnterY + direction * offset * (this.isHovered ? 57 : 8);
     const scale = this.isHovered ? 1 : 1 - offset * 0.04;
     const opacity = this.isHovered ? 1 : 1 - offset * 0.15;
     const blur = this.isHovered ? 0 : offset * 1.5;
 
     const style = {
-      transform: `translateY(${y}px) scale(${scale}) translateX(${toastItem.swipeX}px)`,
+      transform: `
+    translateY(${y}px)
+    scale(${scale})
+    translateX(${toastItem.swipeX}px)
+  `,
       zIndex: `${100 + index}`,
-      opacity: `${opacity}`,
+      opacity: `${toastItem.phase === 'entering' ? 0 : opacity}`,
       filter: `blur(${blur}px)`,
       transformOrigin: 'top right',
       transition: 'all 240ms cubic-bezier(0.22, 1, 0.36, 1)',
