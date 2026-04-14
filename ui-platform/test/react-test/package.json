@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@karan9186/core": "workspace:*",
     "@karan9186/main": "workspace:*",
     "@karan9186/react": "workspace:*",
     "@karan9186/web-components": "workspace:^",

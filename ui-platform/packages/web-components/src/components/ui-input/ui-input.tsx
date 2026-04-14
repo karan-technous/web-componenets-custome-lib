@@ -1,11 +1,12 @@
 import { Component, Prop, Event, EventEmitter, h, Watch } from '@stencil/core';
+import { BaseComponent } from '../base/base-component';
 
 @Component({
   tag: 'ui-input',
   shadow: true,
   styleUrl: 'ui-input.css',
 })
-export class UiInput {
+export class UiInput extends BaseComponent {
   @Prop() value: string = '';
   @Prop({ reflect: true }) placeholder: string = '';
   @Prop({ reflect: true }) disabled: boolean = false;

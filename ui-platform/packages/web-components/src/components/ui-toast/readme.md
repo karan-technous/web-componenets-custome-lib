@@ -7,13 +7,13 @@
 
 ## Properties
 
-| Property          | Attribute          | Description | Type      | Default |
-| ----------------- | ------------------ | ----------- | --------- | ------- |
-| `defaultDuration` | `default-duration` |             | `number`  | `4000`  |
-| `maxVisible`      | `max-visible`      |             | `number`  | `4`     |
-| `pauseOnHover`    | `pause-on-hover`   |             | `boolean` | `true`  |
-| `stackGap`        | `stack-gap`        |             | `number`  | `10`    |
-| `swipeDismiss`    | `swipe-dismiss`    |             | `boolean` | `false` |
+| Property          | Attribute          | Description | Type      | Default     |
+| ----------------- | ------------------ | ----------- | --------- | ----------- |
+| `defaultDuration` | `default-duration` |             | `number`  | `undefined` |
+| `maxVisible`      | `max-visible`      |             | `number`  | `undefined` |
+| `pauseOnHover`    | `pause-on-hover`   |             | `boolean` | `undefined` |
+| `stackGap`        | `stack-gap`        |             | `number`  | `undefined` |
+| `swipeDismiss`    | `swipe-dismiss`    |             | `boolean` | `undefined` |
 
 
 ## Events

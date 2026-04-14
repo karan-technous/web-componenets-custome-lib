@@ -1,20 +1,8 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
-
-type ToastOptions = {
-  message: string;
-  type?: "success" | "error" | "warning" | "info";
-  position?:
-    | "top-left"
-    | "top-right"
-    | "bottom-left"
-    | "bottom-right"
-    | "center";
-  duration?: number;
-  closable?: boolean;
-};
+import { ToastShowOptions } from "@karan9186/core";
 
 export type UiToastRef = {
-  show: (opts: ToastOptions) => void;
+  show: (opts: ToastShowOptions) => void;
   dismiss: (id?: string) => void;
 };
 

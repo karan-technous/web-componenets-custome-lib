@@ -1,4 +1,5 @@
 import { Component, Prop, h } from '@stencil/core';
+import { BaseComponent } from '../base/base-component';
 import { ICONS, IconName } from '../icons/icon.registry';
 
 @Component({
@@ -6,7 +7,7 @@ import { ICONS, IconName } from '../icons/icon.registry';
   shadow: true,
   styleUrl: 'ui-icon.css',
 })
-export class UiIcon {
+export class UiIcon extends BaseComponent {
   @Prop() name!: IconName;
   @Prop() size: 'sm' | 'md' | 'lg' = 'md';
   @Prop() stroke: number = 2;

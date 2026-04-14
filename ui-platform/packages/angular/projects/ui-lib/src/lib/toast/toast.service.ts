@@ -1,4 +1,16 @@
 import { Injectable, signal } from '@angular/core';
+import { ToastShowOptions, configureToast } from '@karan9186/core';
+
+// Initialize toast configuration with default settings
+// Users can override this by calling configureToast() in their app
+configureToast({
+  maxVisible: 4,
+  hoverLimit: 3,
+  defaultDuration: 4000,
+  stackGap: 10,
+  pauseOnHover: true,
+  swipeDismiss: false,
+});
 
 @Injectable({ providedIn: 'root' })
 export class ToastService {
@@ -8,7 +20,7 @@ export class ToastService {
     this.instance.set(el);
   }
 
-  show(options: any) {
+  show(options: ToastShowOptions) {
     this.instance()?.show(options);
   }
 

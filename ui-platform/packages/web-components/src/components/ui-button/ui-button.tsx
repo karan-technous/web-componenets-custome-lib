@@ -1,11 +1,13 @@
 import { Component, Event, EventEmitter, h, Prop } from '@stencil/core';
+import { BaseComponent } from '../base/base-component';
 
 @Component({
   tag: 'ui-button',
   styleUrl: 'ui-button.css',
   shadow: true,
 })
-export class UiButton {
+export class UiButton extends BaseComponent {
+  
   @Prop() variant: 'primary' | 'secondary' | 'outline' = 'primary';
   @Prop() size: 'sm' | 'md' | 'lg' = 'md';
 
@@ -15,6 +17,7 @@ export class UiButton {
 
   @Event() uiClick!: EventEmitter<void>;
 
+  
   private handleClick = (e: MouseEvent) => {
     if (!this.disabled && !this.loading) {
       this.uiClick.emit();

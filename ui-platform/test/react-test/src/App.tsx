@@ -37,9 +37,12 @@ const App = () => {
           setDisabled(!disabled);
           toast.show({
             message: "Hello Toast 🚀",
-            type: "info",
+            type: "success",
             position: "top-right",
-            duration: 1000000,
+            duration: 3000,
+            closable:false,
+            slot: "test",
+            dedupe: true,
           });
         }}
       >

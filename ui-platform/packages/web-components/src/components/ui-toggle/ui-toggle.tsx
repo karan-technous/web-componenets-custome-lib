@@ -1,11 +1,12 @@
 import { Component, h, Prop, Event, EventEmitter } from '@stencil/core';
+import { BaseComponent } from '../base/base-component';
 
 @Component({
   tag: 'ui-toggle',
   shadow: true,
   styleUrl: 'ui-toggle.css',
 })
-export class UiToggle {
+export class UiToggle extends BaseComponent {
   @Prop({ mutable: true, reflect: true }) checked?: boolean;
   @Prop() defaultChecked: boolean = false;
 
@@ -17,6 +18,7 @@ export class UiToggle {
   private internalChecked = false;
 
   componentWillLoad() {
+    super.componentWillLoad();
     this.internalChecked = this.checked ?? this.defaultChecked ?? false;
   }
 

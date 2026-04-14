@@ -55,3 +55,21 @@ export interface ToastLifecycleDetail {
   toast: ToastRequest;
   reason?: ToastCloseReason;
 }
+
+export interface ToastConfig {
+  maxVisible?: number;
+  hoverLimit?: number;
+  defaultDuration?: number;
+  stackGap?: number;
+  pauseOnHover?: boolean;
+  swipeDismiss?: boolean;
+}
+
+export interface ToastSettings {
+  maxVisible: number;
+  hoverLimit: number;
+  defaultDuration: number;
+  stackGap: number;
+  pauseOnHover: boolean;
+  swipeDismiss: boolean;
+}

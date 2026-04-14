@@ -84,27 +84,12 @@ export namespace Components {
         "value": string;
     }
     interface UiToast {
-        /**
-          * @default 4000
-         */
         "defaultDuration": number;
         "dismiss": (id?: string) => Promise<void>;
-        /**
-          * @default 4
-         */
         "maxVisible": number;
-        /**
-          * @default true
-         */
         "pauseOnHover": boolean;
         "show": (options: ToastShowOptions) => Promise<string>;
-        /**
-          * @default 10
-         */
         "stackGap": number;
-        /**
-          * @default false
-         */
         "swipeDismiss": boolean;
     }
     interface UiToggle {
@@ -329,27 +314,12 @@ declare namespace LocalJSX {
         "value"?: string;
     }
     interface UiToast {
-        /**
-          * @default 4000
-         */
         "defaultDuration"?: number;
-        /**
-          * @default 4
-         */
         "maxVisible"?: number;
         "onToastClose"?: (event: UiToastCustomEvent<ToastLifecycleDetail>) => void;
         "onToastShow"?: (event: UiToastCustomEvent<ToastLifecycleDetail>) => void;
-        /**
-          * @default true
-         */
         "pauseOnHover"?: boolean;
-        /**
-          * @default 10
-         */
         "stackGap"?: number;
-        /**
-          * @default false
-         */
         "swipeDismiss"?: boolean;
     }
     interface UiToggle {

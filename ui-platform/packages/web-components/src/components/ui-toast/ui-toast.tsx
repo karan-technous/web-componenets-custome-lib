@@ -1,5 +1,6 @@
-import { Component, Element, Event, EventEmitter, h, Host, Method, Prop, State } from '@stencil/core';
-import { ToastCloseReason, ToastLifecycleDetail, ToastPosition, ToastRequest, ToastShowOptions, ToastType, toast } from '@karan9186/core';
+import { Component, Event, EventEmitter, h, Host, Method, Prop, State } from '@stencil/core';
+import { BaseComponent } from '../base/base-component';
+import { ToastCloseReason, ToastLifecycleDetail, ToastPosition, ToastRequest, ToastShowOptions, ToastType, toast, getToastHoverLimit, getToastSettings } from '@karan9186/core';
 
 type ToastPhase = 'entering' | 'visible' | 'exiting';
 
@@ -42,14 +43,38 @@ function createEmptyQueues() {
   styleUrl: 'ui-toast.css',
   shadow: true,
 })
-export class UiToast {
-  @Element() el!: HTMLElement;
+export class UiToast extends BaseComponent {
   @State() isHovered: boolean = false;
-  @Prop({ reflect: true }) maxVisible: number = 4;
-  @Prop({ reflect: true }) defaultDuration: number = 4000;
-  @Prop({ reflect: true }) pauseOnHover: boolean = true;
-  @Prop({ reflect: true }) stackGap: number = 10;
-  @Prop({ reflect: true }) swipeDismiss: boolean = false;
+  // Use core configuration as defaults
+  private get config() {
+    return getToastSettings();
+  }
+  
+  @Prop({ reflect: true }) maxVisible: number;
+  @Prop({ reflect: true }) defaultDuration: number;
+  @Prop({ reflect: true }) pauseOnHover: boolean;
+  @Prop({ reflect: true }) stackGap: number;
+  @Prop({ reflect: true }) swipeDismiss: boolean;
+
+  private getMaxVisible(): number {
+    return this.maxVisible ?? this.config.maxVisible;
+  }
+
+  private getDefaultDuration(): number {
+    return this.defaultDuration ?? this.config.defaultDuration;
+  }
+
+  private getPauseOnHover(): boolean {
+    return this.pauseOnHover ?? this.config.pauseOnHover;
+  }
+
+  private getStackGap(): number {
+    return this.stackGap ?? this.config.stackGap;
+  }
+
+  private getSwipeDismiss(): boolean {
+    return this.swipeDismiss ?? this.config.swipeDismiss;
+  }
 
   @Event() toastShow!: EventEmitter<ToastLifecycleDetail>;
   @Event() toastClose!: EventEmitter<ToastLifecycleDetail>;
@@ -217,8 +242,9 @@ export class UiToast {
 
   private promoteQueued(position: ToastPosition) {
     let activeCount = this.activeToasts.filter(toastItem => toastItem.position === position).length;
+    const maxVisible = this.getMaxVisible();
 
-    while (activeCount && this.positionQueues[position].length > 0) {
+    while (activeCount < maxVisible && this.positionQueues[position].length > 0) {
       const next = this.positionQueues[position].shift();
       if (!next) {
         break;
@@ -232,7 +258,7 @@ export class UiToast {
   private normalize(request: ToastRequest): QueuedToast {
     const dedupeToken = request.dedupe || request.dedupeKey ? request.dedupeKey || `${request.position}:${request.type}:${request.message.trim()}` : undefined;
 
-    const duration = request.duration < 0 ? this.defaultDuration : request.duration;
+    const duration = request.duration < 0 ? this.getDefaultDuration() : request.duration;
 
     return {
       ...request,
@@ -260,7 +286,9 @@ export class UiToast {
     if (!this.isHovered) return active;
 
     const queued = this.positionQueues[position];
-
+    
+    // Always return all toasts to prevent DOM removal glitch
+    // We'll use CSS classes to control visibility on hover
     return [...active, ...queued];
   }
 
@@ -304,7 +332,7 @@ export class UiToast {
   }
 
   private pauseToast(id: string) {
-    if (!this.pauseOnHover) {
+    if (!this.getPauseOnHover()) {
       return;
     }
 
@@ -397,13 +425,13 @@ export class UiToast {
     this.lastFocusedToastId = next.id;
 
     requestAnimationFrame(() => {
-      const nextElement = this.el.shadowRoot?.querySelector<HTMLElement>(`[data-toast-id="${next.id}"]`);
+      const nextElement = this.element.shadowRoot?.querySelector<HTMLElement>(`[data-toast-id="${next.id}"]`);
       nextElement?.focus();
     });
   }
 
   private onSwipeStart = (event: PointerEvent, id: string) => {
-    if (!this.swipeDismiss) {
+    if (!this.getSwipeDismiss()) {
       return;
     }
 
@@ -420,7 +448,7 @@ export class UiToast {
   };
 
   private onSwipeMove = (event: PointerEvent, id: string) => {
-    if (!this.swipeDismiss) {
+    if (!this.getSwipeDismiss()) {
       return;
     }
 
@@ -436,7 +464,7 @@ export class UiToast {
   };
 
   private onSwipeEnd = (event: PointerEvent, id: string) => {
-    if (!this.swipeDismiss) {
+    if (!this.getSwipeDismiss()) {
       return;
     }
 
@@ -461,7 +489,7 @@ export class UiToast {
   };
 
   private onSwipeCancel = (id: string) => {
-    if (!this.swipeDismiss) {
+    if (!this.getSwipeDismiss()) {
       return;
     }
 
@@ -481,11 +509,10 @@ export class UiToast {
 
   private handleMouseLeave = () => {
     clearTimeout(this.hoverTimeout);
-
     // small delay prevents flicker when crossing gaps
     this.hoverTimeout = setTimeout(() => {
       this.isHovered = false;
-    }, 80); // tweak 60–120ms
+    }, 80); // tweak 60-120ms
   };
 
   private toRenderableToast(toast: QueuedToast | ActiveToast): ActiveToast {
@@ -504,41 +531,65 @@ export class UiToast {
 
   private renderToast(toastItem: ActiveToast, index: number, total: number) {
     const isBottom = toastItem.position.includes('bottom');
+    const isCenter = toastItem.position === 'center';
     const isActive = this.activeToasts.some(t => t.id === toastItem.id);
     const iconName = ICON_BY_TYPE[toastItem.type];
 
-    const offset = total - index - 1;
+    // Hover limit: Hide toasts beyond 3rd when hovered
+    const hoverLimit = getToastHoverLimit();
+    const isHoveredHidden = this.isHovered && index >= hoverLimit;
 
-    // Sonner-style physics
-    const direction = isBottom ? -1 : 1;
-    let baseEnterY = 0;
-
+    // Index 0 = latest toast (top-most visually)
+    const offset = index;
+    const stackGap = this.isHovered ? 57 : 8;
+    
+    // Entry animation based on position
+    let entryOffset = 0;
     if (toastItem.phase === 'entering') {
       if (toastItem.position.includes('top')) {
-        baseEnterY = -40; // from top
+        entryOffset = -40; // slide from top
       } else if (toastItem.position.includes('bottom')) {
-        baseEnterY = 40; // from bottom
-      } else {
-        baseEnterY = 10; // center subtle
+        entryOffset = 40; // slide from bottom
+      } else if (isCenter) {
+        entryOffset = 10; // subtle center entry
       }
     }
 
-    const y = baseEnterY + direction * offset * (this.isHovered ? 57 : 8);
-    const scale = this.isHovered ? 1 : 1 - offset * 0.04;
-    const opacity = this.isHovered ? 1 : 1 - offset * 0.15;
-    const blur = this.isHovered ? 0 : offset * 1.5;
+    // Stack positioning
+    let stackY = 0;
+    if (!isCenter) {
+      // For top/bottom positions, stack vertically
+      const direction = isBottom ? -1 : 1;
+      stackY = direction * offset * stackGap;
+    } else {
+      // For center position, stack vertically downward
+      stackY = offset * stackGap;
+    }
+
+    // Combined Y position (entry + stack)
+    const y = entryOffset + stackY;
+    
+    // Visual hierarchy
+    const scale = isHoveredHidden ? 0.8 : (this.isHovered ? 1 : 1 - offset * 0.04);
+    const opacity = isHoveredHidden ? 0 : (toastItem.phase === 'entering' ? 0 : (this.isHovered ? 1 : 1 - offset * 0.15));
+    const blur = isHoveredHidden ? 0 : (this.isHovered ? 0 : offset * 1.5);
+    const translateYOffset = isHoveredHidden ? -20 : 0;
+
+    // Z-index: latest toast gets highest z-index
+    const zIndex = 100 + (total - offset - 1);
 
     const style = {
       transform: `
-    translateY(${y}px)
-    scale(${scale})
-    translateX(${toastItem.swipeX}px)
-  `,
-      zIndex: `${100 + index}`,
-      opacity: `${toastItem.phase === 'entering' ? 0 : opacity}`,
+        translateY(${y + translateYOffset}px)
+        scale(${scale})
+        translateX(${toastItem.swipeX}px)
+      `,
+      zIndex: `${zIndex}`,
+      opacity: `${opacity}`,
       filter: `blur(${blur}px)`,
-      transformOrigin: 'top right',
+      transformOrigin: isCenter ? 'center' : (isBottom ? 'bottom right' : 'top right'),
       transition: 'all 240ms cubic-bezier(0.22, 1, 0.36, 1)',
+      pointerEvents: isHoveredHidden ? 'none' : 'auto',
     };
 
     return (
@@ -564,7 +615,7 @@ export class UiToast {
         <div class="toast__rail" />
 
         <div class="toast__icon">
-          <ui-icon name={iconName as any} size="sm" />
+          <ui-icon name={iconName as any} size="lg" />
         </div>
 
         <div class="toast__content">
@@ -573,7 +624,7 @@ export class UiToast {
 
         {toastItem.closable && isActive && (
           <button class="toast__close" onClick={() => this.beginClose(toastItem.id, 'manual')}>
-            <ui-icon name="X" size="sm" />
+            <ui-icon name="X" size="md" />
           </button>
         )}
       </article>
@@ -583,7 +634,7 @@ export class UiToast {
     return (
       <Host
         style={{
-          '--ui-toast-gap': `${Math.max(0, this.stackGap)}px`,
+          '--ui-toast-gap': `${Math.max(0, this.getStackGap())}px`,
         }}
       >
         <div class="sr-only" aria-live={this.liveMode} aria-atomic="true">

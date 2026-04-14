@@ -1,5 +1,17 @@
 import React, { createContext, useContext, useRef } from "react";
 import { UiToast, UiToastRef } from "./Toast";
+import { ToastShowOptions, configureToast } from "@karan9186/core";
+
+// Initialize toast configuration with default settings
+// Users can override this by calling configureToast() in their app
+configureToast({
+  maxVisible: 4,
+  hoverLimit: 3,
+  defaultDuration: 4000,
+  stackGap: 10,
+  pauseOnHover: true,
+  swipeDismiss: false,
+});
 
 const ToastContext = createContext<React.RefObject<UiToastRef | null> | null>(
   null,
@@ -21,7 +33,7 @@ export const useToast = () => {
   const ctx = useContext(ToastContext);
 
   return {
-    show: (opts: any) => ctx?.current?.show(opts),
+    show: (opts: ToastShowOptions) => ctx?.current?.show(opts),
     dismiss: (id?: string) => ctx?.current?.dismiss(id),
   };
 };

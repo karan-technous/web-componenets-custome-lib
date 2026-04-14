@@ -1,11 +1,12 @@
 import { Component, Event, EventEmitter, h, Prop, Watch } from '@stencil/core';
+import { BaseComponent } from '../base/base-component';
 
 @Component({
   tag: 'ui-checkbox',
   shadow: true,
   styleUrl: 'ui-checkbox.css',
 })
-export class UiCheckbox {
+export class UiCheckbox extends BaseComponent {
   @Prop({ mutable: true, reflect: true }) checked: boolean = false;
   @Prop({ reflect: true }) disabled: boolean = false;
   @Prop({ reflect: true }) size: 'sm' | 'md' | 'lg' = 'md';

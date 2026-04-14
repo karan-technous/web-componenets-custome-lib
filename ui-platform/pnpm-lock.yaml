@@ -348,6 +348,9 @@ importers:
       '@karan9186/angular':
         specifier: workspace:*
         version: link:../../packages/angular/projects/ui-lib
+      '@karan9186/core':
+        specifier: workspace:*
+        version: link:../../packages/core
       '@karan9186/main':
         specifier: workspace:*
         version: link:../../meta/karan9186
@@ -394,6 +397,9 @@ importers:
 
   test/react-test:
     dependencies:
+      '@karan9186/core':
+        specifier: workspace:*
+        version: link:../../packages/core
       '@karan9186/main':
         specifier: workspace:*
         version: link:../../meta/karan9186

@@ -1,6 +1,6 @@
-import { Theme } from "./theme";
+import { Theme, applyTheme as applyThemeCore } from "./theme";
 
-export function applyTheme(
+export function applyThemeToElement(
   theme: Theme,
   root: HTMLElement = document.documentElement,
 ) {
@@ -8,3 +8,5 @@ export function applyTheme(
     root.style.setProperty(key, value);
   });
 }
+
+export { applyThemeCore as applyTheme };
