@@ -6,16 +6,16 @@
   "type": "module",
   "scripts": {
     "build": "pnpm --filter ./packages/core --filter ./packages/web-components --filter ./packages/react --filter ./packages/angular -r build",
-    "dev": "concurrently -k -n bridge,react,angular,wc \"pnpm --filter bridge-app dev\" \"pnpm --filter react-renderer dev\" \"pnpm --filter angular-renderer dev\" \"pnpm --filter wc-renderer dev\"",
+    "dev:renderer": "concurrently -k -n bridge,react,angular,wc \"pnpm --filter bridge-app dev\" \"pnpm --filter react-renderer dev\" \"pnpm --filter angular-renderer dev\" \"pnpm --filter wc-renderer dev\"",
     "dev:packages": "pnpm --filter ./packages/core --filter ./packages/web-components --filter ./packages/react --filter ./packages/angular -r --parallel run dev",
+    "dev:packages-with-test": "pnpm --filter ./packages/core --filter ./packages/web-components --filter ./packages/react --filter ./packages/angular --filter ./test/angular-test --filter ./test/react-test -r --parallel run dev",
     "publish:prepare": "pnpm run build && node scripts/prepare-publish.js",
     "publish:dry-run": "node scripts/publish-packages.js --dry-run",
     "publish:all": "node scripts/publish-packages.js",
     "test": "echo \"No root test runner configured\"",
     "build2": "pnpm -r build && node scripts/build-all.js",
     "pack:tarball": "pnpm run build2 && npm pack --ignore-scripts",
-    "prepack": "pnpm -r build && node scripts/build-all.js",
-    "karan9186": "pnpm -r --parallel run dev"
+    "prepack": "pnpm -r build && node scripts/build-all.js"
   },
   "pnpm": {
     "overrides": {
