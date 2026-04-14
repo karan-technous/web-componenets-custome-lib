@@ -42,6 +42,23 @@ Type: `Promise<void>`
 
 
 
+### `promise<T>(promise: Promise<T>, options: ToastPromiseOptions) => Promise<string>`
+
+
+
+#### Parameters
+
+| Name      | Type                  | Description |
+| --------- | --------------------- | ----------- |
+| `promise` | `Promise<T>`          |             |
+| `options` | `ToastPromiseOptions` |             |
+
+#### Returns
+
+Type: `Promise<string>`
+
+
+
 ### `show(options: ToastShowOptions) => Promise<string>`
 
 

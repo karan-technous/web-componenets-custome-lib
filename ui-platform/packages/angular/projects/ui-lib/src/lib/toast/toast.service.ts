@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { ToastShowOptions, configureToast } from '@karan9186/core';
+import { ToastShowOptions, ToastPromiseOptions, configureToast } from '@karan9186/core';
 
 // Initialize toast configuration with default settings
 // Users can override this by calling configureToast() in their app
@@ -43,5 +43,9 @@ export class ToastService {
 
   warning(message: string) {
     this.show({ message, type: 'warning' });
+  }
+
+  promise<T>(promise: Promise<T>, options: ToastPromiseOptions): string {
+    return this.instance()?.promise(promise, options);
   }
 }

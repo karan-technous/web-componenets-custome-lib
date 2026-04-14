@@ -1,9 +1,10 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
-import { ToastShowOptions } from "@karan9186/core";
+import { ToastShowOptions, ToastPromiseOptions } from "@karan9186/core";
 
 export type UiToastRef = {
   show: (opts: ToastShowOptions) => void;
   dismiss: (id?: string) => void;
+  promise: <T,>(promise: Promise<T>, opts: ToastPromiseOptions) => string;
 };
 
 type Props = {
@@ -17,6 +18,7 @@ export const UiToast = forwardRef<UiToastRef, Props>((props, ref) => {
   useImperativeHandle(ref, () => ({
     show: (opts) => elRef.current?.show(opts),
     dismiss: (id) => elRef.current?.dismiss(id),
+    promise: <T,>(promise: Promise<T>, opts) => elRef.current?.promise(promise, opts),
   }));
 
   useEffect(() => {

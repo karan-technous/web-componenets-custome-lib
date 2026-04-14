@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useRef } from "react";
 import { UiToast, UiToastRef } from "./Toast";
-import { ToastShowOptions, configureToast } from "@karan9186/core";
+import { ToastShowOptions, ToastPromiseOptions, configureToast } from "@karan9186/core";
 
 // Initialize toast configuration with default settings
 // Users can override this by calling configureToast() in their app
@@ -35,5 +35,6 @@ export const useToast = () => {
   return {
     show: (opts: ToastShowOptions) => ctx?.current?.show(opts),
     dismiss: (id?: string) => ctx?.current?.dismiss(id),
+    promise: <T,>(promise: Promise<T>, opts: ToastPromiseOptions) => ctx?.current?.promise(promise, opts),
   };
 };

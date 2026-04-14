@@ -1,9 +1,11 @@
 import {
   ToastBusEvent,
+  ToastPromiseOptions,
   ToastRequest,
   ToastShowOptions,
   ToastShortcutOptions,
   ToastType,
+  ToastUpdateOptions,
 } from './toast.types';
 
 const TOAST_EVENT_NAME = 'ui-toast-bus';
@@ -135,6 +137,73 @@ export class ToastService {
       kind: 'dismiss',
       id,
     });
+  }
+
+  update(id: string, options: ToastUpdateOptions) {
+    const pending = this.store.pending.get(id);
+    
+    if (pending) {
+      const updated: ToastRequest = {
+        ...pending,
+        message: options.message ?? pending.message,
+        type: options.type ?? pending.type,
+        duration: options.duration !== undefined ? normalizeDuration(options.duration) : pending.duration,
+      };
+
+      this.store.pending.set(id, updated);
+      this.dispatch({
+        kind: 'show',
+        request: updated,
+      });
+    } else {
+      // Toast is not in pending map (already activated), dispatch update event directly
+      this.dispatch({
+        kind: 'show',
+        request: {
+          id,
+          message: options.message || '',
+          type: options.type || 'info',
+          position: 'top-right',
+          duration: options.duration !== undefined ? normalizeDuration(options.duration) : DEFAULT_DURATION,
+          closable: true,
+          dedupe: false,
+        },
+      });
+    }
+  }
+
+  promise<T>(promise: Promise<T>, options: ToastPromiseOptions): string {
+    const id = this.show({
+      message: options.loading,
+      type: 'loading',
+      position: options.position,
+      duration: Infinity,
+      closable: false,
+    });
+
+    promise
+      .then((result) => {
+        const message = typeof options.success === 'function'
+          ? options.success(result)
+          : options.success;
+        this.update(id, {
+          message,
+          type: 'success',
+          duration: options.duration ?? DEFAULT_DURATION,
+        });
+      })
+      .catch((error) => {
+        const message = typeof options.error === 'function'
+          ? options.error(error)
+          : options.error;
+        this.update(id, {
+          message,
+          type: 'error',
+          duration: options.duration ?? DEFAULT_DURATION,
+        });
+      });
+
+    return id;
   }
 
   subscribe(listener: ToastListener) {

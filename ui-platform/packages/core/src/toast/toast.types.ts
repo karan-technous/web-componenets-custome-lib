@@ -1,4 +1,4 @@
-export type ToastType = 'success' | 'error' | 'warning' | 'info';
+export type ToastType = 'success' | 'error' | 'warning' | 'info' | 'loading';
 
 export type ToastPosition =
   | 'top-left'
@@ -25,6 +25,20 @@ export interface ToastShowOptions {
   dedupe?: boolean;
   dedupeKey?: string;
   slot?: string;
+}
+
+export interface ToastPromiseOptions {
+  loading: string;
+  success: string | ((result: any) => string);
+  error: string | ((error: any) => string);
+  position?: ToastPosition;
+  duration?: number;
+}
+
+export interface ToastUpdateOptions {
+  message?: string;
+  type?: ToastType;
+  duration?: number;
 }
 
 export type ToastShortcutOptions = Omit<ToastShowOptions, 'message' | 'type'>;

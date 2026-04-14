@@ -191,6 +191,17 @@
     0 0 0 1px rgba(255, 255, 255, 0.1);
 }
 
+/* Loading spinner animation */
+.toast--loading .toast__icon {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* Swipe animations */
 .toast[data-swipe-x] {
   transition: transform 150ms ease-out;

@@ -6,9 +6,9 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { IconName } from "./components/icons/icon.registry";
-import { ToastLifecycleDetail, ToastShowOptions } from "@karan9186/core";
+import { ToastLifecycleDetail, ToastPromiseOptions, ToastShowOptions } from "@karan9186/core";
 export { IconName } from "./components/icons/icon.registry";
-export { ToastLifecycleDetail, ToastShowOptions } from "@karan9186/core";
+export { ToastLifecycleDetail, ToastPromiseOptions, ToastShowOptions } from "@karan9186/core";
 export namespace Components {
     interface UiButton {
         /**
@@ -88,6 +88,7 @@ export namespace Components {
         "dismiss": (id?: string) => Promise<void>;
         "maxVisible": number;
         "pauseOnHover": boolean;
+        "promise": <T>(promise: Promise<T>, options: ToastPromiseOptions) => Promise<string>;
         "show": (options: ToastShowOptions) => Promise<string>;
         "stackGap": number;
         "swipeDismiss": boolean;

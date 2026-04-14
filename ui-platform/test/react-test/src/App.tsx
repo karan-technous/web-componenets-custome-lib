@@ -21,6 +21,31 @@ const App = () => {
       setLoader(false);
     }, 2000);
   };
+
+  // Mock API call for promise toast example
+  const mockApiCall = () => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const success = Math.random() > 0.3; // 70% success rate
+        console.log("Mock API call result:", success);
+        if (success) {
+          resolve({ data: "Operation completed successfully" });
+        } else {
+          reject(new Error("Operation failed"));
+        }
+      }, 3000);
+    });
+  };
+
+  const handlePromiseToast = () => {
+    toast.promise(mockApiCall(), {
+      loading: "Saving data...",
+      success: "Data saved successfully!",
+      error: "Failed to save data",
+      position: "bottom-right",
+      duration: 4000,
+    });
+  };
   return (
     <div>
       <h2>Custom Input</h2>
@@ -51,6 +76,11 @@ const App = () => {
       <br /> <br />
       <UiButton onClick={() => setValue("!disabled")}>
         set default value
+      </UiButton>
+      <br /> <br />
+      <h2>Promise Toast Example</h2>
+      <UiButton onClick={handlePromiseToast}>
+        Test Promise Toast (70% success rate)
       </UiButton>
       <br /> <br />
       <h1>sdfhsdfhksdhfksdhfksdhfkhsdfhsdhfi---------------------</h1>

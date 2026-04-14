@@ -1,6 +1,6 @@
 import { Component, Event, EventEmitter, h, Host, Method, Prop, State } from '@stencil/core';
 import { BaseComponent } from '../base/base-component';
-import { ToastCloseReason, ToastLifecycleDetail, ToastPosition, ToastRequest, ToastShowOptions, ToastType, toast, getToastHoverLimit, getToastSettings } from '@karan9186/core';
+import { ToastCloseReason, ToastLifecycleDetail, ToastPosition, ToastPromiseOptions, ToastRequest, ToastShowOptions, ToastType, toast, getToastHoverLimit, getToastSettings } from '@karan9186/core';
 
 type ToastPhase = 'entering' | 'visible' | 'exiting';
 
@@ -14,6 +14,7 @@ type ActiveToast = QueuedToast & {
   startedAt?: number;
   swipeStartX?: number;
   swipeX: number;
+  isPaused?: boolean;
 };
 
 const POSITIONS: ToastPosition[] = ['top-left', 'top-right', 'bottom-left', 'bottom-right', 'center'];
@@ -26,6 +27,7 @@ const ICON_BY_TYPE: Record<ToastType, string> = {
   error: 'CircleAlert',
   warning: 'TriangleAlert',
   info: 'Info',
+  loading: 'LoaderCircle',
 };
 
 function createEmptyQueues() {
@@ -92,8 +94,23 @@ export class UiToast extends BaseComponent {
   connectedCallback() {
     this.unsubscribe = toast.subscribe((event: any) => {
       if (event.kind === 'show') {
-        toast.acknowledge(event.request.id);
-        this.enqueue(event.request);
+        // Check if toast with this ID already exists (update case)
+        const existingToast = this.activeToasts.find(t => t.id === event.request.id);
+        if (existingToast) {
+          // Update existing toast
+          this.patchToast(event.request.id, {
+            message: event.request.message,
+            type: event.request.type,
+            duration: event.request.duration,
+          });
+          toast.acknowledge(event.request.id);
+          // Safety fallback: ensure timer is running after update
+          this.ensureTimersRunning();
+        } else {
+          // New toast
+          toast.acknowledge(event.request.id);
+          this.enqueue(event.request);
+        }
         return;
       }
 
@@ -139,6 +156,11 @@ export class UiToast extends BaseComponent {
     toast.dismiss(id);
   }
 
+  @Method()
+  async promise<T>(promise: Promise<T>, options: ToastPromiseOptions): Promise<string> {
+    return toast.promise(promise, options);
+  }
+
   private enqueue(request: ToastRequest) {
     const normalized = this.normalize(request);
 
@@ -165,7 +187,7 @@ export class UiToast extends BaseComponent {
       });
     });
 
-    if (activeItem.duration > 0) {
+    if (Number.isFinite(activeItem.duration) && activeItem.duration > 0) {
       const positionToasts = this.activeToasts.filter(t => t.position === activeItem.position);
 
       // index in stack (top = last visually)
@@ -337,7 +359,13 @@ export class UiToast extends BaseComponent {
     }
 
     const toastItem = this.activeToasts.find(item => item.id === id);
-    if (!toastItem || toastItem.duration <= 0 || toastItem.phase === 'exiting') {
+    if (!toastItem || toastItem.phase === 'exiting') {
+      return;
+    }
+
+    // Mark as paused even for Infinity duration toasts
+    if (!Number.isFinite(toastItem.duration) || toastItem.duration <= 0) {
+      this.patchToast(id, { isPaused: true });
       return;
     }
 
@@ -352,36 +380,96 @@ export class UiToast extends BaseComponent {
     this.patchToast(id, {
       remaining: nextRemaining,
       startedAt: undefined,
+      isPaused: true,
     });
   }
 
   private resumeToast(id: string) {
     const toastItem = this.activeToasts.find(item => item.id === id);
-    if (!toastItem || toastItem.duration <= 0 || toastItem.phase === 'exiting') {
+    if (!toastItem || toastItem.phase === 'exiting') {
       return;
     }
 
-    if (typeof toastItem.startedAt === 'number') {
-      return;
-    }
+    // Mark as not paused
+    this.patchToast(id, { isPaused: false });
 
-    if (toastItem.remaining <= 0) {
-      this.beginClose(id, 'timeout');
-      return;
-    }
+    // If toast now has finite duration, start timer
+    if (Number.isFinite(toastItem.duration) && toastItem.duration > 0) {
+      // Safety guard: if remaining <= 0, dismiss immediately
+      if (toastItem.remaining <= 0) {
+        this.beginClose(id, 'timeout');
+        return;
+      }
 
-    this.startTimer(id, toastItem.remaining);
+      // Always stop existing timer before starting to prevent duplicates
+      this.stopTimer(id);
+
+      // Force restart timer regardless of startedAt state
+      this.startTimer(id, toastItem.remaining);
+    }
+  }
+
+  // Safety fallback: ensure all visible toasts with duration > 0 have timers
+  private ensureTimersRunning() {
+    for (const toast of this.activeToasts) {
+      if (toast.phase === 'visible' && 
+          Number.isFinite(toast.duration) && 
+          toast.duration > 0 && 
+          toast.remaining > 0 &&
+          !toast.isPaused) {
+        // Check if timer exists
+        if (!this.timers.has(toast.id)) {
+          // Start timer if missing
+          this.stopTimer(toast.id);
+          this.startTimer(toast.id, toast.remaining);
+        }
+      }
+    }
   }
 
   private patchToast(id: string, patch: Partial<ActiveToast>) {
-    this.activeToasts = this.activeToasts.map(toastItem =>
-      toastItem.id === id
-        ? {
-            ...toastItem,
-            ...patch,
-          }
-        : toastItem,
-    );
+    const existingToast = this.activeToasts.find(item => item.id === id);
+    if (!existingToast) {
+      return;
+    }
+
+    // Check if duration is changing from Infinity to a finite value
+    const wasInfinite = existingToast.duration === Infinity;
+    const isFinite = patch.duration !== undefined && patch.duration !== Infinity;
+    const newDuration = isFinite ? patch.duration : existingToast.duration;
+    
+    if (wasInfinite && isFinite) {
+      // Always stop any existing timer before starting to prevent duplicates
+      this.stopTimer(id);
+      this.clearExitTimer(id);
+      
+      // Initialize remaining time with the new duration
+      this.activeToasts = this.activeToasts.map(toastItem =>
+        toastItem.id === id
+          ? {
+              ...toastItem,
+              ...patch,
+              remaining: newDuration,
+              startedAt: existingToast.isPaused ? undefined : Date.now(),
+            }
+          : toastItem,
+      );
+      
+      // Only start timer if not paused
+      if (!existingToast.isPaused) {
+        this.startTimer(id, newDuration);
+      }
+    } else {
+      this.activeToasts = this.activeToasts.map(toastItem =>
+        toastItem.id === id
+          ? {
+              ...toastItem,
+              ...patch,
+              startedAt: wasInfinite && isFinite ? Date.now() : toastItem.startedAt,
+            }
+          : toastItem,
+      );
+    }
   }
 
   private announce(toastItem: QueuedToast) {
