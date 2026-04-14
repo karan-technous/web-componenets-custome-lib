@@ -60,6 +60,66 @@ type StoryPayload = {
 
 function renderComponent(payload: StoryPayload) {
   controls.innerHTML = "";
+  
+  // Special handling for toast - show a button that triggers the toast
+  if (payload.component === "toast") {
+    const button = document.createElement("ui-button");
+    button.textContent = "Show Toast";
+    button.setAttribute("variant", "primary");
+    button.addEventListener("click", () => {
+      const toastType = payload.props.type || "info";
+      
+      if (toastType === "promise") {
+        // Mock API call for promise toast example
+        const mockApiCall = () => {
+          return new Promise((resolve, reject) => {
+            setTimeout(() => {
+              const success = Math.random() > 0.3; // 70% success rate
+              console.log("Mock API call result:", success);
+              if (success) {
+                resolve({ data: "Operation completed successfully" });
+              } else {
+                reject(new Error("Operation failed"));
+              }
+            }, 3000);
+          });
+        };
+        
+        // Use toast.promise() for promise type
+        const toastElement = document.querySelector("ui-toast") as any;
+        if (toastElement && toastElement.promise) {
+          try {
+            toastElement.promise(mockApiCall(), {
+              loading: payload.props.loading || "Loading...",
+              success: payload.props.success || "Success!",
+              error: payload.props.error || "Error!",
+              position: payload.props.position || "bottom-right",
+              duration: parseInt(String(payload.props.duration || "4000")),
+            });
+          } catch (e) {
+            console.error("Failed to show promise toast:", e);
+          }
+        }
+      } else {
+        // Use toast.show() for regular types
+        const toastElement = document.querySelector("ui-toast") as any;
+        if (toastElement) {
+          try {
+            toastElement.show({
+              message: payload.props.message || "Toast message",
+              type: toastType,
+              position: payload.props.position || "top-right",
+            });
+          } catch (e) {
+            console.error("Failed to show toast:", e);
+          }
+        }
+      }
+    });
+    controls.appendChild(button);
+    return;
+  }
+
   const binding = payload.renderers?.wc;
   const tagName = binding?.tagName ?? `ui-${payload.component}`;
   const textProp =
@@ -155,4 +215,12 @@ window.addEventListener("message", (event: MessageEvent) => {
 
 canvas.appendChild(controls);
 page.appendChild(canvas);
+
+// Add ui-toast element to the page for toast notifications
+let toastElement = document.querySelector("ui-toast");
+if (!toastElement) {
+  toastElement = document.createElement("ui-toast");
+  document.body.appendChild(toastElement);
+}
+
 root.appendChild(page);

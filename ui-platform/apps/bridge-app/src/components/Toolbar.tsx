@@ -84,12 +84,12 @@ const frameworks: Array<{
             y2="129.722"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#E40035" />
-            <stop offset=".24" stop-color="#F60A48" />
-            <stop offset=".352" stop-color="#F20755" />
-            <stop offset=".494" stop-color="#DC087D" />
-            <stop offset=".745" stop-color="#9717E7" />
-            <stop offset="1" stop-color="#6C00F5" />
+            <stop stopColor="#E40035" />
+            <stop offset=".24" stopColor="#F60A48" />
+            <stop offset=".352" stopColor="#F20755" />
+            <stop offset=".494" stopColor="#DC087D" />
+            <stop offset=".745" stopColor="#9717E7" />
+            <stop offset="1" stopColor="#6C00F5" />
           </linearGradient>
 
           <linearGradient
@@ -100,8 +100,8 @@ const frameworks: Array<{
             y2="160.344"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#FF31D9" />
-            <stop offset="1" stop-color="#FF5BE1" stop-opacity="0" />
+            <stop stopColor="#FF31D9" />
+            <stop offset="1" stopOpacity="0" />
           </linearGradient>
         </defs>
 
@@ -138,7 +138,7 @@ const frameworks: Array<{
 
         <title>React Logo</title>
         <circle cx="0" cy="0" r="2.05" fill="#61DAFB" />
-        <g stroke="#61DAFB" stroke-width="1" fill="none">
+        <g stroke="#61DAFB" strokeWidth="1" fill="none">
           <ellipse rx="11" ry="4.2" />
           <ellipse rx="11" ry="4.2" transform="rotate(60)" />
           <ellipse rx="11" ry="4.2" transform="rotate(120)" />

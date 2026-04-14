@@ -118,6 +118,113 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private applyPayload(payload: StoryPayload): void {
     document.documentElement.dataset.appearance = payload.appearance ?? "dark";
+    
+    // Special handling for toast - show a button that triggers the toast
+    if (payload.component === "toast") {
+      this.container.clear();
+      
+      // Ensure ui-toast element exists
+      let toastElement = document.querySelector("ui-toast");
+      if (!toastElement) {
+        toastElement = document.createElement("ui-toast");
+        document.body.appendChild(toastElement);
+      }
+      
+      const buttonComponentType = this.resolveWrapperType("button", "ButtonComponent");
+      
+      if (buttonComponentType) {
+        const buttonRef = this.container.createComponent(buttonComponentType, {
+          projectableNodes: [[document.createTextNode("Show Toast")]],
+        });
+        buttonRef.setInput("variant", "primary");
+        
+        // Add click handler using event listener on native element
+        setTimeout(() => {
+          const buttonElement = buttonRef.location.nativeElement as HTMLElement;
+          buttonElement.addEventListener("click", () => {
+            const toastType = payload.props.type || "info";
+            console.log("Angular toast button clicked, type:", toastType);
+            
+            if (toastType === "promise") {
+              console.log("Angular: Promise toast detected");
+              // Mock API call for promise toast example
+              const mockApiCall = () => {
+                return new Promise((resolve, reject) => {
+                  setTimeout(() => {
+                    const success = Math.random() > 0.3; // 70% success rate
+                    console.log("Mock API call result:", success);
+                    if (success) {
+                      resolve({ data: "Operation completed successfully" });
+                    } else {
+                      reject(new Error("Operation failed"));
+                    }
+                  }, 3000);
+                });
+              };
+              
+              // Use ui-toast element's promise method for promise toast
+              const toastEl = document.querySelector("ui-toast") as any;
+              console.log("Angular: ui-toast element found:", !!toastEl);
+              console.log("Angular: ui-toast has promise method:", typeof toastEl?.promise);
+              
+              if (toastEl && toastEl.promise) {
+                try {
+                  toastEl.promise(mockApiCall(), {
+                    loading: payload.props.loading || "Loading...",
+                    success: payload.props.success || "Success!",
+                    error: payload.props.error || "Error!",
+                    position: payload.props.position || "bottom-right",
+                    duration: parseInt(String(payload.props.duration || "4000")),
+                  });
+                } catch (e) {
+                  console.error("Angular: Failed to show promise toast:", e);
+                }
+              } else if (toastEl) {
+                console.error("Angular: ui-toast does not have promise method, using ToastService");
+                // Fallback to ToastService
+                const toastService = this.resolveWrapperType("toast", "ToastService");
+                if (toastService) {
+                  const toast = new toastService() as any;
+                  console.log("Angular: ToastService has promise method:", typeof toast.promise);
+                  if (toast.promise) {
+                    toast.promise(mockApiCall(), {
+                      loading: payload.props.loading || "Loading...",
+                      success: payload.props.success || "Success!",
+                      error: payload.props.error || "Error!",
+                      position: payload.props.position || "bottom-right",
+                      duration: parseInt(String(payload.props.duration || "4000")),
+                    });
+                  } else {
+                    console.error("Angular: ToastService does not have promise method either");
+                  }
+                }
+              } else {
+                console.error("Angular: ui-toast element not found");
+              }
+            } else {
+              console.log("Angular: Regular toast type, using ui-toast element");
+              // Use ui-toast element directly for regular types
+              const toastEl = document.querySelector("ui-toast") as any;
+              if (toastEl && toastEl.show) {
+                try {
+                  toastEl.show({
+                    message: payload.props.message || "Toast message",
+                    type: toastType,
+                    position: payload.props.position || "top-right",
+                  });
+                } catch (e) {
+                  console.error("Failed to show toast:", e);
+                }
+              }
+            }
+          });
+        }, 0);
+        
+        buttonRef.changeDetectorRef.detectChanges();
+      }
+      return;
+    }
+
     const binding = payload.renderers?.angular;
     const componentType = this.resolveWrapperType(
       payload.component,

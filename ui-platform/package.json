@@ -12,7 +12,7 @@
     "dev:test": "pnpm --filter ./test/angular-test --filter ./test/react-test -r --parallel run dev",
     "publish:prepare": "pnpm run build && node scripts/prepare-publish.js",
     "publish:dry-run": "node scripts/publish-packages.js --dry-run",
-    "publish:all": "node scripts/publish-packages.js",
+    "publish:all": "node scripts/publish-packages.js",  
     "test": "echo \"No root test runner configured\"",
     "build2": "pnpm -r build && node scripts/build-all.js",
     "pack:tarball": "pnpm run build2 && npm pack --ignore-scripts",

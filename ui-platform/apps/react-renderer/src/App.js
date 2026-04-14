@@ -71,6 +71,72 @@ function parsePayloadFromUrl() {
 }
 function renderDynamicComponent(payload) {
     const binding = payload.renderers?.react;
+    console.log("renderDynamicComponent called with:", JSON.stringify(payload, null, 2));
+    // Special handling for toast - show a button that triggers the toast
+    // Check multiple ways to identify toast: component name, exportName, or tagName
+    const isToast = payload.component === "toast" ||
+        payload.renderers?.react?.exportName === "UiToast" ||
+        payload.renderers?.wc?.tagName === "ui-toast";
+    console.log("Toast check:", { component: payload.component, exportName: binding?.exportName, isToast });
+    if (isToast) {
+        console.log("Toast detected, rendering button");
+        // Create a proper component that uses the useToast hook
+        const ToastButtonComponent = () => {
+            const { useToast } = ReactWrappers;
+            const toast = useToast();
+            // Mock API call for promise toast example
+            const mockApiCall = () => {
+                return new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        const success = Math.random() > 0.3; // 70% success rate
+                        console.log("Mock API call result:", success);
+                        if (success) {
+                            resolve({ data: "Operation completed successfully" });
+                        }
+                        else {
+                            reject(new Error("Operation failed"));
+                        }
+                    }, 3000);
+                });
+            };
+            const handleShowToast = () => {
+                const toastType = payload.props.type || "info";
+                if (toastType === "promise") {
+                    // Use toast.promise() for promise type
+                    toast.promise(mockApiCall(), {
+                        loading: payload.props.loading || "Loading...",
+                        success: payload.props.success || "Success!",
+                        error: payload.props.error || "Error!",
+                        position: payload.props.position || "bottom-right",
+                        duration: parseInt(String(payload.props.duration || "4000")),
+                    });
+                }
+                else {
+                    // Use toast.show() for regular types
+                    toast.show({
+                        message: payload.props.message || "Toast message",
+                        type: toastType,
+                        position: payload.props.position || "top-right",
+                    });
+                }
+            };
+            // Use UiButton component for toast
+            const ButtonWrapper = resolveWrapper("button", "UiButton");
+            if (ButtonWrapper) {
+                return createElement(ButtonWrapper, {
+                    variant: "primary",
+                    onClick: handleShowToast,
+                }, "Show Toast");
+            }
+            // Fallback to plain button if UiButton not found
+            return createElement("button", {
+                onClick: handleShowToast,
+                className: "px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600",
+            }, "Show Toast");
+        };
+        return createElement(ToastButtonComponent);
+    }
+    console.log("Not toast, proceeding with normal rendering");
     const Wrapper = resolveWrapper(payload.component, binding?.exportName);
     if (!Wrapper) {
         return (_jsxs("div", { className: "text-sm text-slate-500", children: ["No React wrapper found for \"", payload.component, "\"."] }));
