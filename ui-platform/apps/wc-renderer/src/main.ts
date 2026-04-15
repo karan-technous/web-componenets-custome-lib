@@ -198,24 +198,47 @@ function parseInitialPayload(): StoryPayload {
   };
 }
 
+let currentAppearance: "dark" | "light" = "dark";
+
 const initialPayload = parseInitialPayload();
-applyAppearance(initialPayload.appearance ?? "dark");
-renderComponent(initialPayload);
-window.parent.postMessage({ type: "IFRAME_READY" }, "*");
+currentAppearance = initialPayload.appearance ?? "dark";
+try {
+  applyAppearance(currentAppearance);
+  renderComponent(initialPayload);
+  window.parent.postMessage({ type: "IFRAME_READY" }, "*");
+} catch (error) {
+  console.error("Failed to initialize renderer:", error);
+  window.parent.postMessage({ type: "IFRAME_READY" }, "*");
+}
 
 window.addEventListener("message", (event: MessageEvent) => {
-  if (event.data?.type !== "UPDATE_STORY") {
-    return;
-  }
+  try {
+    if (event.data?.type === "UPDATE_THEME") {
+      const appearance = event.data.appearance as "dark" | "light";
+      console.log("Received UPDATE_THEME ->", appearance);
+      currentAppearance = appearance;
+      applyAppearance(appearance);
+      return;
+    }
 
-  const payload = event.data.payload as StoryPayload;
-  if (!payload || payload.framework !== "wc") {
-    return;
-  }
+    if (event.data?.type !== "UPDATE_STORY") {
+      return;
+    }
 
-  console.log("Received ->", event.data);
-  applyAppearance(payload.appearance ?? "dark");
-  renderComponent(payload);
+    const payload = event.data.payload as StoryPayload;
+    if (!payload || payload.framework !== "wc") {
+      return;
+    }
+
+    console.log("Received ->", event.data);
+    if (payload.appearance) {
+      currentAppearance = payload.appearance;
+    }
+    applyAppearance(currentAppearance);
+    renderComponent(payload);
+  } catch (error) {
+    console.error("Failed to handle message:", error);
+  }
 });
 
 canvas.appendChild(controls);

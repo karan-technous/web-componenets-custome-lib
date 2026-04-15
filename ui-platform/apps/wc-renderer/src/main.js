@@ -125,7 +125,7 @@ function parseInitialPayload() {
     const params = new URLSearchParams(window.location.search);
     const component = params.get("component") ?? "button";
     const story = params.get("story") ?? "Primary";
-    const appearance = params.get("appearance") === "light" ? "light" : "dark";
+    const appearance = params.get("appearance") === "light" || params.get("appearance") == null ? "light" : "dark";
     const renderersRaw = params.get("renderers");
     let props = {
         label: "Click Me",
@@ -160,20 +160,36 @@ function parseInitialPayload() {
     };
 }
 const initialPayload = parseInitialPayload();
-applyAppearance(initialPayload.appearance ?? "dark");
-renderComponent(initialPayload);
-window.parent.postMessage({ type: "IFRAME_READY" }, "*");
+try {
+    // Default to light theme, will be overridden by UPDATE_THEME from bridge app
+    applyAppearance("light");
+    renderComponent(initialPayload);
+    window.parent.postMessage({ type: "IFRAME_READY" }, "*");
+}
+catch (error) {
+    console.error("Failed to initialize renderer:", error);
+    window.parent.postMessage({ type: "IFRAME_READY" }, "*");
+}
 window.addEventListener("message", (event) => {
-    if (event.data?.type !== "UPDATE_STORY") {
-        return;
+    try {
+        if (event.data?.type === "UPDATE_THEME") {
+            const appearance = event.data.appearance === 'light' ? 'light' : 'dark';
+            applyAppearance(appearance);
+            return;
+        }
+        if (event.data?.type !== "UPDATE_STORY") {
+            return;
+        }
+        const payload = event.data.payload;
+        if (!payload || payload.framework !== "wc") {
+            return;
+        }
+        applyAppearance(payload.appearance ?? "dark");
+        renderComponent(payload);
     }
-    const payload = event.data.payload;
-    if (!payload || payload.framework !== "wc") {
-        return;
+    catch (error) {
+        console.error("Failed to handle message:", error);
     }
-    console.log("Received ->", event.data);
-    applyAppearance(payload.appearance ?? "dark");
-    renderComponent(payload);
 });
 canvas.appendChild(controls);
 page.appendChild(canvas);

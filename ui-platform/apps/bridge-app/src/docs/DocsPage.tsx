@@ -15,6 +15,7 @@ interface DocsPageProps {
   framework: Framework;
   story: SelectedStory | null;
   onOpenStory: (storyName: string) => void;
+  appearance: "dark" | "light";
 }
 
 const rendererUrls: Record<Framework, string> = {
@@ -121,13 +122,14 @@ function buildPreviewUrl(
   framework: Framework,
   story: SelectedStory,
   props: StoryProps,
+  appearance: "dark" | "light",
 ): string {
   const params = new URLSearchParams({
     component: story.component,
     story: story.storyName,
     props: JSON.stringify(props),
     renderers: JSON.stringify(story.renderers ?? {}),
-    appearance: "dark",
+    appearance,
   });
 
   return `${rendererUrls[framework]}?${params.toString()}`;
@@ -384,13 +386,15 @@ function StoryPreviewCard({
   story,
   example,
   onOpenStory,
+  appearance,
 }: {
   framework: Framework;
   story: SelectedStory;
   example: StoryDocsExample & { props: StoryProps };
   onOpenStory: (storyName: string) => void;
+  appearance: "dark" | "light";
 }) {
-  const previewUrl = buildPreviewUrl(framework, story, example.props);
+  const previewUrl = buildPreviewUrl(framework, story, example.props, appearance);
   const code = generateCode(
     framework,
     story.component,
@@ -436,7 +440,7 @@ function StoryPreviewCard({
   );
 }
 
-export function DocsPage({ framework, story, onOpenStory }: DocsPageProps) {
+export function DocsPage({ framework, story, onOpenStory, appearance }: DocsPageProps) {
   const [activeUsage, setActiveUsage] = useState<Framework>(framework);
 
   useEffect(() => {
@@ -587,6 +591,7 @@ export function DocsPage({ framework, story, onOpenStory }: DocsPageProps) {
 
           {examples.map((example) => (
             <StoryPreviewCard
+              appearance={appearance}
               key={example.title}
               framework={framework}
               story={story}
@@ -610,7 +615,7 @@ export function DocsPage({ framework, story, onOpenStory }: DocsPageProps) {
               </span>
             </div>
             <a
-              href={buildPreviewUrl(framework, story, story.props)}
+              href={buildPreviewUrl(framework, story, story.props, appearance)}
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center gap-2 text-[13px] text-[color:var(--bride-text-muted)] transition hover:text-[color:var(--bride-text)]"

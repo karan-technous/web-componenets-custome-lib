@@ -287,6 +287,7 @@ export default function App() {
               <DocsPage
                 framework={framework}
                 story={selection}
+                appearance={appearance}
                 onOpenStory={(storyName) => {
                   handleStorySelect(selection?.storyId ?? "", storyName);
                   setMode("preview");

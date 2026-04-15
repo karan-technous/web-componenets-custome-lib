@@ -18,10 +18,9 @@ const rendererUrls: Record<Framework, string> = {
   wc: "http://localhost:5174",
 };
 
-function buildPreviewUrl(framework: Framework, refreshToken: number, appearance: "dark" | "light") {
+function buildPreviewUrl(framework: Framework, refreshToken: number) {
   const params = new URLSearchParams({
     refresh: String(refreshToken),
-    appearance: appearance,
   });
 
   return `${rendererUrls[framework]}?${params.toString()}`;
@@ -70,15 +69,15 @@ export function PreviewCanvas({
   appearance,
 }: PreviewCanvasProps) {
   const src = useMemo(
-    () => buildPreviewUrl(framework, refreshToken, appearance),
-    [framework, refreshToken, appearance],
+    () => buildPreviewUrl(framework, refreshToken),
+    [framework, refreshToken],
   );
   const shareUrl = useMemo(
     () =>
       selection
         ? buildShareUrl(framework, selection)
-        : buildPreviewUrl(framework, refreshToken, appearance),
-    [framework, refreshToken, selection, appearance],
+        : buildPreviewUrl(framework, refreshToken),
+    [framework, refreshToken, selection],
   );
   const [isLoading, setIsLoading] = useState(true);
   const [isReady, setIsReady] = useState(false);
@@ -161,13 +160,17 @@ export function PreviewCanvas({
       return;
     }
 
-    iframeRef.current.contentWindow.postMessage(
-      {
-        type: "UPDATE_THEME",
-        appearance: appearance,
-      },
-      "*",
-    );
+    try {
+      iframeRef.current.contentWindow.postMessage(
+        {
+          type: "UPDATE_THEME",
+          appearance: appearance,
+        },
+        "*",
+      );
+    } catch (error) {
+      console.error("Failed to send theme update to iframe:", error);
+    }
   }, [appearance, isReady]);
 
   if (!selection) {

@@ -29,7 +29,8 @@ export class UiToggle extends BaseComponent {
   private onToggle = () => {
     if (this.disabled) return;
 
-    const newValue = !this.internalChecked;
+    const currentValue = this.isControlled() ? this.checked : this.internalChecked;
+    const newValue = !currentValue;
 
     if (!this.isControlled()) {
       this.internalChecked = newValue;
