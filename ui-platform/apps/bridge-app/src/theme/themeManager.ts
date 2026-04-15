@@ -1,4 +1,5 @@
 import type { Framework } from '../state/frameworkStore';
+import { applyTheme as applyCoreTheme, lightTheme, darkTheme } from '@karan9186/core';
 
 export type AppearanceMode = 'dark' | 'light';
 
@@ -364,6 +365,10 @@ export function applyTheme(framework: Framework, appearance: AppearanceMode) {
   const palette =
     appearance === 'light' && theme.light ? { ...theme, ...theme.light } : theme;
 
+  // Apply core UI theme variables for components (buttons, inputs, etc.)
+  const coreTheme = appearance === 'light' ? lightTheme : darkTheme;
+  applyCoreTheme(coreTheme);
+
   // Primary brand colors
   root.style.setProperty('--bride-primary', palette.primary);
   root.style.setProperty('--bride-primary-rgb', palette.primaryRgb);
@@ -376,28 +381,28 @@ export function applyTheme(framework: Framework, appearance: AppearanceMode) {
   root.style.setProperty('--bride-gradient-to', palette.gradientTo);
   root.style.setProperty('--bride-glow', palette.glow);
   root.style.setProperty('--bride-glow-strong', palette.glowStrong);
-  
+
   // Background colors
   root.style.setProperty('--bride-bg', palette.bg);
   root.style.setProperty('--bride-bg-elevated', palette.bgElevated);
-  
+
   // Text colors
   root.style.setProperty('--bride-text', palette.text);
   root.style.setProperty('--bride-text-soft', palette.textSoft);
   root.style.setProperty('--bride-text-muted', palette.textMuted);
-  
+
   // Border colors
   root.style.setProperty('--bride-border-subtle', palette.borderSubtle);
   root.style.setProperty('--bride-border-strong', palette.borderStrong);
-  
+
   // Glass effects
   root.style.setProperty('--bride-glass-surface', palette.glassSurface);
   root.style.setProperty('--bride-glass-dark', palette.glassDark);
-  
+
   // UI elements
   root.style.setProperty('--bride-ring', palette.ring);
   root.style.setProperty('--bride-field-bg', palette.fieldBg);
-  
+
   // Documentation colors
   root.style.setProperty('--docs-accent', palette.docsAccent);
   root.style.setProperty('--docs-accent-strong', palette.docsAccentStrong);
@@ -419,7 +424,7 @@ export function applyTheme(framework: Framework, appearance: AppearanceMode) {
   root.style.setProperty('--docs-table-head', palette.docsTableHead);
   root.style.setProperty('--docs-table-desc', palette.docsTableDesc);
   root.style.setProperty('--docs-required', palette.docsRequired);
-  
+
   root.style.setProperty('--bride-framework-name', `"${palette.name}"`);
   root.dataset.framework = framework;
   root.dataset.appearance = appearance;

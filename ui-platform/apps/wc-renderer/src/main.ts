@@ -1,6 +1,7 @@
 import "./theme.css";
 import { initializeTheme } from "@karan9186/web-components";
 import { defineCustomElements } from "@karan9186/web-components/loader";
+import { applyTheme, lightTheme, darkTheme } from "@karan9186/core";
 
 defineCustomElements();
 
@@ -151,6 +152,10 @@ function applyAppearance(appearance: "dark" | "light") {
     "--bridge-ui-surface",
     isLight ? "#ffffff" : "#12182a",
   );
+
+  // Apply core theme
+  const coreTheme = isLight ? lightTheme : darkTheme;
+  applyTheme(coreTheme);
 }
 
 function parseInitialPayload(): StoryPayload {

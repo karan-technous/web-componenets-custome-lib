@@ -1,6 +1,7 @@
 import "./theme.css";
 import { initializeTheme } from "@karan9186/web-components";
 import { defineCustomElements } from "@karan9186/web-components/loader";
+import { applyTheme, lightTheme, darkTheme } from "@karan9186/core";
 defineCustomElements();
 const root = document.getElementById("app");
 if (!root) {
@@ -116,6 +117,9 @@ function applyAppearance(appearance) {
     const isLight = appearance === "light";
     document.documentElement.style.setProperty("--bridge-ui-bg", isLight ? "#ffffff" : "#0b1020");
     document.documentElement.style.setProperty("--bridge-ui-surface", isLight ? "#ffffff" : "#12182a");
+    // Apply core theme
+    const coreTheme = isLight ? lightTheme : darkTheme;
+    applyTheme(coreTheme);
 }
 function parseInitialPayload() {
     const params = new URLSearchParams(window.location.search);

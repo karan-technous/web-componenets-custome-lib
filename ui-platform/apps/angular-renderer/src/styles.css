@@ -69,4 +69,5 @@ app-root {
   align-items: center;
   max-width: 100%;
   overflow: hidden;
+  padding: 10px;
 }

@@ -5,32 +5,67 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { IconName } from "./components/icons/icon.registry";
-import { ToastLifecycleDetail, ToastPromiseOptions, ToastShowOptions } from "@karan9186/core";
-export { IconName } from "./components/icons/icon.registry";
-export { ToastLifecycleDetail, ToastPromiseOptions, ToastShowOptions } from "@karan9186/core";
+import { ButtonEventDetail, ButtonRounded, ButtonSize, ButtonVariant, IconName, ToastLifecycleDetail, ToastPromiseOptions, ToastShowOptions } from "@karan9186/core";
+import { IconName as IconName1 } from "./components/icons/icon.registry";
+export { ButtonEventDetail, ButtonRounded, ButtonSize, ButtonVariant, IconName, ToastLifecycleDetail, ToastPromiseOptions, ToastShowOptions } from "@karan9186/core";
+export { IconName as IconName1 } from "./components/icons/icon.registry";
 export namespace Components {
+    /**
+     * UI Button Component
+     * Modern button component with shadcn/ui inspired variants
+     * Supports multiple sizes, states, and animations
+     * @event uiClick - Emitted when button is clicked (not disabled/loading)
+     * @event uiFocus - Emitted when button receives focus
+     * @event uiBlur - Emitted when button loses focus
+     */
     interface UiButton {
         /**
+          * Whether to enable click animation (press effect)
+          * @default false
+         */
+        "animated": boolean;
+        /**
+          * Whether the button is disabled
           * @default false
          */
         "disabled": boolean;
         /**
+          * Whether the button should take full width
           * @default false
          */
         "fullWidth": boolean;
         /**
+          * Icon name for center (for icon-only buttons)
+         */
+        "icon"?: IconName;
+        /**
+          * Icon name for left side (from lucide icons)
+         */
+        "iconLeft"?: IconName;
+        /**
+          * Icon name for right side (from lucide icons)
+         */
+        "iconRight"?: IconName;
+        /**
+          * Whether the button is in loading state
           * @default false
          */
         "loading": boolean;
         /**
+          * Border radius size
           * @default 'md'
          */
-        "size": 'sm' | 'md' | 'lg';
+        "rounded": ButtonRounded;
         /**
-          * @default 'primary'
+          * Size of the button
+          * @default 'default'
          */
-        "variant": 'primary' | 'secondary' | 'outline';
+        "size": ButtonSize;
+        /**
+          * Visual style variant of the button
+          * @default 'default'
+         */
+        "variant": ButtonVariant;
     }
     interface UiCheckbox {
         /**
@@ -55,7 +90,7 @@ export namespace Components {
           * @default 'currentColor'
          */
         "color": string;
-        "name": IconName;
+        "name": IconName1;
         /**
           * @default 'md'
          */
@@ -131,8 +166,18 @@ export interface UiToggleCustomEvent<T> extends CustomEvent<T> {
 }
 declare global {
     interface HTMLUiButtonElementEventMap {
-        "uiClick": void;
+        "uiClick": ButtonEventDetail;
+        "uiFocus": void;
+        "uiBlur": void;
     }
+    /**
+     * UI Button Component
+     * Modern button component with shadcn/ui inspired variants
+     * Supports multiple sizes, states, and animations
+     * @event uiClick - Emitted when button is clicked (not disabled/loading)
+     * @event uiFocus - Emitted when button receives focus
+     * @event uiBlur - Emitted when button loses focus
+     */
     interface HTMLUiButtonElement extends Components.UiButton, HTMLStencilElement {
         addEventListener<K extends keyof HTMLUiButtonElementEventMap>(type: K, listener: (this: HTMLUiButtonElement, ev: UiButtonCustomEvent<HTMLUiButtonElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -236,28 +281,74 @@ declare global {
 declare namespace LocalJSX {
     type OneOf<K extends string, PropT, AttrT = PropT> = { [P in K]: PropT } & { [P in `attr:${K}` | `prop:${K}`]?: never } | { [P in `attr:${K}`]: AttrT } & { [P in K | `prop:${K}`]?: never } | { [P in `prop:${K}`]: PropT } & { [P in K | `attr:${K}`]?: never };
 
+    /**
+     * UI Button Component
+     * Modern button component with shadcn/ui inspired variants
+     * Supports multiple sizes, states, and animations
+     * @event uiClick - Emitted when button is clicked (not disabled/loading)
+     * @event uiFocus - Emitted when button receives focus
+     * @event uiBlur - Emitted when button loses focus
+     */
     interface UiButton {
         /**
+          * Whether to enable click animation (press effect)
+          * @default false
+         */
+        "animated"?: boolean;
+        /**
+          * Whether the button is disabled
           * @default false
          */
         "disabled"?: boolean;
         /**
+          * Whether the button should take full width
           * @default false
          */
         "fullWidth"?: boolean;
         /**
+          * Icon name for center (for icon-only buttons)
+         */
+        "icon"?: IconName;
+        /**
+          * Icon name for left side (from lucide icons)
+         */
+        "iconLeft"?: IconName;
+        /**
+          * Icon name for right side (from lucide icons)
+         */
+        "iconRight"?: IconName;
+        /**
+          * Whether the button is in loading state
           * @default false
          */
         "loading"?: boolean;
-        "onUiClick"?: (event: UiButtonCustomEvent<void>) => void;
         /**
+          * Emitted when button loses focus
+         */
+        "onUiBlur"?: (event: UiButtonCustomEvent<void>) => void;
+        /**
+          * Emitted when button is clicked (when not disabled or loading)
+         */
+        "onUiClick"?: (event: UiButtonCustomEvent<ButtonEventDetail>) => void;
+        /**
+          * Emitted when button receives focus
+         */
+        "onUiFocus"?: (event: UiButtonCustomEvent<void>) => void;
+        /**
+          * Border radius size
           * @default 'md'
          */
-        "size"?: 'sm' | 'md' | 'lg';
+        "rounded"?: ButtonRounded;
         /**
-          * @default 'primary'
+          * Size of the button
+          * @default 'default'
          */
-        "variant"?: 'primary' | 'secondary' | 'outline';
+        "size"?: ButtonSize;
+        /**
+          * Visual style variant of the button
+          * @default 'default'
+         */
+        "variant"?: ButtonVariant;
     }
     interface UiCheckbox {
         /**
@@ -284,7 +375,7 @@ declare namespace LocalJSX {
           * @default 'currentColor'
          */
         "color"?: string;
-        "name": IconName;
+        "name": IconName1;
         /**
           * @default 'md'
          */
@@ -341,11 +432,16 @@ declare namespace LocalJSX {
     }
 
     interface UiButtonAttributes {
-        "variant": 'primary' | 'secondary' | 'outline';
-        "size": 'sm' | 'md' | 'lg';
+        "variant": ButtonVariant;
+        "size": ButtonSize;
         "disabled": boolean;
         "loading": boolean;
         "fullWidth": boolean;
+        "animated": boolean;
+        "rounded": ButtonRounded;
+        "iconLeft": IconName;
+        "iconRight": IconName;
+        "icon": IconName;
     }
     interface UiCheckboxAttributes {
         "checked": boolean;
@@ -392,6 +488,14 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            /**
+             * UI Button Component
+             * Modern button component with shadcn/ui inspired variants
+             * Supports multiple sizes, states, and animations
+             * @event uiClick - Emitted when button is clicked (not disabled/loading)
+             * @event uiFocus - Emitted when button receives focus
+             * @event uiBlur - Emitted when button loses focus
+             */
             "ui-button": LocalJSX.IntrinsicElements["ui-button"] & JSXBase.HTMLAttributes<HTMLUiButtonElement>;
             "ui-checkbox": LocalJSX.IntrinsicElements["ui-checkbox"] & JSXBase.HTMLAttributes<HTMLUiCheckboxElement>;
             "ui-icon": LocalJSX.IntrinsicElements["ui-icon"] & JSXBase.HTMLAttributes<HTMLUiIconElement>;

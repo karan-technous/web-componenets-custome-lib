@@ -15,7 +15,16 @@ declare module "react" {
       "ui-button": React.DetailedHTMLProps<
         React.HTMLAttributes<HTMLElement>,
         HTMLElement
-      >;
+      > & {
+        variant?: "default" | "secondary" | "outline" | "ghost" | "destructive" | "link";
+        size?: "default" | "xs" | "sm" | "lg" | "icon" | "icon-xs" | "icon-sm" | "icon-lg";
+        disabled?: boolean;
+        loading?: boolean;
+        fullWidth?: boolean;
+        animated?: boolean;
+        rounded?: "none" | "sm" | "md" | "lg" | "xl" | "2xl" | "full";
+        asChild?: boolean;
+      };
 
       "ui-toggle": React.DetailedHTMLProps<
         React.HTMLAttributes<HTMLElement>,

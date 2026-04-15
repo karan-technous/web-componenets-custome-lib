@@ -14,4 +14,3 @@ initializeTheme();
 
 export { format } from './utils/utils';
 export * from './theme';
-export type * from './components.d.ts';

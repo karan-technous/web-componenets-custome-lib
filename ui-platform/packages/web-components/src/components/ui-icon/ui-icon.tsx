@@ -17,6 +17,13 @@ export class UiIcon extends BaseComponent {
     const icon = ICONS[this.name];
 
     if (!icon) {
+      // Fallback to search icon if icon not found
+      const fallbackIcon = ICONS['search'];
+      if (fallbackIcon) {
+        return fallbackIcon.map(([tag, attrs]) => {
+          return h(tag, { ...attrs });
+        });
+      }
       return <span>⚠️ Icon not found</span>;
     }
 
@@ -39,6 +46,7 @@ export class UiIcon extends BaseComponent {
         stroke-width={this.stroke}
         stroke-linecap="round"
         stroke-linejoin="round"
+        name={this.name}
       >
         {this.renderIcon()}
       </svg>

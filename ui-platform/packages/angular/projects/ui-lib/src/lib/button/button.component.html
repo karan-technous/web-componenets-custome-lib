@@ -4,11 +4,21 @@
   [disabled]="disabled()"
   [loading]="loading()"
   [fullWidth]="fullWidth()"
-  (uiClick)="onClick.emit()"
+  [animated]="animated()"
+  [rounded]="rounded()"
+  [iconLeft]="iconLeft()"
+  [iconRight]="iconRight()"
+  [icon]="icon()"
+  (uiClick)="uiClick.emit($event.detail)"
+  (uiFocus)="uiFocus.emit()"
+  (uiBlur)="uiBlur.emit()"
 >
-  <ng-content select="[start]" slot="start"></ng-content>
+  <!-- Left icon slot -->
+  <ng-content select="[icon-left]" slot="icon-left"></ng-content>
 
+  <!-- Default content slot -->
   <ng-content></ng-content>
 
-  <ng-content select="[end]" slot="end"></ng-content>
+  <!-- Right icon slot -->
+  <ng-content select="[icon-right]" slot="icon-right"></ng-content>
 </ui-button>

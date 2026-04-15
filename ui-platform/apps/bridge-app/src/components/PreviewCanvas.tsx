@@ -9,6 +9,7 @@ interface PreviewCanvasProps {
   zoom: number;
   refreshToken: number;
   onCurrentUrlChange: (url: string) => void;
+  appearance: "dark" | "light";
 }
 
 const rendererUrls: Record<Framework, string> = {
@@ -17,9 +18,10 @@ const rendererUrls: Record<Framework, string> = {
   wc: "http://localhost:5174",
 };
 
-function buildPreviewUrl(framework: Framework, refreshToken: number) {
+function buildPreviewUrl(framework: Framework, refreshToken: number, appearance: "dark" | "light") {
   const params = new URLSearchParams({
     refresh: String(refreshToken),
+    appearance: appearance,
   });
 
   return `${rendererUrls[framework]}?${params.toString()}`;
@@ -65,17 +67,18 @@ export function PreviewCanvas({
   zoom,
   refreshToken,
   onCurrentUrlChange,
+  appearance,
 }: PreviewCanvasProps) {
   const src = useMemo(
-    () => buildPreviewUrl(framework, refreshToken),
-    [framework, refreshToken],
+    () => buildPreviewUrl(framework, refreshToken, appearance),
+    [framework, refreshToken, appearance],
   );
   const shareUrl = useMemo(
     () =>
       selection
         ? buildShareUrl(framework, selection)
-        : buildPreviewUrl(framework, refreshToken),
-    [framework, refreshToken, selection],
+        : buildPreviewUrl(framework, refreshToken, appearance),
+    [framework, refreshToken, selection, appearance],
   );
   const [isLoading, setIsLoading] = useState(true);
   const [isReady, setIsReady] = useState(false);
@@ -152,6 +155,20 @@ export function PreviewCanvas({
 
     sendToPreview(iframeRef.current, pendingPayloadRef.current);
   }, [isReady]);
+
+  useEffect(() => {
+    if (!isReady || !iframeRef.current?.contentWindow) {
+      return;
+    }
+
+    iframeRef.current.contentWindow.postMessage(
+      {
+        type: "UPDATE_THEME",
+        appearance: appearance,
+      },
+      "*",
+    );
+  }, [appearance, isReady]);
 
   if (!selection) {
     return (

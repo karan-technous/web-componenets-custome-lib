@@ -1,7 +1,7 @@
 // src/icons/icon.registry.ts
-import { icons } from 'lucide';
+import * as LucideIcons from 'lucide';
+import type { IconName } from '@karan9186/core';
 
-// Type-safe keys
-export type IconName = keyof typeof icons;
+export { IconName };
 
-export const ICONS = icons;
+export const ICONS = LucideIcons;

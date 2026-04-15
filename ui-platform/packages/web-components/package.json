@@ -31,6 +31,14 @@
     "./components/ui-input": {
       "import": "./dist/components/ui-input.js",
       "types": "./dist/components/ui-input.d.ts"
+    },
+    "./types": {
+      "types": "./dist/types/types/index.d.ts",
+      "import": "./dist/types/types/index.js"
+    },
+    "./types/*": {
+      "types": "./dist/types/types/*.d.ts",
+      "import": "./dist/types/types/*.js"
     }
   },
   "repository": {

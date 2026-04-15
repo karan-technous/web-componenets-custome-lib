@@ -1,13 +1,25 @@
 export type UiTheme = {
   '--ui-primary': string;
   '--ui-primary-hover': string;
+  '--ui-primary-foreground': string;
   '--ui-bg': string;
   '--ui-text': string;
   '--ui-text-on-primary': string;
+  '--ui-border': string;
+  '--ui-border-hover': string;
   '--ui-border-color': string;
   '--ui-border-radius': string;
+  '--ui-secondary': string;
+  '--ui-secondary-foreground': string;
+  '--ui-secondary-hover': string;
   '--ui-secondary-hover-bg': string;
   '--ui-outline-hover-bg': string;
+  '--ui-foreground': string;
+  '--ui-accent': string;
+  '--ui-destructive': string;
+  '--ui-destructive-foreground': string;
+  '--ui-destructive-hover': string;
+  '--ui-ring': string;
   '--ui-toggle-track-bg': string;
   '--ui-toggle-track-checked-bg': string;
   '--ui-toggle-track-disabled-bg': string;
@@ -38,13 +50,25 @@ export type Theme = UiTheme;
 export const lightTheme: UiTheme = {
   '--ui-primary': '#3b82f6',
   '--ui-primary-hover': '#2563eb',
+  '--ui-primary-foreground': '#ffffff',
   '--ui-bg': '#ffffff',
   '--ui-text': '#111827',
   '--ui-text-on-primary': '#ffffff',
+  '--ui-border': '#e4e4e7',
+  '--ui-border-hover': '#d4d4d8',
   '--ui-border-color': '#cbd5e1',
   '--ui-border-radius': '6px',
+  '--ui-secondary': '#f4f4f5',
+  '--ui-secondary-foreground': '#18181b',
+  '--ui-secondary-hover': '#e4e4e7',
   '--ui-secondary-hover-bg': 'rgba(17, 24, 39, 0.05)',
   '--ui-outline-hover-bg': 'rgba(59, 130, 246, 0.1)',
+  '--ui-foreground': '#18181b',
+  '--ui-accent': '#f4f4f5',
+  '--ui-destructive': '#dc2626',
+  '--ui-destructive-foreground': '#fafafa',
+  '--ui-destructive-hover': '#b91c1c',
+  '--ui-ring': '#3b82f6',
   '--ui-toggle-track-bg': '#414141',
   '--ui-toggle-track-checked-bg': '#006404',
   '--ui-toggle-track-disabled-bg': '#9d9d9d',
@@ -71,24 +95,36 @@ export const lightTheme: UiTheme = {
 };
 
 export const darkTheme: UiTheme = {
-  '--ui-primary': '#60a5fa',
-  '--ui-primary-hover': '#3b82f6',
+  '--ui-primary': '#1e3a8a',
+  '--ui-primary-hover': '#1e40af',
+  '--ui-primary-foreground': '#ffffff',
   '--ui-bg': '#0f172a',
-  '--ui-text': '#e2e8f0',
-  '--ui-text-on-primary': '#0f172a',
+  '--ui-text': '#f1f5f9',
+  '--ui-text-on-primary': '#ffffff',
+  '--ui-border': '#27272a',
+  '--ui-border-hover': '#3f3f46',
   '--ui-border-color': '#334155',
   '--ui-border-radius': '6px',
+  '--ui-secondary': '#1e293b',
+  '--ui-secondary-foreground': '#f1f5f9',
+  '--ui-secondary-hover': '#334155',
   '--ui-secondary-hover-bg': 'rgba(226, 232, 240, 0.08)',
-  '--ui-outline-hover-bg': 'rgba(96, 165, 250, 0.18)',
-  '--ui-toggle-track-bg': '#475569',
-  '--ui-toggle-track-checked-bg': '#2563eb',
+  '--ui-outline-hover-bg': 'rgba(30, 58, 138, 0.18)',
+  '--ui-foreground': '#f1f5f9',
+  '--ui-accent': '#1e293b',
+  '--ui-destructive': '#991b1b',
+  '--ui-destructive-foreground': '#f1f5f9',
+  '--ui-destructive-hover': '#7f1d1d',
+  '--ui-ring': '#1e3a8a',
+  '--ui-toggle-track-bg': '#334155',
+  '--ui-toggle-track-checked-bg': '#1e3a8a',
   '--ui-toggle-track-disabled-bg': '#1e293b',
-  '--ui-toggle-thumb-bg': '#f8fafc',
+  '--ui-toggle-thumb-bg': '#f1f5f9',
   '--ui-toggle-icon-color': '#ffffff',
-  '--ui-spinner-color': '#0f172a',
+  '--ui-spinner-color': '#1e3a8a',
   '--ui-toast-bg': '#1e293b',
   '--ui-toast-text': '#f1f5f9',
-  '--ui-toast-border': '#475569',
+  '--ui-toast-border': '#334155',
   '--ui-toast-success-bg': '#022c22',
   '--ui-toast-success-text': '#86efac',
   '--ui-toast-success-border': '#16a34a',

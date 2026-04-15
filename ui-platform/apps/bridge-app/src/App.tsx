@@ -268,6 +268,7 @@ export default function App() {
                     zoom={zoom}
                     refreshToken={refreshToken}
                     onCurrentUrlChange={setCurrentUrl}
+                    appearance={appearance}
                   />
                 </div>
                 <BottomPanel

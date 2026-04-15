@@ -78,7 +78,7 @@ export function Sidebar({
       transition={{ duration: 0.2 }}
       className="relative flex h-full min-h-0 flex-col overflow-visible border border-[color:var(--bride-border-subtle)] bg-[var(--bride-glass-dark)] shadow-[0_22px_44px_var(--bride-glow),inset_0_1px_0_var(--bride-border-subtle)] transition-[width] duration-300 ease-out"
     >
-      <div
+      {/* <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background: `
@@ -86,8 +86,8 @@ export function Sidebar({
             radial-gradient(ellipse 75% 24% at 0% 100%, rgba(var(--bride-secondary-rgb), 0.025) 0%, transparent 72%)
           `,
         }}
-      />
-      <div
+      /> */}
+      {/* <div
         className="absolute inset-0 pointer-events-none opacity-[0.16] mix-blend-overlay"
         style={{
           backgroundImage:
@@ -95,23 +95,23 @@ export function Sidebar({
           backgroundRepeat: "repeat",
           backgroundSize: "128px 128px",
         }}
-      />
-      <div
+      /> */}
+      {/* <div
         className="absolute top-0 left-0 right-0 pointer-events-none"
         style={{
           height: "1px",
           zIndex: 100,
           background: `
-      linear-gradient(
-        90deg,
-        transparent 0%,
-        color-mix(in srgb, var(--bride-primary) 60%, transparent) 40%,
-        color-mix(in srgb, var(--bride-primary) 80%, var(--bride-text)) 70%,
-        transparent 100%
-      )
-    `,
+          linear-gradient(
+            90deg,
+            transparent 0%,
+            color-mix(in srgb, var(--bride-primary) 60%, transparent) 40%,
+            color-mix(in srgb, var(--bride-primary) 80%, var(--bride-text)) 70%,
+            transparent 100%
+          )
+        `,
         }}
-      />
+      /> */}
       <button
         type="button"
         onClick={onToggleCollapse}
