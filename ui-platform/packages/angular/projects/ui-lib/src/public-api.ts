@@ -6,6 +6,7 @@ export * from './lib/toggle/toggle.component';
 export * from './lib/toast/ui-toast.component';
 export * from './lib/toast/toast.service';
 export * from './lib/toast/toast-trigger.directive';
+export { ButtonGroupComponent, UiButtonGroupDirective } from './lib/button-group/button-group.component';
 
 // Re-export IconName for autocomplete when using iconLeft/iconRight props
 export type { IconName } from '@karan9186/core';

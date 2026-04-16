@@ -1,0 +1,22 @@
+<ui-button-group
+  [variant]="variant()"
+  [size]="size()"
+  [segmented]="segmented()"
+  [orientation]="orientation()"
+  [gap]="gap()"
+  [fullWidth]="fullWidth()"
+  [disabled]="disabled()"
+  [rounded]="rounded()"
+  [buttons]="buttons()"
+  [buttonLoading]="buttonLoading()"
+  [buttonAnimated]="buttonAnimated()"
+  [buttonFullWidth]="buttonFullWidth()"
+  [selectionMode]="selectionMode()"
+  [value]="value()"
+  [attr.role]="getGroupRole()"
+  (uiChange)="uiChange.emit($event.detail)"
+  (uiClick)="uiClick.emit($event.detail)"
+  [class]="getGroupClasses()"
+>
+  <ng-content></ng-content>
+</ui-button-group>

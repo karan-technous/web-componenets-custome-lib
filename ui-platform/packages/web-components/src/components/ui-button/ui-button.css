@@ -19,7 +19,7 @@
 
 .ui-btn-host--full-width {
   display: flex;
-  width: 100%;
+  width: 100% !important;
 }
 
 /* === BASE BUTTON === */

@@ -1,0 +1,379 @@
+/**
+ * UI ButtonGroup Component Styles
+ * Composes Button components with group layout and selection styling
+ */
+
+/* === HOST === */
+:host {
+  display: inline-flex;
+}
+
+:host([fullWidth]) {
+  display: flex;
+  width: 100%;
+}
+
+.ui-button-group {
+  display: inline-flex;
+  align-items: center;
+}
+
+.ui-button-group--full-width {
+  width: 100%;
+}
+
+/* === ORIENTATION === */
+
+:host(.ui-button-group--horizontal) {
+  flex-direction: row;
+}
+
+:host(.ui-button-group--vertical) {
+  flex-direction: column;
+}
+
+/* === ATTACHED MODE === */
+
+:host(.ui-button-group--attached) {
+  gap: 0;
+}
+
+/* === SEGMENTED MODE === */
+
+:host(.ui-button-group--segmented) {
+  gap: 0;
+  background-color: var(--ui-secondary);
+  padding: 0.14rem;
+  border: 1px solid var(--ui-primary);
+}
+
+/* === ROUNDED VARIANTS === */
+
+:host(.ui-button-group--rounded-none) {
+  border-radius: 0;
+}
+
+:host(.ui-button-group--rounded-sm) {
+  border-radius: var(--ui-border-radius-sm);
+}
+
+:host(.ui-button-group--rounded-md) {
+  border-radius: var(--ui-border-radius);
+}
+
+:host(.ui-button-group--rounded-lg) {
+  border-radius: var(--ui-border-radius-lg);
+}
+
+:host(.ui-button-group--rounded-full) {
+  border-radius: var(--ui-border-radius-full);
+}
+
+/* === BUTTON ROUNDED CORNERS FOR GROUPS === */
+
+/* First button gets left corners, last button gets right corners */
+:host(:not(.ui-button-group--segmented):not(.ui-button-group--attached)) ui-button[data-position="first"] {
+  border-top-left-radius: inherit;
+  border-bottom-left-radius: inherit;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+:host(:not(.ui-button-group--segmented):not(.ui-button-group--attached)) ui-button[data-position="last"] {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: inherit;
+  border-bottom-right-radius: inherit;
+}
+
+:host(:not(.ui-button-group--segmented):not(.ui-button-group--attached)) ui-button[data-position="middle"] {
+  border-radius: 0;
+}
+
+/* Single button gets full rounded corners */
+:host(:not(.ui-button-group--segmented):not(.ui-button-group--attached)) ui-button[data-position="first"][data-position="last"] {
+  border-radius: inherit;
+}
+
+/* === SELECTED STATE STYLING (NON-SEGMENTED) === */
+
+/* Selected buttons in non-segmented mode - override CSS variables */
+:host(:not(.ui-button-group--segmented)) ::slotted(*[selected="true"]),
+:host(:not(.ui-button-group--segmented)) ::slotted(*[aria-pressed="true"]),
+:host(:not(.ui-button-group--segmented)) ::slotted(*[aria-checked="true"]) {
+  --ui-primary: var(--ui-primary-hover) !important;
+}
+
+:host(:not(.ui-button-group--segmented)) ui-button[selected="true"]::part(button),
+:host(:not(.ui-button-group--segmented)) ui-button[aria-pressed="true"]::part(button),
+:host(:not(.ui-button-group--segmented)) ui-button[aria-checked="true"]::part(button) {
+  background-color: var(--ui-primary-hover) !important;
+  border-color: var(--ui-primary-hover) !important;
+}
+
+/* Selected button hover state */
+:host(:not(.ui-button-group--segmented)) ::slotted(*[selected="true"]:hover),
+:host(:not(.ui-button-group--segmented)) ::slotted(*[aria-pressed="true"]:hover),
+:host(:not(.ui-button-group--segmented)) ::slotted(*[aria-checked="true"]:hover) {
+  background-color: var(--ui-primary-hover) !important;
+  opacity: 0.95;
+}
+
+/* Selected button focus state */
+:host(:not(.ui-button-group--segmented)) ::slotted(*[selected="true"]:focus),
+:host(:not(.ui-button-group--segmented)) ::slotted(*[aria-pressed="true"]:focus),
+:host(:not(.ui-button-group--segmented)) ::slotted(*[aria-checked="true"]:focus) {
+  outline: 2px solid var(--ui-primary);
+  outline-offset: 2px;
+}
+
+/* === BUTTON POSITIONING FOR ATTACHED/SEGMENTED === */
+
+/* Horizontal attached buttons */
+:host(.ui-button-group--horizontal.ui-button-group--attached) ui-button[data-position="first"] {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: 1px solid transparent;
+}
+
+:host(.ui-button-group--horizontal.ui-button-group--attached) ui-button[data-position="middle"] {
+  border-radius: 0;
+  border-right: 1px solid transparent;
+}
+
+:host(.ui-button-group--horizontal.ui-button-group--attached) ui-button[data-position="last"] {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+/* Single button in attached mode gets full rounded */
+:host(.ui-button-group--horizontal.ui-button-group--attached) ui-button[data-position="first"][data-position="last"] {
+  border-radius: inherit;
+}
+
+/* Horizontal segmented buttons */
+:host(.ui-button-group--horizontal.ui-button-group--segmented) ui-button {
+  border: 1px solid transparent;
+}
+
+/* Force reset border-radius on ALL slotted buttons */
+:host(.ui-button-group--horizontal.ui-button-group--segmented) ::slotted(*) {
+  border-radius: 0 !important;
+  background: var(--ui-primary);
+}
+
+/* First button - left rounded corners only */
+:host(.ui-button-group--horizontal.ui-button-group--segmented) ::slotted(*:first-child) {
+  border-top-left-radius: 8px !important;
+  border-bottom-left-radius: 8px !important;
+}
+
+/* Last button - right rounded corners only */
+:host(.ui-button-group--horizontal.ui-button-group--segmented) ::slotted(*:last-child) {
+  border-top-right-radius: 8px !important;
+  border-bottom-right-radius: 8px !important;
+}
+
+/* Fallback using ::part(base) for Shadow DOM internal parts */
+:host(.ui-button-group--horizontal.ui-button-group--segmented) ui-button::part(base) {
+  border-radius: 0 !important;
+  background: var(--ui-primary);
+}
+
+:host(.ui-button-group--horizontal.ui-button-group--segmented) ui-button:first-child::part(base) {
+  border-top-left-radius: 8px !important;
+  border-bottom-left-radius: 8px !important;
+}
+
+:host(.ui-button-group--horizontal.ui-button-group--segmented) ui-button:last-child::part(base) {
+  border-top-right-radius: 8px !important;
+  border-bottom-right-radius: 8px !important;
+}
+
+:host(.ui-button-group--horizontal.ui-button-group--segmented) ui-button:not(:first-child) {
+  margin-left: -1px;
+}
+
+:host(.ui-button-group--horizontal.ui-button-group--segmented) ui-button:hover,
+:host(.ui-button-group--horizontal.ui-button-group--segmented) ui-button:focus {
+  position: relative;
+  z-index: 1;
+}
+
+:host(.ui-button-group--horizontal.ui-button-group--segmented) ::slotted(*[selected="true"]),
+:host(.ui-button-group--horizontal.ui-button-group--segmented) ::slotted(*[aria-pressed="true"]),
+:host(.ui-button-group--horizontal.ui-button-group--segmented) ::slotted(*[aria-checked="true"]) {
+  --ui-primary: var(--ui-primary-hover) !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 2;
+}
+
+:host(.ui-button-group--horizontal.ui-button-group--segmented) ui-button[selected="true"]::part(button),
+:host(.ui-button-group--horizontal.ui-button-group--segmented) ui-button[aria-pressed="true"]::part(button),
+:host(.ui-button-group--horizontal.ui-button-group--segmented) ui-button[aria-checked="true"]::part(button) {
+  background-color: var(--ui-primary-hover) !important;
+  border-color: var(--ui-primary-hover) !important;
+}
+
+/* Selected button hover state */
+:host(.ui-button-group--horizontal.ui-button-group--segmented) ::slotted(*[selected="true"]:hover),
+:host(.ui-button-group--horizontal.ui-button-group--segmented) ::slotted(*[aria-pressed="true"]:hover),
+:host(.ui-button-group--horizontal.ui-button-group--segmented) ::slotted(*[aria-checked="true"]:hover) {
+  background-color: var(--ui-primary-hover) !important;
+  opacity: 0.95;
+}
+
+/* Selected button focus state */
+:host(.ui-button-group--horizontal.ui-button-group--segmented) ::slotted(*[selected="true"]:focus),
+:host(.ui-button-group--horizontal.ui-button-group--segmented) ::slotted(*[aria-pressed="true"]:focus),
+:host(.ui-button-group--horizontal.ui-button-group--segmented) ::slotted(*[aria-checked="true"]:focus) {
+  outline: 2px solid var(--ui-primary);
+  outline-offset: 2px;
+}
+
+/* Vertical attached buttons */
+:host(.ui-button-group--vertical.ui-button-group--attached) ui-button[data-position="first"] {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom: 1px solid transparent;
+}
+
+:host(.ui-button-group--vertical.ui-button-group--attached) ui-button[data-position="middle"] {
+  border-radius: 0;
+  border-bottom: 1px solid transparent;
+}
+
+:host(.ui-button-group--vertical.ui-button-group--attached) ui-button[data-position="last"] {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+/* Single button in attached mode gets full rounded */
+:host(.ui-button-group--vertical.ui-button-group--attached) ui-button[data-position="first"][data-position="last"] {
+  border-radius: inherit;
+}
+
+/* Vertical segmented buttons */
+:host(.ui-button-group--vertical.ui-button-group--segmented) ui-button {
+  border: 1px solid transparent;
+  width: 100%;
+}
+
+/* Force reset border-radius on ALL slotted buttons */
+:host(.ui-button-group--vertical.ui-button-group--segmented) ::slotted(*) {
+  border-radius: 0 !important;
+  background: var(--ui-primary);
+}
+
+/* First button - top rounded corners only */
+:host(.ui-button-group--vertical.ui-button-group--segmented) ::slotted(*:first-child) {
+  border-top-left-radius: 8px !important;
+  border-top-right-radius: 8px !important;
+}
+
+/* Last button - bottom rounded corners only */
+:host(.ui-button-group--vertical.ui-button-group--segmented) ::slotted(*:last-child) {
+  border-bottom-left-radius: 8px !important;
+  border-bottom-right-radius: 8px !important;
+}
+
+/* Fallback using ::part(base) for Shadow DOM internal parts */
+:host(.ui-button-group--vertical.ui-button-group--segmented) ui-button::part(base) {
+  border-radius: 0 !important;
+  background: var(--ui-primary);
+}
+
+:host(.ui-button-group--vertical.ui-button-group--segmented) ui-button:first-child::part(base) {
+  border-top-left-radius: 8px !important;
+  border-top-right-radius: 8px !important;
+}
+
+:host(.ui-button-group--vertical.ui-button-group--segmented) ui-button:last-child::part(base) {
+  border-bottom-left-radius: 8px !important;
+  border-bottom-right-radius: 8px !important;
+}
+
+:host(.ui-button-group--vertical.ui-button-group--segmented) ui-button:not(:first-child) {
+  margin-top: -1px;
+}
+
+:host(.ui-button-group--vertical.ui-button-group--segmented) ui-button:hover,
+:host(.ui-button-group--vertical.ui-button-group--segmented) ui-button:focus {
+  position: relative;
+  z-index: 1;
+}
+
+:host(.ui-button-group--vertical.ui-button-group--segmented) ::slotted(*[selected="true"]),
+:host(.ui-button-group--vertical.ui-button-group--segmented) ::slotted(*[aria-pressed="true"]),
+:host(.ui-button-group--vertical.ui-button-group--segmented) ::slotted(*[aria-checked="true"]) {
+  --ui-primary: var(--ui-primary-hover) !important;
+  position: relative;
+  z-index: 2;
+}
+
+:host(.ui-button-group--vertical.ui-button-group--segmented) ui-button[selected="true"]::part(button),
+:host(.ui-button-group--vertical.ui-button-group--segmented) ui-button[aria-pressed="true"]::part(button),
+:host(.ui-button-group--vertical.ui-button-group--segmented) ui-button[aria-checked="true"]::part(button) {
+  background-color: var(--ui-primary-hover) !important;
+  border-color: var(--ui-primary-hover) !important;
+}
+
+/* Selected button hover state */
+:host(.ui-button-group--vertical.ui-button-group--segmented) ::slotted(*[selected="true"]:hover),
+:host(.ui-button-group--vertical.ui-button-group--segmented) ::slotted(*[aria-pressed="true"]:hover),
+:host(.ui-button-group--vertical.ui-button-group--segmented) ::slotted(*[aria-checked="true"]:hover) {
+  background-color: var(--ui-primary-hover) !important;
+  opacity: 0.95;
+}
+
+/* Selected button focus state */
+:host(.ui-button-group--vertical.ui-button-group--segmented) ::slotted(*[selected="true"]:focus),
+:host(.ui-button-group--vertical.ui-button-group--segmented) ::slotted(*[aria-pressed="true"]:focus),
+:host(.ui-button-group--vertical.ui-button-group--segmented) ::slotted(*[aria-checked="true"]:focus) {
+  outline: 2px solid var(--ui-primary);
+  outline-offset: 2px;
+}
+
+/* === GAP FOR NON-ATTACHED MODE === */
+
+:host(.ui-button-group--gap-xs:not(.ui-button-group--attached):not(.ui-button-group--segmented)) {
+  gap: 0.25rem;
+}
+
+:host(.ui-button-group--gap-sm:not(.ui-button-group--attached):not(.ui-button-group--segmented)) {
+  gap: 0.5rem;
+}
+
+:host(.ui-button-group--gap-md:not(.ui-button-group--attached):not(.ui-button-group--segmented)) {
+  gap: 0.75rem;
+}
+
+:host(.ui-button-group--gap-lg:not(.ui-button-group--attached):not(.ui-button-group--segmented)) {
+  gap: 1rem;
+}
+
+:host(.ui-button-group--gap-none:not(.ui-button-group--attached):not(.ui-button-group--segmented)) {
+  gap: 0;
+}
+
+/* === FULL WIDTH MODE === */
+
+:host(.ui-button-group--full-width) > ui-button {
+  flex: 1;
+}
+
+/* === DARK MODE SUPPORT === */
+@media (prefers-color-scheme: dark) {
+  :host(.ui-button-group--segmented) {
+    background-color: var(--ui-secondary);
+  }
+
+  :host(.ui-button-group--horizontal.ui-button-group--segmented) ui-button[aria-pressed="true"],
+  :host(.ui-button-group--horizontal.ui-button-group--segmented) ui-button[aria-checked="true"],
+  :host(.ui-button-group--vertical.ui-button-group--segmented) ui-button[aria-pressed="true"],
+  :host(.ui-button-group--vertical.ui-button-group--segmented) ui-button[aria-checked="true"] {
+    background-color: var(--ui-bg);
+    border-color: var(--ui-border);
+  }
+}

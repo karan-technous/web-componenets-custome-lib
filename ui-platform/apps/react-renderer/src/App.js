@@ -146,7 +146,39 @@ function renderDynamicComponent(payload) {
     let children;
     const childrenProp = binding?.childrenProp ??
         (Object.prototype.hasOwnProperty.call(props, "label") ? "label" : undefined);
-    if (childrenProp && typeof props[childrenProp] !== "undefined") {
+    // Special handling for button-group to parse buttons JSON and create UiButton components
+    if (payload.component === "button-group" && childrenProp === "buttons" && typeof props[childrenProp] !== "undefined") {
+        try {
+            const buttonsData = JSON.parse(String(props[childrenProp]));
+            if (Array.isArray(buttonsData)) {
+                const ButtonWrapper = resolveWrapper("button", "UiButton");
+                children = buttonsData.map((btn, index) => {
+                    if (ButtonWrapper) {
+                        return createElement(ButtonWrapper, {
+                            key: index,
+                            value: btn.value,
+                            variant: btn.variant,
+                            size: btn.size,
+                            iconLeft: btn.iconLeft,
+                            iconRight: btn.iconRight,
+                            children: btn.label,
+                        });
+                    }
+                    return createElement("button", {
+                        key: index,
+                        value: btn.value,
+                    }, btn.label);
+                });
+            }
+            delete props[childrenProp];
+        }
+        catch (e) {
+            console.error("Failed to parse buttons JSON:", e);
+            children = String(props[childrenProp]);
+            delete props[childrenProp];
+        }
+    }
+    else if (childrenProp && typeof props[childrenProp] !== "undefined") {
         children = String(props[childrenProp]);
         delete props[childrenProp];
     }
@@ -172,7 +204,7 @@ export default function App() {
             if (!nextPayload || nextPayload.framework !== "react") {
                 return;
             }
-            console.log("Received ->", event.data);
+            console.log("React renderer received payload:", JSON.stringify(nextPayload, null, 2));
             setPayload(nextPayload);
         };
         window.addEventListener("message", handler);

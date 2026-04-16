@@ -132,7 +132,32 @@ function renderComponent(payload: StoryPayload) {
   const el = document.createElement(tagName);
   const props = { ...payload.props };
 
-  if (textProp && typeof props[textProp] !== "undefined") {
+  // Special handling for button-group to parse buttons JSON and create ui-button elements
+  if (payload.component === "button-group" && textProp === "buttons" && typeof props[textProp] !== "undefined") {
+    try {
+      const buttonsData = JSON.parse(String(props[textProp]));
+      if (Array.isArray(buttonsData)) {
+        buttonsData.forEach((btn: any) => {
+          const buttonEl = document.createElement("ui-button");
+          buttonEl.setAttribute("value", btn.value);
+          buttonEl.textContent = btn.label;
+          // Apply additional button props if present
+          if (btn.variant) buttonEl.setAttribute("variant", btn.variant);
+          if (btn.size) buttonEl.setAttribute("size", btn.size);
+          if (btn.iconLeft) buttonEl.setAttribute("icon-left", btn.iconLeft);
+          if (btn.iconRight) buttonEl.setAttribute("icon-right", btn.iconRight);
+          el.appendChild(buttonEl);
+        });
+      }
+      delete props[textProp];
+    } catch (e) {
+      console.error("Failed to parse buttons JSON:", e);
+      if (textProp && typeof props[textProp] !== "undefined") {
+        el.textContent = String(props[textProp]);
+        delete props[textProp];
+      }
+    }
+  } else if (textProp && typeof props[textProp] !== "undefined") {
     el.textContent = String(props[textProp]);
     delete props[textProp];
   }
@@ -230,7 +255,7 @@ window.addEventListener("message", (event: MessageEvent) => {
       return;
     }
 
-    console.log("Received ->", event.data);
+    console.log("WC renderer received payload:", JSON.stringify(payload, null, 2));
     if (payload.appearance) {
       currentAppearance = payload.appearance;
     }

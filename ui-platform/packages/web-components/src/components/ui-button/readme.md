@@ -54,6 +54,10 @@ Supports multiple sizes, states, and animations
 
 ## Dependencies
 
+### Used by
+
+ - [ui-button-group](../ui-button-group)
+
 ### Depends on
 
 - [ui-icon](../ui-icon)
@@ -62,6 +66,7 @@ Supports multiple sizes, states, and animations
 ```mermaid
 graph TD;
   ui-button --> ui-icon
+  ui-button-group --> ui-button
   style ui-button fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

@@ -58,7 +58,7 @@ export class AppComponent implements OnInit, OnDestroy {
       return;
     }
 
-    console.log("Received ->", event.data);
+    console.log("Angular renderer received payload:", JSON.stringify(payload, null, 2));
     this.zone.run(() => {
       this.applyPayload(payload);
       this.cdr.detectChanges();
@@ -243,16 +243,43 @@ export class AppComponent implements OnInit, OnDestroy {
         ? "label"
         : undefined);
 
+    // Special handling for button-group to parse buttons JSON and create ui-button web component elements
+    let projectableNodes: Node[][] | undefined;
+    if (payload.component === "button-group" && projectedProp === "buttons" && typeof payload.props[projectedProp] !== "undefined") {
+      try {
+        const buttonsData = JSON.parse(String(payload.props[projectedProp]));
+        if (Array.isArray(buttonsData)) {
+          // Create ui-button web component elements directly
+          const buttonNodes: Node[] = buttonsData.map((btn: any) => {
+            const buttonEl = document.createElement("ui-button");
+            buttonEl.setAttribute("value", btn.value);
+            buttonEl.textContent = btn.label;
+            // Apply additional button props if present
+            if (btn.variant) buttonEl.setAttribute("variant", btn.variant);
+            if (btn.size) buttonEl.setAttribute("size", btn.size);
+            if (btn.iconLeft) buttonEl.setAttribute("icon-left", btn.iconLeft);
+            if (btn.iconRight) buttonEl.setAttribute("icon-right", btn.iconRight);
+            return buttonEl;
+          });
+          projectableNodes = [buttonNodes];
+        }
+      } catch (e) {
+        console.error("Failed to parse buttons JSON:", e);
+      }
+    }
+
     const projectedValue =
-      projectedProp && typeof payload.props[projectedProp] !== "undefined"
+      projectedProp && typeof payload.props[projectedProp] !== "undefined" && !projectableNodes
         ? String(payload.props[projectedProp])
         : "";
 
-    const ref = projectedProp
+    const ref = projectedProp && !projectableNodes
       ? this.container.createComponent(componentType, {
           projectableNodes: [[document.createTextNode(projectedValue)]],
         })
-      : this.container.createComponent(componentType);
+      : this.container.createComponent(componentType, {
+          projectableNodes: projectableNodes || [],
+        });
 
     for (const [key, value] of Object.entries(payload.props)) {
       if (projectedProp && key === projectedProp) {
@@ -263,9 +290,9 @@ export class AppComponent implements OnInit, OnDestroy {
       }
       if (key === "disabled") {
         try {
-          ref.setInput("disabledInput", this.toBoolean(value));
+          ref.setInput("disabled", this.toBoolean(value));
         } catch {
-          // Ignore wrappers that don't expose disabledInput.
+          // Ignore wrappers that don't expose disabled.
         }
       }
 

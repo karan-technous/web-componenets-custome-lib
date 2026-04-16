@@ -5,9 +5,9 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { ButtonEventDetail, ButtonRounded, ButtonSize, ButtonVariant, IconName, ToastLifecycleDetail, ToastPromiseOptions, ToastShowOptions } from "@karan9186/core";
+import { ButtonEventDetail, ButtonGroupEventDetail, ButtonGroupOrientation, ButtonGroupSize, ButtonGroupVariant, ButtonRounded, ButtonSize, ButtonVariant, IconName, ToastLifecycleDetail, ToastPromiseOptions, ToastShowOptions } from "@karan9186/core";
 import { IconName as IconName1 } from "./components/icons/icon.registry";
-export { ButtonEventDetail, ButtonRounded, ButtonSize, ButtonVariant, IconName, ToastLifecycleDetail, ToastPromiseOptions, ToastShowOptions } from "@karan9186/core";
+export { ButtonEventDetail, ButtonGroupEventDetail, ButtonGroupOrientation, ButtonGroupSize, ButtonGroupVariant, ButtonRounded, ButtonSize, ButtonVariant, IconName, ToastLifecycleDetail, ToastPromiseOptions, ToastShowOptions } from "@karan9186/core";
 export { IconName as IconName1 } from "./components/icons/icon.registry";
 export namespace Components {
     /**
@@ -66,6 +66,83 @@ export namespace Components {
           * @default 'default'
          */
         "variant": ButtonVariant;
+    }
+    /**
+     * UI ButtonGroup Component
+     * Groups buttons together with layout control and selection logic
+     * Composes existing Button components without duplicating logic
+     * @event uiChange - Emitted when selection changes (if selectionMode is not 'none')
+     * @event uiClick - Proxy for child button click events (optional)
+     */
+    interface UiButtonGroup {
+        /**
+          * Whether to enable click animation on child buttons (press effect)
+          * @default false
+         */
+        "buttonAnimated": boolean;
+        /**
+          * Whether child buttons should take full width
+          * @default false
+         */
+        "buttonFullWidth": boolean;
+        /**
+          * Whether child buttons are in loading state
+          * @default false
+         */
+        "buttonLoading": boolean;
+        /**
+          * JSON string array of button objects with value, label, and optional button props If provided, buttons will be rendered automatically. Otherwise, use slot.
+         */
+        "buttons"?: string;
+        /**
+          * Whether the entire group is disabled
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * Whether the group takes full width
+          * @default false
+         */
+        "fullWidth": boolean;
+        /**
+          * Gap between buttons
+          * @default 'md'
+         */
+        "gap": 'xs' | 'sm' | 'md' | 'lg' | 'none';
+        /**
+          * Orientation of the button group
+          * @default 'horizontal'
+         */
+        "orientation": ButtonGroupOrientation;
+        /**
+          * Border radius size for the button group
+          * @default 'md'
+         */
+        "rounded": ButtonRounded;
+        /**
+          * Whether buttons are segmented (no gaps, shared borders)
+          * @default false
+         */
+        "segmented": boolean;
+        /**
+          * Selection mode for the button group
+          * @default 'none'
+         */
+        "selectionMode": 'none' | 'single' | 'multiple';
+        /**
+          * Size inheritance for child buttons
+          * @default 'inherit'
+         */
+        "size": ButtonGroupSize;
+        /**
+          * Current selected value(s) - For single mode: string - For multiple mode: string[] - For none mode: undefined
+         */
+        "value"?: string | string[];
+        /**
+          * Variant inheritance for child buttons
+          * @default 'inherit'
+         */
+        "variant": ButtonGroupVariant;
     }
     interface UiCheckbox {
         /**
@@ -148,6 +225,10 @@ export interface UiButtonCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLUiButtonElement;
 }
+export interface UiButtonGroupCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLUiButtonGroupElement;
+}
 export interface UiCheckboxCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLUiCheckboxElement;
@@ -191,6 +272,32 @@ declare global {
     var HTMLUiButtonElement: {
         prototype: HTMLUiButtonElement;
         new (): HTMLUiButtonElement;
+    };
+    interface HTMLUiButtonGroupElementEventMap {
+        "valueChange": string | string[];
+        "uiChange": ButtonGroupEventDetail;
+        "uiClick": ButtonGroupEventDetail;
+    }
+    /**
+     * UI ButtonGroup Component
+     * Groups buttons together with layout control and selection logic
+     * Composes existing Button components without duplicating logic
+     * @event uiChange - Emitted when selection changes (if selectionMode is not 'none')
+     * @event uiClick - Proxy for child button click events (optional)
+     */
+    interface HTMLUiButtonGroupElement extends Components.UiButtonGroup, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLUiButtonGroupElementEventMap>(type: K, listener: (this: HTMLUiButtonGroupElement, ev: UiButtonGroupCustomEvent<HTMLUiButtonGroupElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLUiButtonGroupElementEventMap>(type: K, listener: (this: HTMLUiButtonGroupElement, ev: UiButtonGroupCustomEvent<HTMLUiButtonGroupElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLUiButtonGroupElement: {
+        prototype: HTMLUiButtonGroupElement;
+        new (): HTMLUiButtonGroupElement;
     };
     interface HTMLUiCheckboxElementEventMap {
         "uiChange": boolean;
@@ -271,6 +378,7 @@ declare global {
     };
     interface HTMLElementTagNameMap {
         "ui-button": HTMLUiButtonElement;
+        "ui-button-group": HTMLUiButtonGroupElement;
         "ui-checkbox": HTMLUiCheckboxElement;
         "ui-icon": HTMLUiIconElement;
         "ui-input": HTMLUiInputElement;
@@ -349,6 +457,95 @@ declare namespace LocalJSX {
           * @default 'default'
          */
         "variant"?: ButtonVariant;
+    }
+    /**
+     * UI ButtonGroup Component
+     * Groups buttons together with layout control and selection logic
+     * Composes existing Button components without duplicating logic
+     * @event uiChange - Emitted when selection changes (if selectionMode is not 'none')
+     * @event uiClick - Proxy for child button click events (optional)
+     */
+    interface UiButtonGroup {
+        /**
+          * Whether to enable click animation on child buttons (press effect)
+          * @default false
+         */
+        "buttonAnimated"?: boolean;
+        /**
+          * Whether child buttons should take full width
+          * @default false
+         */
+        "buttonFullWidth"?: boolean;
+        /**
+          * Whether child buttons are in loading state
+          * @default false
+         */
+        "buttonLoading"?: boolean;
+        /**
+          * JSON string array of button objects with value, label, and optional button props If provided, buttons will be rendered automatically. Otherwise, use slot.
+         */
+        "buttons"?: string;
+        /**
+          * Whether the entire group is disabled
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * Whether the group takes full width
+          * @default false
+         */
+        "fullWidth"?: boolean;
+        /**
+          * Gap between buttons
+          * @default 'md'
+         */
+        "gap"?: 'xs' | 'sm' | 'md' | 'lg' | 'none';
+        /**
+          * Emitted when selection changes (legacy event for backward compatibility)
+         */
+        "onUiChange"?: (event: UiButtonGroupCustomEvent<ButtonGroupEventDetail>) => void;
+        /**
+          * Proxy for child button click events
+         */
+        "onUiClick"?: (event: UiButtonGroupCustomEvent<ButtonGroupEventDetail>) => void;
+        /**
+          * Emitted when value changes
+         */
+        "onValueChange"?: (event: UiButtonGroupCustomEvent<string | string[]>) => void;
+        /**
+          * Orientation of the button group
+          * @default 'horizontal'
+         */
+        "orientation"?: ButtonGroupOrientation;
+        /**
+          * Border radius size for the button group
+          * @default 'md'
+         */
+        "rounded"?: ButtonRounded;
+        /**
+          * Whether buttons are segmented (no gaps, shared borders)
+          * @default false
+         */
+        "segmented"?: boolean;
+        /**
+          * Selection mode for the button group
+          * @default 'none'
+         */
+        "selectionMode"?: 'none' | 'single' | 'multiple';
+        /**
+          * Size inheritance for child buttons
+          * @default 'inherit'
+         */
+        "size"?: ButtonGroupSize;
+        /**
+          * Current selected value(s) - For single mode: string - For multiple mode: string[] - For none mode: undefined
+         */
+        "value"?: string | string[];
+        /**
+          * Variant inheritance for child buttons
+          * @default 'inherit'
+         */
+        "variant"?: ButtonGroupVariant;
     }
     interface UiCheckbox {
         /**
@@ -443,6 +640,22 @@ declare namespace LocalJSX {
         "iconRight": IconName;
         "icon": IconName;
     }
+    interface UiButtonGroupAttributes {
+        "variant": ButtonGroupVariant;
+        "size": ButtonGroupSize;
+        "segmented": boolean;
+        "orientation": ButtonGroupOrientation;
+        "gap": 'xs' | 'sm' | 'md' | 'lg' | 'none';
+        "fullWidth": boolean;
+        "disabled": boolean;
+        "rounded": ButtonRounded;
+        "buttons": string;
+        "buttonLoading": boolean;
+        "buttonAnimated": boolean;
+        "buttonFullWidth": boolean;
+        "selectionMode": 'none' | 'single' | 'multiple';
+        "value": string | string[];
+    }
     interface UiCheckboxAttributes {
         "checked": boolean;
         "disabled": boolean;
@@ -477,6 +690,7 @@ declare namespace LocalJSX {
 
     interface IntrinsicElements {
         "ui-button": Omit<UiButton, keyof UiButtonAttributes> & { [K in keyof UiButton & keyof UiButtonAttributes]?: UiButton[K] } & { [K in keyof UiButton & keyof UiButtonAttributes as `attr:${K}`]?: UiButtonAttributes[K] } & { [K in keyof UiButton & keyof UiButtonAttributes as `prop:${K}`]?: UiButton[K] };
+        "ui-button-group": Omit<UiButtonGroup, keyof UiButtonGroupAttributes> & { [K in keyof UiButtonGroup & keyof UiButtonGroupAttributes]?: UiButtonGroup[K] } & { [K in keyof UiButtonGroup & keyof UiButtonGroupAttributes as `attr:${K}`]?: UiButtonGroupAttributes[K] } & { [K in keyof UiButtonGroup & keyof UiButtonGroupAttributes as `prop:${K}`]?: UiButtonGroup[K] };
         "ui-checkbox": Omit<UiCheckbox, keyof UiCheckboxAttributes> & { [K in keyof UiCheckbox & keyof UiCheckboxAttributes]?: UiCheckbox[K] } & { [K in keyof UiCheckbox & keyof UiCheckboxAttributes as `attr:${K}`]?: UiCheckboxAttributes[K] } & { [K in keyof UiCheckbox & keyof UiCheckboxAttributes as `prop:${K}`]?: UiCheckbox[K] };
         "ui-icon": Omit<UiIcon, keyof UiIconAttributes> & { [K in keyof UiIcon & keyof UiIconAttributes]?: UiIcon[K] } & { [K in keyof UiIcon & keyof UiIconAttributes as `attr:${K}`]?: UiIconAttributes[K] } & { [K in keyof UiIcon & keyof UiIconAttributes as `prop:${K}`]?: UiIcon[K] } & OneOf<"name", UiIcon["name"], UiIconAttributes["name"]>;
         "ui-input": Omit<UiInput, keyof UiInputAttributes> & { [K in keyof UiInput & keyof UiInputAttributes]?: UiInput[K] } & { [K in keyof UiInput & keyof UiInputAttributes as `attr:${K}`]?: UiInputAttributes[K] } & { [K in keyof UiInput & keyof UiInputAttributes as `prop:${K}`]?: UiInput[K] };
@@ -497,6 +711,14 @@ declare module "@stencil/core" {
              * @event uiBlur - Emitted when button loses focus
              */
             "ui-button": LocalJSX.IntrinsicElements["ui-button"] & JSXBase.HTMLAttributes<HTMLUiButtonElement>;
+            /**
+             * UI ButtonGroup Component
+             * Groups buttons together with layout control and selection logic
+             * Composes existing Button components without duplicating logic
+             * @event uiChange - Emitted when selection changes (if selectionMode is not 'none')
+             * @event uiClick - Proxy for child button click events (optional)
+             */
+            "ui-button-group": LocalJSX.IntrinsicElements["ui-button-group"] & JSXBase.HTMLAttributes<HTMLUiButtonGroupElement>;
             "ui-checkbox": LocalJSX.IntrinsicElements["ui-checkbox"] & JSXBase.HTMLAttributes<HTMLUiCheckboxElement>;
             "ui-icon": LocalJSX.IntrinsicElements["ui-icon"] & JSXBase.HTMLAttributes<HTMLUiIconElement>;
             "ui-input": LocalJSX.IntrinsicElements["ui-input"] & JSXBase.HTMLAttributes<HTMLUiInputElement>;

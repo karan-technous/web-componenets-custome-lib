@@ -105,7 +105,38 @@ function renderComponent(payload) {
             : undefined);
     const el = document.createElement(tagName);
     const props = { ...payload.props };
-    if (textProp && typeof props[textProp] !== "undefined") {
+    // Special handling for button-group to parse buttons JSON and create ui-button elements
+    if (payload.component === "button-group" && textProp === "buttons" && typeof props[textProp] !== "undefined") {
+        try {
+            const buttonsData = JSON.parse(String(props[textProp]));
+            if (Array.isArray(buttonsData)) {
+                buttonsData.forEach((btn) => {
+                    const buttonEl = document.createElement("ui-button");
+                    buttonEl.setAttribute("value", btn.value);
+                    buttonEl.textContent = btn.label;
+                    // Apply additional button props if present
+                    if (btn.variant)
+                        buttonEl.setAttribute("variant", btn.variant);
+                    if (btn.size)
+                        buttonEl.setAttribute("size", btn.size);
+                    if (btn.iconLeft)
+                        buttonEl.setAttribute("icon-left", btn.iconLeft);
+                    if (btn.iconRight)
+                        buttonEl.setAttribute("icon-right", btn.iconRight);
+                    el.appendChild(buttonEl);
+                });
+            }
+            delete props[textProp];
+        }
+        catch (e) {
+            console.error("Failed to parse buttons JSON:", e);
+            if (textProp && typeof props[textProp] !== "undefined") {
+                el.textContent = String(props[textProp]);
+                delete props[textProp];
+            }
+        }
+    }
+    else if (textProp && typeof props[textProp] !== "undefined") {
         el.textContent = String(props[textProp]);
         delete props[textProp];
     }
@@ -125,7 +156,7 @@ function parseInitialPayload() {
     const params = new URLSearchParams(window.location.search);
     const component = params.get("component") ?? "button";
     const story = params.get("story") ?? "Primary";
-    const appearance = params.get("appearance") === "light" || params.get("appearance") == null ? "light" : "dark";
+    const appearance = params.get("appearance") === "light" ? "light" : "dark";
     const renderersRaw = params.get("renderers");
     let props = {
         label: "Click Me",
@@ -159,10 +190,11 @@ function parseInitialPayload() {
         renderers,
     };
 }
+let currentAppearance = "dark";
 const initialPayload = parseInitialPayload();
+currentAppearance = initialPayload.appearance ?? "dark";
 try {
-    // Default to light theme, will be overridden by UPDATE_THEME from bridge app
-    applyAppearance("light");
+    applyAppearance(currentAppearance);
     renderComponent(initialPayload);
     window.parent.postMessage({ type: "IFRAME_READY" }, "*");
 }
@@ -173,7 +205,9 @@ catch (error) {
 window.addEventListener("message", (event) => {
     try {
         if (event.data?.type === "UPDATE_THEME") {
-            const appearance = event.data.appearance === 'light' ? 'light' : 'dark';
+            const appearance = event.data.appearance;
+            console.log("Received UPDATE_THEME ->", appearance);
+            currentAppearance = appearance;
             applyAppearance(appearance);
             return;
         }
@@ -184,7 +218,11 @@ window.addEventListener("message", (event) => {
         if (!payload || payload.framework !== "wc") {
             return;
         }
-        applyAppearance(payload.appearance ?? "dark");
+        console.log("WC renderer received payload:", JSON.stringify(payload, null, 2));
+        if (payload.appearance) {
+            currentAppearance = payload.appearance;
+        }
+        applyAppearance(currentAppearance);
         renderComponent(payload);
     }
     catch (error) {

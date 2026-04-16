@@ -135,12 +135,14 @@ export function PreviewCanvas({
       renderers: selection.renderers,
     };
 
+    console.log("PreviewCanvas: Selection changed, payload:", JSON.stringify(payload, null, 2));
     pendingPayloadRef.current = payload;
     if (!isReady) {
       return;
     }
 
     const timeout = window.setTimeout(() => {
+      console.log("PreviewCanvas: Sending update to renderer");
       sendToPreview(iframeRef.current, payload);
     }, 60);
 
