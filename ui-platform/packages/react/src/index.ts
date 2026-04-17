@@ -8,5 +8,6 @@ export * from "./components/toggle/Toggle.js";
 export * from "./components/checkbox/Checkbox.js";
 export * from "./components/toast/index.js";
 export * from "./components/badge/index.js";
+export * from "./components/breadcrumb/index";
 export * from "./hooks/useButtonGroup.js";
 export * from "@karan9186/core";

@@ -19,6 +19,7 @@
 
 ### Used by
 
+ - [ui-breadcrumb](../ui-breadcrumb)
  - [ui-button](../ui-button)
  - [ui-checkbox](../ui-checkbox)
  - [ui-toast](../ui-toast)
@@ -27,6 +28,7 @@
 ### Graph
 ```mermaid
 graph TD;
+  ui-breadcrumb --> ui-icon
   ui-button --> ui-icon
   ui-checkbox --> ui-icon
   ui-toast --> ui-icon

@@ -5,9 +5,9 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { BadgeColor, BadgeShape, BadgeSize, BadgeVariant, ButtonEventDetail, ButtonGroupEventDetail, ButtonGroupOrientation, ButtonGroupSize, ButtonGroupVariant, ButtonRounded, ButtonSize, ButtonVariant, IconName, ToastLifecycleDetail, ToastPromiseOptions, ToastShowOptions } from "@karan9186/core";
+import { BadgeColor, BadgeShape, BadgeSize, BadgeVariant, BreadcrumbEventDetail, BreadcrumbSeparator, ButtonEventDetail, ButtonGroupEventDetail, ButtonGroupOrientation, ButtonGroupSize, ButtonGroupVariant, ButtonRounded, ButtonSize, ButtonVariant, IconName, ToastLifecycleDetail, ToastPromiseOptions, ToastShowOptions } from "@karan9186/core";
 import { IconName as IconName1 } from "./components/icons/icon.registry";
-export { BadgeColor, BadgeShape, BadgeSize, BadgeVariant, ButtonEventDetail, ButtonGroupEventDetail, ButtonGroupOrientation, ButtonGroupSize, ButtonGroupVariant, ButtonRounded, ButtonSize, ButtonVariant, IconName, ToastLifecycleDetail, ToastPromiseOptions, ToastShowOptions } from "@karan9186/core";
+export { BadgeColor, BadgeShape, BadgeSize, BadgeVariant, BreadcrumbEventDetail, BreadcrumbSeparator, ButtonEventDetail, ButtonGroupEventDetail, ButtonGroupOrientation, ButtonGroupSize, ButtonGroupVariant, ButtonRounded, ButtonSize, ButtonVariant, IconName, ToastLifecycleDetail, ToastPromiseOptions, ToastShowOptions } from "@karan9186/core";
 export { IconName as IconName1 } from "./components/icons/icon.registry";
 export namespace Components {
     /**
@@ -52,6 +52,38 @@ export namespace Components {
           * @default 'solid'
          */
         "variant": BadgeVariant;
+    }
+    interface UiBreadcrumb {
+        /**
+          * Whether the breadcrumb is disabled
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * Breadcrumb items as JSON string
+          * @default ''
+         */
+        "items": string;
+        /**
+          * Number of items to show after collapse indicator
+          * @default 1
+         */
+        "itemsAfterCollapse": number;
+        /**
+          * Number of items to show before collapse indicator
+          * @default 1
+         */
+        "itemsBeforeCollapse": number;
+        /**
+          * Maximum number of items before collapsing
+          * @default undefined (no collapse)
+         */
+        "maxItems"?: string;
+        /**
+          * Separator between items
+          * @default 'slash'
+         */
+        "separator": BreadcrumbSeparator;
     }
     /**
      * UI Button Component
@@ -268,6 +300,10 @@ export interface UiBadgeCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLUiBadgeElement;
 }
+export interface UiBreadcrumbCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLUiBreadcrumbElement;
+}
 export interface UiButtonCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLUiButtonElement;
@@ -315,6 +351,23 @@ declare global {
     var HTMLUiBadgeElement: {
         prototype: HTMLUiBadgeElement;
         new (): HTMLUiBadgeElement;
+    };
+    interface HTMLUiBreadcrumbElementEventMap {
+        "uiClick": BreadcrumbEventDetail;
+    }
+    interface HTMLUiBreadcrumbElement extends Components.UiBreadcrumb, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLUiBreadcrumbElementEventMap>(type: K, listener: (this: HTMLUiBreadcrumbElement, ev: UiBreadcrumbCustomEvent<HTMLUiBreadcrumbElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLUiBreadcrumbElementEventMap>(type: K, listener: (this: HTMLUiBreadcrumbElement, ev: UiBreadcrumbCustomEvent<HTMLUiBreadcrumbElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLUiBreadcrumbElement: {
+        prototype: HTMLUiBreadcrumbElement;
+        new (): HTMLUiBreadcrumbElement;
     };
     interface HTMLUiButtonElementEventMap {
         "uiClick": ButtonEventDetail;
@@ -448,6 +501,7 @@ declare global {
     };
     interface HTMLElementTagNameMap {
         "ui-badge": HTMLUiBadgeElement;
+        "ui-breadcrumb": HTMLUiBreadcrumbElement;
         "ui-button": HTMLUiButtonElement;
         "ui-button-group": HTMLUiButtonGroupElement;
         "ui-checkbox": HTMLUiCheckboxElement;
@@ -506,6 +560,42 @@ declare namespace LocalJSX {
           * @default 'solid'
          */
         "variant"?: BadgeVariant;
+    }
+    interface UiBreadcrumb {
+        /**
+          * Whether the breadcrumb is disabled
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * Breadcrumb items as JSON string
+          * @default ''
+         */
+        "items"?: string;
+        /**
+          * Number of items to show after collapse indicator
+          * @default 1
+         */
+        "itemsAfterCollapse"?: number;
+        /**
+          * Number of items to show before collapse indicator
+          * @default 1
+         */
+        "itemsBeforeCollapse"?: number;
+        /**
+          * Maximum number of items before collapsing
+          * @default undefined (no collapse)
+         */
+        "maxItems"?: string;
+        /**
+          * Emitted when a breadcrumb item is clicked
+         */
+        "onUiClick"?: (event: UiBreadcrumbCustomEvent<BreadcrumbEventDetail>) => void;
+        /**
+          * Separator between items
+          * @default 'slash'
+         */
+        "separator"?: BreadcrumbSeparator;
     }
     /**
      * UI Button Component
@@ -755,6 +845,14 @@ declare namespace LocalJSX {
         "removable": boolean;
         "disabled": boolean;
     }
+    interface UiBreadcrumbAttributes {
+        "items": string;
+        "separator": BreadcrumbSeparator;
+        "maxItems": string;
+        "itemsBeforeCollapse": number;
+        "itemsAfterCollapse": number;
+        "disabled": boolean;
+    }
     interface UiButtonAttributes {
         "variant": ButtonVariant;
         "size": ButtonSize;
@@ -817,6 +915,7 @@ declare namespace LocalJSX {
 
     interface IntrinsicElements {
         "ui-badge": Omit<UiBadge, keyof UiBadgeAttributes> & { [K in keyof UiBadge & keyof UiBadgeAttributes]?: UiBadge[K] } & { [K in keyof UiBadge & keyof UiBadgeAttributes as `attr:${K}`]?: UiBadgeAttributes[K] } & { [K in keyof UiBadge & keyof UiBadgeAttributes as `prop:${K}`]?: UiBadge[K] };
+        "ui-breadcrumb": Omit<UiBreadcrumb, keyof UiBreadcrumbAttributes> & { [K in keyof UiBreadcrumb & keyof UiBreadcrumbAttributes]?: UiBreadcrumb[K] } & { [K in keyof UiBreadcrumb & keyof UiBreadcrumbAttributes as `attr:${K}`]?: UiBreadcrumbAttributes[K] } & { [K in keyof UiBreadcrumb & keyof UiBreadcrumbAttributes as `prop:${K}`]?: UiBreadcrumb[K] };
         "ui-button": Omit<UiButton, keyof UiButtonAttributes> & { [K in keyof UiButton & keyof UiButtonAttributes]?: UiButton[K] } & { [K in keyof UiButton & keyof UiButtonAttributes as `attr:${K}`]?: UiButtonAttributes[K] } & { [K in keyof UiButton & keyof UiButtonAttributes as `prop:${K}`]?: UiButton[K] };
         "ui-button-group": Omit<UiButtonGroup, keyof UiButtonGroupAttributes> & { [K in keyof UiButtonGroup & keyof UiButtonGroupAttributes]?: UiButtonGroup[K] } & { [K in keyof UiButtonGroup & keyof UiButtonGroupAttributes as `attr:${K}`]?: UiButtonGroupAttributes[K] } & { [K in keyof UiButtonGroup & keyof UiButtonGroupAttributes as `prop:${K}`]?: UiButtonGroup[K] };
         "ui-checkbox": Omit<UiCheckbox, keyof UiCheckboxAttributes> & { [K in keyof UiCheckbox & keyof UiCheckboxAttributes]?: UiCheckbox[K] } & { [K in keyof UiCheckbox & keyof UiCheckboxAttributes as `attr:${K}`]?: UiCheckboxAttributes[K] } & { [K in keyof UiCheckbox & keyof UiCheckboxAttributes as `prop:${K}`]?: UiCheckbox[K] };
@@ -837,6 +936,7 @@ declare module "@stencil/core" {
              * @event remove - Emitted when the remove button is clicked
              */
             "ui-badge": LocalJSX.IntrinsicElements["ui-badge"] & JSXBase.HTMLAttributes<HTMLUiBadgeElement>;
+            "ui-breadcrumb": LocalJSX.IntrinsicElements["ui-breadcrumb"] & JSXBase.HTMLAttributes<HTMLUiBreadcrumbElement>;
             /**
              * UI Button Component
              * Modern button component with shadcn/ui inspired variants

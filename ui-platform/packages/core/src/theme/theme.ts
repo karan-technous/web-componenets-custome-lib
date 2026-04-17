@@ -43,6 +43,22 @@ export type UiTheme = {
   '--ui-toast-info-border': string;
   '--ui-toast-shadow': string;
   '--ui-toast-backdrop': string;
+  '--ui-breadcrumb-text-color': string;
+  '--ui-breadcrumb-link-color': string;
+  '--ui-breadcrumb-link-hover-color': string;
+  '--ui-breadcrumb-link-hover-bg': string;
+  '--ui-breadcrumb-active-color': string;
+  '--ui-breadcrumb-icon-color': string;
+  '--ui-breadcrumb-separator-color': string;
+  '--ui-breadcrumb-collapsed-color': string;
+  '--ui-breadcrumb-collapsed-hover-color': string;
+  '--ui-breadcrumb-collapsed-hover-bg': string;
+  '--ui-breadcrumb-dropdown-bg': string;
+  '--ui-breadcrumb-dropdown-border-color': string;
+  '--ui-breadcrumb-dropdown-item-color': string;
+  '--ui-breadcrumb-dropdown-item-hover-bg': string;
+  '--ui-breadcrumb-dropdown-item-hover-color': string;
+  '--ui-breadcrumb-dropdown-icon-color': string;
 };
 
 export type Theme = UiTheme;
@@ -92,6 +108,22 @@ export const lightTheme: UiTheme = {
   '--ui-toast-info-border': '#93c5fd',
   '--ui-toast-shadow': '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
   '--ui-toast-backdrop': 'rgba(0, 0, 0, 0.08)',
+  '--ui-breadcrumb-text-color': '#64748b',
+  '--ui-breadcrumb-link-color': '#64748b',
+  '--ui-breadcrumb-link-hover-color': '#2563eb',
+  '--ui-breadcrumb-link-hover-bg': '#f1f5f9',
+  '--ui-breadcrumb-active-color': '#0f172a',
+  '--ui-breadcrumb-icon-color': '#64748b',
+  '--ui-breadcrumb-separator-color': '#94a3b8',
+  '--ui-breadcrumb-collapsed-color': '#64748b',
+  '--ui-breadcrumb-collapsed-hover-color': '#2563eb',
+  '--ui-breadcrumb-collapsed-hover-bg': '#f1f5f9',
+  '--ui-breadcrumb-dropdown-bg': '#ffffff',
+  '--ui-breadcrumb-dropdown-border-color': '#e2e8f0',
+  '--ui-breadcrumb-dropdown-item-color': '#334155',
+  '--ui-breadcrumb-dropdown-item-hover-bg': '#f1f5f9',
+  '--ui-breadcrumb-dropdown-item-hover-color': '#0f172a',
+  '--ui-breadcrumb-dropdown-icon-color': '#64748b',
 };
 
 export const darkTheme: UiTheme = {
@@ -139,6 +171,22 @@ export const darkTheme: UiTheme = {
   '--ui-toast-info-border': '#000000',
   '--ui-toast-shadow': '0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3)',
   '--ui-toast-backdrop': 'rgba(0, 0, 0, 0.5)',
+  '--ui-breadcrumb-text-color': '#94a3b8',
+  '--ui-breadcrumb-link-color': '#94a3b8',
+  '--ui-breadcrumb-link-hover-color': '#60a5fa',
+  '--ui-breadcrumb-link-hover-bg': '#334155',
+  '--ui-breadcrumb-active-color': '#f1f5f9',
+  '--ui-breadcrumb-icon-color': '#94a3b8',
+  '--ui-breadcrumb-separator-color': '#64748b',
+  '--ui-breadcrumb-collapsed-color': '#94a3b8',
+  '--ui-breadcrumb-collapsed-hover-color': '#60a5fa',
+  '--ui-breadcrumb-collapsed-hover-bg': '#334155',
+  '--ui-breadcrumb-dropdown-bg': '#1e293b',
+  '--ui-breadcrumb-dropdown-border-color': '#334155',
+  '--ui-breadcrumb-dropdown-item-color': '#cbd5e1',
+  '--ui-breadcrumb-dropdown-item-hover-bg': '#334155',
+  '--ui-breadcrumb-dropdown-item-hover-color': '#f1f5f9',
+  '--ui-breadcrumb-dropdown-icon-color': '#94a3b8',
 };
 
 export const defaultTheme: UiTheme = { ...lightTheme };

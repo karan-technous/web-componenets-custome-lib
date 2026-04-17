@@ -6,10 +6,11 @@ import { UiCheckboxComponent } from './checkbox/checkbox.component';
 import { UiToggleComponent } from './toggle/toggle.component';
 import { BadgeComponent } from './badge/badge.component';
 import { BadgeRemoveDirective } from './badge/badge-remove.directive';
+import { UiBreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 
 @NgModule({
-  imports: [ButtonComponent, ButtonGroupComponent, InputComponent, UiCheckboxComponent, UiToggleComponent, BadgeComponent, BadgeRemoveDirective],
-  exports: [ButtonComponent, ButtonGroupComponent, InputComponent, UiCheckboxComponent, UiToggleComponent, BadgeComponent, BadgeRemoveDirective],
+  imports: [ButtonComponent, ButtonGroupComponent, InputComponent, UiCheckboxComponent, UiToggleComponent, BadgeComponent, BadgeRemoveDirective, UiBreadcrumbComponent],
+  exports: [ButtonComponent, ButtonGroupComponent, InputComponent, UiCheckboxComponent, UiToggleComponent, BadgeComponent, BadgeRemoveDirective, UiBreadcrumbComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class UiLibModule {}
