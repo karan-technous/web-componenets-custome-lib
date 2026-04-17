@@ -1,0 +1,318 @@
+:host {
+  display: block;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.ui-panel {
+  background: var(--ui-bg, #ffffff);
+  border: 1px solid var(--ui-border, #e2e8f0);
+  border-radius: var(--ui-radius, 8px);
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Variants */
+.ui-panel--default {
+  background: var(--ui-bg, #ffffff);
+  border: 1px solid var(--ui-border, #e2e8f0);
+}
+
+.ui-panel--outlined {
+  background: var(--ui-bg, #ffffff);
+  border: 2px solid var(--ui-border, #e2e8f0);
+}
+
+.ui-panel--elevated {
+  background: var(--ui-bg, #ffffff);
+  border: 1px solid var(--ui-border, #e2e8f0);
+  box-shadow: var(--ui-shadow, 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06));
+}
+
+/* Sizes */
+.ui-panel--sm {
+  font-size: 14px;
+}
+
+.ui-panel--sm .ui-panel__header {
+  padding: 10px 12px;
+}
+
+.ui-panel--sm .ui-panel__body {
+  padding: 10px 12px;
+}
+
+.ui-panel--sm .ui-panel__footer {
+  padding: 10px 12px;
+}
+
+.ui-panel--md {
+  font-size: 16px;
+}
+
+.ui-panel--md .ui-panel__header {
+  padding: 14px 16px;
+}
+
+.ui-panel--md .ui-panel__body {
+  padding: 14px 16px;
+}
+
+.ui-panel--md .ui-panel__footer {
+  padding: 14px 16px;
+}
+
+.ui-panel--lg {
+  font-size: 18px;
+}
+
+.ui-panel--lg .ui-panel__header {
+  padding: 18px 20px;
+}
+
+.ui-panel--lg .ui-panel__body {
+  padding: 18px 20px;
+}
+
+.ui-panel--lg .ui-panel__footer {
+  padding: 18px 20px;
+}
+
+/* Header */
+.ui-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--ui-border, #e2e8f0);
+  background: var(--ui-bg, #ffffff);
+  cursor: default;
+  flex-shrink: 0;
+}
+
+.ui-panel--collapsible .ui-panel__header {
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s ease;
+}
+
+.ui-panel--collapsible .ui-panel__header:hover {
+  background-color: var(--ui-bg-hover, #f8fafc);
+}
+
+.ui-panel--collapsible .ui-panel__header:focus-visible {
+  outline: 2px solid var(--ui-primary, #3b82f6);
+  outline-offset: -2px;
+}
+
+.ui-panel__header-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.ui-panel__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Collapse Icon */
+.ui-panel__collapse-icon {
+  transition: transform 0.3s ease;
+  color: var(--ui-text-muted, #64748b);
+}
+
+.ui-panel__collapse-icon--rotated {
+  transform: rotate(-90deg);
+}
+
+/* Body */
+.ui-panel__body {
+  padding: 14px 16px;
+  color: var(--ui-text, #334155);
+  transition: opacity 0.3s ease, max-height 0.3s ease;
+  overflow: hidden;
+  flex: 1;
+  min-height: 40px;
+}
+
+.ui-panel__body--collapsed {
+  max-height: 0;
+  opacity: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.ui-panel__body--expanded {
+  max-height: 2000px;
+  opacity: 1;
+}
+
+/* Footer */
+.ui-panel__footer {
+  padding: 14px 16px;
+  border-top: 1px solid var(--ui-border, #e2e8f0);
+  background: var(--ui-bg, #ffffff);
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* Loading Overlay */
+.ui-panel__loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--ui-bg-overlay, rgba(255, 255, 255, 0.8));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.ui-panel__spinner {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ui-panel__spinner-svg {
+  animation: spin 1s linear infinite;
+  color: var(--ui-primary, #3b82f6);
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Disabled State */
+.ui-panel--disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Dark Theme Support */
+:host-context([data-appearance="dark"]) .ui-panel {
+  background: var(--ui-bg, #1e293b);
+  border-color: var(--ui-border, #334155);
+}
+
+:host-context([data-appearance="dark"]) .ui-panel__header {
+  background: var(--ui-bg, #1e293b);
+  border-color: var(--ui-border, #334155);
+}
+
+:host-context([data-appearance="dark"]) .ui-panel--collapsible .ui-panel__header:hover {
+  background-color: var(--ui-bg-hover, #334155);
+}
+
+:host-context([data-appearance="dark"]) .ui-panel__body {
+  color: var(--ui-text, #cbd5e1);
+}
+
+:host-context([data-appearance="dark"]) .ui-panel__footer {
+  background: var(--ui-bg, #1e293b);
+  border-color: var(--ui-border, #334155);
+}
+
+:host-context([data-appearance="dark"]) .ui-panel__loading-overlay {
+  background: var(--ui-bg-overlay, rgba(30, 41, 59, 0.8));
+}
+
+:host-context([data-appearance="dark"]) .ui-panel__collapse-icon {
+  color: var(--ui-text-muted, #94a3b8);
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+  .ui-panel__header {
+    padding: 12px;
+  }
+
+  .ui-panel__body {
+    padding: 12px;
+  }
+
+  .ui-panel__footer {
+    padding: 12px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ui-panel--sm .ui-panel__header {
+    padding: 8px 10px;
+  }
+
+  .ui-panel--sm .ui-panel__body {
+    padding: 8px 10px;
+  }
+
+  .ui-panel--sm .ui-panel__footer {
+    padding: 8px 10px;
+  }
+
+  .ui-panel--lg .ui-panel__header {
+    padding: 14px 16px;
+  }
+
+  .ui-panel--lg .ui-panel__body {
+    padding: 14px 16px;
+  }
+
+  .ui-panel--lg .ui-panel__footer {
+    padding: 14px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ui-panel__header {
+    padding: 10px;
+  }
+
+  .ui-panel__body {
+    padding: 10px;
+  }
+
+  .ui-panel__footer {
+    padding: 10px;
+  }
+
+  .ui-panel--sm .ui-panel__header {
+    padding: 6px 8px;
+  }
+
+  .ui-panel--sm .ui-panel__body {
+    padding: 6px 8px;
+  }
+
+  .ui-panel--sm .ui-panel__footer {
+    padding: 6px 8px;
+  }
+
+  .ui-panel--lg .ui-panel__header {
+    padding: 12px 14px;
+  }
+
+  .ui-panel--lg .ui-panel__body {
+    padding: 12px 14px;
+  }
+
+  .ui-panel--lg .ui-panel__footer {
+    padding: 12px 14px;
+  }
+}

@@ -31,6 +31,7 @@ function buildShareUrl(framework: Framework, selection: SelectedStory) {
     component: selection.component,
     story: selection.storyName,
     props: JSON.stringify(selection.props),
+    slots: JSON.stringify(selection.slots || {}),
     renderers: JSON.stringify(selection.renderers ?? {}),
   });
 
@@ -44,6 +45,7 @@ function sendToPreview(
     component: string;
     story: string;
     props: Record<string, string | boolean>;
+    slots?: Record<string, string>;
     renderers?: StoryRendererBindings;
   },
 ) {
@@ -88,6 +90,7 @@ export function PreviewCanvas({
     component: string;
     story: string;
     props: Record<string, string | boolean>;
+    slots?: Record<string, string>;
     renderers?: StoryRendererBindings;
   } | null>(null);
 
@@ -132,10 +135,12 @@ export function PreviewCanvas({
       component: selection.component,
       story: selection.storyName,
       props: selection.props,
+      slots: selection.slots,
       renderers: selection.renderers,
     };
 
     console.log("PreviewCanvas: Selection changed, payload:", JSON.stringify(payload, null, 2));
+    console.log("PreviewCanvas: Slots:", selection.slots);
     pendingPayloadRef.current = payload;
     if (!isReady) {
       return;

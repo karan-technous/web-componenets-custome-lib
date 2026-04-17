@@ -14,6 +14,7 @@ export interface PropConfig {
 
 export interface StoryVariantConfig {
   props?: Partial<StoryProps>;
+  slots?: Record<string, string>;
 }
 
 export interface StoryDocsExample {
@@ -78,6 +79,7 @@ export interface StoryDefinition {
 export interface StoryVariant {
   name: string;
   props: StoryProps;
+  slots?: Record<string, string>;
 }
 
 export interface StoryEntry {
@@ -95,4 +97,5 @@ export interface SelectedStory {
   propsConfig: Record<string, PropConfig>;
   renderers?: StoryRendererBindings;
   docs?: StoryDocs;
+  slots?: Record<string, string>;
 }

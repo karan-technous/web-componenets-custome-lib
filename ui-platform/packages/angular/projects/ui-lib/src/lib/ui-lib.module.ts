@@ -7,10 +7,14 @@ import { UiToggleComponent } from './toggle/toggle.component';
 import { BadgeComponent } from './badge/badge.component';
 import { BadgeRemoveDirective } from './badge/badge-remove.directive';
 import { UiBreadcrumbComponent } from './breadcrumb/breadcrumb.component';
+import { UiPanelComponent } from './panel/panel.component';
+import { UiPanelHeaderDirective } from './panel/panel-header.directive';
+import { UiPanelFooterDirective } from './panel/panel-footer.directive';
+import { UiPanelActionsDirective } from './panel/panel-actions.directive';
 
 @NgModule({
-  imports: [ButtonComponent, ButtonGroupComponent, InputComponent, UiCheckboxComponent, UiToggleComponent, BadgeComponent, BadgeRemoveDirective, UiBreadcrumbComponent],
-  exports: [ButtonComponent, ButtonGroupComponent, InputComponent, UiCheckboxComponent, UiToggleComponent, BadgeComponent, BadgeRemoveDirective, UiBreadcrumbComponent],
+  imports: [ButtonComponent, ButtonGroupComponent, InputComponent, UiCheckboxComponent, UiToggleComponent, BadgeComponent, BadgeRemoveDirective, UiBreadcrumbComponent, UiPanelComponent, UiPanelHeaderDirective, UiPanelFooterDirective, UiPanelActionsDirective],
+  exports: [ButtonComponent, ButtonGroupComponent, InputComponent, UiCheckboxComponent, UiToggleComponent, BadgeComponent, BadgeRemoveDirective, UiBreadcrumbComponent, UiPanelComponent, UiPanelHeaderDirective, UiPanelFooterDirective, UiPanelActionsDirective],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class UiLibModule {}

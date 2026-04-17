@@ -59,6 +59,11 @@ export type UiTheme = {
   '--ui-breadcrumb-dropdown-item-hover-bg': string;
   '--ui-breadcrumb-dropdown-item-hover-color': string;
   '--ui-breadcrumb-dropdown-icon-color': string;
+  '--ui-bg-hover': string;
+  '--ui-text-muted': string;
+  '--ui-bg-overlay': string;
+  '--ui-radius': string;
+  '--ui-shadow': string;
 };
 
 export type Theme = UiTheme;
@@ -124,6 +129,11 @@ export const lightTheme: UiTheme = {
   '--ui-breadcrumb-dropdown-item-hover-bg': '#f1f5f9',
   '--ui-breadcrumb-dropdown-item-hover-color': '#0f172a',
   '--ui-breadcrumb-dropdown-icon-color': '#64748b',
+  '--ui-bg-hover': '#f8fafc',
+  '--ui-text-muted': '#64748b',
+  '--ui-bg-overlay': 'rgba(255, 255, 255, 0.8)',
+  '--ui-radius': '8px',
+  '--ui-shadow': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
 };
 
 export const darkTheme: UiTheme = {
@@ -187,6 +197,11 @@ export const darkTheme: UiTheme = {
   '--ui-breadcrumb-dropdown-item-hover-bg': '#334155',
   '--ui-breadcrumb-dropdown-item-hover-color': '#f1f5f9',
   '--ui-breadcrumb-dropdown-icon-color': '#94a3b8',
+  '--ui-bg-hover': '#334155',
+  '--ui-text-muted': '#94a3b8',
+  '--ui-bg-overlay': 'rgba(30, 41, 59, 0.8)',
+  '--ui-radius': '8px',
+  '--ui-shadow': '0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2)',
 };
 
 export const defaultTheme: UiTheme = { ...lightTheme };

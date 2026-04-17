@@ -15,6 +15,7 @@ type StoryPayload = {
   component: string;
   story: string;
   props: StoryProps;
+  slots?: Record<string, string>;
   appearance?: "dark" | "light";
   renderers?: {
     react?: {
@@ -74,6 +75,7 @@ function parsePayloadFromUrl(): StoryPayload {
   const appearance =
     params.get("appearance") === "light" ? "light" : "dark";
   const propsRaw = params.get("props");
+  const slotsRaw = params.get("slots");
   const renderersRaw = params.get("renderers");
 
   let parsedProps = initialPayload.props;
@@ -82,6 +84,15 @@ function parsePayloadFromUrl(): StoryPayload {
       parsedProps = JSON.parse(propsRaw) as StoryProps;
     } catch {
       parsedProps = initialPayload.props;
+    }
+  }
+
+  let parsedSlots: Record<string, string> | undefined;
+  if (slotsRaw) {
+    try {
+      parsedSlots = JSON.parse(slotsRaw) as Record<string, string>;
+    } catch {
+      parsedSlots = undefined;
     }
   }
 
@@ -99,6 +110,7 @@ function parsePayloadFromUrl(): StoryPayload {
     component,
     story,
     props: parsedProps,
+    slots: parsedSlots,
     appearance,
     renderers: parsedRenderers,
   };
@@ -242,6 +254,44 @@ function renderDynamicComponent(payload: StoryPayload): ReactElement {
     if (typeof props.onChange !== "function") {
       props.onChange = () => {};
     }
+  }
+
+  // Handle slots for Panel component
+  if (payload.component === "panel" && payload.slots) {
+    console.log("React renderer: Panel slots detected", payload.slots);
+    
+    // Render web component directly with slots
+    const slotElements: ReactElement[] = [];
+    
+    if (payload.slots.header) {
+      slotElements.push(createElement("div", {
+        slot: "header",
+        dangerouslySetInnerHTML: { __html: payload.slots.header }
+      }));
+    }
+    
+    if (payload.slots.actions) {
+      slotElements.push(createElement("div", {
+        slot: "actions",
+        dangerouslySetInnerHTML: { __html: payload.slots.actions }
+      }));
+    }
+    
+    if (payload.slots.default) {
+      slotElements.push(createElement("div", {
+        dangerouslySetInnerHTML: { __html: payload.slots.default }
+      }));
+    }
+    
+    if (payload.slots.footer) {
+      slotElements.push(createElement("div", {
+        slot: "footer",
+        dangerouslySetInnerHTML: { __html: payload.slots.footer }
+      }));
+    }
+    
+    console.log("React renderer: Rendering ui-panel directly with slots", slotElements);
+    return createElement("ui-panel" as any, { ...props, key: renderKey }, slotElements);
   }
 
   return createElement(Wrapper, { ...props, key: renderKey }, children);

@@ -7,8 +7,10 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { BadgeColor, BadgeShape, BadgeSize, BadgeVariant, BreadcrumbEventDetail, BreadcrumbSeparator, ButtonEventDetail, ButtonGroupEventDetail, ButtonGroupOrientation, ButtonGroupSize, ButtonGroupVariant, ButtonRounded, ButtonSize, ButtonVariant, IconName, ToastLifecycleDetail, ToastPromiseOptions, ToastShowOptions } from "@karan9186/core";
 import { IconName as IconName1 } from "./components/icons/icon.registry";
+import { PanelSize, PanelToggleEventDetail, PanelVariant } from "./components/ui-panel/ui-panel";
 export { BadgeColor, BadgeShape, BadgeSize, BadgeVariant, BreadcrumbEventDetail, BreadcrumbSeparator, ButtonEventDetail, ButtonGroupEventDetail, ButtonGroupOrientation, ButtonGroupSize, ButtonGroupVariant, ButtonRounded, ButtonSize, ButtonVariant, IconName, ToastLifecycleDetail, ToastPromiseOptions, ToastShowOptions } from "@karan9186/core";
 export { IconName as IconName1 } from "./components/icons/icon.registry";
+export { PanelSize, PanelToggleEventDetail, PanelVariant } from "./components/ui-panel/ui-panel";
 export namespace Components {
     /**
      * UI Badge Component
@@ -270,6 +272,50 @@ export namespace Components {
          */
         "value": string;
     }
+    interface UiPanel {
+        /**
+          * Collapse the panel
+         */
+        "collapse": () => Promise<void>;
+        /**
+          * Whether the panel is collapsible
+          * @default false
+         */
+        "collapsible": boolean;
+        /**
+          * Whether the panel is disabled
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * Expand the panel
+         */
+        "expand": () => Promise<void>;
+        /**
+          * Expanded state (can be controlled or uncontrolled)
+          * @default true
+         */
+        "expanded": boolean;
+        /**
+          * Whether the panel is in loading state
+          * @default false
+         */
+        "loading": boolean;
+        /**
+          * Size of the panel
+          * @default 'md'
+         */
+        "size": PanelSize;
+        /**
+          * Toggle the panel expand/collapse state
+         */
+        "toggle": () => Promise<void>;
+        /**
+          * Visual variant of the panel
+          * @default 'default'
+         */
+        "variant": PanelVariant;
+    }
     interface UiToast {
         "defaultDuration": number;
         "dismiss": (id?: string) => Promise<void>;
@@ -319,6 +365,10 @@ export interface UiCheckboxCustomEvent<T> extends CustomEvent<T> {
 export interface UiInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLUiInputElement;
+}
+export interface UiPanelCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLUiPanelElement;
 }
 export interface UiToastCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -464,6 +514,23 @@ declare global {
         prototype: HTMLUiInputElement;
         new (): HTMLUiInputElement;
     };
+    interface HTMLUiPanelElementEventMap {
+        "uiToggle": PanelToggleEventDetail;
+    }
+    interface HTMLUiPanelElement extends Components.UiPanel, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLUiPanelElementEventMap>(type: K, listener: (this: HTMLUiPanelElement, ev: UiPanelCustomEvent<HTMLUiPanelElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLUiPanelElementEventMap>(type: K, listener: (this: HTMLUiPanelElement, ev: UiPanelCustomEvent<HTMLUiPanelElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLUiPanelElement: {
+        prototype: HTMLUiPanelElement;
+        new (): HTMLUiPanelElement;
+    };
     interface HTMLUiToastElementEventMap {
         "toastShow": ToastLifecycleDetail;
         "toastClose": ToastLifecycleDetail;
@@ -507,6 +574,7 @@ declare global {
         "ui-checkbox": HTMLUiCheckboxElement;
         "ui-icon": HTMLUiIconElement;
         "ui-input": HTMLUiInputElement;
+        "ui-panel": HTMLUiPanelElement;
         "ui-toast": HTMLUiToastElement;
         "ui-toggle": HTMLUiToggleElement;
     }
@@ -810,6 +878,42 @@ declare namespace LocalJSX {
          */
         "value"?: string;
     }
+    interface UiPanel {
+        /**
+          * Whether the panel is collapsible
+          * @default false
+         */
+        "collapsible"?: boolean;
+        /**
+          * Whether the panel is disabled
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * Expanded state (can be controlled or uncontrolled)
+          * @default true
+         */
+        "expanded"?: boolean;
+        /**
+          * Whether the panel is in loading state
+          * @default false
+         */
+        "loading"?: boolean;
+        /**
+          * Emitted when panel is expanded/collapsed
+         */
+        "onUiToggle"?: (event: UiPanelCustomEvent<PanelToggleEventDetail>) => void;
+        /**
+          * Size of the panel
+          * @default 'md'
+         */
+        "size"?: PanelSize;
+        /**
+          * Visual variant of the panel
+          * @default 'default'
+         */
+        "variant"?: PanelVariant;
+    }
     interface UiToast {
         "defaultDuration"?: number;
         "maxVisible"?: number;
@@ -899,6 +1003,14 @@ declare namespace LocalJSX {
         "disabled": boolean;
         "type": 'text' | 'number';
     }
+    interface UiPanelAttributes {
+        "variant": PanelVariant;
+        "size": PanelSize;
+        "collapsible": boolean;
+        "expanded": boolean;
+        "loading": boolean;
+        "disabled": boolean;
+    }
     interface UiToastAttributes {
         "maxVisible": number;
         "defaultDuration": number;
@@ -921,6 +1033,7 @@ declare namespace LocalJSX {
         "ui-checkbox": Omit<UiCheckbox, keyof UiCheckboxAttributes> & { [K in keyof UiCheckbox & keyof UiCheckboxAttributes]?: UiCheckbox[K] } & { [K in keyof UiCheckbox & keyof UiCheckboxAttributes as `attr:${K}`]?: UiCheckboxAttributes[K] } & { [K in keyof UiCheckbox & keyof UiCheckboxAttributes as `prop:${K}`]?: UiCheckbox[K] };
         "ui-icon": Omit<UiIcon, keyof UiIconAttributes> & { [K in keyof UiIcon & keyof UiIconAttributes]?: UiIcon[K] } & { [K in keyof UiIcon & keyof UiIconAttributes as `attr:${K}`]?: UiIconAttributes[K] } & { [K in keyof UiIcon & keyof UiIconAttributes as `prop:${K}`]?: UiIcon[K] } & OneOf<"name", UiIcon["name"], UiIconAttributes["name"]>;
         "ui-input": Omit<UiInput, keyof UiInputAttributes> & { [K in keyof UiInput & keyof UiInputAttributes]?: UiInput[K] } & { [K in keyof UiInput & keyof UiInputAttributes as `attr:${K}`]?: UiInputAttributes[K] } & { [K in keyof UiInput & keyof UiInputAttributes as `prop:${K}`]?: UiInput[K] };
+        "ui-panel": Omit<UiPanel, keyof UiPanelAttributes> & { [K in keyof UiPanel & keyof UiPanelAttributes]?: UiPanel[K] } & { [K in keyof UiPanel & keyof UiPanelAttributes as `attr:${K}`]?: UiPanelAttributes[K] } & { [K in keyof UiPanel & keyof UiPanelAttributes as `prop:${K}`]?: UiPanel[K] };
         "ui-toast": Omit<UiToast, keyof UiToastAttributes> & { [K in keyof UiToast & keyof UiToastAttributes]?: UiToast[K] } & { [K in keyof UiToast & keyof UiToastAttributes as `attr:${K}`]?: UiToastAttributes[K] } & { [K in keyof UiToast & keyof UiToastAttributes as `prop:${K}`]?: UiToast[K] };
         "ui-toggle": Omit<UiToggle, keyof UiToggleAttributes> & { [K in keyof UiToggle & keyof UiToggleAttributes]?: UiToggle[K] } & { [K in keyof UiToggle & keyof UiToggleAttributes as `attr:${K}`]?: UiToggleAttributes[K] } & { [K in keyof UiToggle & keyof UiToggleAttributes as `prop:${K}`]?: UiToggle[K] };
     }
@@ -957,6 +1070,7 @@ declare module "@stencil/core" {
             "ui-checkbox": LocalJSX.IntrinsicElements["ui-checkbox"] & JSXBase.HTMLAttributes<HTMLUiCheckboxElement>;
             "ui-icon": LocalJSX.IntrinsicElements["ui-icon"] & JSXBase.HTMLAttributes<HTMLUiIconElement>;
             "ui-input": LocalJSX.IntrinsicElements["ui-input"] & JSXBase.HTMLAttributes<HTMLUiInputElement>;
+            "ui-panel": LocalJSX.IntrinsicElements["ui-panel"] & JSXBase.HTMLAttributes<HTMLUiPanelElement>;
             "ui-toast": LocalJSX.IntrinsicElements["ui-toast"] & JSXBase.HTMLAttributes<HTMLUiToastElement>;
             "ui-toggle": LocalJSX.IntrinsicElements["ui-toggle"] & JSXBase.HTMLAttributes<HTMLUiToggleElement>;
         }

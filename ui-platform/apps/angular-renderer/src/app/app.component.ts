@@ -17,6 +17,7 @@ type StoryPayload = {
   component: string;
   story: string;
   props: StoryProps;
+  slots?: Record<string, string>;
   appearance?: "dark" | "light";
   renderers?: {
     angular?: {
@@ -97,6 +98,16 @@ export class AppComponent implements OnInit, OnDestroy {
       props = { label: "Click Me", variant: "primary", disabled: false };
     }
 
+    let slots: Record<string, string> | undefined;
+    try {
+      const slotsRaw = params.get("slots");
+      if (slotsRaw) {
+        slots = JSON.parse(slotsRaw) as Record<string, string>;
+      }
+    } catch {
+      slots = undefined;
+    }
+
     let renderers: StoryPayload["renderers"] | undefined;
     if (renderersRaw) {
       try {
@@ -111,6 +122,7 @@ export class AppComponent implements OnInit, OnDestroy {
       component,
       story,
       props,
+      slots,
       appearance,
       renderers,
     };
@@ -245,7 +257,40 @@ export class AppComponent implements OnInit, OnDestroy {
 
     // Special handling for button-group to parse buttons JSON and create ui-button web component elements
     let projectableNodes: Node[][] | undefined;
-    if (payload.component === "button-group" && projectedProp === "buttons" && typeof payload.props[projectedProp] !== "undefined") {
+    
+    // Handle slots for Panel component
+    if (payload.component === "panel" && payload.slots) {
+      const slotNodes: Node[] = [];
+      
+      if (payload.slots.header) {
+        const headerDiv = document.createElement("div");
+        headerDiv.innerHTML = payload.slots.header;
+        headerDiv.setAttribute("slot", "header");
+        slotNodes.push(headerDiv);
+      }
+      
+      if (payload.slots.actions) {
+        const actionsDiv = document.createElement("div");
+        actionsDiv.innerHTML = payload.slots.actions;
+        actionsDiv.setAttribute("slot", "actions");
+        slotNodes.push(actionsDiv);
+      }
+      
+      if (payload.slots.default) {
+        const defaultDiv = document.createElement("div");
+        defaultDiv.innerHTML = payload.slots.default;
+        slotNodes.push(defaultDiv);
+      }
+      
+      if (payload.slots.footer) {
+        const footerDiv = document.createElement("div");
+        footerDiv.innerHTML = payload.slots.footer;
+        footerDiv.setAttribute("slot", "footer");
+        slotNodes.push(footerDiv);
+      }
+      
+      projectableNodes = [slotNodes];
+    } else if (payload.component === "button-group" && projectedProp === "buttons" && typeof payload.props[projectedProp] !== "undefined") {
       try {
         const buttonsData = JSON.parse(String(payload.props[projectedProp]));
         if (Array.isArray(buttonsData)) {

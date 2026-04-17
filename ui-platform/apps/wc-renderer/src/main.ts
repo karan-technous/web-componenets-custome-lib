@@ -50,6 +50,7 @@ type StoryPayload = {
   component: string;
   story: string;
   props: Record<string, string | boolean>;
+  slots?: Record<string, string>;
   appearance?: "dark" | "light";
   renderers?: {
     wc?: {
@@ -157,6 +158,34 @@ function renderComponent(payload: StoryPayload) {
         delete props[textProp];
       }
     }
+  } else if (payload.component === "panel" && payload.slots) {
+    // Handle slots for Panel component
+    if (payload.slots.header) {
+      const headerDiv = document.createElement("div");
+      headerDiv.innerHTML = payload.slots.header;
+      headerDiv.setAttribute("slot", "header");
+      el.appendChild(headerDiv);
+    }
+    
+    if (payload.slots.actions) {
+      const actionsDiv = document.createElement("div");
+      actionsDiv.innerHTML = payload.slots.actions;
+      actionsDiv.setAttribute("slot", "actions");
+      el.appendChild(actionsDiv);
+    }
+    
+    if (payload.slots.default) {
+      const defaultDiv = document.createElement("div");
+      defaultDiv.innerHTML = payload.slots.default;
+      el.appendChild(defaultDiv);
+    }
+    
+    if (payload.slots.footer) {
+      const footerDiv = document.createElement("div");
+      footerDiv.innerHTML = payload.slots.footer;
+      footerDiv.setAttribute("slot", "footer");
+      el.appendChild(footerDiv);
+    }
   } else if (textProp && typeof props[textProp] !== "undefined") {
     el.textContent = String(props[textProp]);
     delete props[textProp];
@@ -190,11 +219,13 @@ function parseInitialPayload(): StoryPayload {
   const appearance =
     params.get("appearance") === "light" ? "light" : "dark";
   const renderersRaw = params.get("renderers");
+  const slotsRaw = params.get("slots");
   let props: Record<string, string | boolean> = {
     label: "Click Me",
     variant: "primary",
     disabled: false,
   };
+  let slots: Record<string, string> | undefined;
   let renderers: StoryPayload["renderers"] | undefined;
 
   try {
@@ -205,6 +236,15 @@ function parseInitialPayload(): StoryPayload {
   } catch {
     props = { label: "Click Me", variant: "primary", disabled: false };
   }
+
+  try {
+    if (slotsRaw) {
+      slots = JSON.parse(slotsRaw) as Record<string, string>;
+    }
+  } catch {
+    slots = undefined;
+  }
+
   try {
     if (renderersRaw) {
       renderers = JSON.parse(renderersRaw) as StoryPayload["renderers"];
@@ -218,6 +258,7 @@ function parseInitialPayload(): StoryPayload {
     component,
     story,
     props,
+    slots,
     appearance,
     renderers,
   };

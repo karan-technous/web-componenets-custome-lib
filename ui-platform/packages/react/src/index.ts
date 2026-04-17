@@ -9,5 +9,6 @@ export * from "./components/checkbox/Checkbox.js";
 export * from "./components/toast/index.js";
 export * from "./components/badge/index.js";
 export * from "./components/breadcrumb/index";
+export * from "./components/panel/index";
 export * from "./hooks/useButtonGroup.js";
 export * from "@karan9186/core";
