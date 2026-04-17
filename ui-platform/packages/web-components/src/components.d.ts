@@ -5,11 +5,54 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { ButtonEventDetail, ButtonGroupEventDetail, ButtonGroupOrientation, ButtonGroupSize, ButtonGroupVariant, ButtonRounded, ButtonSize, ButtonVariant, IconName, ToastLifecycleDetail, ToastPromiseOptions, ToastShowOptions } from "@karan9186/core";
+import { BadgeColor, BadgeShape, BadgeSize, BadgeVariant, ButtonEventDetail, ButtonGroupEventDetail, ButtonGroupOrientation, ButtonGroupSize, ButtonGroupVariant, ButtonRounded, ButtonSize, ButtonVariant, IconName, ToastLifecycleDetail, ToastPromiseOptions, ToastShowOptions } from "@karan9186/core";
 import { IconName as IconName1 } from "./components/icons/icon.registry";
-export { ButtonEventDetail, ButtonGroupEventDetail, ButtonGroupOrientation, ButtonGroupSize, ButtonGroupVariant, ButtonRounded, ButtonSize, ButtonVariant, IconName, ToastLifecycleDetail, ToastPromiseOptions, ToastShowOptions } from "@karan9186/core";
+export { BadgeColor, BadgeShape, BadgeSize, BadgeVariant, ButtonEventDetail, ButtonGroupEventDetail, ButtonGroupOrientation, ButtonGroupSize, ButtonGroupVariant, ButtonRounded, ButtonSize, ButtonVariant, IconName, ToastLifecycleDetail, ToastPromiseOptions, ToastShowOptions } from "@karan9186/core";
 export { IconName as IconName1 } from "./components/icons/icon.registry";
 export namespace Components {
+    /**
+     * UI Badge Component
+     * Modern badge component with multiple variants, colors, and sizes
+     * Supports icon slot, dot mode, and removable functionality
+     * @event remove - Emitted when the remove button is clicked
+     */
+    interface UiBadge {
+        /**
+          * Color theme of the badge
+          * @default 'primary'
+         */
+        "color": BadgeColor;
+        /**
+          * Disable the badge
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * Show as a dot indicator (status indicator)
+          * @default false
+         */
+        "dot": boolean;
+        /**
+          * Show remove button
+          * @default false
+         */
+        "removable": boolean;
+        /**
+          * Shape of the badge
+          * @default 'rounded'
+         */
+        "shape": BadgeShape;
+        /**
+          * Size of the badge
+          * @default 'md'
+         */
+        "size": BadgeSize;
+        /**
+          * Visual style variant of the badge
+          * @default 'solid'
+         */
+        "variant": BadgeVariant;
+    }
     /**
      * UI Button Component
      * Modern button component with shadcn/ui inspired variants
@@ -221,6 +264,10 @@ export namespace Components {
         "size": 'sm' | 'md' | 'lg';
     }
 }
+export interface UiBadgeCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLUiBadgeElement;
+}
 export interface UiButtonCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLUiButtonElement;
@@ -246,6 +293,29 @@ export interface UiToggleCustomEvent<T> extends CustomEvent<T> {
     target: HTMLUiToggleElement;
 }
 declare global {
+    interface HTMLUiBadgeElementEventMap {
+        "remove": void;
+    }
+    /**
+     * UI Badge Component
+     * Modern badge component with multiple variants, colors, and sizes
+     * Supports icon slot, dot mode, and removable functionality
+     * @event remove - Emitted when the remove button is clicked
+     */
+    interface HTMLUiBadgeElement extends Components.UiBadge, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLUiBadgeElementEventMap>(type: K, listener: (this: HTMLUiBadgeElement, ev: UiBadgeCustomEvent<HTMLUiBadgeElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLUiBadgeElementEventMap>(type: K, listener: (this: HTMLUiBadgeElement, ev: UiBadgeCustomEvent<HTMLUiBadgeElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLUiBadgeElement: {
+        prototype: HTMLUiBadgeElement;
+        new (): HTMLUiBadgeElement;
+    };
     interface HTMLUiButtonElementEventMap {
         "uiClick": ButtonEventDetail;
         "uiFocus": void;
@@ -377,6 +447,7 @@ declare global {
         new (): HTMLUiToggleElement;
     };
     interface HTMLElementTagNameMap {
+        "ui-badge": HTMLUiBadgeElement;
         "ui-button": HTMLUiButtonElement;
         "ui-button-group": HTMLUiButtonGroupElement;
         "ui-checkbox": HTMLUiCheckboxElement;
@@ -389,6 +460,53 @@ declare global {
 declare namespace LocalJSX {
     type OneOf<K extends string, PropT, AttrT = PropT> = { [P in K]: PropT } & { [P in `attr:${K}` | `prop:${K}`]?: never } | { [P in `attr:${K}`]: AttrT } & { [P in K | `prop:${K}`]?: never } | { [P in `prop:${K}`]: PropT } & { [P in K | `attr:${K}`]?: never };
 
+    /**
+     * UI Badge Component
+     * Modern badge component with multiple variants, colors, and sizes
+     * Supports icon slot, dot mode, and removable functionality
+     * @event remove - Emitted when the remove button is clicked
+     */
+    interface UiBadge {
+        /**
+          * Color theme of the badge
+          * @default 'primary'
+         */
+        "color"?: BadgeColor;
+        /**
+          * Disable the badge
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * Show as a dot indicator (status indicator)
+          * @default false
+         */
+        "dot"?: boolean;
+        /**
+          * Emitted when the remove button is clicked
+         */
+        "onRemove"?: (event: UiBadgeCustomEvent<void>) => void;
+        /**
+          * Show remove button
+          * @default false
+         */
+        "removable"?: boolean;
+        /**
+          * Shape of the badge
+          * @default 'rounded'
+         */
+        "shape"?: BadgeShape;
+        /**
+          * Size of the badge
+          * @default 'md'
+         */
+        "size"?: BadgeSize;
+        /**
+          * Visual style variant of the badge
+          * @default 'solid'
+         */
+        "variant"?: BadgeVariant;
+    }
     /**
      * UI Button Component
      * Modern button component with shadcn/ui inspired variants
@@ -628,6 +746,15 @@ declare namespace LocalJSX {
         "size"?: 'sm' | 'md' | 'lg';
     }
 
+    interface UiBadgeAttributes {
+        "variant": BadgeVariant;
+        "color": BadgeColor;
+        "size": BadgeSize;
+        "shape": BadgeShape;
+        "dot": boolean;
+        "removable": boolean;
+        "disabled": boolean;
+    }
     interface UiButtonAttributes {
         "variant": ButtonVariant;
         "size": ButtonSize;
@@ -689,6 +816,7 @@ declare namespace LocalJSX {
     }
 
     interface IntrinsicElements {
+        "ui-badge": Omit<UiBadge, keyof UiBadgeAttributes> & { [K in keyof UiBadge & keyof UiBadgeAttributes]?: UiBadge[K] } & { [K in keyof UiBadge & keyof UiBadgeAttributes as `attr:${K}`]?: UiBadgeAttributes[K] } & { [K in keyof UiBadge & keyof UiBadgeAttributes as `prop:${K}`]?: UiBadge[K] };
         "ui-button": Omit<UiButton, keyof UiButtonAttributes> & { [K in keyof UiButton & keyof UiButtonAttributes]?: UiButton[K] } & { [K in keyof UiButton & keyof UiButtonAttributes as `attr:${K}`]?: UiButtonAttributes[K] } & { [K in keyof UiButton & keyof UiButtonAttributes as `prop:${K}`]?: UiButton[K] };
         "ui-button-group": Omit<UiButtonGroup, keyof UiButtonGroupAttributes> & { [K in keyof UiButtonGroup & keyof UiButtonGroupAttributes]?: UiButtonGroup[K] } & { [K in keyof UiButtonGroup & keyof UiButtonGroupAttributes as `attr:${K}`]?: UiButtonGroupAttributes[K] } & { [K in keyof UiButtonGroup & keyof UiButtonGroupAttributes as `prop:${K}`]?: UiButtonGroup[K] };
         "ui-checkbox": Omit<UiCheckbox, keyof UiCheckboxAttributes> & { [K in keyof UiCheckbox & keyof UiCheckboxAttributes]?: UiCheckbox[K] } & { [K in keyof UiCheckbox & keyof UiCheckboxAttributes as `attr:${K}`]?: UiCheckboxAttributes[K] } & { [K in keyof UiCheckbox & keyof UiCheckboxAttributes as `prop:${K}`]?: UiCheckbox[K] };
@@ -702,6 +830,13 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            /**
+             * UI Badge Component
+             * Modern badge component with multiple variants, colors, and sizes
+             * Supports icon slot, dot mode, and removable functionality
+             * @event remove - Emitted when the remove button is clicked
+             */
+            "ui-badge": LocalJSX.IntrinsicElements["ui-badge"] & JSXBase.HTMLAttributes<HTMLUiBadgeElement>;
             /**
              * UI Button Component
              * Modern button component with shadcn/ui inspired variants

@@ -8,5 +8,7 @@ export * from './lib/toast/toast.service';
 export * from './lib/toast/toast-trigger.directive';
 export { ButtonGroupComponent, UiButtonGroupDirective } from './lib/button-group/button-group.component';
 
+export {BadgeComponent} from "./lib/badge/badge.component"
+export {BadgeRemoveDirective} from "./lib/badge/badge-remove.directive"
 // Re-export IconName for autocomplete when using iconLeft/iconRight props
 export type { IconName } from '@karan9186/core';

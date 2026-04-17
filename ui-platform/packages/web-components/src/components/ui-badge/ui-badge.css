@@ -1,0 +1,253 @@
+:host {
+  display: inline-flex;
+  align-items: center;
+  font-family: inherit;
+  font-weight: 500;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.ui-badge__content {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: var(--ui-badge-padding, 4px 10px);
+  border-radius: var(--ui-badge-radius, 4px);
+  font-size: var(--ui-badge-font-size, 12px);
+  background-color: var(--ui-badge-bg, var(--ui-primary));
+  color: var(--ui-badge-color, var(--ui-primary-foreground));
+  border: var(--ui-badge-border, none);
+  transition: all 0.2s ease;
+}
+
+/* === SIZE VARIANTS === */
+
+:host(.ui-badge--sm) .ui-badge__content {
+  padding: 2px 8px;
+  font-size: 10px;
+}
+
+:host(.ui-badge--md) .ui-badge__content {
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+:host(.ui-badge--lg) .ui-badge__content {
+  padding: 6px 14px;
+  font-size: 14px;
+}
+
+/* === SHAPE VARIANTS === */
+
+:host(.ui-badge--rounded) .ui-badge__content {
+  border-radius: 4px;
+}
+
+:host(.ui-badge--pill) .ui-badge__content {
+  border-radius: 9999px;
+}
+
+/* === DOT MODE === */
+
+:host(.ui-badge--dot) .ui-badge__content {
+  padding: 0;
+  width: 8px;
+  height: 8px;
+  min-width: 8px;
+  min-height: 8px;
+}
+
+:host(.ui-badge--dot.ui-badge--sm) .ui-badge__content {
+  width: 6px;
+  height: 6px;
+  min-width: 6px;
+  min-height: 6px;
+}
+
+:host(.ui-badge--dot.ui-badge--lg) .ui-badge__content {
+  width: 10px;
+  height: 10px;
+  min-width: 10px;
+  min-height: 10px;
+}
+
+/* === ICON === */
+
+.ui-badge__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ui-badge__icon ::slotted(*) {
+  display: inline-flex;
+  width: 1em;
+  height: 1em;
+}
+
+/* === REMOVE BUTTON === */
+
+.ui-badge__remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  margin-left: 2px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: inherit;
+  opacity: 0.6;
+  border-radius: 2px;
+  transition: opacity 0.2s ease, background-color 0.2s ease;
+}
+
+.ui-badge__remove:hover {
+  opacity: 1;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.ui-badge__remove:focus {
+  outline: 2px solid var(--ui-ring);
+  outline-offset: 1px;
+  opacity: 1;
+}
+
+.ui-badge__remove:disabled {
+  cursor: not-allowed;
+  opacity: 0.3;
+}
+
+/* === DISABLED STATE === */
+
+:host(.ui-badge--disabled) .ui-badge__content {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+:host(.ui-badge--disabled) .ui-badge__remove {
+  display: none;
+}
+
+/* === COLOR VARIANTS - SOLID === */
+
+/* Primary - Solid */
+:host(.ui-badge--solid.ui-badge--primary) .ui-badge__content {
+  --ui-badge-bg: var(--ui-primary);
+  --ui-badge-color: var(--ui-primary-foreground);
+}
+
+/* Success - Solid */
+:host(.ui-badge--solid.ui-badge--success) .ui-badge__content {
+  --ui-badge-bg: var(--ui-toast-success-bg);
+  --ui-badge-color: var(--ui-toast-success-text);
+}
+
+/* Warning - Solid */
+:host(.ui-badge--solid.ui-badge--warning) .ui-badge__content {
+  --ui-badge-bg: var(--ui-toast-warning-bg);
+  --ui-badge-color: var(--ui-toast-warning-text);
+}
+
+/* Danger - Solid */
+:host(.ui-badge--solid.ui-badge--danger) .ui-badge__content {
+  --ui-badge-bg: var(--ui-destructive);
+  --ui-badge-color: var(--ui-destructive-foreground);
+}
+
+/* Neutral - Solid */
+:host(.ui-badge--solid.ui-badge--neutral) .ui-badge__content {
+  --ui-badge-bg: var(--ui-secondary);
+  --ui-badge-color: var(--ui-secondary-foreground);
+}
+
+/* === COLOR VARIANTS - SOFT === */
+
+/* Primary - Soft */
+:host(.ui-badge--soft.ui-badge--primary) .ui-badge__content {
+  --ui-badge-bg: var(--ui-outline-hover-bg);
+  --ui-badge-color: var(--ui-primary);
+}
+
+/* Success - Soft */
+:host(.ui-badge--soft.ui-badge--success) .ui-badge__content {
+  --ui-badge-bg: rgba(22, 163, 74, 0.1);
+  --ui-badge-color: var(--ui-toast-success-text);
+}
+
+/* Warning - Soft */
+:host(.ui-badge--soft.ui-badge--warning) .ui-badge__content {
+  --ui-badge-bg: rgba(245, 158, 11, 0.1);
+  --ui-badge-color: var(--ui-toast-warning-text);
+}
+
+/* Danger - Soft */
+:host(.ui-badge--soft.ui-badge--danger) .ui-badge__content {
+  --ui-badge-bg: rgba(220, 38, 38, 0.1);
+  --ui-badge-color: var(--ui-destructive);
+}
+
+/* Neutral - Soft */
+:host(.ui-badge--soft.ui-badge--neutral) .ui-badge__content {
+  --ui-badge-bg: var(--ui-secondary-hover-bg);
+  --ui-badge-color: var(--ui-secondary-foreground);
+}
+
+/* === COLOR VARIANTS - OUTLINE === */
+
+/* Primary - Outline */
+:host(.ui-badge--outline.ui-badge--primary) .ui-badge__content {
+  --ui-badge-bg: transparent;
+  --ui-badge-color: var(--ui-primary);
+  --ui-badge-border: 1px solid var(--ui-border-color);
+}
+
+:host(.ui-badge--outline.ui-badge--primary:hover) .ui-badge__content {
+  --ui-badge-bg: var(--ui-outline-hover-bg);
+}
+
+/* Success - Outline */
+:host(.ui-badge--outline.ui-badge--success) .ui-badge__content {
+  --ui-badge-bg: transparent;
+  --ui-badge-color: var(--ui-toast-success-text);
+  --ui-badge-border: 1px solid var(--ui-toast-success-border);
+}
+
+:host(.ui-badge--outline.ui-badge--success:hover) .ui-badge__content {
+  --ui-badge-bg: var(--ui-toast-success-bg);
+}
+
+/* Warning - Outline */
+:host(.ui-badge--outline.ui-badge--warning) .ui-badge__content {
+  --ui-badge-bg: transparent;
+  --ui-badge-color: var(--ui-toast-warning-text);
+  --ui-badge-border: 1px solid var(--ui-toast-warning-border);
+}
+
+:host(.ui-badge--outline.ui-badge--warning:hover) .ui-badge__content {
+  --ui-badge-bg: var(--ui-toast-warning-bg);
+}
+
+/* Danger - Outline */
+:host(.ui-badge--outline.ui-badge--danger) .ui-badge__content {
+  --ui-badge-bg: transparent;
+  --ui-badge-color: var(--ui-destructive);
+  --ui-badge-border: 1px solid var(--ui-destructive);
+}
+
+:host(.ui-badge--outline.ui-badge--danger:hover) .ui-badge__content {
+  --ui-badge-bg: rgba(220, 38, 38, 0.1);
+}
+
+/* Neutral - Outline */
+:host(.ui-badge--outline.ui-badge--neutral) .ui-badge__content {
+  --ui-badge-bg: transparent;
+  --ui-badge-color: var(--ui-secondary-foreground);
+  --ui-badge-border: 1px solid var(--ui-border);
+}
+
+:host(.ui-badge--outline.ui-badge--neutral:hover) .ui-badge__content {
+  --ui-badge-bg: var(--ui-secondary);
+}

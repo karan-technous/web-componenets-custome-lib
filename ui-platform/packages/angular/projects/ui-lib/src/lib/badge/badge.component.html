@@ -1,0 +1,13 @@
+<ui-badge
+  [variant]="variant()"
+  [color]="color()"
+  [size]="size()"
+  [shape]="shape()"
+  [dot]="dot()"
+  [removable]="removable()"
+  [disabled]="disabled()"
+  (remove)="handleRemove()"
+>
+  <ng-content select="[badge-icon]" slot="icon"></ng-content>
+  <ng-content></ng-content>
+</ui-badge>
