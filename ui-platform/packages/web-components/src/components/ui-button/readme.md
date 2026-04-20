@@ -57,6 +57,7 @@ Supports multiple sizes, states, and animations
 ### Used by
 
  - [ui-button-group](../ui-button-group)
+ - [ui-date-picker](../ui-date-picker)
 
 ### Depends on
 
@@ -67,6 +68,7 @@ Supports multiple sizes, states, and animations
 graph TD;
   ui-button --> ui-icon
   ui-button-group --> ui-button
+  ui-date-picker --> ui-button
   style ui-button fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

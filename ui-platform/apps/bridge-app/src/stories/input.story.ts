@@ -25,6 +25,22 @@ const inputStory: StoryDefinition = {
       default: false,
       description: "Disable input",
     },
+    icon: {
+      type: "string",
+      default: "",
+      description: "Lucide icon name shown inside input",
+    },
+    iconOnly: {
+      type: "boolean",
+      default: false,
+      description: "Show only icon button and hide text field",
+    },
+    rounded: {
+      type: "select",
+      options: ["xs", "sm", "md", "xl"],
+      default: "md",
+      description: "Rounded corners for the input",
+    },
   },
   stories: {
     Default: {
@@ -46,6 +62,26 @@ const inputStory: StoryDefinition = {
         disabled: true,
       },
     },
+    "With Icon": {
+      props: {
+        placeholder: "Search",
+        value: "",
+        icon: "Search",
+      },
+    },
+    "Icon Only": {
+      props: {
+        icon: "Calendar",
+        iconOnly: true,
+      },
+    },
+    "Rounded": {
+      props: {
+        placeholder: "Calendar",
+        value: "Design System",
+        rounded: "md",
+      },
+    },
   },
   docs: {
     description:
@@ -59,11 +95,15 @@ const inputStory: StoryDefinition = {
         title: "Disabled Input",
         props: { placeholder: "Search", value: "Read only", disabled: true },
       },
+      {
+        title: "Input With Icon",
+        props: { placeholder: "Search...", value: "", icon: "Search", disabled: false },
+      },
     ],
     usage: {
-      react: `<UiInput placeholder="Search" value="" />`,
-      angular: `<ui-input-angular [placeholder]="'Search'"></ui-input-angular>`,
-      wc: `<ui-input placeholder="Search"></ui-input>`,
+      react: `<UiInput placeholder="Search" icon="Search" />`,
+      angular: `<ui-input-angular [placeholder]="'Search'" [icon]="'Search'"></ui-input-angular>`,
+      wc: `<ui-input placeholder="Search" icon="Search"></ui-input>`,
     },
   },
 };

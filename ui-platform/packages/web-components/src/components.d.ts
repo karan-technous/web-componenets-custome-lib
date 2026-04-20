@@ -256,7 +256,7 @@ export namespace Components {
           * @default false
          */
         "disabled": boolean;
-        "icon"?: string | HTMLElement;
+        "icon"?: string;
         /**
           * @default false
          */
@@ -314,10 +314,23 @@ export namespace Components {
           * @default false
          */
         "disabled": boolean;
+        "icon"?: string;
+        /**
+          * @default 'Input icon action'
+         */
+        "iconAriaLabel": string;
+        /**
+          * @default false
+         */
+        "iconOnly": boolean;
         /**
           * @default ''
          */
         "placeholder": string;
+        /**
+          * @default 'md'
+         */
+        "rounded": 'xs' | 'sm' | 'md' | 'xl';
         /**
           * @default 'text'
          */
@@ -597,6 +610,7 @@ declare global {
     interface HTMLUiInputElementEventMap {
         "valueChange": string;
         "uiBlur": void;
+        "uiIconClick": void;
     }
     interface HTMLUiInputElement extends Components.UiInput, HTMLStencilElement {
         addEventListener<K extends keyof HTMLUiInputElementEventMap>(type: K, listener: (this: HTMLUiInputElement, ev: UiInputCustomEvent<HTMLUiInputElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -960,7 +974,7 @@ declare namespace LocalJSX {
           * @default false
          */
         "disabled"?: boolean;
-        "icon"?: string | HTMLElement;
+        "icon"?: string;
         /**
           * @default false
          */
@@ -1026,12 +1040,26 @@ declare namespace LocalJSX {
           * @default false
          */
         "disabled"?: boolean;
+        "icon"?: string;
+        /**
+          * @default 'Input icon action'
+         */
+        "iconAriaLabel"?: string;
+        /**
+          * @default false
+         */
+        "iconOnly"?: boolean;
         "onUiBlur"?: (event: UiInputCustomEvent<void>) => void;
+        "onUiIconClick"?: (event: UiInputCustomEvent<void>) => void;
         "onValueChange"?: (event: UiInputCustomEvent<string>) => void;
         /**
           * @default ''
          */
         "placeholder"?: string;
+        /**
+          * @default 'md'
+         */
+        "rounded"?: 'xs' | 'sm' | 'md' | 'xl';
         /**
           * @default 'text'
          */
@@ -1187,7 +1215,7 @@ declare namespace LocalJSX {
         "iconOnly": boolean;
         "showActions": boolean;
         "search": boolean;
-        "icon": string | HTMLElement;
+        "icon": string;
         "debounce": number;
     }
     interface UiIconAttributes {
@@ -1201,6 +1229,10 @@ declare namespace LocalJSX {
         "placeholder": string;
         "disabled": boolean;
         "type": 'text' | 'number';
+        "rounded": 'xs' | 'sm' | 'md' | 'xl';
+        "icon": string;
+        "iconOnly": boolean;
+        "iconAriaLabel": string;
     }
     interface UiPanelAttributes {
         "variant": PanelVariant;

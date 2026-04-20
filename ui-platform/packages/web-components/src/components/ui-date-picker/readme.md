@@ -14,7 +14,7 @@
 | `defaultOpen`   | `default-open` |             | `boolean`                             | `false`                          |
 | `defaultValue`  | --             |             | `Date \| { start: Date; end: Date; }` | `undefined`                      |
 | `disabled`      | `disabled`     |             | `boolean`                             | `false`                          |
-| `icon`          | `icon`         |             | `HTMLElement \| string`               | `undefined`                      |
+| `icon`          | `icon`         |             | `string`                              | `undefined`                      |
 | `iconOnly`      | `icon-only`    |             | `boolean`                             | `false`                          |
 | `loading`       | `loading`      |             | `boolean`                             | `false`                          |
 | `maxDate`       | --             |             | `Date`                                | `undefined`                      |
@@ -42,6 +42,25 @@
 | `onInvalidInput` |             | `CustomEvent<string>`                              |
 | `onOpenChange`   |             | `CustomEvent<boolean>`                             |
 
+
+## Dependencies
+
+### Depends on
+
+- [ui-button](../ui-button)
+- [ui-input](../ui-input)
+- [ui-icon](../ui-icon)
+
+### Graph
+```mermaid
+graph TD;
+  ui-date-picker --> ui-button
+  ui-date-picker --> ui-input
+  ui-date-picker --> ui-icon
+  ui-button --> ui-icon
+  ui-input --> ui-icon
+  style ui-date-picker fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ----------------------------------------------
 

@@ -3,6 +3,10 @@
   [placeholder]="placeholder()"
   [disabled]="isDisabled()"
   [type]="type()"
+  [icon]="icon()"
+  [iconOnly]="iconOnly()"
+  [iconAriaLabel]="iconAriaLabel()"
   (valueChange)="handleInput($event)"
   (uiBlur)="handleBlur()"
+  (uiIconClick)="handleIconClick()"
 ></ui-input>

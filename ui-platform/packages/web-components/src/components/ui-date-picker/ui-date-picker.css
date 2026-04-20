@@ -14,61 +14,29 @@
   display: flex;
   align-items: center;
   width: 100%;
-  border: 1px solid var(--ui-border);
-  border-radius: var(--ui-border-radius);
-  background: var(--ui-bg);
-  transition: border-color 0.16s ease, box-shadow 0.16s ease;
 }
 
-.input {
+.trigger-input {
   flex: 1;
-  border: 0;
-  background: transparent;
-  color: var(--ui-text);
-  padding: 6px 9px;
-  outline: none;
+  display: block;
+  width: 100%;
+  min-width: 0;
   font-size: 12px;
-  line-height: 1.2;
 }
 
-.input::placeholder {
-  color: var(--ui-text-muted);
+.trigger:hover .trigger-input {
+  --ui-border-color: var(--ui-border-hover);
 }
 
-.icon-button {
-  border: 0;
-  background: transparent;
-  color: var(--ui-text-muted);
-  min-width: 30px;
-  min-height: 30px;
-  cursor: pointer;
-  transition: color 0.16s ease, background-color 0.16s ease;
-  border-radius: 0 var(--ui-border-radius) var(--ui-border-radius) 0;
+.root--open .trigger-input {
+  --ui-border-color: var(--ui-primary);
 }
 
-.icon-button:hover {
-  color: var(--ui-text);
+.root--error .trigger-input {
+  --ui-border-color: var(--ui-destructive);
 }
 
-.icon-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
-.trigger:hover {
-  border-color: var(--ui-border-hover);
-}
-
-.root--open .trigger {
-  border-color: var(--ui-primary);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--ui-primary) 20%, transparent);
-}
-
-.root--error .trigger {
-  border-color: var(--ui-destructive);
-}
-
-.root--disabled .trigger {
+.root--disabled .trigger-input {
   opacity: 0.62;
 }
 
@@ -96,31 +64,16 @@
 }
 
 .search-input {
+  display: block;
   width: 100%;
-  min-height: 30px;
-  border: 1px solid var(--ui-border);
-  border-radius: var(--ui-border-radius);
-  background: var(--ui-bg);
-  color: var(--ui-text);
-  padding: 0 8px;
-  outline: none;
   box-sizing: border-box;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
   font-size: 12px;
 }
 
-.search-input::placeholder {
-  color: var(--ui-text-muted);
-}
-
 .search-input--error {
-  border-color: var(--ui-destructive);
+  --ui-border-color: var(--ui-destructive);
 }
 
-.search-input:focus {
-  border-color: var(--ui-primary);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--ui-primary) 16%, transparent);
-}
 
 .calendar-header {
   display: flex;
@@ -138,26 +91,30 @@
 }
 
 .nav-btn {
+  display: inline-flex;
+  --ui-foreground: var(--ui-text);
+  --ui-accent: var(--ui-bg-hover);
+}
+
+.nav-btn::part(button) {
   width: 24px;
   height: 24px;
   border: 1px solid transparent;
   border-radius: 50%;
   background: transparent;
   color: var(--ui-text);
-  cursor: pointer;
   padding: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  min-width: 24px;
+  min-height: 24px;
   transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
-.nav-btn:hover {
+.nav-btn::part(button):hover {
   border-color: var(--ui-border);
   background: var(--ui-bg-hover);
 }
 
-.nav-btn:focus-visible {
+.nav-btn::part(button):focus-visible {
   outline: none;
   border-color: var(--ui-primary);
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--ui-primary) 16%, transparent);
@@ -192,51 +149,57 @@
 }
 
 .day {
+  display: inline-flex;
+  margin: 0 auto;
+  --ui-foreground: var(--ui-text);
+  --ui-accent: var(--ui-bg-hover);
+}
+
+.day::part(button) {
   border: 1px solid transparent;
   background: transparent;
   color: var(--ui-text);
   border-radius: var(--ui-border-radius);
   min-height: 28px;
   min-width: 28px;
-  cursor: pointer;
-  transition: background-color 0.16s ease, border-color 0.16s ease, color 0.16s ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto;
+  padding: 0;
   font-size: 12px;
+  font-weight: 400;
+  transition: background-color 0.16s ease, border-color 0.16s ease, color 0.16s ease;
 }
 
-.day:hover {
+.day::part(button):hover {
   border-color: var(--ui-border-hover);
   background: var(--ui-bg-hover);
 }
 
-.day--today {
+.day--today::part(button) {
   border-color: var(--ui-border-hover);
 }
 
-.day--selected {
+.day--selected::part(button) {
   background: var(--ui-primary);
   border-color: var(--ui-primary);
   color: var(--ui-primary-foreground);
 }
 
-.day--in-range {
+.day--in-range::part(button) {
   background: color-mix(in srgb, var(--ui-primary) 16%, transparent);
+  border-color: transparent;
+  color: var(--ui-text);
 }
 
-.day--focused {
+.day--focused::part(button) {
   border-color: var(--ui-primary);
 }
 
-.day--disabled {
+.day--disabled::part(button) {
   color: var(--ui-text-muted);
   cursor: not-allowed;
   opacity: 0.55;
 }
 
-.day--out {
+.day--out::part(button) {
   color: var(--ui-text-muted);
 }
 
@@ -250,42 +213,48 @@
 }
 
 .action-btn {
+  display: inline-flex;
+}
+
+.action-btn::part(button) {
   min-height: 28px;
   border-radius: var(--ui-border-radius);
-  border: 1px solid var(--ui-border);
-  background: var(--ui-bg);
-  color: var(--ui-text);
   padding: 4px 10px;
-  cursor: pointer;
   font-weight: 500;
   font-size: 12px;
   transition: background-color 0.16s ease, border-color 0.16s ease, color 0.16s ease;
 }
 
-.action-btn:hover {
+.action-btn--ghost::part(button) {
+  border: 1px solid var(--ui-border);
+  background: var(--ui-bg);
+  color: var(--ui-text);
+}
+
+.action-btn--ghost::part(button):hover {
   border-color: var(--ui-border-hover);
   background: var(--ui-bg-hover);
 }
 
-.action-btn--primary {
+.action-btn--primary::part(button) {
+  border: 1px solid var(--ui-primary);
   border-color: var(--ui-primary);
   background: var(--ui-primary);
   color: var(--ui-primary-foreground);
 }
 
-.action-btn--primary:hover {
+.action-btn--primary::part(button):hover {
   border-color: var(--ui-primary-hover);
   background: var(--ui-primary-hover);
 }
 
 .root--icon-only .trigger {
   width: fit-content;
-  border: 1px solid var(--ui-border);
-  background: var(--ui-bg);
 }
 
-.root--icon-only .icon-button {
-  border-radius: var(--ui-border-radius);
+.root--icon-only .trigger-input {
+  width: fit-content;
+  --ui-input-icon-border-radius: var(--ui-border-radius);
 }
 
 .root--icon-only .popover {

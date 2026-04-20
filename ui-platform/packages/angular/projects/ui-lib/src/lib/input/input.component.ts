@@ -4,6 +4,7 @@ import {
   CUSTOM_ELEMENTS_SCHEMA,
   forwardRef,
   input,
+  output,
   signal,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -28,9 +29,14 @@ ensureCustomElements();
 export class InputComponent implements ControlValueAccessor {
   placeholder = input<string>('');
   type = input<'text' | 'number'>('text');
+  rounded = input<'xs' | 'sm' | 'md' | 'xl'>('md');
+  icon = input<string | undefined>(undefined);
+  iconOnly = input<boolean>(false);
+  iconAriaLabel = input<string>('Input icon action');
 
   value = signal<string>('');
   isDisabled = signal<boolean>(false);
+  iconClick = output<void>();
 
   onChange = (value: string) => {};
   onTouched = () => {};
@@ -60,5 +66,9 @@ export class InputComponent implements ControlValueAccessor {
 
   handleBlur() {
     this.onTouched();
+  }
+
+  handleIconClick() {
+    this.iconClick.emit();
   }
 }

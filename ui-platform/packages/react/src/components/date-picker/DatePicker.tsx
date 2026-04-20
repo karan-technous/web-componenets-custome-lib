@@ -29,7 +29,7 @@ export type DatePickerProps = {
   maxDate?: Date;
   showIcon?: boolean;
   iconOnly?: boolean;
-  icon?: string | HTMLElement;
+  icon?: string;
   showActions?: boolean;
   search?: boolean;
   customParsers?: CustomParser[];

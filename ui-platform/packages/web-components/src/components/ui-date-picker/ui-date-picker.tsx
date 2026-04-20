@@ -22,6 +22,7 @@ export interface DatePickerParser {
 }
 
 type ParseSource = 'main' | 'search';
+type InputValueChangeEvent = CustomEvent<string>;
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 const MONTHS = [
@@ -63,7 +64,7 @@ export class UiDatePicker extends BaseComponent {
   @Prop({ reflect: true }) iconOnly: boolean = false;
   @Prop({ reflect: true }) showActions: boolean = false;
   @Prop({ reflect: true }) search: boolean = false;
-  @Prop() icon?: string | HTMLElement;
+  @Prop() icon?: string;
   @Prop() customParsers?: DatePickerParser[];
   @Prop() debounce: number = 220;
 
@@ -88,8 +89,8 @@ export class UiDatePicker extends BaseComponent {
   @State() monthDirection: 'left' | 'right' = 'right';
   @State() shake = false;
 
-  private inputEl?: HTMLInputElement;
-  private searchInputEl?: HTMLInputElement;
+  private inputEl?: HTMLElement;
+  private searchInputEl?: HTMLElement;
   private parseTimerMain?: ReturnType<typeof setTimeout>;
   private parseTimerSearch?: ReturnType<typeof setTimeout>;
   private shakeTimer?: ReturnType<typeof setTimeout>;
@@ -374,9 +375,31 @@ export class UiDatePicker extends BaseComponent {
     this.setOpen(false);
   }
 
-  private onInput = (event: Event) => {
+  private getNativeInput(componentEl?: HTMLElement) {
+    return componentEl?.shadowRoot?.querySelector('input') ?? undefined;
+  }
+
+  private focusMainInput() {
+    this.getNativeInput(this.inputEl)?.focus();
+  }
+
+  private shouldBlockReadonlyTyping(event: KeyboardEvent) {
+    if (!this.readonly && !this.loading) return false;
+    if (event.ctrlKey || event.metaKey || event.altKey) return false;
+    return event.key.length === 1 || event.key === 'Backspace' || event.key === 'Delete';
+  }
+
+  private onMainInputKeyDown = (event: KeyboardEvent) => {
+    if (this.shouldBlockReadonlyTyping(event)) {
+      event.preventDefault();
+      return;
+    }
+    this.onInputKeyDown(event);
+  };
+
+  private onInputValueChange = (event: InputValueChangeEvent) => {
     if (this.readonly || this.loading) return;
-    const raw = (event.target as HTMLInputElement).value;
+    const raw = event.detail ?? '';
     this.inputValue = raw;
     this.searchValue = raw;
     this.onInputChange.emit(raw);
@@ -387,8 +410,8 @@ export class UiDatePicker extends BaseComponent {
     }, wait);
   };
 
-  private onSearchInput = (event: Event) => {
-    const raw = (event.target as HTMLInputElement).value;
+  private onSearchValueChange = (event: InputValueChangeEvent) => {
+    const raw = event.detail ?? '';
     this.searchValue = raw;
     this.onInputChange.emit(raw);
     if (this.parseTimerSearch) clearTimeout(this.parseTimerSearch);
@@ -499,7 +522,7 @@ export class UiDatePicker extends BaseComponent {
     if (event.key === 'Escape') {
       event.preventDefault();
       this.setOpen(false);
-      this.inputEl?.focus();
+      this.focusMainInput();
       return;
     }
 
@@ -559,54 +582,57 @@ export class UiDatePicker extends BaseComponent {
             : undefined;
           const inDraftRange = this.mode === 'range' && !selectedRange && this.inRange(normalized, rangeDraft);
           const isFocused = this.compareDay(this.focusedDay, normalized);
+          const isSelected = selectedSingle || selectedStart || selectedEnd;
+          const isInRange = inSelectedRange || inDraftRange;
 
           return (
-            <button
+            <ui-button
               class={{
                 day: true,
                 'day--out': outOfMonth,
                 'day--disabled': disabled,
                 'day--today': this.compareDay(today, normalized),
-                'day--selected': selectedSingle || selectedStart || selectedEnd,
-                'day--in-range': inSelectedRange || inDraftRange,
+                'day--selected': isSelected,
+                'day--in-range': isInRange,
                 'day--focused': isFocused,
               }}
-              type="button"
+              variant={isSelected ? 'default' : isInRange ? 'secondary' : 'ghost'}
+              size="icon-sm"
+              rounded="md"
               role="gridcell"
-              aria-selected={selectedSingle || selectedStart || selectedEnd ? 'true' : 'false'}
+              aria-selected={isSelected ? 'true' : 'false'}
               aria-disabled={disabled ? 'true' : 'false'}
               disabled={disabled}
-              onClick={() => this.handleDaySelect(normalized)}
-              onMouseEnter={() => (this.focusedDay = normalized)}
+              onUiClick={() => this.handleDaySelect(normalized)}
+              onMouseOver={() => (this.focusedDay = normalized)}
             >
               {normalized.getDate()}
-            </button>
+            </ui-button>
           );
         })}
       </div>
     );
   }
 
-  private renderIcon() {
-    if (!this.showIcon) return null;
+  private resolveIconName(icon: string): string {
+    const value = icon.trim();
+    if (!value || value.includes('<')) return 'Calendar';
+    return value;
+  }
+
+  private getTriggerIconName() {
     if (typeof this.icon === 'string') {
-      return <span class="icon-slot" innerHTML={this.icon}></span>;
+      return this.resolveIconName(this.icon);
     }
-    return (
-      <span class="icon-slot" aria-hidden="true">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="3" y="5" width="18" height="16" rx="2"></rect>
-          <line x1="16" y1="3" x2="16" y2="7"></line>
-          <line x1="8" y1="3" x2="8" y2="7"></line>
-          <line x1="3" y1="11" x2="21" y2="11"></line>
-        </svg>
-      </span>
-    );
+    return 'Calendar';
   }
 
   render() {
     const monthLabel = `${MONTHS[this.currentMonth.getMonth()]} ${this.currentMonth.getFullYear()}`;
-    const isReadonlyInput = this.readonly || this.loading;
+    const showTriggerIcon = this.showIcon || this.iconOnly;
+    const triggerIconName = showTriggerIcon ? this.getTriggerIconName() : undefined;
+    const triggerPlaceholder = this.iconOnly ? '' : this.placeholder;
+    const triggerValue = this.iconOnly ? '' : this.inputValue;
 
     return (
       <Host>
@@ -621,92 +647,83 @@ export class UiDatePicker extends BaseComponent {
           }}
         >
           <div class="trigger">
-            {!this.iconOnly && (
-              <input
-                ref={(el) => (this.inputEl = el as HTMLInputElement)}
-                class="input"
-                type="text"
-                value={this.inputValue}
-                placeholder={this.placeholder}
-                disabled={this.disabled}
-                readonly={isReadonlyInput}
-                onInput={this.onInput}
-                onFocus={() => this.onFocus.emit()}
-                onBlur={() => this.onBlur.emit()}
-                onClick={() => this.setOpen(true)}
-                onKeyDown={this.onInputKeyDown}
-                aria-expanded={this.internalOpen ? 'true' : 'false'}
-                aria-haspopup="grid"
-              />
-            )}
-            {(this.showIcon || this.iconOnly) && (
-              <button
-                class="icon-button"
-                type="button"
-                disabled={this.disabled}
-                aria-label="Toggle calendar"
-                onClick={() => this.setOpen(!this.internalOpen)}
-              >
-                {this.renderIcon()}
-              </button>
-            )}
+            <ui-input
+              ref={(el) => (this.inputEl = el as HTMLElement)}
+              class={{ 'trigger-input': true, 'trigger-input--icon-only': this.iconOnly }}
+              type="text"
+              value={triggerValue}
+              placeholder={triggerPlaceholder}
+              disabled={this.disabled}
+              icon={triggerIconName}
+              iconOnly={this.iconOnly}
+              iconAriaLabel="Toggle calendar"
+              onValueChange={this.onInputValueChange}
+              onUiIconClick={() => this.setOpen(!this.internalOpen)}
+              onFocusin={() => this.onFocus.emit()}
+              onUiBlur={() => this.onBlur.emit()}
+              onClick={() => this.setOpen(true)}
+              onKeyDown={this.onMainInputKeyDown}
+              aria-expanded={this.internalOpen ? 'true' : 'false'}
+              aria-haspopup="grid"
+            ></ui-input>
           </div>
 
           {this.internalOpen && this.lazyReady && (
             <div class="popover" role="dialog" aria-label="Date picker" onKeyDown={this.onInputKeyDown}>
               {this.search && (
                 <div class="search-wrap">
-                  <input
-                    ref={(el) => (this.searchInputEl = el as HTMLInputElement)}
+                  <ui-input
+                    ref={(el) => (this.searchInputEl = el as HTMLElement)}
                     class={{ 'search-input': true, 'search-input--error': this.hasSearchError }}
                     type="text"
                     value={this.searchValue}
                     placeholder="Search date (e.g. 1 Jan 2020 or today)"
-                    onInput={this.onSearchInput}
-                  />
+                    onValueChange={this.onSearchValueChange}
+                  ></ui-input>
                 </div>
               )}
               <div class="calendar-header">
-                <button
-                  type="button"
+                <ui-button
                   class="nav-btn"
+                  variant="ghost"
+                  size="icon-xs"
+                  rounded="full"
                   aria-label="Previous month"
-                  onClick={() => this.goToMonth(-1)}
+                  onUiClick={() => this.goToMonth(-1)}
                 >
-                  <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true">
-                    <path d="M12 4l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                  </svg>
-                </button>
+                  <ui-icon name={'ChevronLeft' as any} size="sm"></ui-icon>
+                </ui-button>
                 <span class="month-label">{monthLabel}</span>
-                <button
-                  type="button"
+                <ui-button
                   class="nav-btn"
+                  variant="ghost"
+                  size="icon-xs"
+                  rounded="full"
                   aria-label="Next month"
-                  onClick={() => this.goToMonth(1)}
+                  onUiClick={() => this.goToMonth(1)}
                 >
-                  <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true">
-                    <path d="M8 4l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                  </svg>
-                </button>
+                  <ui-icon name={'ChevronRight' as any} size="sm"></ui-icon>
+                </ui-button>
               </div>
               <div class={{ 'calendar-body': true, [`calendar-body--${this.monthDirection}`]: true }}>
                 {this.renderCalendarGrid()}
               </div>
               {this.showActions && (
                 <div class="actions">
-                  <button type="button" class="action-btn action-btn--ghost" onClick={() => this.cancelDraft()}>
+                  <ui-button class="action-btn action-btn--ghost" variant="outline" size="xs" onUiClick={() => this.cancelDraft()}>
                     Cancel
-                  </button>
-                  <button
-                    type="button"
+                  </ui-button>
+                  <ui-button
                     class="action-btn action-btn--primary"
-                    onClick={() => {
+                    variant="default"
+                    size="xs"
+                    onUiClick={() => {
                       this.commitDraft(true);
                       this.setOpen(false);
                     }}
                   >
                     Apply
-                  </button>
+                  </ui-button>
                 </div>
               )}
             </div>

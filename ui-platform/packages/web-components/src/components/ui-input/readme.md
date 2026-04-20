@@ -7,12 +7,16 @@
 
 ## Properties
 
-| Property      | Attribute     | Description | Type                 | Default  |
-| ------------- | ------------- | ----------- | -------------------- | -------- |
-| `disabled`    | `disabled`    |             | `boolean`            | `false`  |
-| `placeholder` | `placeholder` |             | `string`             | `''`     |
-| `type`        | `type`        |             | `"number" \| "text"` | `'text'` |
-| `value`       | `value`       |             | `string`             | `''`     |
+| Property        | Attribute         | Description | Type                           | Default               |
+| --------------- | ----------------- | ----------- | ------------------------------ | --------------------- |
+| `disabled`      | `disabled`        |             | `boolean`                      | `false`               |
+| `icon`          | `icon`            |             | `string`                       | `undefined`           |
+| `iconAriaLabel` | `icon-aria-label` |             | `string`                       | `'Input icon action'` |
+| `iconOnly`      | `icon-only`       |             | `boolean`                      | `false`               |
+| `placeholder`   | `placeholder`     |             | `string`                       | `''`                  |
+| `rounded`       | `rounded`         |             | `"md" \| "sm" \| "xl" \| "xs"` | `'md'`                |
+| `type`          | `type`            |             | `"number" \| "text"`           | `'text'`              |
+| `value`         | `value`           |             | `string`                       | `''`                  |
 
 
 ## Events
@@ -20,8 +24,27 @@
 | Event         | Description | Type                  |
 | ------------- | ----------- | --------------------- |
 | `uiBlur`      |             | `CustomEvent<void>`   |
+| `uiIconClick` |             | `CustomEvent<void>`   |
 | `valueChange` |             | `CustomEvent<string>` |
 
+
+## Dependencies
+
+### Used by
+
+ - [ui-date-picker](../ui-date-picker)
+
+### Depends on
+
+- [ui-icon](../ui-icon)
+
+### Graph
+```mermaid
+graph TD;
+  ui-input --> ui-icon
+  ui-date-picker --> ui-input
+  style ui-input fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ----------------------------------------------
 

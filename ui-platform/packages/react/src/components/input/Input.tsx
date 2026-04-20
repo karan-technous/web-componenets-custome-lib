@@ -12,8 +12,13 @@ type UiInputProps = {
   placeholder?: string;
   disabled?: boolean;
   type?: "text" | "number";
+  rounded?: "xs" | "sm" | "md" | "xl";
+  icon?: string;
+  iconOnly?: boolean;
+  iconAriaLabel?: string;
   onChange?: (value: string) => void;
   onBlur?: () => void;
+  onIconClick?: () => void;
 };
 
 export const UiInput = forwardRef<HTMLElement, UiInputProps>(
@@ -24,8 +29,13 @@ export const UiInput = forwardRef<HTMLElement, UiInputProps>(
       placeholder,
       disabled,
       type = "text",
+      rounded = "md",
+      icon,
+      iconOnly = false,
+      iconAriaLabel,
       onChange,
       onBlur,
+      onIconClick,
     },
     forwardedRef,
   ) => {
@@ -40,10 +50,12 @@ export const UiInput = forwardRef<HTMLElement, UiInputProps>(
     // Stable refs
     const onChangeRef = useRef(onChange);
     const onBlurRef = useRef(onBlur);
+    const onIconClickRef = useRef(onIconClick);
 
     useEffect(() => {
       onChangeRef.current = onChange;
       onBlurRef.current = onBlur;
+      onIconClickRef.current = onIconClick;
     });
 
     // Sync props → Web Component
@@ -55,7 +67,11 @@ export const UiInput = forwardRef<HTMLElement, UiInputProps>(
       el.placeholder = placeholder ?? "";
       el.disabled = !!disabled;
       el.type = type;
-    }, [currentValue, placeholder, disabled, type]);
+      el.rounded = rounded;
+      el.icon = icon;
+      el.iconOnly = !!iconOnly;
+      el.iconAriaLabel = iconAriaLabel ?? "Input icon action";
+    }, [currentValue, placeholder, disabled, type, rounded, icon, iconOnly, iconAriaLabel]);
 
     // Events
     useEffect(() => {
@@ -76,12 +92,18 @@ export const UiInput = forwardRef<HTMLElement, UiInputProps>(
         onBlurRef.current?.();
       };
 
+      const handleIconClick = () => {
+        onIconClickRef.current?.();
+      };
+
       el.addEventListener("valueChange", handleChange);
       el.addEventListener("uiBlur", handleBlur);
+      el.addEventListener("uiIconClick", handleIconClick);
 
       return () => {
         el.removeEventListener("valueChange", handleChange);
         el.removeEventListener("uiBlur", handleBlur);
+        el.removeEventListener("uiIconClick", handleIconClick);
       };
     }, [isControlled]);
 

@@ -9,6 +9,18 @@ export type UiTheme = {
   '--ui-border-hover': string;
   '--ui-border-color': string;
   '--ui-border-radius': string;
+  '--ui-input-radius-xs': string;
+  '--ui-input-radius-sm': string;
+  '--ui-input-radius-md': string;
+  '--ui-input-radius-xl': string;
+  '--ui-input-padding': string;
+  '--ui-input-min-height': string;
+  '--ui-input-icon-size': string;
+  '--ui-input-icon-bg': string;
+  '--ui-input-icon-color': string;
+  '--ui-input-icon-hover-color': string;
+  '--ui-input-icon-hover-bg': string;
+  '--ui-input-icon-border-radius': string;
   '--ui-secondary': string;
   '--ui-secondary-foreground': string;
   '--ui-secondary-hover': string;
@@ -74,11 +86,23 @@ export const lightTheme: UiTheme = {
   '--ui-primary-foreground': '#ffffff',
   '--ui-bg': '#ffffff',
   '--ui-text': '#111827',
+  '--ui-input-radius-xs': '2px',
+  '--ui-input-radius-sm': '4px',
+  '--ui-input-radius-md': '6px',
+  '--ui-input-radius-xl': '12px',
   '--ui-text-on-primary': '#ffffff',
   '--ui-border': '#e4e4e7',
   '--ui-border-hover': '#d4d4d8',
   '--ui-border-color': '#cbd5e1',
   '--ui-border-radius': '6px',
+  '--ui-input-padding': '6px 10px',
+  '--ui-input-min-height': '32px',
+  '--ui-input-icon-size': '30px',
+  '--ui-input-icon-bg': 'transparent',
+  '--ui-input-icon-color': '#64748b',
+  '--ui-input-icon-hover-color': '#111827',
+  '--ui-input-icon-hover-bg': 'transparent',
+  '--ui-input-icon-border-radius': '0 6px 6px 0',
   '--ui-secondary': '#f4f4f5',
   '--ui-secondary-foreground': '#18181b',
   '--ui-secondary-hover': '#e4e4e7',
@@ -142,11 +166,23 @@ export const darkTheme: UiTheme = {
   '--ui-primary-foreground': '#ffffff',
   '--ui-bg': '#1e1e1e',
   '--ui-text': '#e5e5e5',
+  '--ui-input-radius-xs': '2px',
+  '--ui-input-radius-sm': '4px',
+  '--ui-input-radius-md': '6px',
+  '--ui-input-radius-xl': '12px',
   '--ui-text-on-primary': '#ffffff',
   '--ui-border': '#333333',
   '--ui-border-hover': '#444444',
   '--ui-border-color': '#333333',
   '--ui-border-radius': '6px',
+  '--ui-input-padding': '6px 10px',
+  '--ui-input-min-height': '32px',
+  '--ui-input-icon-size': '30px',
+  '--ui-input-icon-bg': 'transparent',
+  '--ui-input-icon-color': '#aaaaaa',
+  '--ui-input-icon-hover-color': '#e5e5e5',
+  '--ui-input-icon-hover-bg': 'transparent',
+  '--ui-input-icon-border-radius': '0 6px 6px 0',
   '--ui-secondary': '#2a2a2a',
   '--ui-secondary-foreground': '#ffffff',
   '--ui-secondary-hover': '#262626',

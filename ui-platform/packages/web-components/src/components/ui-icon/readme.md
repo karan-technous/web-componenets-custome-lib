@@ -22,6 +22,8 @@
  - [ui-breadcrumb](../ui-breadcrumb)
  - [ui-button](../ui-button)
  - [ui-checkbox](../ui-checkbox)
+ - [ui-date-picker](../ui-date-picker)
+ - [ui-input](../ui-input)
  - [ui-toast](../ui-toast)
  - [ui-toggle](../ui-toggle)
 
@@ -31,6 +33,8 @@ graph TD;
   ui-breadcrumb --> ui-icon
   ui-button --> ui-icon
   ui-checkbox --> ui-icon
+  ui-date-picker --> ui-icon
+  ui-input --> ui-icon
   ui-toast --> ui-icon
   ui-toggle --> ui-icon
   style ui-icon fill:#f9f,stroke:#333,stroke-width:4px
