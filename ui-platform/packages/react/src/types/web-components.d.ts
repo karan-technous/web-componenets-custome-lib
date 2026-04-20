@@ -52,6 +52,32 @@ declare module "react" {
         React.HTMLAttributes<HTMLElement>,
         HTMLElement
       >;
+
+      "ui-date-picker": React.DetailedHTMLProps<
+        React.HTMLAttributes<HTMLElement>,
+        HTMLElement
+      > & {
+        value?: Date | { start: Date; end: Date };
+        defaultValue?: Date | { start: Date; end: Date };
+        mode?: "single" | "range";
+        placeholder?: string;
+        disabled?: boolean;
+        loading?: boolean;
+        readonly?: boolean;
+        open?: boolean;
+        defaultOpen?: boolean;
+        minDate?: Date;
+        maxDate?: Date;
+        showIcon?: boolean;
+        iconOnly?: boolean;
+        showActions?: boolean;
+        search?: boolean;
+        icon?: string | HTMLElement;
+        customParsers?: Array<{
+          regex: RegExp;
+          parse: (match: RegExpMatchArray) => Date | { start: Date; end: Date };
+        }>;
+      };
     }
   }
 }

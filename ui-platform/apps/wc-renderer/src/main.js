@@ -106,6 +106,16 @@ function renderComponent(payload) {
             : undefined);
     const el = document.createElement(tagName);
     const props = { ...payload.props };
+    if (payload.component === "date-picker") {
+        const parserPreset = String(props.parserPreset ?? "none");
+        if (parserPreset === "todayNextWeek") {
+            props.customParsers = [
+                { regex: /today/i, parse: () => new Date() },
+                { regex: /next week/i, parse: () => new Date(Date.now() + 7 * 86400000) },
+            ];
+        }
+        delete props.parserPreset;
+    }
     // Special handling for button-group to parse buttons JSON and create ui-button elements
     if (payload.component === "button-group" && textProp === "buttons" && typeof props[textProp] !== "undefined") {
         try {
@@ -168,13 +178,22 @@ function renderComponent(payload) {
         delete props[textProp];
     }
     applyProps(el, props);
+    if (payload.component === "date-picker") {
+        const wrapper = document.createElement("div");
+        wrapper.style.padding = "24px";
+        wrapper.style.maxWidth = "400px";
+        wrapper.style.width = "100%";
+        wrapper.style.boxSizing = "border-box";
+        wrapper.appendChild(el);
+        controls.appendChild(wrapper);
+        return;
+    }
     if (payload.component === "panel") {
         const panelHost = document.createElement("div");
         panelHost.style.width = "100%";
         panelHost.style.padding = "24px";
         panelHost.style.display = "flex";
         panelHost.style.justifyContent = "center";
-        panelHost.style.background = "var(--ui-bg-subtle, var(--ui-bg))";
         panelHost.style.boxSizing = "border-box";
         el.setAttribute("style", "display:block;width:100%;max-width:600px;");
         panelHost.appendChild(el);

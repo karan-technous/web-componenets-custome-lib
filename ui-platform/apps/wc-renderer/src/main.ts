@@ -35,7 +35,7 @@ canvas.className = "canvas";
 const controls = document.createElement("div");
 controls.className = "controls";
 
-function applyProps(el: HTMLElement, props: Record<string, string | boolean>) {
+function applyProps(el: HTMLElement, props: Record<string, unknown>) {
   Object.entries(props).forEach(([key, value]) => {
     try {
       (el as unknown as Record<string, unknown>)[key] = value;
@@ -49,7 +49,7 @@ type StoryPayload = {
   framework: "angular" | "react" | "wc";
   component: string;
   story: string;
-  props: Record<string, string | boolean>;
+  props: Record<string, unknown>;
   slots?: Record<string, string>;
   appearance?: "dark" | "light";
   renderers?: {
@@ -134,6 +134,17 @@ function renderComponent(payload: StoryPayload) {
   const el = document.createElement(tagName);
   const props = { ...payload.props };
 
+  if (payload.component === "date-picker") {
+    const parserPreset = String((props as any).parserPreset ?? "none");
+    if (parserPreset === "todayNextWeek") {
+      (props as any).customParsers = [
+        { regex: /today/i, parse: () => new Date() },
+        { regex: /next week/i, parse: () => new Date(Date.now() + 7 * 86400000) },
+      ];
+    }
+    delete (props as any).parserPreset;
+  }
+
   // Special handling for button-group to parse buttons JSON and create ui-button elements
   if (payload.component === "button-group" && textProp === "buttons" && typeof props[textProp] !== "undefined") {
     try {
@@ -194,13 +205,23 @@ function renderComponent(payload: StoryPayload) {
 
   applyProps(el, props);
 
+  if (payload.component === "date-picker") {
+    const wrapper = document.createElement("div");
+    wrapper.style.padding = "24px";
+    wrapper.style.maxWidth = "400px";
+    wrapper.style.width = "100%";
+    wrapper.style.boxSizing = "border-box";
+    wrapper.appendChild(el);
+    controls.appendChild(wrapper);
+    return;
+  }
+
   if (payload.component === "panel") {
     const panelHost = document.createElement("div");
     panelHost.style.width = "100%";
     panelHost.style.padding = "24px";
     panelHost.style.display = "flex";
     panelHost.style.justifyContent = "center";
-    panelHost.style.background = "var(--ui-bg-subtle, var(--ui-bg))";
     panelHost.style.boxSizing = "border-box";
     el.setAttribute("style", "display:block;width:100%;max-width:600px;");
     panelHost.appendChild(el);
@@ -236,7 +257,7 @@ function parseInitialPayload(): StoryPayload {
     params.get("appearance") === "light" ? "light" : "dark";
   const renderersRaw = params.get("renderers");
   const slotsRaw = params.get("slots");
-  let props: Record<string, string | boolean> = {
+  let props: Record<string, unknown> = {
     label: "Click Me",
     variant: "primary",
     disabled: false,
@@ -247,7 +268,7 @@ function parseInitialPayload(): StoryPayload {
   try {
     const raw = params.get("props");
     if (raw) {
-      props = JSON.parse(raw) as Record<string, string | boolean>;
+      props = JSON.parse(raw) as Record<string, unknown>;
     }
   } catch {
     props = { label: "Click Me", variant: "primary", disabled: false };

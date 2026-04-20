@@ -10,7 +10,7 @@ import {
 } from "@angular/core";
 import * as AngularWrappers from "@karan9186/angular";
 
-type StoryProps = Record<string, string | boolean>;
+type StoryProps = Record<string, unknown>;
 
 type StoryPayload = {
   framework: "angular" | "react" | "wc";
@@ -318,6 +318,17 @@ export class AppComponent implements OnInit, OnDestroy {
         ? String(payload.props[projectedProp])
         : "";
 
+    if (payload.component === "date-picker") {
+      const parserPreset = String(payload.props.parserPreset ?? "none");
+      if (parserPreset === "todayNextWeek") {
+        payload.props.customParsers = [
+          { regex: /today/i, parse: () => new Date() },
+          { regex: /next week/i, parse: () => new Date(Date.now() + 7 * 86400000) },
+        ] as any;
+      }
+      delete payload.props.parserPreset;
+    }
+
     const ref = projectedProp && !projectableNodes
       ? this.container.createComponent(componentType, {
           projectableNodes: [[document.createTextNode(projectedValue)]],
@@ -335,7 +346,7 @@ export class AppComponent implements OnInit, OnDestroy {
       }
       if (key === "disabled") {
         try {
-          ref.setInput("disabled", this.toBoolean(value));
+          ref.setInput("disabled", this.toBoolean(value as string | boolean | undefined));
         } catch {
           // Ignore wrappers that don't expose disabled.
         }
@@ -346,6 +357,15 @@ export class AppComponent implements OnInit, OnDestroy {
       } catch {
         // Ignore unknown inputs.
       }
+    }
+
+    if (payload.component === "date-picker") {
+      const hostElement = ref.location.nativeElement as HTMLElement;
+      hostElement.style.display = "block";
+      hostElement.style.width = "100%";
+      hostElement.style.maxWidth = "400px";
+      hostElement.style.margin = "24px";
+      hostElement.style.boxSizing = "border-box";
     }
 
     const instance = ref.instance as {
@@ -367,7 +387,7 @@ export class AppComponent implements OnInit, OnDestroy {
       if ("value" in payload.props) {
         instance.writeValue(payload.props.value);
       } else if ("checked" in payload.props) {
-        instance.writeValue(this.toBoolean(payload.props.checked));
+        instance.writeValue(this.toBoolean(payload.props.checked as string | boolean | undefined));
       }
     }
 
@@ -375,7 +395,7 @@ export class AppComponent implements OnInit, OnDestroy {
       typeof instance.setDisabledState === "function" &&
       "disabled" in payload.props
     ) {
-      instance.setDisabledState(this.toBoolean(payload.props.disabled));
+      instance.setDisabledState(this.toBoolean(payload.props.disabled as string | boolean | undefined));
     }
 
     ref.changeDetectorRef.detectChanges();

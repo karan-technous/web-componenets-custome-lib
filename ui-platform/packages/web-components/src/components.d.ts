@@ -6,9 +6,11 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { BadgeColor, BadgeShape, BadgeSize, BadgeVariant, BreadcrumbEventDetail, BreadcrumbSeparator, ButtonEventDetail, ButtonGroupEventDetail, ButtonGroupOrientation, ButtonGroupSize, ButtonGroupVariant, ButtonRounded, ButtonSize, ButtonVariant, IconName, ToastLifecycleDetail, ToastPromiseOptions, ToastShowOptions } from "@karan9186/core";
+import { DatePickerParser } from "./components/ui-date-picker/ui-date-picker";
 import { IconName as IconName1 } from "./components/icons/icon.registry";
 import { PanelRounded, PanelSize, PanelVariant } from "./components/ui-panel/ui-panel";
 export { BadgeColor, BadgeShape, BadgeSize, BadgeVariant, BreadcrumbEventDetail, BreadcrumbSeparator, ButtonEventDetail, ButtonGroupEventDetail, ButtonGroupOrientation, ButtonGroupSize, ButtonGroupVariant, ButtonRounded, ButtonSize, ButtonVariant, IconName, ToastLifecycleDetail, ToastPromiseOptions, ToastShowOptions } from "@karan9186/core";
+export { DatePickerParser } from "./components/ui-date-picker/ui-date-picker";
 export { IconName as IconName1 } from "./components/icons/icon.registry";
 export { PanelRounded, PanelSize, PanelVariant } from "./components/ui-panel/ui-panel";
 export namespace Components {
@@ -239,6 +241,59 @@ export namespace Components {
          */
         "size": 'sm' | 'md' | 'lg';
     }
+    interface UiDatePicker {
+        "customParsers"?: DatePickerParser[];
+        /**
+          * @default 220
+         */
+        "debounce": number;
+        /**
+          * @default false
+         */
+        "defaultOpen": boolean;
+        "defaultValue"?: Date | DateRangeValue | null;
+        /**
+          * @default false
+         */
+        "disabled": boolean;
+        "icon"?: string | HTMLElement;
+        /**
+          * @default false
+         */
+        "iconOnly": boolean;
+        /**
+          * @default false
+         */
+        "loading": boolean;
+        "maxDate"?: Date;
+        "minDate"?: Date;
+        /**
+          * @default 'single'
+         */
+        "mode": DatePickerMode;
+        "open"?: boolean;
+        /**
+          * @default 'Enter date (e.g. 1 Jan 2020)'
+         */
+        "placeholder": string;
+        /**
+          * @default false
+         */
+        "readonly": boolean;
+        /**
+          * @default false
+         */
+        "search": boolean;
+        /**
+          * @default false
+         */
+        "showActions": boolean;
+        /**
+          * @default true
+         */
+        "showIcon": boolean;
+        "value"?: Date | DateRangeValue | null;
+    }
     interface UiIcon {
         /**
           * @default 'currentColor'
@@ -377,6 +432,10 @@ export interface UiCheckboxCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLUiCheckboxElement;
 }
+export interface UiDatePickerCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLUiDatePickerElement;
+}
 export interface UiInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLUiInputElement;
@@ -505,6 +564,30 @@ declare global {
         prototype: HTMLUiCheckboxElement;
         new (): HTMLUiCheckboxElement;
     };
+    interface HTMLUiDatePickerElementEventMap {
+        "onChange": Date | DateRangeValue;
+        "onApply": Date | DateRangeValue;
+        "onCancel": void;
+        "onInputChange": string;
+        "onOpenChange": boolean;
+        "onInvalidInput": string;
+        "onFocus": void;
+        "onBlur": void;
+    }
+    interface HTMLUiDatePickerElement extends Components.UiDatePicker, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLUiDatePickerElementEventMap>(type: K, listener: (this: HTMLUiDatePickerElement, ev: UiDatePickerCustomEvent<HTMLUiDatePickerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLUiDatePickerElementEventMap>(type: K, listener: (this: HTMLUiDatePickerElement, ev: UiDatePickerCustomEvent<HTMLUiDatePickerElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLUiDatePickerElement: {
+        prototype: HTMLUiDatePickerElement;
+        new (): HTMLUiDatePickerElement;
+    };
     interface HTMLUiIconElement extends Components.UiIcon, HTMLStencilElement {
     }
     var HTMLUiIconElement: {
@@ -590,6 +673,7 @@ declare global {
         "ui-button": HTMLUiButtonElement;
         "ui-button-group": HTMLUiButtonGroupElement;
         "ui-checkbox": HTMLUiCheckboxElement;
+        "ui-date-picker": HTMLUiDatePickerElement;
         "ui-icon": HTMLUiIconElement;
         "ui-input": HTMLUiInputElement;
         "ui-panel": HTMLUiPanelElement;
@@ -861,6 +945,67 @@ declare namespace LocalJSX {
          */
         "size"?: 'sm' | 'md' | 'lg';
     }
+    interface UiDatePicker {
+        "customParsers"?: DatePickerParser[];
+        /**
+          * @default 220
+         */
+        "debounce"?: number;
+        /**
+          * @default false
+         */
+        "defaultOpen"?: boolean;
+        "defaultValue"?: Date | DateRangeValue | null;
+        /**
+          * @default false
+         */
+        "disabled"?: boolean;
+        "icon"?: string | HTMLElement;
+        /**
+          * @default false
+         */
+        "iconOnly"?: boolean;
+        /**
+          * @default false
+         */
+        "loading"?: boolean;
+        "maxDate"?: Date;
+        "minDate"?: Date;
+        /**
+          * @default 'single'
+         */
+        "mode"?: DatePickerMode;
+        "onOnApply"?: (event: UiDatePickerCustomEvent<Date | DateRangeValue>) => void;
+        "onOnBlur"?: (event: UiDatePickerCustomEvent<void>) => void;
+        "onOnCancel"?: (event: UiDatePickerCustomEvent<void>) => void;
+        "onOnChange"?: (event: UiDatePickerCustomEvent<Date | DateRangeValue>) => void;
+        "onOnFocus"?: (event: UiDatePickerCustomEvent<void>) => void;
+        "onOnInputChange"?: (event: UiDatePickerCustomEvent<string>) => void;
+        "onOnInvalidInput"?: (event: UiDatePickerCustomEvent<string>) => void;
+        "onOnOpenChange"?: (event: UiDatePickerCustomEvent<boolean>) => void;
+        "open"?: boolean;
+        /**
+          * @default 'Enter date (e.g. 1 Jan 2020)'
+         */
+        "placeholder"?: string;
+        /**
+          * @default false
+         */
+        "readonly"?: boolean;
+        /**
+          * @default false
+         */
+        "search"?: boolean;
+        /**
+          * @default false
+         */
+        "showActions"?: boolean;
+        /**
+          * @default true
+         */
+        "showIcon"?: boolean;
+        "value"?: Date | DateRangeValue | null;
+    }
     interface UiIcon {
         /**
           * @default 'currentColor'
@@ -1030,6 +1175,21 @@ declare namespace LocalJSX {
         "size": 'sm' | 'md' | 'lg';
         "label": string;
     }
+    interface UiDatePickerAttributes {
+        "mode": DatePickerMode;
+        "placeholder": string;
+        "disabled": boolean;
+        "loading": boolean;
+        "readonly": boolean;
+        "open": boolean;
+        "defaultOpen": boolean;
+        "showIcon": boolean;
+        "iconOnly": boolean;
+        "showActions": boolean;
+        "search": boolean;
+        "icon": string | HTMLElement;
+        "debounce": number;
+    }
     interface UiIconAttributes {
         "name": IconName;
         "size": 'sm' | 'md' | 'lg';
@@ -1073,6 +1233,7 @@ declare namespace LocalJSX {
         "ui-button": Omit<UiButton, keyof UiButtonAttributes> & { [K in keyof UiButton & keyof UiButtonAttributes]?: UiButton[K] } & { [K in keyof UiButton & keyof UiButtonAttributes as `attr:${K}`]?: UiButtonAttributes[K] } & { [K in keyof UiButton & keyof UiButtonAttributes as `prop:${K}`]?: UiButton[K] };
         "ui-button-group": Omit<UiButtonGroup, keyof UiButtonGroupAttributes> & { [K in keyof UiButtonGroup & keyof UiButtonGroupAttributes]?: UiButtonGroup[K] } & { [K in keyof UiButtonGroup & keyof UiButtonGroupAttributes as `attr:${K}`]?: UiButtonGroupAttributes[K] } & { [K in keyof UiButtonGroup & keyof UiButtonGroupAttributes as `prop:${K}`]?: UiButtonGroup[K] };
         "ui-checkbox": Omit<UiCheckbox, keyof UiCheckboxAttributes> & { [K in keyof UiCheckbox & keyof UiCheckboxAttributes]?: UiCheckbox[K] } & { [K in keyof UiCheckbox & keyof UiCheckboxAttributes as `attr:${K}`]?: UiCheckboxAttributes[K] } & { [K in keyof UiCheckbox & keyof UiCheckboxAttributes as `prop:${K}`]?: UiCheckbox[K] };
+        "ui-date-picker": Omit<UiDatePicker, keyof UiDatePickerAttributes> & { [K in keyof UiDatePicker & keyof UiDatePickerAttributes]?: UiDatePicker[K] } & { [K in keyof UiDatePicker & keyof UiDatePickerAttributes as `attr:${K}`]?: UiDatePickerAttributes[K] } & { [K in keyof UiDatePicker & keyof UiDatePickerAttributes as `prop:${K}`]?: UiDatePicker[K] };
         "ui-icon": Omit<UiIcon, keyof UiIconAttributes> & { [K in keyof UiIcon & keyof UiIconAttributes]?: UiIcon[K] } & { [K in keyof UiIcon & keyof UiIconAttributes as `attr:${K}`]?: UiIconAttributes[K] } & { [K in keyof UiIcon & keyof UiIconAttributes as `prop:${K}`]?: UiIcon[K] } & OneOf<"name", UiIcon["name"], UiIconAttributes["name"]>;
         "ui-input": Omit<UiInput, keyof UiInputAttributes> & { [K in keyof UiInput & keyof UiInputAttributes]?: UiInput[K] } & { [K in keyof UiInput & keyof UiInputAttributes as `attr:${K}`]?: UiInputAttributes[K] } & { [K in keyof UiInput & keyof UiInputAttributes as `prop:${K}`]?: UiInput[K] };
         "ui-panel": Omit<UiPanel, keyof UiPanelAttributes> & { [K in keyof UiPanel & keyof UiPanelAttributes]?: UiPanel[K] } & { [K in keyof UiPanel & keyof UiPanelAttributes as `attr:${K}`]?: UiPanelAttributes[K] } & { [K in keyof UiPanel & keyof UiPanelAttributes as `prop:${K}`]?: UiPanel[K] };
@@ -1110,6 +1271,7 @@ declare module "@stencil/core" {
              */
             "ui-button-group": LocalJSX.IntrinsicElements["ui-button-group"] & JSXBase.HTMLAttributes<HTMLUiButtonGroupElement>;
             "ui-checkbox": LocalJSX.IntrinsicElements["ui-checkbox"] & JSXBase.HTMLAttributes<HTMLUiCheckboxElement>;
+            "ui-date-picker": LocalJSX.IntrinsicElements["ui-date-picker"] & JSXBase.HTMLAttributes<HTMLUiDatePickerElement>;
             "ui-icon": LocalJSX.IntrinsicElements["ui-icon"] & JSXBase.HTMLAttributes<HTMLUiIconElement>;
             "ui-input": LocalJSX.IntrinsicElements["ui-input"] & JSXBase.HTMLAttributes<HTMLUiInputElement>;
             "ui-panel": LocalJSX.IntrinsicElements["ui-panel"] & JSXBase.HTMLAttributes<HTMLUiPanelElement>;

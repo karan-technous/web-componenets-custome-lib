@@ -1,0 +1,339 @@
+:host {
+  display: inline-block;
+  width: 100%;
+  max-width: 236px;
+  color: var(--ui-text);
+}
+
+.root {
+  position: relative;
+  width: 100%;
+}
+
+.trigger {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border: 1px solid var(--ui-border);
+  border-radius: var(--ui-border-radius);
+  background: var(--ui-bg);
+  transition: border-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+.input {
+  flex: 1;
+  border: 0;
+  background: transparent;
+  color: var(--ui-text);
+  padding: 6px 9px;
+  outline: none;
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.input::placeholder {
+  color: var(--ui-text-muted);
+}
+
+.icon-button {
+  border: 0;
+  background: transparent;
+  color: var(--ui-text-muted);
+  min-width: 30px;
+  min-height: 30px;
+  cursor: pointer;
+  transition: color 0.16s ease, background-color 0.16s ease;
+  border-radius: 0 var(--ui-border-radius) var(--ui-border-radius) 0;
+}
+
+.icon-button:hover {
+  color: var(--ui-text);
+}
+
+.icon-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.trigger:hover {
+  border-color: var(--ui-border-hover);
+}
+
+.root--open .trigger {
+  border-color: var(--ui-primary);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--ui-primary) 20%, transparent);
+}
+
+.root--error .trigger {
+  border-color: var(--ui-destructive);
+}
+
+.root--disabled .trigger {
+  opacity: 0.62;
+}
+
+.popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 1000;
+  width: max-content;
+  min-width: 236px;
+  max-width: 236px;
+  border: 1px solid var(--ui-border);
+  border-radius: var(--ui-border-radius);
+  box-shadow: var(--ui-shadow);
+  background: var(--ui-bg);
+  padding: 8px;
+  box-sizing: border-box;
+  transform-origin: top left;
+  overflow: hidden;
+  animation: popIn 0.2s ease;
+}
+
+.search-wrap {
+  margin-bottom: 8px;
+}
+
+.search-input {
+  width: 100%;
+  min-height: 30px;
+  border: 1px solid var(--ui-border);
+  border-radius: var(--ui-border-radius);
+  background: var(--ui-bg);
+  color: var(--ui-text);
+  padding: 0 8px;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  font-size: 12px;
+}
+
+.search-input::placeholder {
+  color: var(--ui-text-muted);
+}
+
+.search-input--error {
+  border-color: var(--ui-destructive);
+}
+
+.search-input:focus {
+  border-color: var(--ui-primary);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--ui-primary) 16%, transparent);
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.month-label {
+  color: var(--ui-text);
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1;
+  text-align: center;
+}
+
+.nav-btn {
+  width: 24px;
+  height: 24px;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ui-text);
+  cursor: pointer;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.nav-btn:hover {
+  border-color: var(--ui-border);
+  background: var(--ui-bg-hover);
+}
+
+.nav-btn:focus-visible {
+  outline: none;
+  border-color: var(--ui-primary);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--ui-primary) 16%, transparent);
+}
+
+.calendar-body {
+  animation-duration: 0.16s;
+  animation-timing-function: ease;
+}
+
+.calendar-body--left {
+  animation-name: slideLeft;
+}
+
+.calendar-body--right {
+  animation-name: slideRight;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  align-items: center;
+}
+
+.weekday {
+  color: var(--ui-text-muted);
+  text-align: center;
+  font-size: 11px;
+  padding: 2px 0;
+  font-weight: 500;
+}
+
+.day {
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--ui-text);
+  border-radius: var(--ui-border-radius);
+  min-height: 28px;
+  min-width: 28px;
+  cursor: pointer;
+  transition: background-color 0.16s ease, border-color 0.16s ease, color 0.16s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  font-size: 12px;
+}
+
+.day:hover {
+  border-color: var(--ui-border-hover);
+  background: var(--ui-bg-hover);
+}
+
+.day--today {
+  border-color: var(--ui-border-hover);
+}
+
+.day--selected {
+  background: var(--ui-primary);
+  border-color: var(--ui-primary);
+  color: var(--ui-primary-foreground);
+}
+
+.day--in-range {
+  background: color-mix(in srgb, var(--ui-primary) 16%, transparent);
+}
+
+.day--focused {
+  border-color: var(--ui-primary);
+}
+
+.day--disabled {
+  color: var(--ui-text-muted);
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.day--out {
+  color: var(--ui-text-muted);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding-top: 8px;
+  margin-top: 6px;
+  border-top: 1px solid var(--ui-border);
+}
+
+.action-btn {
+  min-height: 28px;
+  border-radius: var(--ui-border-radius);
+  border: 1px solid var(--ui-border);
+  background: var(--ui-bg);
+  color: var(--ui-text);
+  padding: 4px 10px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 12px;
+  transition: background-color 0.16s ease, border-color 0.16s ease, color 0.16s ease;
+}
+
+.action-btn:hover {
+  border-color: var(--ui-border-hover);
+  background: var(--ui-bg-hover);
+}
+
+.action-btn--primary {
+  border-color: var(--ui-primary);
+  background: var(--ui-primary);
+  color: var(--ui-primary-foreground);
+}
+
+.action-btn--primary:hover {
+  border-color: var(--ui-primary-hover);
+  background: var(--ui-primary-hover);
+}
+
+.root--icon-only .trigger {
+  width: fit-content;
+  border: 1px solid var(--ui-border);
+  background: var(--ui-bg);
+}
+
+.root--icon-only .icon-button {
+  border-radius: var(--ui-border-radius);
+}
+
+.root--icon-only .popover {
+  min-width: 236px;
+  max-width: 236px;
+}
+
+.root--shake .trigger {
+  animation: shakeX 0.22s linear;
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideRight {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes shakeX {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  50% { transform: translateX(4px); }
+  75% { transform: translateX(-3px); }
+  100% { transform: translateX(0); }
+}

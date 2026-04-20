@@ -8,7 +8,7 @@ import {
 import * as ReactWrappers from "@karan9186/react";
 import "./theme.css";
 
-type StoryProps = Record<string, string | boolean>;
+type StoryProps = Record<string, unknown>;
 
 type StoryPayload = {
   framework: "angular" | "react" | "wc";
@@ -256,6 +256,17 @@ function renderDynamicComponent(payload: StoryPayload): ReactElement {
     }
   }
 
+  if (payload.component === "date-picker") {
+    const parserPreset = String((props as any).parserPreset ?? "none");
+    if (parserPreset === "todayNextWeek") {
+      props.customParsers = [
+        { regex: /today/i, parse: () => new Date() },
+        { regex: /next week/i, parse: () => new Date(Date.now() + 7 * 86400000) },
+      ];
+    }
+    delete (props as any).parserPreset;
+  }
+
   // Handle slots for Panel component
   if (payload.component === "panel" && payload.slots) {
     const slotElements: ReactElement[] = [];
@@ -295,7 +306,6 @@ function renderDynamicComponent(payload: StoryPayload): ReactElement {
           padding: 24,
           display: "flex",
           justifyContent: "center",
-          background: "var(--ui-bg-subtle, var(--ui-bg))",
           boxSizing: "border-box",
         },
       },
@@ -307,7 +317,23 @@ function renderDynamicComponent(payload: StoryPayload): ReactElement {
     );
   }
 
-  return createElement(Wrapper, { ...props, key: renderKey }, children);
+  const rendered = createElement(Wrapper, { ...props, key: renderKey }, children);
+  if (payload.component !== "date-picker") {
+    return rendered;
+  }
+
+  return createElement(
+    "div",
+    {
+      style: {
+        padding: 24,
+        maxWidth: 400,
+        width: "100%",
+        boxSizing: "border-box",
+      },
+    },
+    rendered,
+  );
 }
 
 export default function App() {

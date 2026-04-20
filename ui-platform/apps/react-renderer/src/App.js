@@ -199,6 +199,16 @@ function renderDynamicComponent(payload) {
             props.onChange = () => { };
         }
     }
+    if (payload.component === "date-picker") {
+        const parserPreset = String(props.parserPreset ?? "none");
+        if (parserPreset === "todayNextWeek") {
+            props.customParsers = [
+                { regex: /today/i, parse: () => new Date() },
+                { regex: /next week/i, parse: () => new Date(Date.now() + 7 * 86400000) },
+            ];
+        }
+        delete props.parserPreset;
+    }
     // Handle slots for Panel component
     if (payload.component === "panel" && payload.slots) {
         const slotElements = [];
@@ -231,7 +241,6 @@ function renderDynamicComponent(payload) {
                 padding: 24,
                 display: "flex",
                 justifyContent: "center",
-                background: "var(--ui-bg-subtle, var(--ui-bg))",
                 boxSizing: "border-box",
             },
         }, createElement("ui-panel", {
@@ -240,7 +249,18 @@ function renderDynamicComponent(payload) {
             style: { width: "100%", maxWidth: "600px", display: "block" },
         }, slotElements));
     }
-    return createElement(Wrapper, { ...props, key: renderKey }, children);
+    const rendered = createElement(Wrapper, { ...props, key: renderKey }, children);
+    if (payload.component !== "date-picker") {
+        return rendered;
+    }
+    return createElement("div", {
+        style: {
+            padding: 24,
+            maxWidth: 400,
+            width: "100%",
+            boxSizing: "border-box",
+        },
+    }, rendered);
 }
 export default function App() {
     const [payload, setPayload] = useState(parsePayloadFromUrl());

@@ -16,5 +16,6 @@ export { UiPanelHeaderDirective } from './lib/panel/panel-header.directive';
 export { UiPanelFooterDirective } from './lib/panel/panel-footer.directive';
 export { UiPanelActionsDirective } from './lib/panel/panel-actions.directive';
 export type { PanelVariant, PanelSize, PanelRounded } from './lib/panel/panel.component';
+export { UiDatePickerComponent, UiDatePickerDirective } from './lib/date-picker/date-picker.component';
 // Re-export IconName for autocomplete when using iconLeft/iconRight props
 export type { IconName } from '@karan9186/core';
