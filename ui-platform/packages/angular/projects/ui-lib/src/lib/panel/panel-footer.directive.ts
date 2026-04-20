@@ -1,7 +1,7 @@
 import { Directive } from '@angular/core';
 
 @Directive({
-  selector: '[uiPanelFooter]',
+  selector: '[uiPanelFooter],[panel-footer]',
   host: {
     slot: 'footer',
   },

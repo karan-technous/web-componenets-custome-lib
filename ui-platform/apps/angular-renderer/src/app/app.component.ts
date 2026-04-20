@@ -353,6 +353,16 @@ export class AppComponent implements OnInit, OnDestroy {
       setDisabledState?: (disabled: boolean) => void;
     };
 
+    if (payload.component === "panel") {
+      const hostElement = ref.location.nativeElement as HTMLElement;
+      hostElement.style.display = "block";
+      hostElement.style.width = "100%";
+      hostElement.style.maxWidth = "600px";
+      hostElement.style.margin = "24px auto";
+      hostElement.style.background = "var(--ui-bg-subtle, var(--ui-bg))";
+      hostElement.style.boxSizing = "border-box";
+    }
+
     if (typeof instance.writeValue === "function") {
       if ("value" in payload.props) {
         instance.writeValue(payload.props.value);

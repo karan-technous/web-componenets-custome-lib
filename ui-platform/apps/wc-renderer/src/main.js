@@ -37,6 +37,7 @@ function applyProps(el, props) {
 }
 function renderComponent(payload) {
     controls.innerHTML = "";
+    controls.style.width = "100%";
     // Special handling for toast - show a button that triggers the toast
     if (payload.component === "toast") {
         const button = document.createElement("ui-button");
@@ -136,11 +137,50 @@ function renderComponent(payload) {
             }
         }
     }
+    else if (payload.component === "panel" && payload.slots) {
+        // Handle slots for Panel component
+        if (payload.slots.header) {
+            const headerDiv = document.createElement("div");
+            headerDiv.innerHTML = payload.slots.header;
+            headerDiv.setAttribute("slot", "header");
+            el.appendChild(headerDiv);
+        }
+        if (payload.slots.actions) {
+            const actionsDiv = document.createElement("div");
+            actionsDiv.innerHTML = payload.slots.actions;
+            actionsDiv.setAttribute("slot", "actions");
+            el.appendChild(actionsDiv);
+        }
+        if (payload.slots.default) {
+            const defaultDiv = document.createElement("div");
+            defaultDiv.innerHTML = payload.slots.default;
+            el.appendChild(defaultDiv);
+        }
+        if (payload.slots.footer) {
+            const footerDiv = document.createElement("div");
+            footerDiv.innerHTML = payload.slots.footer;
+            footerDiv.setAttribute("slot", "footer");
+            el.appendChild(footerDiv);
+        }
+    }
     else if (textProp && typeof props[textProp] !== "undefined") {
         el.textContent = String(props[textProp]);
         delete props[textProp];
     }
     applyProps(el, props);
+    if (payload.component === "panel") {
+        const panelHost = document.createElement("div");
+        panelHost.style.width = "100%";
+        panelHost.style.padding = "24px";
+        panelHost.style.display = "flex";
+        panelHost.style.justifyContent = "center";
+        panelHost.style.background = "var(--ui-bg-subtle, var(--ui-bg))";
+        panelHost.style.boxSizing = "border-box";
+        el.setAttribute("style", "display:block;width:100%;max-width:600px;");
+        panelHost.appendChild(el);
+        controls.appendChild(panelHost);
+        return;
+    }
     controls.appendChild(el);
 }
 function applyAppearance(appearance) {
@@ -158,11 +198,13 @@ function parseInitialPayload() {
     const story = params.get("story") ?? "Primary";
     const appearance = params.get("appearance") === "light" ? "light" : "dark";
     const renderersRaw = params.get("renderers");
+    const slotsRaw = params.get("slots");
     let props = {
         label: "Click Me",
         variant: "primary",
         disabled: false,
     };
+    let slots;
     let renderers;
     try {
         const raw = params.get("props");
@@ -172,6 +214,14 @@ function parseInitialPayload() {
     }
     catch {
         props = { label: "Click Me", variant: "primary", disabled: false };
+    }
+    try {
+        if (slotsRaw) {
+            slots = JSON.parse(slotsRaw);
+        }
+    }
+    catch {
+        slots = undefined;
     }
     try {
         if (renderersRaw) {
@@ -186,6 +236,7 @@ function parseInitialPayload() {
         component,
         story,
         props,
+        slots,
         appearance,
         renderers,
     };

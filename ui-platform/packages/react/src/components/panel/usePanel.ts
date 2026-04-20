@@ -1,6 +1,8 @@
 import { useState, useCallback } from 'react';
 
 export interface UsePanelOptions {
+  /** Controlled expanded state */
+  expanded?: boolean;
   /** Initial expanded state */
   defaultExpanded?: boolean;
   /** Callback when expanded state changes */
@@ -19,26 +21,32 @@ export interface UsePanelReturn {
 }
 
 export function usePanel(options: UsePanelOptions = {}): UsePanelReturn {
-  const { defaultExpanded = true, onToggle } = options;
-  const [expanded, setExpanded] = useState(defaultExpanded);
+  const { expanded: controlledExpanded, defaultExpanded = true, onToggle } = options;
+  const [internalExpanded, setInternalExpanded] = useState(defaultExpanded);
+  const isControlled = typeof controlledExpanded === 'boolean';
+  const expanded = isControlled ? controlledExpanded : internalExpanded;
+
+  const setExpanded = useCallback(
+    (next: boolean) => {
+      if (!isControlled) {
+        setInternalExpanded(next);
+      }
+      onToggle?.(next);
+    },
+    [isControlled, onToggle],
+  );
 
   const toggle = useCallback(() => {
-    setExpanded((prev) => {
-      const next = !prev;
-      onToggle?.(next);
-      return next;
-    });
-  }, [onToggle]);
+    setExpanded(!expanded);
+  }, [expanded, setExpanded]);
 
   const expand = useCallback(() => {
     setExpanded(true);
-    onToggle?.(true);
-  }, [onToggle]);
+  }, [setExpanded]);
 
   const collapse = useCallback(() => {
     setExpanded(false);
-    onToggle?.(false);
-  }, [onToggle]);
+  }, [setExpanded]);
 
   return {
     expanded,

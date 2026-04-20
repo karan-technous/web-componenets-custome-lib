@@ -1,7 +1,7 @@
 import { Directive } from '@angular/core';
 
 @Directive({
-  selector: '[uiPanelActions]',
+  selector: '[uiPanelActions],[panel-actions]',
   host: {
     slot: 'actions',
   },

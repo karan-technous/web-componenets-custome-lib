@@ -1,13 +1,16 @@
-import React, { forwardRef, useEffect, useRef, useImperativeHandle } from 'react';
+import React, { forwardRef, useEffect, useRef } from 'react';
 
 export type PanelVariant = 'default' | 'outlined' | 'elevated';
 export type PanelSize = 'sm' | 'md' | 'lg';
+export type PanelRounded = 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'full';
 
 export interface UiPanelProps {
   /** Visual variant of the panel */
   variant?: PanelVariant;
   /** Size of the panel */
   size?: PanelSize;
+  /** Border radius scale */
+  rounded?: PanelRounded;
   /** Whether the panel is collapsible */
   collapsible?: boolean;
   /** Expanded state (controlled) */
@@ -19,6 +22,8 @@ export interface UiPanelProps {
   /** Whether the panel is disabled */
   disabled?: boolean;
   /** Callback when panel is expanded/collapsed */
+  onToggle?: (expanded: boolean) => void;
+  /** @deprecated Use onToggle */
   onUiToggle?: (detail: { expanded: boolean }) => void;
   /** Header content */
   header?: React.ReactNode;
@@ -34,13 +39,22 @@ export interface UiPanelProps {
   [key: `data-${string}`]: string | number | boolean | undefined;
 }
 
-export interface UiPanelRef {
-  element: HTMLElement | null;
-  toggle: () => void;
-  expand: () => void;
-  collapse: () => void;
-  isExpanded: () => boolean;
-}
+export type UiPanelRef = HTMLUiPanelElement;
+
+type HTMLUiPanelElement = HTMLElement & {
+  variant?: PanelVariant;
+  size?: PanelSize;
+  rounded?: PanelRounded;
+  collapsible?: boolean;
+  expanded?: boolean;
+  loading?: boolean;
+  disabled?: boolean;
+  stickyHeader?: boolean;
+  lazy?: boolean;
+  toggle?: () => void;
+  expand?: () => void;
+  collapse?: () => void;
+};
 
 declare global {
   namespace JSX {
@@ -55,11 +69,13 @@ export const Panel = forwardRef<UiPanelRef, UiPanelProps>(
     {
       variant = 'default',
       size = 'md',
+      rounded = 'md',
       collapsible = false,
-      defaultExpanded = true,
       expanded,
+      defaultExpanded = true,
       loading = false,
       disabled = false,
+      onToggle,
       onUiToggle,
       header,
       actions,
@@ -70,86 +86,93 @@ export const Panel = forwardRef<UiPanelRef, UiPanelProps>(
     },
     ref,
   ) => {
-    console.log("Panel wrapper: Props received", { variant, size, collapsible, expanded, loading, disabled, hasHeader: !!header, hasActions: !!actions, hasFooter: !!footer, hasChildren: !!children });
-    
-    const innerRef = useRef<HTMLElement>(null);
+    const innerRef = useRef<UiPanelRef>(null);
+    const initializedDefaultExpandedRef = useRef(false);
 
-    // Determine if component is controlled
-    const isControlled = expanded !== undefined;
-
-    // Expose imperative handle
-    useImperativeHandle(ref, () => ({
-      element: innerRef.current,
-      toggle: () => (innerRef.current as any)?.toggle?.(),
-      expand: () => (innerRef.current as any)?.expand?.(),
-      collapse: () => (innerRef.current as any)?.collapse?.(),
-      isExpanded: () => (innerRef.current as any)?.expanded ?? true,
-    }));
-
-    // Sync props to web component
-    useEffect(() => {
-      const el = innerRef.current as any;
-      if (!el) return;
-
-      el.variant = variant;
-      el.size = size;
-      el.collapsible = collapsible;
-
-      if (isControlled) {
-        el.expanded = expanded;
-      } else {
-        el.expanded = defaultExpanded;
-      }
-
-      el.loading = loading;
-      el.disabled = disabled;
-    }, [variant, size, collapsible, expanded, defaultExpanded, loading, disabled, isControlled]);
-
-    // Event listeners
     useEffect(() => {
       const el = innerRef.current;
       if (!el) return;
 
-      const handleUiToggle = (event: CustomEvent) => {
-        onUiToggle?.(event.detail);
+      el.variant = variant;
+      el.size = size;
+      el.rounded = rounded;
+      el.collapsible = collapsible;
+      if (typeof expanded === 'boolean') el.expanded = expanded;
+      el.loading = loading;
+      el.disabled = disabled;
+    }, [variant, size, rounded, collapsible, expanded, loading, disabled]);
+
+    useEffect(() => {
+      const el = innerRef.current;
+      if (!el || typeof expanded === 'boolean' || initializedDefaultExpandedRef.current) {
+        return;
+      }
+      el.expanded = defaultExpanded;
+      initializedDefaultExpandedRef.current = true;
+    }, [expanded, defaultExpanded]);
+
+    useEffect(() => {
+      const el = innerRef.current;
+      if (!el) return;
+
+      const handleToggle = (event: Event) => {
+        const next = (event as CustomEvent<boolean>).detail;
+        onToggle?.(next);
       };
 
-      el.addEventListener('uiToggle', handleUiToggle);
+      const handleLegacyToggle = (event: Event) => {
+        onUiToggle?.((event as CustomEvent<{ expanded: boolean }>).detail);
+      };
+
+      el.addEventListener('toggle', handleToggle as EventListener);
+      el.addEventListener('uiToggle', handleLegacyToggle as EventListener);
 
       return () => {
-        el.removeEventListener('uiToggle', handleUiToggle);
+        el.removeEventListener('toggle', handleToggle as EventListener);
+        el.removeEventListener('uiToggle', handleLegacyToggle as EventListener);
       };
-    }, [onUiToggle]);
+    }, [onToggle, onUiToggle]);
+
+    const assignRef = (node: UiPanelRef | null) => {
+      innerRef.current = node;
+      if (!ref) return;
+      if (typeof ref === 'function') {
+        ref(node);
+      } else {
+        ref.current = node;
+      }
+    };
+    const isControlled = typeof expanded === 'boolean';
 
     return React.createElement(
       'ui-panel',
       {
-        ref: innerRef,
+        ref: assignRef,
         class: className,
         variant,
         size,
+        rounded,
         collapsible,
-        expanded: isControlled ? expanded : undefined,
-        defaultExpanded: isControlled ? undefined : defaultExpanded,
+        expanded,
+        'data-controlled': isControlled ? 'true' : undefined,
         loading,
         disabled,
-        'data-controlled': isControlled,
         ...rest,
       },
-      header && React.createElement('div', { 
+      header && React.createElement('div', {
         slot: 'header',
-        dangerouslySetInnerHTML: typeof header === 'string' ? { __html: header } : undefined 
+        dangerouslySetInnerHTML: typeof header === 'string' ? { __html: header } : undefined,
       }, typeof header !== 'string' ? header : undefined),
-      actions && React.createElement('div', { 
+      actions && React.createElement('div', {
         slot: 'actions',
-        dangerouslySetInnerHTML: typeof actions === 'string' ? { __html: actions } : undefined 
+        dangerouslySetInnerHTML: typeof actions === 'string' ? { __html: actions } : undefined,
       }, typeof actions !== 'string' ? actions : undefined),
-      typeof children === 'string' 
+      typeof children === 'string'
         ? React.createElement('div', { dangerouslySetInnerHTML: { __html: children } })
         : children,
-      footer && React.createElement('div', { 
+      footer && React.createElement('div', {
         slot: 'footer',
-        dangerouslySetInnerHTML: typeof footer === 'string' ? { __html: footer } : undefined 
+        dangerouslySetInnerHTML: typeof footer === 'string' ? { __html: footer } : undefined,
       }, typeof footer !== 'string' ? footer : undefined),
     );
   },

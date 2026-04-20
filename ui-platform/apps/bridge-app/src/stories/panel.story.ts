@@ -22,6 +22,12 @@ const panelStory: StoryDefinition = {
       default: "md",
       description: "Size of the panel",
     },
+    rounded: {
+      type: "select",
+      options: ["none", "xs", "sm", "md", "lg", "xl", "full"],
+      default: "md",
+      description: "Border radius scale of panel corners",
+    },
     collapsible: {
       type: "boolean",
       default: false,
@@ -31,11 +37,6 @@ const panelStory: StoryDefinition = {
       type: "boolean",
       default: true,
       description: "Expanded state (controlled)",
-    },
-    defaultExpanded: {
-      type: "boolean",
-      default: true,
-      description: "Default expanded state (uncontrolled)",
     },
     loading: {
       type: "boolean",
@@ -53,40 +54,11 @@ const panelStory: StoryDefinition = {
       props: {
         variant: "default",
         size: "md",
+        rounded: "md",
       },
       slots: {
-        header: `<div style="font-weight: 600;">Panel Title</div>`,
-        default: `<div style="padding: 8px 0; color: var(--ui-text-muted);">This is a sample panel content. You can place any UI here such as text, forms, tables, or other components.</div>`,
-        footer: `<div style="display: flex; justify-content: flex-end; gap: 8px;"><ui-button>Cancel</ui-button><ui-button>Save</ui-button></div>`,
-      },
-    },
-    WithHeader: {
-      props: {
-        variant: "default",
-      },
-      slots: {
-        header: `<div style="font-weight: 600;">Panel with Header</div>`,
-        default: `<div style="padding: 8px 0; color: var(--ui-text-muted);">This panel has a header section. The content should be visible with this text.</div>`,
-      },
-    },
-    WithHeaderAndFooter: {
-      props: {
-        variant: "default",
-      },
-      slots: {
-        header: `<div style="font-weight: 600;">Panel with Header and Footer</div>`,
-        default: `<div style="padding: 8px 0; color: var(--ui-text-muted);">This panel has both a header and footer section. The panel should be visible with this content.</div>`,
-        footer: `<div style="display: flex; justify-content: flex-end; gap: 8px;"><button>Cancel</button><button style="background: var(--ui-primary); color: #fff;">Save</button></div>`,
-      },
-    },
-    WithActions: {
-      props: {
-        variant: "default",
-      },
-      slots: {
-        header: `<div style="font-weight: 600;">Panel with Actions</div>`,
-        actions: `<button>⋯</button>`,
-        default: `<div style="padding: 8px 0; color: var(--ui-text-muted);">This panel has action buttons in the header. The panel should be visible with this text.</div>`,
+        header: `<div style="font-weight: 600;">Header</div>`,
+        default: `<div style="color: var(--ui-text-muted);">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</div>`,
       },
     },
     Collapsible: {
@@ -96,18 +68,19 @@ const panelStory: StoryDefinition = {
       },
       slots: {
         header: `<div style="font-weight: 600;">Collapsible Panel</div>`,
-        default: `<div style="padding: 8px 0; color: var(--ui-text-muted);">Click the header to collapse or expand this panel. The panel should be visible with this text content.</div>`,
+        default: `<div style="line-height: 1.6; color: var(--ui-text-muted);">Click the header to expand or collapse this panel.</div>`,
       },
     },
-    CollapsibleDefaultCollapsed: {
+    Controlled: {
       props: {
         collapsible: true,
-        defaultExpanded: false,
-        variant: "default",
+        expanded: true,
+        variant: "outlined",
       },
       slots: {
-        header: `<div style="font-weight: 600;">Collapsed by Default</div>`,
-        default: `<div style="padding: 8px 0; color: var(--ui-text-muted);">This panel starts in a collapsed state. Click the header to expand it and see this content.</div>`,
+        header: `<div style="font-weight: 600;">Controlled Panel</div>`,
+        actions: `<span style="font-size: 12px; color: var(--ui-text-muted);">controlled</span>`,
+        default: `<div style="line-height: 1.6; color: var(--ui-text-muted);">This panel is controlled externally via <code>expanded</code>.</div>`,
       },
     },
     Loading: {
@@ -117,79 +90,102 @@ const panelStory: StoryDefinition = {
       },
       slots: {
         header: `<div style="font-weight: 600;">Loading Panel</div>`,
-        default: `<div style="padding: 8px 0; color: var(--ui-text-muted);">This panel is in a loading state with an overlay. The content should be visible underneath the loading spinner.</div>`,
+        default: `<div style="line-height: 1.6; color: var(--ui-text-muted);">Content is loading...</div>`,
       },
     },
-    Disabled: {
+    WithActions: {
       props: {
-        disabled: true,
+        collapsible: true,
         variant: "default",
       },
       slots: {
-        header: `<div style="font-weight: 600;">Disabled Panel</div>`,
-        default: `<div style="padding: 8px 0; color: var(--ui-text-muted);">This panel is disabled and cannot be interacted with. The panel should still be visible with this text content.</div>`,
-      },
-    },
-    Outlined: {
-      props: {
-        variant: "outlined",
-      },
-      slots: {
-        header: `<div style="font-weight: 600;">Outlined Panel</div>`,
-        default: `<div style="padding: 8px 0; color: var(--ui-text-muted);">This panel has an outlined border style. The panel should be visible with this content.</div>`,
-      },
-    },
-    Elevated: {
-      props: {
-        variant: "elevated",
-      },
-      slots: {
-        header: `<div style="font-weight: 600;">Elevated Panel</div>`,
-        default: `<div style="padding: 8px 0; color: var(--ui-text-muted);">This panel has a shadow/elevated style. The panel should be visible with this text content.</div>`,
-      },
-    },
-    Small: {
-      props: {
-        size: "sm",
-        variant: "default",
-      },
-      slots: {
-        header: `<div style="font-weight: 600;">Small Panel</div>`,
-        default: `<div style="padding: 8px 0; color: var(--ui-text-muted);">This panel has a smaller size. The panel should be visible with this text content.</div>`,
-      },
-    },
-    Large: {
-      props: {
-        size: "lg",
-        variant: "default",
-      },
-      slots: {
-        header: `<div style="font-weight: 600;">Large Panel</div>`,
-        default: `<div style="padding: 8px 0; color: var(--ui-text-muted);">This panel has a larger size. The panel should be visible with this text content.</div>`,
+        header: `<div style="font-weight: 600;">Amy Elsner</div>`,
+        actions: `<button style="padding: 6px 10px; border: 1px solid var(--ui-border); border-radius: 8px; background: var(--ui-bg); color: var(--ui-text); cursor: pointer;" onclick="event.stopPropagation()">Action</button>`,
+        default: `<div style="color: var(--ui-text-muted);">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>`,
+        footer: `<div style="display:flex;justify-content:space-between;width:100%;color:var(--ui-text-muted);"><span>Profile</span><span>Updated 2 hours ago</span></div>`,
       },
     },
     LongContent: {
       props: {
+        collapsible: true,
         variant: "default",
       },
       slots: {
-        header: `<div style="font-weight: 600;">Panel with Long Content</div>`,
-        default: `<div style="padding: 8px 0; color: var(--ui-text-muted);">This panel has a lot of content to test scrolling behavior. The panel should be visible with this text content. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>`,
+        header: `<div style="font-weight: 600;">Long Content</div>`,
+        default: `<div style="line-height: 1.6; color: var(--ui-text-muted);"><p>Line 1 - Example content</p><p>Line 2 - Example content</p><p>Line 3 - Example content</p><p>Line 4 - Example content</p><p>Line 5 - Example content</p><p>Line 6 - Example content</p><p>Line 7 - Example content</p><p>Line 8 - Example content</p><p>Line 9 - Example content</p><p>Line 10 - Example content</p><p>Line 11 - Example content</p><p>Line 12 - Example content</p><p>Line 13 - Example content</p><p>Line 14 - Example content</p><p>Line 15 - Example content</p><p>Line 16 - Example content</p><p>Line 17 - Example content</p><p>Line 18 - Example content</p><p>Line 19 - Example content</p><p>Line 20 - Example content</p></div>`,
       },
     },
-    Playground: {
+    Disabled: {
       props: {
         variant: "default",
-        size: "md",
-        collapsible: false,
-        loading: false,
-        disabled: false,
+        disabled: true,
+        collapsible: true,
       },
       slots: {
-        header: `<div style="font-weight: 600;">Playground</div>`,
-        actions: `<button>⋯</button>`,
-        default: `<div style="padding: 8px 0; color: var(--ui-text-muted);">Customize the panel using the controls on the right. The panel should be visible with this text content.</div>`,
-        footer: `<div style="display: flex; justify-content: flex-end; gap: 8px;"><button>Cancel</button><button style="background: var(--ui-primary); color: #fff;">Save</button></div>`,
+        header: `<div style="font-weight: 600;">Disabled Panel</div>`,
+        default: `<div style="line-height: 1.6; color: var(--ui-text-muted);">Set <code>disabled=true</code> from controls to test disabled behavior.</div>`,
+      },
+    },
+    VariantOutlined: {
+      props: {
+        variant: "outlined",
+        size: "md",
+      },
+      slots: {
+        header: `<div style="font-weight: 600;">Outlined Variant</div>`,
+        default: `<div style="color: var(--ui-text-muted);">Outlined has stronger border so variant change is clearly visible.</div>`,
+      },
+    },
+    VariantElevated: {
+      props: {
+        variant: "elevated",
+        size: "md",
+      },
+      slots: {
+        header: `<div style="font-weight: 600;">Elevated Variant</div>`,
+        default: `<div style="color: var(--ui-text-muted);">Elevated uses shadow to make panel lift from background.</div>`,
+      },
+    },
+    SizeSmall: {
+      props: {
+        size: "sm",
+        variant: "default",
+        rounded: "md",
+      },
+      slots: {
+        header: `<div style="font-weight: 600;">Small Size</div>`,
+        default: `<div style="color: var(--ui-text-muted);">Compact padding and tighter typography.</div>`,
+      },
+    },
+    SizeLarge: {
+      props: {
+        size: "lg",
+        variant: "default",
+        rounded: "md",
+      },
+      slots: {
+        header: `<div style="font-weight: 600;">Large Size</div>`,
+        default: `<div style="color: var(--ui-text-muted);">Large spacing with roomier content layout.</div>`,
+      },
+    },
+    RoundedXS: {
+      props: {
+        rounded: "xs",
+        variant: "default",
+      },
+      slots: {
+        header: `<div style="font-weight: 600;">Rounded XS</div>`,
+        default: `<div style="color: var(--ui-text-muted);">Extra small corner radius.</div>`,
+      },
+    },
+    RoundedLG: {
+      props: {
+        rounded: "lg",
+        variant: "elevated",
+      },
+      slots: {
+        header: `<div style="font-weight: 600;">Rounded LG</div>`,
+        default: `<div style="color: var(--ui-text-muted);">Large corner radius with elevated style.</div>`,
       },
     },
   },

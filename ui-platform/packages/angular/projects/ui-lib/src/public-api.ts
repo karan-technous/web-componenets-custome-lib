@@ -15,6 +15,6 @@ export { UiPanelComponent } from './lib/panel/panel.component';
 export { UiPanelHeaderDirective } from './lib/panel/panel-header.directive';
 export { UiPanelFooterDirective } from './lib/panel/panel-footer.directive';
 export { UiPanelActionsDirective } from './lib/panel/panel-actions.directive';
-export type { PanelVariant, PanelSize, PanelToggleEventDetail } from './lib/panel/panel.component';
+export type { PanelVariant, PanelSize, PanelRounded } from './lib/panel/panel.component';
 // Re-export IconName for autocomplete when using iconLeft/iconRight props
 export type { IconName } from '@karan9186/core';

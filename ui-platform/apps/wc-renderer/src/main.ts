@@ -62,6 +62,7 @@ type StoryPayload = {
 
 function renderComponent(payload: StoryPayload) {
   controls.innerHTML = "";
+  controls.style.width = "100%";
   
   // Special handling for toast - show a button that triggers the toast
   if (payload.component === "toast") {
@@ -192,6 +193,21 @@ function renderComponent(payload: StoryPayload) {
   }
 
   applyProps(el, props);
+
+  if (payload.component === "panel") {
+    const panelHost = document.createElement("div");
+    panelHost.style.width = "100%";
+    panelHost.style.padding = "24px";
+    panelHost.style.display = "flex";
+    panelHost.style.justifyContent = "center";
+    panelHost.style.background = "var(--ui-bg-subtle, var(--ui-bg))";
+    panelHost.style.boxSizing = "border-box";
+    el.setAttribute("style", "display:block;width:100%;max-width:600px;");
+    panelHost.appendChild(el);
+    controls.appendChild(panelHost);
+    return;
+  }
+
   controls.appendChild(el);
 }
 

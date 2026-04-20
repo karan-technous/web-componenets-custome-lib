@@ -7,10 +7,10 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { BadgeColor, BadgeShape, BadgeSize, BadgeVariant, BreadcrumbEventDetail, BreadcrumbSeparator, ButtonEventDetail, ButtonGroupEventDetail, ButtonGroupOrientation, ButtonGroupSize, ButtonGroupVariant, ButtonRounded, ButtonSize, ButtonVariant, IconName, ToastLifecycleDetail, ToastPromiseOptions, ToastShowOptions } from "@karan9186/core";
 import { IconName as IconName1 } from "./components/icons/icon.registry";
-import { PanelSize, PanelToggleEventDetail, PanelVariant } from "./components/ui-panel/ui-panel";
+import { PanelRounded, PanelSize, PanelVariant } from "./components/ui-panel/ui-panel";
 export { BadgeColor, BadgeShape, BadgeSize, BadgeVariant, BreadcrumbEventDetail, BreadcrumbSeparator, ButtonEventDetail, ButtonGroupEventDetail, ButtonGroupOrientation, ButtonGroupSize, ButtonGroupVariant, ButtonRounded, ButtonSize, ButtonVariant, IconName, ToastLifecycleDetail, ToastPromiseOptions, ToastShowOptions } from "@karan9186/core";
 export { IconName as IconName1 } from "./components/icons/icon.registry";
-export { PanelSize, PanelToggleEventDetail, PanelVariant } from "./components/ui-panel/ui-panel";
+export { PanelRounded, PanelSize, PanelVariant } from "./components/ui-panel/ui-panel";
 export namespace Components {
     /**
      * UI Badge Component
@@ -297,15 +297,30 @@ export namespace Components {
          */
         "expanded": boolean;
         /**
+          * Renders body/footer only when expanded
+          * @default false
+         */
+        "lazy": boolean;
+        /**
           * Whether the panel is in loading state
           * @default false
          */
         "loading": boolean;
         /**
+          * Border radius of the panel
+          * @default 'md'
+         */
+        "rounded": PanelRounded;
+        /**
           * Size of the panel
           * @default 'md'
          */
         "size": PanelSize;
+        /**
+          * Keeps header visible while scrolling panel content
+          * @default false
+         */
+        "stickyHeader": boolean;
         /**
           * Toggle the panel expand/collapse state
          */
@@ -515,7 +530,10 @@ declare global {
         new (): HTMLUiInputElement;
     };
     interface HTMLUiPanelElementEventMap {
-        "uiToggle": PanelToggleEventDetail;
+        "toggle": boolean;
+        "expand": boolean;
+        "collapse": boolean;
+        "uiToggle": { expanded: boolean };
     }
     interface HTMLUiPanelElement extends Components.UiPanel, HTMLStencilElement {
         addEventListener<K extends keyof HTMLUiPanelElementEventMap>(type: K, listener: (this: HTMLUiPanelElement, ev: UiPanelCustomEvent<HTMLUiPanelElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -895,19 +913,40 @@ declare namespace LocalJSX {
          */
         "expanded"?: boolean;
         /**
+          * Renders body/footer only when expanded
+          * @default false
+         */
+        "lazy"?: boolean;
+        /**
           * Whether the panel is in loading state
           * @default false
          */
         "loading"?: boolean;
+        "onCollapse"?: (event: UiPanelCustomEvent<boolean>) => void;
+        "onExpand"?: (event: UiPanelCustomEvent<boolean>) => void;
         /**
           * Emitted when panel is expanded/collapsed
          */
-        "onUiToggle"?: (event: UiPanelCustomEvent<PanelToggleEventDetail>) => void;
+        "onToggle"?: (event: UiPanelCustomEvent<boolean>) => void;
+        /**
+          * @deprecated use `toggle`
+         */
+        "onUiToggle"?: (event: UiPanelCustomEvent<{ expanded: boolean }>) => void;
+        /**
+          * Border radius of the panel
+          * @default 'md'
+         */
+        "rounded"?: PanelRounded;
         /**
           * Size of the panel
           * @default 'md'
          */
         "size"?: PanelSize;
+        /**
+          * Keeps header visible while scrolling panel content
+          * @default false
+         */
+        "stickyHeader"?: boolean;
         /**
           * Visual variant of the panel
           * @default 'default'
@@ -1006,10 +1045,13 @@ declare namespace LocalJSX {
     interface UiPanelAttributes {
         "variant": PanelVariant;
         "size": PanelSize;
+        "rounded": PanelRounded;
         "collapsible": boolean;
         "expanded": boolean;
         "loading": boolean;
         "disabled": boolean;
+        "stickyHeader": boolean;
+        "lazy": boolean;
     }
     interface UiToastAttributes {
         "maxVisible": number;

@@ -258,9 +258,6 @@ function renderDynamicComponent(payload: StoryPayload): ReactElement {
 
   // Handle slots for Panel component
   if (payload.component === "panel" && payload.slots) {
-    console.log("React renderer: Panel slots detected", payload.slots);
-    
-    // Render web component directly with slots
     const slotElements: ReactElement[] = [];
     
     if (payload.slots.header) {
@@ -290,8 +287,24 @@ function renderDynamicComponent(payload: StoryPayload): ReactElement {
       }));
     }
     
-    console.log("React renderer: Rendering ui-panel directly with slots", slotElements);
-    return createElement("ui-panel" as any, { ...props, key: renderKey }, slotElements);
+    return createElement(
+      "div",
+      {
+        style: {
+          width: "100%",
+          padding: 24,
+          display: "flex",
+          justifyContent: "center",
+          background: "var(--ui-bg-subtle, var(--ui-bg))",
+          boxSizing: "border-box",
+        },
+      },
+      createElement("ui-panel" as any, {
+        ...props,
+        key: renderKey,
+        style: { width: "100%", maxWidth: "600px", display: "block" },
+      }, slotElements),
+    );
   }
 
   return createElement(Wrapper, { ...props, key: renderKey }, children);

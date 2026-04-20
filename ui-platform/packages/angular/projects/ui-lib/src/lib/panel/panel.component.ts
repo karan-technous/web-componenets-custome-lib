@@ -1,20 +1,20 @@
-import { Component, ChangeDetectionStrategy, input, output, CUSTOM_ELEMENTS_SCHEMA, forwardRef, model, Provider } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, Validator, AbstractControl, ValidationErrors, NG_ASYNC_VALIDATORS, AsyncValidator } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, Optional, Self, computed, forwardRef, input, model, output } from '@angular/core';
+import { AbstractControl, ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR, NgControl, ValidationErrors, Validator } from '@angular/forms';
+import { ensureCustomElements } from '../register-custom-elements';
 
 export type PanelVariant = 'default' | 'outlined' | 'elevated';
 export type PanelSize = 'sm' | 'md' | 'lg';
+export type PanelRounded = 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'full';
 
-export interface PanelToggleEventDetail {
-  expanded: boolean;
-}
+ensureCustomElements();
 
-const PANEL_VALUE_ACCESSOR: Provider = {
+const PANEL_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => UiPanelComponent),
   multi: true,
 };
 
-const PANEL_VALIDATORS: Provider = {
+const PANEL_VALIDATORS = {
   provide: NG_VALIDATORS,
   useExisting: forwardRef(() => UiPanelComponent),
   multi: true,
@@ -24,10 +24,10 @@ const PANEL_VALIDATORS: Provider = {
   selector: 'ui-panel',
   standalone: true,
   template: `
-    <ng-content select="[slot='header']"></ng-content>
-    <ng-content select="[slot='actions']"></ng-content>
+    <ng-content select="[uiPanelHeader],[panel-header],[slot='header']"></ng-content>
+    <ng-content select="[uiPanelActions],[panel-actions],[slot='actions']"></ng-content>
     <ng-content></ng-content>
-    <ng-content select="[slot='footer']"></ng-content>
+    <ng-content select="[uiPanelFooter],[panel-footer],[slot='footer']"></ng-content>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -35,14 +35,25 @@ const PANEL_VALIDATORS: Provider = {
   host: {
     '[variant]': 'variant()',
     '[size]': 'size()',
+    '[rounded]': 'rounded()',
     '[collapsible]': 'collapsible()',
     '[expanded]': 'expanded()',
+    '[attr.data-controlled]': 'expanded() === undefined ? null : "true"',
     '[loading]': 'loading()',
-    '[disabled]': 'disabled() || _disabled',
-    '(uiToggle)': 'handleUiToggle($event)',
+    '[disabled]': 'disabled() || cvaDisabled',
+    '[class.ng-invalid]': 'isInvalid()',
+    '[class.ng-touched]': 'isTouched()',
+    '[class.ng-dirty]': 'isDirty()',
+    '(toggle)': 'handleToggle($event)',
+    '(uiToggle)': 'handleLegacyToggle($event)',
   },
 })
 export class UiPanelComponent implements ControlValueAccessor, Validator {
+  constructor(@Optional() @Self() private readonly ngControl: NgControl | null) {
+    if (this.ngControl) {
+      this.ngControl.valueAccessor = this;
+    }
+  }
 
   // === INPUTS ===
 
@@ -52,14 +63,14 @@ export class UiPanelComponent implements ControlValueAccessor, Validator {
   /** Size of the panel */
   size = input<PanelSize>('md');
 
+  /** Border radius scale */
+  rounded = input<PanelRounded>('md');
+
   /** Whether the panel is collapsible */
   collapsible = input(false);
 
   /** Controlled expanded state (two-way binding) */
   expanded = model<boolean | undefined>(undefined);
-
-  /** Default expanded state (uncontrolled) */
-  defaultExpanded = input(true);
 
   /** Whether the panel is in loading state */
   loading = input(false);
@@ -70,20 +81,26 @@ export class UiPanelComponent implements ControlValueAccessor, Validator {
   // === OUTPUTS ===
 
   /** Callback when panel is expanded/collapsed */
-  uiToggle = output<PanelToggleEventDetail>();
+  panelUiToggle = output<{ expanded: boolean }>();
+  panelToggle = output<boolean>();
 
   // === CVA INTERNALS ===
 
-  public _disabled = false;
-  private _value: boolean = true;
+  public cvaDisabled = false;
+  private _value = true;
   private _onChange: (value: boolean) => void = () => {};
   private _onTouched: () => void = () => {};
+  private touched = false;
+
+  readonly isInvalid = computed(() => !!this.ngControl?.invalid);
+  readonly isTouched = computed(() => this.touched || !!this.ngControl?.touched);
+  readonly isDirty = computed(() => !!this.ngControl?.dirty);
 
   // === CVA METHODS ===
 
   writeValue(value: boolean): void {
     this._value = value ?? true;
-    if (this.expanded() === undefined) {
+    if (typeof this.expanded() !== 'boolean') {
       this.expanded.set(this._value);
     }
   }
@@ -97,7 +114,7 @@ export class UiPanelComponent implements ControlValueAccessor, Validator {
   }
 
   setDisabledState(isDisabled: boolean): void {
-    this._disabled = isDisabled;
+    this.cvaDisabled = isDisabled;
   }
 
   // === VALIDATOR METHOD ===
@@ -109,11 +126,25 @@ export class UiPanelComponent implements ControlValueAccessor, Validator {
 
   // === EVENT HANDLERS ===
 
-  handleUiToggle(event: any): void {
-    const { expanded } = event.detail;
-    this._value = expanded;
-    this.expanded.set(expanded);
-    this._onChange(expanded);
-    this.uiToggle.emit(event.detail);
+  handleToggle(event: Event): void {
+    this.applyExpanded((event as CustomEvent<boolean>).detail);
+  }
+
+  private applyExpanded(nextExpanded: boolean): void {
+    this._value = nextExpanded;
+    this.expanded.set(nextExpanded);
+    this._onChange(nextExpanded);
+    this._onTouched();
+    this.touched = true;
+    this.panelToggle.emit(nextExpanded);
+    this.panelUiToggle.emit({ expanded: nextExpanded });
+  }
+
+  handleLegacyToggle(event: Event): void {
+    const nextExpanded = (event as CustomEvent<{ expanded: boolean }>).detail?.expanded;
+    if (typeof nextExpanded !== 'boolean') {
+      return;
+    }
+    this.applyExpanded(nextExpanded);
   }
 }
