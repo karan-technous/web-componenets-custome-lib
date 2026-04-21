@@ -6,7 +6,8 @@
   --ui-input-radius: var(--ui-border-radius);
   display: flex;
   align-items: center;
-  width: 100%;
+  width: 300px;
+  max-width: 100%;
   background: var(--ui-bg);
   color: var(--ui-text);
   border: 1px solid var(--ui-border-color);
@@ -103,24 +104,4 @@
 
 .icon-button ui-icon {
   display: inline-flex;
-}
-
-.input-wrap--icon-only {
-  width: fit-content;
-}
-
-.input-wrap--icon-only .input {
-  width: 0;
-  min-width: 0;
-  padding: 0;
-  border: 0;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.input-wrap--icon-only .icon-button {
-  border-radius: var(
-    --ui-input-icon-border-radius,
-    var(--ui-input-radius)
-  );
 }

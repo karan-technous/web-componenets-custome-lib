@@ -14,7 +14,6 @@ type UiInputProps = {
   type?: "text" | "number";
   rounded?: "xs" | "sm" | "md" | "xl";
   icon?: string;
-  iconOnly?: boolean;
   iconAriaLabel?: string;
   onChange?: (value: string) => void;
   onBlur?: () => void;
@@ -31,7 +30,6 @@ export const UiInput = forwardRef<HTMLElement, UiInputProps>(
       type = "text",
       rounded = "md",
       icon,
-      iconOnly = false,
       iconAriaLabel,
       onChange,
       onBlur,
@@ -69,9 +67,8 @@ export const UiInput = forwardRef<HTMLElement, UiInputProps>(
       el.type = type;
       el.rounded = rounded;
       el.icon = icon;
-      el.iconOnly = !!iconOnly;
       el.iconAriaLabel = iconAriaLabel ?? "Input icon action";
-    }, [currentValue, placeholder, disabled, type, rounded, icon, iconOnly, iconAriaLabel]);
+    }, [currentValue, placeholder, disabled, type, rounded, icon, iconAriaLabel]);
 
     // Events
     useEffect(() => {

@@ -13,7 +13,6 @@ export class UiInput extends BaseComponent {
   @Prop({ reflect: true }) type: 'text' | 'number' = 'text';
   @Prop({ reflect: true }) rounded: 'xs' | 'sm' | 'md' | 'xl' = 'md';
   @Prop({ reflect: true }) icon?: string;
-  @Prop({ reflect: true }) iconOnly: boolean = false;
   @Prop() iconAriaLabel: string = 'Input icon action';
 
   @Event() valueChange!: EventEmitter<string>;
@@ -56,7 +55,6 @@ export class UiInput extends BaseComponent {
           'input-wrap': true,
           'input-wrap--disabled': this.disabled,
           'input-wrap--with-icon': !!this.icon,
-          'input-wrap--icon-only': this.iconOnly,
           [`input-wrap--rounded-${this.rounded}`]: true,
         }}
       >
@@ -69,7 +67,6 @@ export class UiInput extends BaseComponent {
           disabled={this.disabled}
           onInput={this.onInput}
           onBlur={() => this.uiBlur.emit()}
-          tabIndex={this.iconOnly ? -1 : 0}
         />
 
         {this.icon && (

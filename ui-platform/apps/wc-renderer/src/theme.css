@@ -73,9 +73,3 @@ body,
   overflow: visible;
   padding: 10px;
 }
-
-/* Constrain input width */
-.controls ui-input,
-.controls .ui-input {
-  max-width: 300px;
-}

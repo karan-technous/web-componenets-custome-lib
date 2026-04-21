@@ -31,7 +31,6 @@ export class InputComponent implements ControlValueAccessor {
   type = input<'text' | 'number'>('text');
   rounded = input<'xs' | 'sm' | 'md' | 'xl'>('md');
   icon = input<string | undefined>(undefined);
-  iconOnly = input<boolean>(false);
   iconAriaLabel = input<string>('Input icon action');
 
   value = signal<string>('');

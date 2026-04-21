@@ -12,7 +12,6 @@
 | `disabled`      | `disabled`        |             | `boolean`                      | `false`               |
 | `icon`          | `icon`            |             | `string`                       | `undefined`           |
 | `iconAriaLabel` | `icon-aria-label` |             | `string`                       | `'Input icon action'` |
-| `iconOnly`      | `icon-only`       |             | `boolean`                      | `false`               |
 | `placeholder`   | `placeholder`     |             | `string`                       | `''`                  |
 | `rounded`       | `rounded`         |             | `"md" \| "sm" \| "xl" \| "xs"` | `'md'`                |
 | `type`          | `type`            |             | `"number" \| "text"`           | `'text'`              |

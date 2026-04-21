@@ -320,10 +320,6 @@ export namespace Components {
          */
         "iconAriaLabel": string;
         /**
-          * @default false
-         */
-        "iconOnly": boolean;
-        /**
           * @default ''
          */
         "placeholder": string;
@@ -1045,10 +1041,6 @@ declare namespace LocalJSX {
           * @default 'Input icon action'
          */
         "iconAriaLabel"?: string;
-        /**
-          * @default false
-         */
-        "iconOnly"?: boolean;
         "onUiBlur"?: (event: UiInputCustomEvent<void>) => void;
         "onUiIconClick"?: (event: UiInputCustomEvent<void>) => void;
         "onValueChange"?: (event: UiInputCustomEvent<string>) => void;
@@ -1231,7 +1223,6 @@ declare namespace LocalJSX {
         "type": 'text' | 'number';
         "rounded": 'xs' | 'sm' | 'md' | 'xl';
         "icon": string;
-        "iconOnly": boolean;
         "iconAriaLabel": string;
     }
     interface UiPanelAttributes {

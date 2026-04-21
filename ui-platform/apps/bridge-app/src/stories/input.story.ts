@@ -30,16 +30,17 @@ const inputStory: StoryDefinition = {
       default: "",
       description: "Lucide icon name shown inside input",
     },
-    iconOnly: {
-      type: "boolean",
-      default: false,
-      description: "Show only icon button and hide text field",
-    },
     rounded: {
       type: "select",
       options: ["xs", "sm", "md", "xl"],
       default: "md",
       description: "Rounded corners for the input",
+    },
+    type:{
+      type: "select",
+      options: ["text", "number", "email", "password"],
+      default: "text",
+      description: "Input type",
     },
   },
   stories: {
@@ -69,10 +70,15 @@ const inputStory: StoryDefinition = {
         icon: "Search",
       },
     },
-    "Icon Only": {
+    "Type Number": {
       props: {
-        icon: "Calendar",
-        iconOnly: true,
+        type: "number",
+      },
+    },
+    "Type Email": {
+      props: {
+        type: "email",
+        value: "user@example.com",
       },
     },
     "Rounded": {
