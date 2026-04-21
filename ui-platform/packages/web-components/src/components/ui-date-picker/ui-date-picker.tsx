@@ -65,6 +65,7 @@ export class UiDatePicker extends BaseComponent {
   @Prop({ reflect: true }) showActions: boolean = false;
   @Prop({ reflect: true }) search: boolean = false;
   @Prop() icon?: string;
+  @Prop({ reflect: true }) label?: string;
   @Prop() customParsers?: DatePickerParser[];
   @Prop() debounce: number = 220;
 
@@ -135,6 +136,11 @@ export class UiDatePicker extends BaseComponent {
     this.committedValue = this.normalizeSelection(this.committedValue);
     this.draftValue = this.cloneSelection(this.committedValue);
     this.syncUiFromSelection(this.activeSelection());
+  }
+
+  @Watch('label')
+  handleLabelChanged() {
+    console.log('[ui-date-picker] Label changed to:', this.label);
   }
 
   @Listen('mousedown', { target: 'document' })
@@ -631,8 +637,6 @@ export class UiDatePicker extends BaseComponent {
     const monthLabel = `${MONTHS[this.currentMonth.getMonth()]} ${this.currentMonth.getFullYear()}`;
     const showTriggerIcon = this.showIcon || this.iconOnly;
     const triggerIconName = showTriggerIcon ? this.getTriggerIconName() : undefined;
-    const triggerPlaceholder = this.iconOnly ? '' : this.placeholder;
-    const triggerValue = this.iconOnly ? '' : this.inputValue;
 
     return (
       <Host>
@@ -647,25 +651,40 @@ export class UiDatePicker extends BaseComponent {
           }}
         >
           <div class="trigger">
-            <ui-input
-              ref={(el) => (this.inputEl = el as HTMLElement)}
-              class={{ 'trigger-input': true, 'trigger-input--icon-only': this.iconOnly }}
-              type="text"
-              value={triggerValue}
-              placeholder={triggerPlaceholder}
-              disabled={this.disabled}
-              icon={triggerIconName}
-              iconOnly={this.iconOnly}
-              iconAriaLabel="Toggle calendar"
-              onValueChange={this.onInputValueChange}
-              onUiIconClick={() => this.setOpen(!this.internalOpen)}
-              onFocusin={() => this.onFocus.emit()}
-              onUiBlur={() => this.onBlur.emit()}
-              onClick={() => this.setOpen(true)}
-              onKeyDown={this.onMainInputKeyDown}
-              aria-expanded={this.internalOpen ? 'true' : 'false'}
-              aria-haspopup="grid"
-            ></ui-input>
+            {this.iconOnly ? (
+              <ui-button
+                variant="ghost"
+                size="icon-sm"
+                rounded="md"
+                disabled={this.disabled}
+                onUiClick={() => this.setOpen(!this.internalOpen)}
+                aria-expanded={this.internalOpen ? 'true' : 'false'}
+                aria-haspopup="grid"
+                aria-label="Toggle calendar"
+              >
+                <ui-icon name={triggerIconName as any} size="sm"></ui-icon>
+              </ui-button>
+            ) : (
+              <ui-input
+                ref={(el) => (this.inputEl = el as HTMLElement)}
+                class="trigger-input"
+                type="text"
+                value={this.inputValue}
+                placeholder={this.placeholder}
+                label={this.label}
+                disabled={this.disabled}
+                icon={triggerIconName}
+                iconAriaLabel="Toggle calendar"
+                onValueChange={this.onInputValueChange}
+                onUiIconClick={() => this.setOpen(!this.internalOpen)}
+                onFocusin={() => this.onFocus.emit()}
+                onUiBlur={() => this.onBlur.emit()}
+                onClick={() => this.setOpen(true)}
+                onKeyDown={this.onMainInputKeyDown}
+                aria-expanded={this.internalOpen ? 'true' : 'false'}
+                aria-haspopup="grid"
+              ></ui-input>
+            )}
           </div>
 
           {this.internalOpen && this.lazyReady && (

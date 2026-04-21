@@ -12,6 +12,7 @@
 | `disabled`      | `disabled`        |             | `boolean`                      | `false`               |
 | `icon`          | `icon`            |             | `string`                       | `undefined`           |
 | `iconAriaLabel` | `icon-aria-label` |             | `string`                       | `'Input icon action'` |
+| `label`         | `label`           |             | `string`                       | `undefined`           |
 | `placeholder`   | `placeholder`     |             | `string`                       | `''`                  |
 | `rounded`       | `rounded`         |             | `"md" \| "sm" \| "xl" \| "xs"` | `'md'`                |
 | `type`          | `type`            |             | `"number" \| "text"`           | `'text'`              |

@@ -10,6 +10,7 @@ type UiInputProps = {
   value?: string;
   defaultValue?: string;
   placeholder?: string;
+  label?: string;
   disabled?: boolean;
   type?: "text" | "number";
   rounded?: "xs" | "sm" | "md" | "xl";
@@ -26,6 +27,7 @@ export const UiInput = forwardRef<HTMLElement, UiInputProps>(
       value,
       defaultValue = "",
       placeholder,
+      label,
       disabled,
       type = "text",
       rounded = "md",
@@ -63,12 +65,13 @@ export const UiInput = forwardRef<HTMLElement, UiInputProps>(
 
       el.value = currentValue ?? "";
       el.placeholder = placeholder ?? "";
+      el.label = label ?? "";
       el.disabled = !!disabled;
       el.type = type;
       el.rounded = rounded;
       el.icon = icon;
       el.iconAriaLabel = iconAriaLabel ?? "Input icon action";
-    }, [currentValue, placeholder, disabled, type, rounded, icon, iconAriaLabel]);
+    }, [currentValue, placeholder, label, disabled, type, rounded, icon, iconAriaLabel]);
 
     // Events
     useEffect(() => {

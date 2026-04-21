@@ -62,6 +62,11 @@ const datePickerStory: StoryDefinition = {
       description: "Enable custom regex parser demo",
       options: ["none", "todayNextWeek"],
     },
+    label:{
+      type: "string",
+      default: "",
+      description: "Label text for the date picker",
+    }
   },
   stories: {
     Default: { props: { mode: "single", showIcon: true } },
@@ -75,6 +80,8 @@ const datePickerStory: StoryDefinition = {
     "Search Enabled": { props: { mode: "single", search: true } },
     "Search + Range": { props: { mode: "range", search: true } },
     "Search + Apply Mode": { props: { mode: "single", search: true, showActions: true } },
+    "With Label": { props: { mode: "single", label: "Select Date" } },
+    "Label + Range": { props: { mode: "range", label: "Date Range" } },
   },
   docs: {
     description:

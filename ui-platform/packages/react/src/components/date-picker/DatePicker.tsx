@@ -30,6 +30,7 @@ export type DatePickerProps = {
   showIcon?: boolean;
   iconOnly?: boolean;
   icon?: string;
+  label?: string;
   showActions?: boolean;
   search?: boolean;
   customParsers?: CustomParser[];
@@ -61,6 +62,7 @@ export const DatePicker = forwardRef<HTMLElement, DatePickerProps>(
       showIcon = true,
       iconOnly = false,
       icon,
+      label,
       showActions = false,
       search = false,
       customParsers,
@@ -99,6 +101,7 @@ export const DatePicker = forwardRef<HTMLElement, DatePickerProps>(
       el.showIcon = !!showIcon;
       el.iconOnly = !!iconOnly;
       el.icon = icon;
+      el.label = label;
       el.showActions = !!showActions;
       el.search = !!search;
       el.customParsers = customParsers;
@@ -117,6 +120,7 @@ export const DatePicker = forwardRef<HTMLElement, DatePickerProps>(
       showIcon,
       iconOnly,
       icon,
+      label,
       showActions,
       search,
       customParsers,

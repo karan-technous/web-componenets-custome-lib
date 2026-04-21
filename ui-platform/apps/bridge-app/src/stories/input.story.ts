@@ -42,6 +42,11 @@ const inputStory: StoryDefinition = {
       default: "text",
       description: "Input type",
     },
+    label:{
+      type: "string",
+      default: "",
+      description: "Label text for the input",
+    },
   },
   stories: {
     Default: {
@@ -86,6 +91,13 @@ const inputStory: StoryDefinition = {
         placeholder: "Calendar",
         value: "Design System",
         rounded: "md",
+      },
+    },
+    "With Label": {
+      props: {
+        placeholder: "Enter your name",
+        value: "",
+        label: "Name",
       },
     },
   },

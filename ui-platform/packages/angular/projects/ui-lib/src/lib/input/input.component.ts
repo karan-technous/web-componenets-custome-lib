@@ -28,6 +28,7 @@ ensureCustomElements();
 })
 export class InputComponent implements ControlValueAccessor {
   placeholder = input<string>('');
+  label = input<string | undefined>(undefined);
   type = input<'text' | 'number'>('text');
   rounded = input<'xs' | 'sm' | 'md' | 'xl'>('md');
   icon = input<string | undefined>(undefined);

@@ -155,8 +155,7 @@ function renderDynamicComponent(payload) {
     const props = { ...payload.props };
     const renderKey = `${payload.component}:${payload.story}:${JSON.stringify(payload.props)}`;
     let children;
-    const childrenProp = binding?.childrenProp ??
-        (Object.prototype.hasOwnProperty.call(props, "label") ? "label" : undefined);
+    const childrenProp = binding?.childrenProp;
     // Special handling for button-group to parse buttons JSON and create UiButton components
     if (payload.component === "button-group" && childrenProp === "buttons" && typeof props[childrenProp] !== "undefined") {
         try {

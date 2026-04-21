@@ -10,6 +10,14 @@
   width: 100%;
 }
 
+.date-picker-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ui-text);
+  margin-bottom: 6px;
+}
+
 .trigger {
   display: flex;
   align-items: center;

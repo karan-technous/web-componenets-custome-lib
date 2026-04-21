@@ -9,6 +9,7 @@ import { BaseComponent } from '../base/base-component';
 export class UiInput extends BaseComponent {
   @Prop() value: string = '';
   @Prop({ reflect: true }) placeholder: string = '';
+  @Prop({ reflect: true }) label?: string;
   @Prop({ reflect: true }) disabled: boolean = false;
   @Prop({ reflect: true }) type: 'text' | 'number' = 'text';
   @Prop({ reflect: true }) rounded: 'xs' | 'sm' | 'md' | 'xl' = 'md';
@@ -58,6 +59,7 @@ export class UiInput extends BaseComponent {
           [`input-wrap--rounded-${this.rounded}`]: true,
         }}
       >
+        {this.label && <label class="input-label">{this.label}</label>}
         <input
           ref={(el) => (this.inputEl = el as HTMLInputElement)}
           class="input"

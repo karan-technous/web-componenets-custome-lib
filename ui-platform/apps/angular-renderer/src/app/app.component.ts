@@ -249,11 +249,7 @@ export class AppComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const projectedProp =
-      binding?.projectedProp ??
-      (Object.prototype.hasOwnProperty.call(payload.props, "label")
-        ? "label"
-        : undefined);
+    const projectedProp = binding?.projectedProp;
 
     // Special handling for button-group to parse buttons JSON and create ui-button web component elements
     let projectableNodes: Node[][] | undefined;

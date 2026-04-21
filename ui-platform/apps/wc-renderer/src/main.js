@@ -100,10 +100,7 @@ function renderComponent(payload) {
     }
     const binding = payload.renderers?.wc;
     const tagName = binding?.tagName ?? `ui-${payload.component}`;
-    const textProp = binding?.textProp ??
-        (Object.prototype.hasOwnProperty.call(payload.props, "label")
-            ? "label"
-            : undefined);
+    const textProp = binding?.textProp;
     const el = document.createElement(tagName);
     const props = { ...payload.props };
     if (payload.component === "date-picker") {

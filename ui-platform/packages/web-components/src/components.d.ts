@@ -261,6 +261,7 @@ export namespace Components {
           * @default false
          */
         "iconOnly": boolean;
+        "label"?: string;
         /**
           * @default false
          */
@@ -319,6 +320,7 @@ export namespace Components {
           * @default 'Input icon action'
          */
         "iconAriaLabel": string;
+        "label"?: string;
         /**
           * @default ''
          */
@@ -975,6 +977,7 @@ declare namespace LocalJSX {
           * @default false
          */
         "iconOnly"?: boolean;
+        "label"?: string;
         /**
           * @default false
          */
@@ -1041,6 +1044,7 @@ declare namespace LocalJSX {
           * @default 'Input icon action'
          */
         "iconAriaLabel"?: string;
+        "label"?: string;
         "onUiBlur"?: (event: UiInputCustomEvent<void>) => void;
         "onUiIconClick"?: (event: UiInputCustomEvent<void>) => void;
         "onValueChange"?: (event: UiInputCustomEvent<string>) => void;
@@ -1208,6 +1212,7 @@ declare namespace LocalJSX {
         "showActions": boolean;
         "search": boolean;
         "icon": string;
+        "label": string;
         "debounce": number;
     }
     interface UiIconAttributes {
@@ -1219,6 +1224,7 @@ declare namespace LocalJSX {
     interface UiInputAttributes {
         "value": string;
         "placeholder": string;
+        "label": string;
         "disabled": boolean;
         "type": 'text' | 'number';
         "rounded": 'xs' | 'sm' | 'md' | 'xl';

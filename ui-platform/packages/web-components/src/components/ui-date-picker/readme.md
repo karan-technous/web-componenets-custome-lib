@@ -16,6 +16,7 @@
 | `disabled`      | `disabled`     |             | `boolean`                             | `false`                          |
 | `icon`          | `icon`         |             | `string`                              | `undefined`                      |
 | `iconOnly`      | `icon-only`    |             | `boolean`                             | `false`                          |
+| `label`         | `label`        |             | `string`                              | `undefined`                      |
 | `loading`       | `loading`      |             | `boolean`                             | `false`                          |
 | `maxDate`       | --             |             | `Date`                                | `undefined`                      |
 | `minDate`       | --             |             | `Date`                                | `undefined`                      |
@@ -48,15 +49,15 @@
 ### Depends on
 
 - [ui-button](../ui-button)
-- [ui-input](../ui-input)
 - [ui-icon](../ui-icon)
+- [ui-input](../ui-input)
 
 ### Graph
 ```mermaid
 graph TD;
   ui-date-picker --> ui-button
-  ui-date-picker --> ui-input
   ui-date-picker --> ui-icon
+  ui-date-picker --> ui-input
   ui-button --> ui-icon
   ui-input --> ui-icon
   style ui-date-picker fill:#f9f,stroke:#333,stroke-width:4px

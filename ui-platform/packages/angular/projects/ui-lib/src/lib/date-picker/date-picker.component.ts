@@ -72,6 +72,7 @@ export class UiDatePickerComponent implements ControlValueAccessor, Validator {
   showIcon = input<boolean>(true);
   iconOnly = input<boolean>(false);
   icon = input<string | undefined>(undefined);
+  label = input<string | undefined>(undefined);
   showActions = input<boolean>(false);
   search = input<boolean>(false);
   customParsers = input<any[] | undefined>(undefined);
