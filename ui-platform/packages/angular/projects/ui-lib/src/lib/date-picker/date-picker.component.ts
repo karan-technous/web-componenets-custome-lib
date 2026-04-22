@@ -69,6 +69,8 @@ export class UiDatePickerComponent implements ControlValueAccessor, Validator {
   defaultOpen = input<boolean>(false);
   minDate = input<Date | undefined>(undefined);
   maxDate = input<Date | undefined>(undefined);
+  minYear = input<number | undefined>(undefined);
+  maxYear = input<number | undefined>(undefined);
   showIcon = input<boolean>(true);
   iconOnly = input<boolean>(false);
   icon = input<string | undefined>(undefined);

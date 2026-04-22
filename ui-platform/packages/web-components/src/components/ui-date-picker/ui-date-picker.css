@@ -1,7 +1,6 @@
 :host {
   display: inline-block;
   width: 100%;
-  max-width: 236px;
   color: var(--ui-text);
 }
 
@@ -55,7 +54,6 @@
   z-index: 1000;
   width: max-content;
   min-width: 236px;
-  max-width: 236px;
   border: 1px solid var(--ui-border);
   border-radius: var(--ui-border-radius);
   box-shadow: var(--ui-shadow);
@@ -63,7 +61,7 @@
   padding: 8px;
   box-sizing: border-box;
   transform-origin: top left;
-  overflow: hidden;
+  overflow: visible;
   animation: popIn 0.2s ease;
 }
 
@@ -88,6 +86,35 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 8px;
+  gap: 4px;
+}
+
+.month-year-selectors {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex: 1;
+  justify-content: center;
+}
+
+.month-year-selectors ui-dropdown {
+  --ui-dropdown-min-width: auto;
+}
+
+.month-year-selectors ui-dropdown::part(button) {
+  border: none;
+  background: transparent;
+  padding: 2px 6px;
+  font-size: 14px;
+  font-weight: 600;
+  min-width: auto;
+  color: var(--ui-text);
+  border-radius: var(--ui-border-radius);
+  transition: background 0.15s ease;
+}
+
+.month-year-selectors ui-dropdown::part(button):hover {
+  background: var(--ui-bg-hover);
 }
 
 .month-label {

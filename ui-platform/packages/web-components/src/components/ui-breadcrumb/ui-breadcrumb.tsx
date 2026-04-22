@@ -52,7 +52,7 @@ export class UiBreadcrumb extends BaseComponent {
   @State() parsedItems: Array<{ value: string; label: string; href?: string; active?: boolean; disabled?: boolean; icon?: any }> = [];
   @State() visibleItems: Array<{ value: string; label: string; href?: string; active?: boolean; disabled?: boolean; icon?: any; isCollapsed?: boolean }> = [];
   @State() isExpanded: boolean = false;
-  @State() isDropdownOpen: boolean = false;
+  @State() isPanelOpen: boolean = false;
   @State() collapsedItems: Array<{ value: string; label: string; href?: string; active?: boolean; disabled?: boolean; icon?: any }> = [];
 
   // === EVENTS ===
@@ -137,23 +137,17 @@ export class UiBreadcrumb extends BaseComponent {
     this.calculateVisibleItems();
   }
 
-  private toggleDropdown(event?: MouseEvent) {
-    if (event) {
-      event.stopPropagation();
-    }
-    this.isDropdownOpen = !this.isDropdownOpen;
+  private togglePanel() {
+    this.isPanelOpen = !this.isPanelOpen;
   }
 
-  private closeDropdown() {
-    this.isDropdownOpen = false;
-  }
-
-  @Listen('click', { target: 'document' })
-  handleDocumentClick(event: MouseEvent) {
-    const breadcrumb = this.element;
-    if (this.isDropdownOpen && !breadcrumb.contains(event.target as Node)) {
-      this.closeDropdown();
-    }
+  private handleCollapsedItemClick(item: any, idx: number) {
+    this.isPanelOpen = false;
+    this.uiClick.emit({
+      value: item.value,
+      index: this.itemsBeforeCollapse + idx,
+      href: item.href,
+    });
   }
 
   getSeparatorIcon() {
@@ -195,44 +189,31 @@ export class UiBreadcrumb extends BaseComponent {
                   aria-current={item.active ? 'page' : undefined}
                 >
                   {isCollapsed ? (
-                    <div style={{ position: 'relative', display: 'inline-block' }}>
-                      <span
-                        class="ui-breadcrumb__collapsed"
-                        onClick={(e) => this.toggleDropdown(e)}
-                        style={{ cursor: 'pointer' }}
+                    <div class="ui-breadcrumb__collapse-wrapper">
+                      <ui-button
+                        variant="outline"
+                        size="icon"
+                        icon='MoreHorizontal'
+                        onClick={() => this.togglePanel()}
                       >
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                          <circle cx="12" cy="12" r="1"></circle>
-                          <circle cx="19" cy="12" r="1"></circle>
-                          <circle cx="5" cy="12" r="1"></circle>
-                        </svg>
-                      </span>
-                      {this.isDropdownOpen && this.collapsedItems.length > 0 && (
-                        <div class="ui-breadcrumb__dropdown">
-                          <ul class="ui-breadcrumb__dropdown-list">
-                            {this.collapsedItems.map((item, idx) => (
-                              <li
-                                class="ui-breadcrumb__dropdown-item"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  this.closeDropdown();
-                                  this.uiClick.emit({
-                                    value: item.value,
-                                    index: this.itemsBeforeCollapse + idx,
-                                    href: item.href,
-                                  });
-                                }}
-                              >
-                                {item.icon && (
-                                  <span class="ui-breadcrumb__dropdown-icon">
-                                    <ui-icon name={item.icon} size="sm"></ui-icon>
-                                  </span>
-                                )}
-                                <span class="ui-breadcrumb__dropdown-text">{item.label}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
+                      </ui-button>
+                      {this.isPanelOpen && this.collapsedItems.length > 0 && (
+                        <ui-panel class="ui-breadcrumb__panel">
+                          {this.collapsedItems.map((item, idx) => (
+                            <div
+                              class={{
+                                'ui-breadcrumb__panel-item': true,
+                                'ui-breadcrumb__panel-item--disabled': item.disabled,
+                              }}
+                              onClick={() => !item.disabled && this.handleCollapsedItemClick(item, idx)}
+                            >
+                              {item.icon && (
+                                <ui-icon name={item.icon} size="sm"></ui-icon>
+                              )}
+                              <span>{item.label}</span>
+                            </div>
+                          ))}
+                        </ui-panel>
                       )}
                     </div>
                   ) : (
@@ -263,7 +244,7 @@ export class UiBreadcrumb extends BaseComponent {
                     </div>
                   )}
 
-                  {!isLast && !isCollapsed && (
+                  {!isLast && (
                     <span class="ui-breadcrumb__separator" innerHTML={separatorIcon}></span>
                   )}
                 </li>

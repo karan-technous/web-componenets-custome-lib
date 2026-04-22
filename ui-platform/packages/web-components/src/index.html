@@ -6,10 +6,33 @@
     <title>Stencil Component Starter</title>
     <script type="module" src="/build/web-components.esm.js"></script>
     <script nomodule src="/build/web-components.js"></script>
+    <style>
+      :root {
+        --ui-primary: #3b82f6;
+        --ui-primary-hover: #2563eb;
+        --ui-primary-foreground: #ffffff;
+        --ui-bg: #ffffff;
+        --ui-text: #111827;
+        --ui-text-on-primary: #ffffff;
+        --ui-border: #e4e4e7;
+        --ui-border-hover: #d4d4d8;
+        --ui-border-color: #cbd5e1;
+        --ui-border-radius: 6px;
+        --ui-bg-hover: #f8fafc;
+        --ui-text-muted: #64748b;
+        --ui-radius: 8px;
+        --ui-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      }
+    </style>
   </head>
   <body>
     <my-component first="Stencil" middle="'Don't call me a framework'" last="JS"></my-component>
     <h1>work</h1>
-    <ui-date-picker label="Select Date"></ui-date-picker>
+    <ui-dropdown
+      mode="single"
+      variant="input"
+      placeholder="Select an option"
+      options='[{"label":"Apple","value":"apple"},{"label":"Banana","value":"banana"},{"label":"Cherry","value":"cherry"}]'
+    ></ui-dropdown>
   </body>
 </html>

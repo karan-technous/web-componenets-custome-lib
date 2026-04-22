@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import type { Framework } from "../state/frameworkStore";
 import type { SelectedStory, StoryRendererBindings } from "../state/storyTypes";
 
@@ -62,7 +62,7 @@ function sendToPreview(
   );
 }
 
-export function PreviewCanvas({
+export const PreviewCanvas = React.memo(function PreviewCanvas({
   framework,
   selection,
   zoom,
@@ -70,6 +70,7 @@ export function PreviewCanvas({
   onCurrentUrlChange,
   appearance,
 }: PreviewCanvasProps) {
+  // Component implementation
   const src = useMemo(
     () => buildPreviewUrl(framework, refreshToken),
     [framework, refreshToken],
@@ -102,23 +103,24 @@ export function PreviewCanvas({
     }
   }, [src]);
 
-  useEffect(() => {
-    const handler = (event: MessageEvent) => {
-      if (event.data?.type !== "IFRAME_READY") {
-        return;
-      }
+  // Memoize message handler to prevent recreating on each render
+  const handleIframeReady = useCallback((event: MessageEvent) => {
+    if (event.data?.type !== "IFRAME_READY") {
+      return;
+    }
 
-      if (event.source !== iframeRef.current?.contentWindow) {
-        return;
-      }
+    if (event.source !== iframeRef.current?.contentWindow) {
+      return;
+    }
 
-      setIsReady(true);
-      setIsLoading(false);
-    };
-
-    window.addEventListener("message", handler);
-    return () => window.removeEventListener("message", handler);
+    setIsReady(true);
+    setIsLoading(false);
   }, []);
+
+  useEffect(() => {
+    window.addEventListener("message", handleIframeReady);
+    return () => window.removeEventListener("message", handleIframeReady);
+  }, [handleIframeReady]);
 
   useEffect(() => {
     onCurrentUrlChange(shareUrl);
@@ -197,7 +199,7 @@ export function PreviewCanvas({
 
   return (
     <motion.section
-      key={`${framework}-${refreshToken}`}
+      // Removed key prop to prevent remounting on refresh
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.18 }}
@@ -274,4 +276,4 @@ export function PreviewCanvas({
       </div>
     </motion.section>
   );
-}
+});

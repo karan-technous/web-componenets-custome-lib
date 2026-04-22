@@ -60,6 +60,8 @@ export class UiDatePicker extends BaseComponent {
   @Prop() defaultOpen: boolean = false;
   @Prop() minDate?: Date;
   @Prop() maxDate?: Date;
+  @Prop({ reflect: true }) minYear?: number;
+  @Prop({ reflect: true }) maxYear?: number;
   @Prop({ reflect: true }) showIcon: boolean = true;
   @Prop({ reflect: true }) iconOnly: boolean = false;
   @Prop({ reflect: true }) showActions: boolean = false;
@@ -146,7 +148,7 @@ export class UiDatePicker extends BaseComponent {
   @Listen('mousedown', { target: 'document' })
   handleClickOutside(event: MouseEvent) {
     if (!this.internalOpen) return;
-    if (!this.hostEl.contains(event.target as Node)) {
+    if (!event.composedPath().includes(this.hostEl)) {
       this.setOpen(false);
     }
   }
@@ -555,6 +557,43 @@ export class UiDatePicker extends BaseComponent {
     this.currentMonth = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth() + offset, 1);
   }
 
+  private getMonthOptions() {
+    return MONTHS.map((name, index) => ({ label: name, value: index }));
+  }
+
+  private getYearOptions() {
+    const currentYear = new Date().getFullYear();
+    const minYear = this.minYear ?? (this.minDate ? this.minDate.getFullYear() : currentYear - 100);
+    const maxYear = this.maxYear ?? (this.maxDate ? this.maxDate.getFullYear() : currentYear + 50);
+    const options: { label: string; value: number }[] = [];
+    for (let year = minYear; year <= maxYear; year++) {
+      options.push({ label: String(year), value: year });
+    }
+    return options;
+  }
+
+  private handleMonthDropdownChange = (e: CustomEvent) => {
+    e.stopPropagation();
+    const monthIndex = e.detail;
+    if (typeof monthIndex === 'number' && monthIndex >= 0 && monthIndex <= 11) {
+      this.monthDirection = monthIndex < this.currentMonth.getMonth() ? 'left' : 'right';
+      this.currentMonth = new Date(this.currentMonth.getFullYear(), monthIndex, 1);
+    }
+  };
+
+  private handleYearDropdownChange = (e: CustomEvent) => {
+    e.stopPropagation();
+    const year = e.detail;
+    if (typeof year === 'number') {
+      this.monthDirection = year < this.currentMonth.getFullYear() ? 'left' : 'right';
+      this.currentMonth = new Date(year, this.currentMonth.getMonth(), 1);
+    }
+  };
+
+  private handleDropdownOpenChange = (e: CustomEvent) => {
+    e.stopPropagation();
+  };
+
   private renderCalendarGrid() {
     const start = new Date(this.currentMonth);
     start.setDate(1 - start.getDay());
@@ -634,7 +673,6 @@ export class UiDatePicker extends BaseComponent {
   }
 
   render() {
-    const monthLabel = `${MONTHS[this.currentMonth.getMonth()]} ${this.currentMonth.getFullYear()}`;
     const showTriggerIcon = this.showIcon || this.iconOnly;
     const triggerIconName = showTriggerIcon ? this.getTriggerIconName() : undefined;
 
@@ -712,7 +750,26 @@ export class UiDatePicker extends BaseComponent {
                 >
                   <ui-icon name={'ChevronLeft' as any} size="sm"></ui-icon>
                 </ui-button>
-                <span class="month-label">{monthLabel}</span>
+                <div class="month-year-selectors">
+                  <ui-dropdown
+                    variant="button"
+                    options={this.getMonthOptions()}
+                    value={this.currentMonth.getMonth()}
+                    minWidth="100px"
+                    maxHeight="200px"
+                    onValueChange={this.handleMonthDropdownChange}
+                    onOpenChange={this.handleDropdownOpenChange}
+                  ></ui-dropdown>
+                  <ui-dropdown
+                    variant="button"
+                    options={this.getYearOptions()}
+                    value={this.currentMonth.getFullYear()}
+                    minWidth="80px"
+                    maxHeight="200px"
+                    onValueChange={this.handleYearDropdownChange}
+                    onOpenChange={this.handleDropdownOpenChange}
+                  ></ui-dropdown>
+                </div>
                 <ui-button
                   class="nav-btn"
                   variant="ghost"

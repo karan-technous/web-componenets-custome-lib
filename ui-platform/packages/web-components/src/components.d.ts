@@ -7,10 +7,12 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { BadgeColor, BadgeShape, BadgeSize, BadgeVariant, BreadcrumbEventDetail, BreadcrumbSeparator, ButtonEventDetail, ButtonGroupEventDetail, ButtonGroupOrientation, ButtonGroupSize, ButtonGroupVariant, ButtonRounded, ButtonSize, ButtonVariant, IconName, ToastLifecycleDetail, ToastPromiseOptions, ToastShowOptions } from "@karan9186/core";
 import { DatePickerParser } from "./components/ui-date-picker/ui-date-picker";
+import { DropdownMode, DropdownOption, DropdownVariant } from "./components/ui-dropdown/ui-dropdown";
 import { IconName as IconName1 } from "./components/icons/icon.registry";
 import { PanelRounded, PanelSize, PanelVariant } from "./components/ui-panel/ui-panel";
 export { BadgeColor, BadgeShape, BadgeSize, BadgeVariant, BreadcrumbEventDetail, BreadcrumbSeparator, ButtonEventDetail, ButtonGroupEventDetail, ButtonGroupOrientation, ButtonGroupSize, ButtonGroupVariant, ButtonRounded, ButtonSize, ButtonVariant, IconName, ToastLifecycleDetail, ToastPromiseOptions, ToastShowOptions } from "@karan9186/core";
 export { DatePickerParser } from "./components/ui-date-picker/ui-date-picker";
+export { DropdownMode, DropdownOption, DropdownVariant } from "./components/ui-dropdown/ui-dropdown";
 export { IconName as IconName1 } from "./components/icons/icon.registry";
 export { PanelRounded, PanelSize, PanelVariant } from "./components/ui-panel/ui-panel";
 export namespace Components {
@@ -267,7 +269,9 @@ export namespace Components {
          */
         "loading": boolean;
         "maxDate"?: Date;
+        "maxYear"?: number;
         "minDate"?: Date;
+        "minYear"?: number;
         /**
           * @default 'single'
          */
@@ -294,6 +298,69 @@ export namespace Components {
          */
         "showIcon": boolean;
         "value"?: Date | DateRangeValue | null;
+    }
+    interface UiDropdown {
+        /**
+          * @default false
+         */
+        "clearable": boolean;
+        /**
+          * @default null
+         */
+        "defaultValue": any;
+        /**
+          * @default false
+         */
+        "disabled": boolean;
+        "label"?: string;
+        /**
+          * @default false
+         */
+        "loading": boolean;
+        /**
+          * @default '300px'
+         */
+        "maxHeight": string;
+        /**
+          * @default 'none'
+         */
+        "maxWidth": string;
+        /**
+          * @default '200px'
+         */
+        "minWidth": string;
+        /**
+          * @default 'single'
+         */
+        "mode": DropdownMode;
+        /**
+          * @default undefined
+         */
+        "open": boolean;
+        /**
+          * @default []
+         */
+        "options": DropdownOption[];
+        /**
+          * @default 'Select...'
+         */
+        "placeholder": string;
+        /**
+          * @default false
+         */
+        "searchable": boolean;
+        /**
+          * @default false
+         */
+        "selectAll": boolean;
+        /**
+          * @default undefined
+         */
+        "value": any;
+        /**
+          * @default 'input'
+         */
+        "variant": DropdownVariant;
     }
     interface UiIcon {
         /**
@@ -447,6 +514,10 @@ export interface UiDatePickerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLUiDatePickerElement;
 }
+export interface UiDropdownCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLUiDropdownElement;
+}
 export interface UiInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLUiInputElement;
@@ -599,6 +670,25 @@ declare global {
         prototype: HTMLUiDatePickerElement;
         new (): HTMLUiDatePickerElement;
     };
+    interface HTMLUiDropdownElementEventMap {
+        "valueChange": any;
+        "openChange": boolean;
+        "search": string;
+    }
+    interface HTMLUiDropdownElement extends Components.UiDropdown, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLUiDropdownElementEventMap>(type: K, listener: (this: HTMLUiDropdownElement, ev: UiDropdownCustomEvent<HTMLUiDropdownElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLUiDropdownElementEventMap>(type: K, listener: (this: HTMLUiDropdownElement, ev: UiDropdownCustomEvent<HTMLUiDropdownElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLUiDropdownElement: {
+        prototype: HTMLUiDropdownElement;
+        new (): HTMLUiDropdownElement;
+    };
     interface HTMLUiIconElement extends Components.UiIcon, HTMLStencilElement {
     }
     var HTMLUiIconElement: {
@@ -686,6 +776,7 @@ declare global {
         "ui-button-group": HTMLUiButtonGroupElement;
         "ui-checkbox": HTMLUiCheckboxElement;
         "ui-date-picker": HTMLUiDatePickerElement;
+        "ui-dropdown": HTMLUiDropdownElement;
         "ui-icon": HTMLUiIconElement;
         "ui-input": HTMLUiInputElement;
         "ui-panel": HTMLUiPanelElement;
@@ -983,7 +1074,9 @@ declare namespace LocalJSX {
          */
         "loading"?: boolean;
         "maxDate"?: Date;
+        "maxYear"?: number;
         "minDate"?: Date;
+        "minYear"?: number;
         /**
           * @default 'single'
          */
@@ -1018,6 +1111,72 @@ declare namespace LocalJSX {
          */
         "showIcon"?: boolean;
         "value"?: Date | DateRangeValue | null;
+    }
+    interface UiDropdown {
+        /**
+          * @default false
+         */
+        "clearable"?: boolean;
+        /**
+          * @default null
+         */
+        "defaultValue"?: any;
+        /**
+          * @default false
+         */
+        "disabled"?: boolean;
+        "label"?: string;
+        /**
+          * @default false
+         */
+        "loading"?: boolean;
+        /**
+          * @default '300px'
+         */
+        "maxHeight"?: string;
+        /**
+          * @default 'none'
+         */
+        "maxWidth"?: string;
+        /**
+          * @default '200px'
+         */
+        "minWidth"?: string;
+        /**
+          * @default 'single'
+         */
+        "mode"?: DropdownMode;
+        "onOpenChange"?: (event: UiDropdownCustomEvent<boolean>) => void;
+        "onSearch"?: (event: UiDropdownCustomEvent<string>) => void;
+        "onValueChange"?: (event: UiDropdownCustomEvent<any>) => void;
+        /**
+          * @default undefined
+         */
+        "open"?: boolean;
+        /**
+          * @default []
+         */
+        "options"?: DropdownOption[];
+        /**
+          * @default 'Select...'
+         */
+        "placeholder"?: string;
+        /**
+          * @default false
+         */
+        "searchable"?: boolean;
+        /**
+          * @default false
+         */
+        "selectAll"?: boolean;
+        /**
+          * @default undefined
+         */
+        "value"?: any;
+        /**
+          * @default 'input'
+         */
+        "variant"?: DropdownVariant;
     }
     interface UiIcon {
         /**
@@ -1207,6 +1366,8 @@ declare namespace LocalJSX {
         "readonly": boolean;
         "open": boolean;
         "defaultOpen": boolean;
+        "minYear": number;
+        "maxYear": number;
         "showIcon": boolean;
         "iconOnly": boolean;
         "showActions": boolean;
@@ -1214,6 +1375,23 @@ declare namespace LocalJSX {
         "icon": string;
         "label": string;
         "debounce": number;
+    }
+    interface UiDropdownAttributes {
+        "value": string;
+        "defaultValue": string;
+        "mode": DropdownMode;
+        "variant": DropdownVariant;
+        "placeholder": string;
+        "label": string;
+        "disabled": boolean;
+        "loading": boolean;
+        "searchable": boolean;
+        "clearable": boolean;
+        "open": boolean;
+        "minWidth": string;
+        "maxWidth": string;
+        "maxHeight": string;
+        "selectAll": boolean;
     }
     interface UiIconAttributes {
         "name": IconName;
@@ -1263,6 +1441,7 @@ declare namespace LocalJSX {
         "ui-button-group": Omit<UiButtonGroup, keyof UiButtonGroupAttributes> & { [K in keyof UiButtonGroup & keyof UiButtonGroupAttributes]?: UiButtonGroup[K] } & { [K in keyof UiButtonGroup & keyof UiButtonGroupAttributes as `attr:${K}`]?: UiButtonGroupAttributes[K] } & { [K in keyof UiButtonGroup & keyof UiButtonGroupAttributes as `prop:${K}`]?: UiButtonGroup[K] };
         "ui-checkbox": Omit<UiCheckbox, keyof UiCheckboxAttributes> & { [K in keyof UiCheckbox & keyof UiCheckboxAttributes]?: UiCheckbox[K] } & { [K in keyof UiCheckbox & keyof UiCheckboxAttributes as `attr:${K}`]?: UiCheckboxAttributes[K] } & { [K in keyof UiCheckbox & keyof UiCheckboxAttributes as `prop:${K}`]?: UiCheckbox[K] };
         "ui-date-picker": Omit<UiDatePicker, keyof UiDatePickerAttributes> & { [K in keyof UiDatePicker & keyof UiDatePickerAttributes]?: UiDatePicker[K] } & { [K in keyof UiDatePicker & keyof UiDatePickerAttributes as `attr:${K}`]?: UiDatePickerAttributes[K] } & { [K in keyof UiDatePicker & keyof UiDatePickerAttributes as `prop:${K}`]?: UiDatePicker[K] };
+        "ui-dropdown": Omit<UiDropdown, keyof UiDropdownAttributes> & { [K in keyof UiDropdown & keyof UiDropdownAttributes]?: UiDropdown[K] } & { [K in keyof UiDropdown & keyof UiDropdownAttributes as `attr:${K}`]?: UiDropdownAttributes[K] } & { [K in keyof UiDropdown & keyof UiDropdownAttributes as `prop:${K}`]?: UiDropdown[K] };
         "ui-icon": Omit<UiIcon, keyof UiIconAttributes> & { [K in keyof UiIcon & keyof UiIconAttributes]?: UiIcon[K] } & { [K in keyof UiIcon & keyof UiIconAttributes as `attr:${K}`]?: UiIconAttributes[K] } & { [K in keyof UiIcon & keyof UiIconAttributes as `prop:${K}`]?: UiIcon[K] } & OneOf<"name", UiIcon["name"], UiIconAttributes["name"]>;
         "ui-input": Omit<UiInput, keyof UiInputAttributes> & { [K in keyof UiInput & keyof UiInputAttributes]?: UiInput[K] } & { [K in keyof UiInput & keyof UiInputAttributes as `attr:${K}`]?: UiInputAttributes[K] } & { [K in keyof UiInput & keyof UiInputAttributes as `prop:${K}`]?: UiInput[K] };
         "ui-panel": Omit<UiPanel, keyof UiPanelAttributes> & { [K in keyof UiPanel & keyof UiPanelAttributes]?: UiPanel[K] } & { [K in keyof UiPanel & keyof UiPanelAttributes as `attr:${K}`]?: UiPanelAttributes[K] } & { [K in keyof UiPanel & keyof UiPanelAttributes as `prop:${K}`]?: UiPanel[K] };
@@ -1301,6 +1480,7 @@ declare module "@stencil/core" {
             "ui-button-group": LocalJSX.IntrinsicElements["ui-button-group"] & JSXBase.HTMLAttributes<HTMLUiButtonGroupElement>;
             "ui-checkbox": LocalJSX.IntrinsicElements["ui-checkbox"] & JSXBase.HTMLAttributes<HTMLUiCheckboxElement>;
             "ui-date-picker": LocalJSX.IntrinsicElements["ui-date-picker"] & JSXBase.HTMLAttributes<HTMLUiDatePickerElement>;
+            "ui-dropdown": LocalJSX.IntrinsicElements["ui-dropdown"] & JSXBase.HTMLAttributes<HTMLUiDropdownElement>;
             "ui-icon": LocalJSX.IntrinsicElements["ui-icon"] & JSXBase.HTMLAttributes<HTMLUiIconElement>;
             "ui-input": LocalJSX.IntrinsicElements["ui-input"] & JSXBase.HTMLAttributes<HTMLUiInputElement>;
             "ui-panel": LocalJSX.IntrinsicElements["ui-panel"] & JSXBase.HTMLAttributes<HTMLUiPanelElement>;

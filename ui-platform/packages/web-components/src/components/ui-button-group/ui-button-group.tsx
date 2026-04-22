@@ -157,6 +157,8 @@ export class UiButtonGroup extends BaseComponent {
   @State() internalValue: string[] = [];
 
   // === PRIVATE METHODS ===
+  private keydownHandler!: (e: KeyboardEvent) => void;
+  private buttonClickHandlers: WeakMap<HTMLElement, () => void> = new WeakMap();
 
   private getButtonValue(button: HTMLElement): string | null {
     return button.getAttribute('value') || button.getAttribute('data-value') || null;
@@ -173,6 +175,15 @@ export class UiButtonGroup extends BaseComponent {
   }
 
   private applyButtonProps(): void {
+    // Clean up old click listeners before applying new ones
+    this.buttonElements.forEach((button) => {
+      const oldHandler = this.buttonClickHandlers.get(button);
+      if (oldHandler) {
+        button.removeEventListener('click', oldHandler);
+        this.buttonClickHandlers.delete(button);
+      }
+    });
+
     this.buttonElements.forEach((button, index) => {
       // Apply variant if not inherit
       if (this.variant !== 'inherit') {
@@ -205,13 +216,15 @@ export class UiButtonGroup extends BaseComponent {
         this.applyAttachedStyles(button, index);
       }
 
-      // Add click event listener for selection
-      button.addEventListener('click', () => {
+      // Add click event listener for selection (track for cleanup)
+      const clickHandler = () => {
         const buttonValue = this.getButtonValue(button);
         if (buttonValue) {
           this.onButtonClick(buttonValue);
         }
-      });
+      };
+      button.addEventListener('click', clickHandler);
+      this.buttonClickHandlers.set(button, clickHandler);
     });
   }
 
@@ -343,14 +356,31 @@ export class UiButtonGroup extends BaseComponent {
       subtree: false,
     });
 
-    // Add keyboard event listener
-    this.hostElement.addEventListener('keydown', (e) => this.handleKeyDown(e));
+    // Add keyboard event listener (store reference for cleanup)
+    this.keydownHandler = (e: KeyboardEvent) => this.handleKeyDown(e);
+    this.hostElement.addEventListener('keydown', this.keydownHandler);
   }
 
   disconnectedCallback() {
+    // Disconnect MutationObserver
     if (this.observer) {
       this.observer.disconnect();
+      this.observer = null;
     }
+
+    // Remove keyboard event listener
+    if (this.keydownHandler) {
+      this.hostElement.removeEventListener('keydown', this.keydownHandler);
+    }
+
+    // Remove all button click listeners
+    this.buttonElements.forEach((button) => {
+      const handler = this.buttonClickHandlers.get(button);
+      if (handler) {
+        button.removeEventListener('click', handler);
+      }
+    });
+    this.buttonClickHandlers = new WeakMap();
   }
 
   componentWillLoad() {

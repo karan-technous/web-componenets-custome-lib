@@ -23,6 +23,7 @@
  - [ui-button](../ui-button)
  - [ui-checkbox](../ui-checkbox)
  - [ui-date-picker](../ui-date-picker)
+ - [ui-dropdown](../ui-dropdown)
  - [ui-input](../ui-input)
  - [ui-toast](../ui-toast)
  - [ui-toggle](../ui-toggle)
@@ -34,6 +35,7 @@ graph TD;
   ui-button --> ui-icon
   ui-checkbox --> ui-icon
   ui-date-picker --> ui-icon
+  ui-dropdown --> ui-icon
   ui-input --> ui-icon
   ui-toast --> ui-icon
   ui-toggle --> ui-icon

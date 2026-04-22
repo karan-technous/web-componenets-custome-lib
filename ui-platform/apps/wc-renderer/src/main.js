@@ -185,18 +185,7 @@ function renderComponent(payload) {
         controls.appendChild(wrapper);
         return;
     }
-    if (payload.component === "panel") {
-        const panelHost = document.createElement("div");
-        panelHost.style.width = "100%";
-        panelHost.style.padding = "24px";
-        panelHost.style.display = "flex";
-        panelHost.style.justifyContent = "center";
-        panelHost.style.boxSizing = "border-box";
-        el.setAttribute("style", "display:block;width:100%;max-width:600px;");
-        panelHost.appendChild(el);
-        controls.appendChild(panelHost);
-        return;
-    }
+    
     controls.appendChild(el);
 }
 function applyAppearance(appearance) {

@@ -27,6 +27,8 @@ export type DatePickerProps = {
   defaultOpen?: boolean;
   minDate?: Date;
   maxDate?: Date;
+  minYear?: number;
+  maxYear?: number;
   showIcon?: boolean;
   iconOnly?: boolean;
   icon?: string;
@@ -59,6 +61,8 @@ export const DatePicker = forwardRef<HTMLElement, DatePickerProps>(
       defaultOpen,
       minDate,
       maxDate,
+      minYear,
+      maxYear,
       showIcon = true,
       iconOnly = false,
       icon,
@@ -98,6 +102,8 @@ export const DatePicker = forwardRef<HTMLElement, DatePickerProps>(
       el.defaultOpen = !!defaultOpen;
       el.minDate = minDate;
       el.maxDate = maxDate;
+      el.minYear = minYear;
+      el.maxYear = maxYear;
       el.showIcon = !!showIcon;
       el.iconOnly = !!iconOnly;
       el.icon = icon;
@@ -117,6 +123,8 @@ export const DatePicker = forwardRef<HTMLElement, DatePickerProps>(
       defaultOpen,
       minDate,
       maxDate,
+      minYear,
+      maxYear,
       showIcon,
       iconOnly,
       icon,

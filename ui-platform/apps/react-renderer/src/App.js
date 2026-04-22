@@ -235,17 +235,10 @@ function renderDynamicComponent(payload) {
             }));
         }
         return createElement("div", {
-            style: {
-                width: "100%",
-                padding: 24,
-                display: "flex",
-                justifyContent: "center",
-                boxSizing: "border-box",
-            },
+            style: {},
         }, createElement("ui-panel", {
             ...props,
             key: renderKey,
-            style: { width: "100%", maxWidth: "600px", display: "block" },
         }, slotElements));
     }
     const rendered = createElement(Wrapper, { ...props, key: renderKey }, children);
@@ -253,12 +246,7 @@ function renderDynamicComponent(payload) {
         return rendered;
     }
     return createElement("div", {
-        style: {
-            padding: 24,
-            maxWidth: 400,
-            width: "100%",
-            boxSizing: "border-box",
-        },
+        style: {},
     }, rendered);
 }
 export default function App() {

@@ -78,6 +78,32 @@ declare module "react" {
           parse: (match: RegExpMatchArray) => Date | { start: Date; end: Date };
         }>;
       };
+
+      "ui-dropdown": React.DetailedHTMLProps<
+        React.HTMLAttributes<HTMLElement>,
+        HTMLElement
+      > & {
+        value?: any;
+        defaultValue?: any;
+        options?: Array<{
+          label: string;
+          value: any;
+          disabled?: boolean;
+          group?: string;
+        }>;
+        mode?: "single" | "multiple";
+        variant?: "input" | "button" | "icon-only";
+        placeholder?: string;
+        label?: string;
+        disabled?: boolean;
+        loading?: boolean;
+        searchable?: boolean;
+        clearable?: boolean;
+        open?: boolean;
+        selectAll?: boolean;
+        minWidth?: string;
+        maxHeight?: string;
+      };
     }
   }
 }

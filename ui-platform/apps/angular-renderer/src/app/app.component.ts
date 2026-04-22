@@ -355,29 +355,10 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     }
 
-    if (payload.component === "date-picker") {
-      const hostElement = ref.location.nativeElement as HTMLElement;
-      hostElement.style.display = "block";
-      hostElement.style.width = "100%";
-      hostElement.style.maxWidth = "400px";
-      hostElement.style.margin = "24px";
-      hostElement.style.boxSizing = "border-box";
-    }
-
     const instance = ref.instance as {
       writeValue?: (value: unknown) => void;
       setDisabledState?: (disabled: boolean) => void;
     };
-
-    if (payload.component === "panel") {
-      const hostElement = ref.location.nativeElement as HTMLElement;
-      hostElement.style.display = "block";
-      hostElement.style.width = "100%";
-      hostElement.style.maxWidth = "600px";
-      hostElement.style.margin = "24px auto";
-      hostElement.style.background = "var(--ui-bg-subtle, var(--ui-bg))";
-      hostElement.style.boxSizing = "border-box";
-    }
 
     if (typeof instance.writeValue === "function") {
       if ("value" in payload.props) {

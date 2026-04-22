@@ -56,6 +56,7 @@ Supports multiple sizes, states, and animations
 
 ### Used by
 
+ - [ui-breadcrumb](../ui-breadcrumb)
  - [ui-button-group](../ui-button-group)
  - [ui-date-picker](../ui-date-picker)
 
@@ -67,6 +68,7 @@ Supports multiple sizes, states, and animations
 ```mermaid
 graph TD;
   ui-button --> ui-icon
+  ui-breadcrumb --> ui-button
   ui-button-group --> ui-button
   ui-date-picker --> ui-button
   style ui-button fill:#f9f,stroke:#333,stroke-width:4px

@@ -57,7 +57,7 @@ app-root {
 }
 
 .page {
-  max-width: 100%;
+  max-width: 96%;
   max-height: 100%;
   overflow: visible;
   gap: 10px;

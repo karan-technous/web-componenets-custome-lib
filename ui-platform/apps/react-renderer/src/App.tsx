@@ -1,7 +1,9 @@
-import {
+import React, {
   createElement,
   useEffect,
   useState,
+  useMemo,
+  useCallback,
   type ElementType,
   type ReactElement,
 } from "react";
@@ -300,17 +302,11 @@ function renderDynamicComponent(payload: StoryPayload): ReactElement {
       "div",
       {
         style: {
-          width: "100%",
-          padding: 24,
-          display: "flex",
-          justifyContent: "center",
-          boxSizing: "border-box",
         },
       },
       createElement("ui-panel" as any, {
         ...props,
         key: renderKey,
-        style: { width: "100%", maxWidth: "600px", display: "block" },
       }, slotElements),
     );
   }
@@ -324,49 +320,57 @@ function renderDynamicComponent(payload: StoryPayload): ReactElement {
     "div",
     {
       style: {
-        padding: 24,
-        maxWidth: 400,
-        width: "100%",
-        boxSizing: "border-box",
       },
     },
     rendered,
   );
 }
 
-export default function App() {
+const App = React.memo(function App() {
   const [payload, setPayload] = useState<StoryPayload>(parsePayloadFromUrl());
 
-  useEffect(() => {
-    document.documentElement.dataset.appearance = payload.appearance ?? "dark";
-  }, [payload.appearance]);
+  // Memoize appearance to prevent unnecessary effect runs
+  const appearance = useMemo(() => payload.appearance ?? "dark", [payload.appearance]);
 
   useEffect(() => {
-    const handler = (event: MessageEvent) => {
-      if (event.data?.type !== "UPDATE_STORY") {
-        return;
-      }
+    document.documentElement.dataset.appearance = appearance;
+  }, [appearance]);
 
-      const nextPayload = event.data.payload as StoryPayload;
-      if (!nextPayload || nextPayload.framework !== "react") {
-        return;
-      }
+  // Memoize message handler to prevent recreating on each render
+  const handleMessage = useCallback((event: MessageEvent) => {
+    if (event.data?.type !== "UPDATE_STORY") {
+      return;
+    }
 
+    const nextPayload = event.data.payload as StoryPayload;
+    if (!nextPayload || nextPayload.framework !== "react") {
+      return;
+    }
+
+    // Log only in development (check for Vite dev mode)
+    if (import.meta.env?.DEV) {
       console.log("React renderer received payload:", JSON.stringify(nextPayload, null, 2));
-      setPayload(nextPayload);
-    };
+    }
+    setPayload(nextPayload);
+  }, []);
 
-    window.addEventListener("message", handler);
+  useEffect(() => {
+    window.addEventListener("message", handleMessage);
     window.parent.postMessage({ type: "IFRAME_READY" }, "*");
 
-    return () => window.removeEventListener("message", handler);
-  }, []);
+    return () => window.removeEventListener("message", handleMessage);
+  }, [handleMessage]);
+
+  // Memoize rendered component to prevent unnecessary re-renders
+  const renderedComponent = useMemo(() => renderDynamicComponent(payload), [payload]);
 
   return (
     <main className="page">
       <section className="canvas">
-        <div className="controls">{renderDynamicComponent(payload)}</div>
+        <div className="controls">{renderedComponent}</div>
       </section>
     </main>
   );
-}
+});
+
+export default App;

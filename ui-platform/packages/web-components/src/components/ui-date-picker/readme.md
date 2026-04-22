@@ -19,7 +19,9 @@
 | `label`         | `label`        |             | `string`                              | `undefined`                      |
 | `loading`       | `loading`      |             | `boolean`                             | `false`                          |
 | `maxDate`       | --             |             | `Date`                                | `undefined`                      |
+| `maxYear`       | `max-year`     |             | `number`                              | `undefined`                      |
 | `minDate`       | --             |             | `Date`                                | `undefined`                      |
+| `minYear`       | `min-year`     |             | `number`                              | `undefined`                      |
 | `mode`          | `mode`         |             | `"range" \| "single"`                 | `'single'`                       |
 | `open`          | `open`         |             | `boolean`                             | `undefined`                      |
 | `placeholder`   | `placeholder`  |             | `string`                              | `'Enter date (e.g. 1 Jan 2020)'` |
@@ -51,6 +53,7 @@
 - [ui-button](../ui-button)
 - [ui-icon](../ui-icon)
 - [ui-input](../ui-input)
+- [ui-dropdown](../ui-dropdown)
 
 ### Graph
 ```mermaid
@@ -58,8 +61,13 @@ graph TD;
   ui-date-picker --> ui-button
   ui-date-picker --> ui-icon
   ui-date-picker --> ui-input
+  ui-date-picker --> ui-dropdown
   ui-button --> ui-icon
   ui-input --> ui-icon
+  ui-dropdown --> ui-icon
+  ui-dropdown --> ui-input
+  ui-dropdown --> ui-checkbox
+  ui-checkbox --> ui-icon
   style ui-date-picker fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

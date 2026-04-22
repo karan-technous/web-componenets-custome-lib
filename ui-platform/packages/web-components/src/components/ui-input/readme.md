@@ -33,6 +33,7 @@
 ### Used by
 
  - [ui-date-picker](../ui-date-picker)
+ - [ui-dropdown](../ui-dropdown)
 
 ### Depends on
 
@@ -43,6 +44,7 @@
 graph TD;
   ui-input --> ui-icon
   ui-date-picker --> ui-input
+  ui-dropdown --> ui-input
   style ui-input fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

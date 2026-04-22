@@ -25,6 +25,10 @@
 
 ## Dependencies
 
+### Used by
+
+ - [ui-dropdown](../ui-dropdown)
+
 ### Depends on
 
 - [ui-icon](../ui-icon)
@@ -33,6 +37,7 @@
 ```mermaid
 graph TD;
   ui-checkbox --> ui-icon
+  ui-dropdown --> ui-checkbox
   style ui-checkbox fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
