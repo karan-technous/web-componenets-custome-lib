@@ -691,7 +691,7 @@ export class UiDatePicker extends BaseComponent {
           <div class="trigger">
             {this.iconOnly ? (
               <ui-button
-                variant="ghost"
+                variant="outline"
                 size="icon-sm"
                 rounded="md"
                 disabled={this.disabled}
