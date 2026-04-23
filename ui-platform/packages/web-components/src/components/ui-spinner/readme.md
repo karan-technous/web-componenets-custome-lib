@@ -43,6 +43,21 @@ Supports theming, accessibility, and various display modes
 | `"label"` | Custom label text |
 
 
+## Dependencies
+
+### Used by
+
+ - [ui-checkbox-dropdown](../ui-checkbox-dropdown)
+ - [ui-dropdown](../ui-dropdown)
+
+### Graph
+```mermaid
+graph TD;
+  ui-checkbox-dropdown --> ui-spinner
+  ui-dropdown --> ui-spinner
+  style ui-spinner fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*

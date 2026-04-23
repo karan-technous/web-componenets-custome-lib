@@ -232,7 +232,9 @@ export class UiCheckboxDropdown {
             aria-multiselectable="true"
           >
             {this.loading ? (
-              <div class="loading">Loading...</div>
+              <div class="loading">
+                <ui-spinner variant="circular" size="sm" />
+              </div>
             ) : (
               <div class="list">
                 {/* Select All */}

@@ -51,15 +51,17 @@
 
 ### Depends on
 
-- [ui-icon](../ui-icon)
 - [ui-input](../ui-input)
+- [ui-icon](../ui-icon)
+- [ui-spinner](../ui-spinner)
 - [ui-checkbox](../ui-checkbox)
 
 ### Graph
 ```mermaid
 graph TD;
-  ui-dropdown --> ui-icon
   ui-dropdown --> ui-input
+  ui-dropdown --> ui-icon
+  ui-dropdown --> ui-spinner
   ui-dropdown --> ui-checkbox
   ui-input --> ui-icon
   ui-checkbox --> ui-icon

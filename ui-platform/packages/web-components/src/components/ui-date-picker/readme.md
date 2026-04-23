@@ -64,8 +64,9 @@ graph TD;
   ui-date-picker --> ui-dropdown
   ui-button --> ui-icon
   ui-input --> ui-icon
-  ui-dropdown --> ui-icon
   ui-dropdown --> ui-input
+  ui-dropdown --> ui-icon
+  ui-dropdown --> ui-spinner
   ui-dropdown --> ui-checkbox
   ui-checkbox --> ui-icon
   style ui-date-picker fill:#f9f,stroke:#333,stroke-width:4px

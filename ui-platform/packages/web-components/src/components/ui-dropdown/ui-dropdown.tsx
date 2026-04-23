@@ -327,37 +327,30 @@ export class UiDropdown extends BaseComponent {
           {this.variant === 'input' && (
             <div
               class="dropdown-trigger"
-              ref={(el) => (this.triggerRef = el as HTMLElement)}
               onClick={() => !this.disabled && this.toggle()}
-              onKeyDown={this.handleKeyDown}
-              tabIndex={this.disabled ? -1 : 0}
-              role="combobox"
-              aria-expanded={this.internalOpen}
-              aria-haspopup="listbox"
-              aria-disabled={this.disabled}
             >
-              {this.label && <label class="dropdown-label">{this.label}</label>}
-              <div class="dropdown-input">
-                <span class="dropdown-value">
-                  {hasSelection ? this.displayValue : this.placeholder}
-                </span>
+              <ui-input
+                placeholder={this.placeholder}
+                disabled={this.disabled}
+                label={this.label}
+                value={hasSelection ? this.displayValue : ''}
+                readonly={true}
+                icon={this.internalOpen ? 'ChevronUp' : 'ChevronDown'}
+                iconAriaLabel={this.internalOpen ? 'Close dropdown' : 'Open dropdown'}
+                onKeyDown={this.handleKeyDown}
+              >
                 {this.clearable && hasSelection && (
-                  <button
-                    class="dropdown-clear"
-                    onClick={this.clear}
-                    aria-label="Clear selection"
-                  >
-                    <ui-icon name="X" size="sm"></ui-icon>
-                  </button>
+                  <span slot="suffix">
+                    <button
+                      class="dropdown-clear"
+                      onClick={this.clear}
+                      aria-label="Clear selection"
+                    >
+                      <ui-icon name="X" size="sm"></ui-icon>
+                    </button>
+                  </span>
                 )}
-                <span class="dropdown-chevron">
-                  {this.loading ? (
-                    <ui-icon name="Loader2" size="sm" class="spin"></ui-icon>
-                  ) : (
-                    <ui-icon name="ChevronDown" size="sm"></ui-icon>
-                  )}
-                </span>
-              </div>
+              </ui-input>
             </div>
           )}
 
@@ -374,11 +367,7 @@ export class UiDropdown extends BaseComponent {
               aria-haspopup="listbox"
             >
               {hasSelection ? this.displayValue : this.placeholder}
-              {this.loading ? (
-                <ui-icon name="Loader2" size="sm" class="spin"></ui-icon>
-              ) : (
-                <ui-icon name="ChevronDown" size="sm"></ui-icon>
-              )}
+              <ui-icon name="ChevronDown" size="sm"></ui-icon>
             </button>
           )}
 
@@ -409,6 +398,12 @@ export class UiDropdown extends BaseComponent {
             role="listbox"
             aria-orientation="vertical"
           >
+            {this.loading ? (
+              <div class="dropdown-loading">
+                <ui-spinner variant="circular" size="sm" />
+              </div>
+            ) : (
+              <div>
               {/* Search */}
               {this.searchable && (
                 <div class="dropdown-search">
@@ -482,6 +477,8 @@ export class UiDropdown extends BaseComponent {
                   })}
                 </div>
               ))}
+              </div>
+            )}
             </div>
         </div>
       </Host>

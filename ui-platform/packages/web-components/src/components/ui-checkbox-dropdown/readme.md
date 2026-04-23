@@ -35,12 +35,14 @@
 ### Depends on
 
 - [ui-input](../ui-input)
+- [ui-spinner](../ui-spinner)
 - [ui-checkbox](../ui-checkbox)
 
 ### Graph
 ```mermaid
 graph TD;
   ui-checkbox-dropdown --> ui-input
+  ui-checkbox-dropdown --> ui-spinner
   ui-checkbox-dropdown --> ui-checkbox
   ui-input --> ui-icon
   ui-checkbox --> ui-icon
