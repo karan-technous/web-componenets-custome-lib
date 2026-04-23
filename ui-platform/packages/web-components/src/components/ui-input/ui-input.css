@@ -18,6 +18,15 @@
   transition: border-color 0.16s ease, box-shadow 0.16s ease;
 }
 
+.input-wrap--error {
+  border-color: var(--ui-error, #e53e3e);
+}
+
+.input-wrap--error:focus-within {
+  border-color: var(--ui-error, #e53e3e);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--ui-error, #e53e3e) 35%, transparent);
+}
+
 .input-label {
   position: absolute;
   left: 10px;
@@ -57,6 +66,18 @@
   opacity: 0.6;
 }
 
+/* Prefix slot for avatars */
+::slotted([slot="prefix"]) {
+  display: flex;
+  align-items: center;
+  margin-right: -8px;
+  flex-shrink: 0;
+}
+
+.input-wrap--with-avatar {
+  padding-left: 4px;
+}
+
 .input {
   flex: 1;
   min-width: 0;
@@ -77,6 +98,10 @@
 
 .input:disabled {
   cursor: not-allowed;
+}
+
+.input:readonly {
+  cursor: pointer;
 }
 
 .icon-button {

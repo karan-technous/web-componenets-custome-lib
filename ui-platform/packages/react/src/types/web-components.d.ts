@@ -53,6 +53,11 @@ declare module "react" {
         HTMLElement
       >;
 
+      "ui-checkbox-dropdown": React.DetailedHTMLProps<
+        React.HTMLAttributes<HTMLElement>,
+        HTMLElement
+      > & { label?: string; placeholder?: string; supportingText?: string; disabled?: boolean; required?: boolean; loading?: boolean; showAvatar?: boolean; ref: RefObject<any>; };
+
       "ui-date-picker": React.DetailedHTMLProps<
         React.HTMLAttributes<HTMLElement>,
         HTMLElement
@@ -103,6 +108,23 @@ declare module "react" {
         selectAll?: boolean;
         minWidth?: string;
         maxHeight?: string;
+      };
+
+      "ui-spinner": React.DetailedHTMLProps<
+        React.HTMLAttributes<HTMLElement>,
+        HTMLElement
+      > & {
+        variant?: "circular" | "dots" | "bars" | "pulse" | "ring";
+        size?: "xs" | "sm" | "md" | "lg" | "xl" | number;
+        speed?: "slow" | "normal" | "fast" | number;
+        color?: string;
+        trackColor?: string;
+        loading?: boolean;
+        overlay?: boolean;
+        inline?: boolean;
+        center?: boolean;
+        label?: string;
+        subLabel?: string;
       };
     }
   }

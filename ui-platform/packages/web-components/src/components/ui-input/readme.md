@@ -10,11 +10,14 @@
 | Property        | Attribute         | Description | Type                           | Default               |
 | --------------- | ----------------- | ----------- | ------------------------------ | --------------------- |
 | `disabled`      | `disabled`        |             | `boolean`                      | `false`               |
+| `error`         | `error`           |             | `boolean`                      | `false`               |
 | `icon`          | `icon`            |             | `string`                       | `undefined`           |
 | `iconAriaLabel` | `icon-aria-label` |             | `string`                       | `'Input icon action'` |
 | `label`         | `label`           |             | `string`                       | `undefined`           |
 | `placeholder`   | `placeholder`     |             | `string`                       | `''`                  |
+| `readonly`      | `readonly`        |             | `boolean`                      | `false`               |
 | `rounded`       | `rounded`         |             | `"md" \| "sm" \| "xl" \| "xs"` | `'md'`                |
+| `showAvatar`    | `show-avatar`     |             | `boolean`                      | `false`               |
 | `type`          | `type`            |             | `"number" \| "text"`           | `'text'`              |
 | `value`         | `value`           |             | `string`                       | `''`                  |
 
@@ -32,6 +35,7 @@
 
 ### Used by
 
+ - [ui-checkbox-dropdown](../ui-checkbox-dropdown)
  - [ui-date-picker](../ui-date-picker)
  - [ui-dropdown](../ui-dropdown)
 
@@ -43,6 +47,7 @@
 ```mermaid
 graph TD;
   ui-input --> ui-icon
+  ui-checkbox-dropdown --> ui-input
   ui-date-picker --> ui-input
   ui-dropdown --> ui-input
   style ui-input fill:#f9f,stroke:#333,stroke-width:4px

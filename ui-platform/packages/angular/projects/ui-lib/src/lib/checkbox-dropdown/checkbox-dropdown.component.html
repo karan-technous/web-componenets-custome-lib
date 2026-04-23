@@ -1,0 +1,15 @@
+<ui-checkbox-dropdown
+  #wc
+  [label]="label()"
+  [placeholder]="placeholder()"
+  [supportingText]="supportingText()"
+  [disabled]="disabledSig()"
+  [required]="required()"
+  [errorMessage]="errorMessage()"
+  [loading]="loading()"
+  [showAvatar]="showAvatar()"
+  [options]="options()"
+  [showSelectAll]="showSelectAll()"
+>
+  <ng-content></ng-content>
+</ui-checkbox-dropdown>

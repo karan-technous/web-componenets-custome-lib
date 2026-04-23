@@ -6,15 +6,19 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { BadgeColor, BadgeShape, BadgeSize, BadgeVariant, BreadcrumbEventDetail, BreadcrumbSeparator, ButtonEventDetail, ButtonGroupEventDetail, ButtonGroupOrientation, ButtonGroupSize, ButtonGroupVariant, ButtonRounded, ButtonSize, ButtonVariant, IconName, ToastLifecycleDetail, ToastPromiseOptions, ToastShowOptions } from "@karan9186/core";
+import { DropdownOption } from "./components/ui-checkbox-dropdown/ui-checkbox-dropdown";
 import { DatePickerParser } from "./components/ui-date-picker/ui-date-picker";
-import { DropdownMode, DropdownOption, DropdownVariant } from "./components/ui-dropdown/ui-dropdown";
+import { DropdownMode, DropdownOption as DropdownOption1, DropdownVariant } from "./components/ui-dropdown/ui-dropdown";
 import { IconName as IconName1 } from "./components/icons/icon.registry";
 import { PanelRounded, PanelSize, PanelVariant } from "./components/ui-panel/ui-panel";
+import { SpinnerSize, SpinnerSpeed, SpinnerVariant } from "./components/ui-spinner/ui-spinner";
 export { BadgeColor, BadgeShape, BadgeSize, BadgeVariant, BreadcrumbEventDetail, BreadcrumbSeparator, ButtonEventDetail, ButtonGroupEventDetail, ButtonGroupOrientation, ButtonGroupSize, ButtonGroupVariant, ButtonRounded, ButtonSize, ButtonVariant, IconName, ToastLifecycleDetail, ToastPromiseOptions, ToastShowOptions } from "@karan9186/core";
+export { DropdownOption } from "./components/ui-checkbox-dropdown/ui-checkbox-dropdown";
 export { DatePickerParser } from "./components/ui-date-picker/ui-date-picker";
-export { DropdownMode, DropdownOption, DropdownVariant } from "./components/ui-dropdown/ui-dropdown";
+export { DropdownMode, DropdownOption as DropdownOption1, DropdownVariant } from "./components/ui-dropdown/ui-dropdown";
 export { IconName as IconName1 } from "./components/icons/icon.registry";
 export { PanelRounded, PanelSize, PanelVariant } from "./components/ui-panel/ui-panel";
+export { SpinnerSize, SpinnerSpeed, SpinnerVariant } from "./components/ui-spinner/ui-spinner";
 export namespace Components {
     /**
      * UI Badge Component
@@ -233,7 +237,15 @@ export namespace Components {
         /**
           * @default false
          */
+        "controlled": boolean;
+        /**
+          * @default false
+         */
         "disabled": boolean;
+        /**
+          * @default false
+         */
+        "indeterminate": boolean;
         /**
           * @default ''
          */
@@ -242,6 +254,43 @@ export namespace Components {
           * @default 'md'
          */
         "size": 'sm' | 'md' | 'lg';
+    }
+    interface UiCheckboxDropdown {
+        /**
+          * @default false
+         */
+        "disabled": boolean;
+        "errorMessage"?: string;
+        "label": string;
+        /**
+          * @default false
+         */
+        "loading": boolean;
+        /**
+          * @default []
+         */
+        "options": DropdownOption[];
+        /**
+          * @default 'Select...'
+         */
+        "placeholder": string;
+        /**
+          * @default false
+         */
+        "required": boolean;
+        /**
+          * @default false
+         */
+        "showAvatar": boolean;
+        /**
+          * @default true
+         */
+        "showSelectAll": boolean;
+        "supportingText"?: string;
+        /**
+          * @default []
+         */
+        "value": string[];
     }
     interface UiDatePicker {
         "customParsers"?: DatePickerParser[];
@@ -340,7 +389,7 @@ export namespace Components {
         /**
           * @default []
          */
-        "options": DropdownOption[];
+        "options": DropdownOption1[];
         /**
           * @default 'Select...'
          */
@@ -382,6 +431,10 @@ export namespace Components {
           * @default false
          */
         "disabled": boolean;
+        /**
+          * @default false
+         */
+        "error": boolean;
         "icon"?: string;
         /**
           * @default 'Input icon action'
@@ -393,9 +446,17 @@ export namespace Components {
          */
         "placeholder": string;
         /**
+          * @default false
+         */
+        "readonly": boolean;
+        /**
           * @default 'md'
          */
         "rounded": 'xs' | 'sm' | 'md' | 'xl';
+        /**
+          * @default false
+         */
+        "showAvatar": boolean;
         /**
           * @default 'text'
          */
@@ -464,6 +525,66 @@ export namespace Components {
          */
         "variant": PanelVariant;
     }
+    /**
+     * UI Spinner Component
+     * Highly customizable loading spinner with multiple animation variants
+     * Supports theming, accessibility, and various display modes
+     * @event shown - Emitted when spinner becomes visible
+     * @event hidden - Emitted when spinner becomes hidden
+     */
+    interface UiSpinner {
+        /**
+          * Center the spinner in its container
+          * @default false
+         */
+        "center": boolean;
+        /**
+          * Primary color for the spinner Uses CSS variable --ui-primary if not specified
+         */
+        "color"?: string;
+        /**
+          * Display inline with text (no flex center)
+          * @default false
+         */
+        "inline": boolean;
+        /**
+          * Primary label text (e.g., "Loading...")
+         */
+        "label"?: string;
+        /**
+          * Whether the spinner is visible
+          * @default true
+         */
+        "loading": boolean;
+        /**
+          * Display as fullscreen/container overlay
+          * @default false
+         */
+        "overlay": boolean;
+        /**
+          * Size of the spinner
+          * @default 'md'
+         */
+        "size": SpinnerSize | number;
+        /**
+          * Animation speed
+          * @default 'normal'
+         */
+        "speed": SpinnerSpeed | number;
+        /**
+          * Secondary label text (e.g., "Please wait")
+         */
+        "subLabel"?: string;
+        /**
+          * Background/track color Uses CSS variable --ui-spinner-track if not specified
+         */
+        "trackColor"?: string;
+        /**
+          * Animation variant style
+          * @default 'circular'
+         */
+        "variant": SpinnerVariant;
+    }
     interface UiToast {
         "defaultDuration": number;
         "dismiss": (id?: string) => Promise<void>;
@@ -510,6 +631,10 @@ export interface UiCheckboxCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLUiCheckboxElement;
 }
+export interface UiCheckboxDropdownCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLUiCheckboxDropdownElement;
+}
 export interface UiDatePickerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLUiDatePickerElement;
@@ -525,6 +650,10 @@ export interface UiInputCustomEvent<T> extends CustomEvent<T> {
 export interface UiPanelCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLUiPanelElement;
+}
+export interface UiSpinnerCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLUiSpinnerElement;
 }
 export interface UiToastCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -631,6 +760,7 @@ declare global {
     interface HTMLUiCheckboxElementEventMap {
         "uiChange": boolean;
         "uiBlur": void;
+        "uiClick": MouseEvent;
     }
     interface HTMLUiCheckboxElement extends Components.UiCheckbox, HTMLStencilElement {
         addEventListener<K extends keyof HTMLUiCheckboxElementEventMap>(type: K, listener: (this: HTMLUiCheckboxElement, ev: UiCheckboxCustomEvent<HTMLUiCheckboxElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -645,6 +775,24 @@ declare global {
     var HTMLUiCheckboxElement: {
         prototype: HTMLUiCheckboxElement;
         new (): HTMLUiCheckboxElement;
+    };
+    interface HTMLUiCheckboxDropdownElementEventMap {
+        "valueChange": string[];
+        "uiBlur": void;
+    }
+    interface HTMLUiCheckboxDropdownElement extends Components.UiCheckboxDropdown, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLUiCheckboxDropdownElementEventMap>(type: K, listener: (this: HTMLUiCheckboxDropdownElement, ev: UiCheckboxDropdownCustomEvent<HTMLUiCheckboxDropdownElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLUiCheckboxDropdownElementEventMap>(type: K, listener: (this: HTMLUiCheckboxDropdownElement, ev: UiCheckboxDropdownCustomEvent<HTMLUiCheckboxDropdownElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLUiCheckboxDropdownElement: {
+        prototype: HTMLUiCheckboxDropdownElement;
+        new (): HTMLUiCheckboxDropdownElement;
     };
     interface HTMLUiDatePickerElementEventMap {
         "onChange": Date | DateRangeValue;
@@ -734,6 +882,31 @@ declare global {
         prototype: HTMLUiPanelElement;
         new (): HTMLUiPanelElement;
     };
+    interface HTMLUiSpinnerElementEventMap {
+        "shown": void;
+        "hidden": void;
+    }
+    /**
+     * UI Spinner Component
+     * Highly customizable loading spinner with multiple animation variants
+     * Supports theming, accessibility, and various display modes
+     * @event shown - Emitted when spinner becomes visible
+     * @event hidden - Emitted when spinner becomes hidden
+     */
+    interface HTMLUiSpinnerElement extends Components.UiSpinner, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLUiSpinnerElementEventMap>(type: K, listener: (this: HTMLUiSpinnerElement, ev: UiSpinnerCustomEvent<HTMLUiSpinnerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLUiSpinnerElementEventMap>(type: K, listener: (this: HTMLUiSpinnerElement, ev: UiSpinnerCustomEvent<HTMLUiSpinnerElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLUiSpinnerElement: {
+        prototype: HTMLUiSpinnerElement;
+        new (): HTMLUiSpinnerElement;
+    };
     interface HTMLUiToastElementEventMap {
         "toastShow": ToastLifecycleDetail;
         "toastClose": ToastLifecycleDetail;
@@ -775,11 +948,13 @@ declare global {
         "ui-button": HTMLUiButtonElement;
         "ui-button-group": HTMLUiButtonGroupElement;
         "ui-checkbox": HTMLUiCheckboxElement;
+        "ui-checkbox-dropdown": HTMLUiCheckboxDropdownElement;
         "ui-date-picker": HTMLUiDatePickerElement;
         "ui-dropdown": HTMLUiDropdownElement;
         "ui-icon": HTMLUiIconElement;
         "ui-input": HTMLUiInputElement;
         "ui-panel": HTMLUiPanelElement;
+        "ui-spinner": HTMLUiSpinnerElement;
         "ui-toast": HTMLUiToastElement;
         "ui-toggle": HTMLUiToggleElement;
     }
@@ -1036,17 +1211,65 @@ declare namespace LocalJSX {
         /**
           * @default false
          */
+        "controlled"?: boolean;
+        /**
+          * @default false
+         */
         "disabled"?: boolean;
+        /**
+          * @default false
+         */
+        "indeterminate"?: boolean;
         /**
           * @default ''
          */
         "label"?: string;
         "onUiBlur"?: (event: UiCheckboxCustomEvent<void>) => void;
         "onUiChange"?: (event: UiCheckboxCustomEvent<boolean>) => void;
+        "onUiClick"?: (event: UiCheckboxCustomEvent<MouseEvent>) => void;
         /**
           * @default 'md'
          */
         "size"?: 'sm' | 'md' | 'lg';
+    }
+    interface UiCheckboxDropdown {
+        /**
+          * @default false
+         */
+        "disabled"?: boolean;
+        "errorMessage"?: string;
+        "label"?: string;
+        /**
+          * @default false
+         */
+        "loading"?: boolean;
+        "onUiBlur"?: (event: UiCheckboxDropdownCustomEvent<void>) => void;
+        "onValueChange"?: (event: UiCheckboxDropdownCustomEvent<string[]>) => void;
+        /**
+          * @default []
+         */
+        "options"?: DropdownOption[];
+        /**
+          * @default 'Select...'
+         */
+        "placeholder"?: string;
+        /**
+          * @default false
+         */
+        "required"?: boolean;
+        /**
+          * @default false
+         */
+        "showAvatar"?: boolean;
+        /**
+          * @default true
+         */
+        "showSelectAll"?: boolean;
+        "supportingText"?: string;
+        /**
+          * @default []
+         */
+        "value"?: string[];
     }
     interface UiDatePicker {
         "customParsers"?: DatePickerParser[];
@@ -1156,7 +1379,7 @@ declare namespace LocalJSX {
         /**
           * @default []
          */
-        "options"?: DropdownOption[];
+        "options"?: DropdownOption1[];
         /**
           * @default 'Select...'
          */
@@ -1198,6 +1421,10 @@ declare namespace LocalJSX {
           * @default false
          */
         "disabled"?: boolean;
+        /**
+          * @default false
+         */
+        "error"?: boolean;
         "icon"?: string;
         /**
           * @default 'Input icon action'
@@ -1212,9 +1439,17 @@ declare namespace LocalJSX {
          */
         "placeholder"?: string;
         /**
+          * @default false
+         */
+        "readonly"?: boolean;
+        /**
           * @default 'md'
          */
         "rounded"?: 'xs' | 'sm' | 'md' | 'xl';
+        /**
+          * @default false
+         */
+        "showAvatar"?: boolean;
         /**
           * @default 'text'
          */
@@ -1280,6 +1515,74 @@ declare namespace LocalJSX {
           * @default 'default'
          */
         "variant"?: PanelVariant;
+    }
+    /**
+     * UI Spinner Component
+     * Highly customizable loading spinner with multiple animation variants
+     * Supports theming, accessibility, and various display modes
+     * @event shown - Emitted when spinner becomes visible
+     * @event hidden - Emitted when spinner becomes hidden
+     */
+    interface UiSpinner {
+        /**
+          * Center the spinner in its container
+          * @default false
+         */
+        "center"?: boolean;
+        /**
+          * Primary color for the spinner Uses CSS variable --ui-primary if not specified
+         */
+        "color"?: string;
+        /**
+          * Display inline with text (no flex center)
+          * @default false
+         */
+        "inline"?: boolean;
+        /**
+          * Primary label text (e.g., "Loading...")
+         */
+        "label"?: string;
+        /**
+          * Whether the spinner is visible
+          * @default true
+         */
+        "loading"?: boolean;
+        /**
+          * Emitted when spinner becomes hidden
+         */
+        "onHidden"?: (event: UiSpinnerCustomEvent<void>) => void;
+        /**
+          * Emitted when spinner becomes visible
+         */
+        "onShown"?: (event: UiSpinnerCustomEvent<void>) => void;
+        /**
+          * Display as fullscreen/container overlay
+          * @default false
+         */
+        "overlay"?: boolean;
+        /**
+          * Size of the spinner
+          * @default 'md'
+         */
+        "size"?: SpinnerSize | number;
+        /**
+          * Animation speed
+          * @default 'normal'
+         */
+        "speed"?: SpinnerSpeed | number;
+        /**
+          * Secondary label text (e.g., "Please wait")
+         */
+        "subLabel"?: string;
+        /**
+          * Background/track color Uses CSS variable --ui-spinner-track if not specified
+         */
+        "trackColor"?: string;
+        /**
+          * Animation variant style
+          * @default 'circular'
+         */
+        "variant"?: SpinnerVariant;
     }
     interface UiToast {
         "defaultDuration"?: number;
@@ -1355,8 +1658,21 @@ declare namespace LocalJSX {
     interface UiCheckboxAttributes {
         "checked": boolean;
         "disabled": boolean;
+        "indeterminate": boolean;
         "size": 'sm' | 'md' | 'lg';
         "label": string;
+        "controlled": boolean;
+    }
+    interface UiCheckboxDropdownAttributes {
+        "label": string;
+        "supportingText": string;
+        "placeholder": string;
+        "disabled": boolean;
+        "required": boolean;
+        "errorMessage": string;
+        "loading": boolean;
+        "showAvatar": boolean;
+        "showSelectAll": boolean;
     }
     interface UiDatePickerAttributes {
         "mode": DatePickerMode;
@@ -1408,6 +1724,9 @@ declare namespace LocalJSX {
         "rounded": 'xs' | 'sm' | 'md' | 'xl';
         "icon": string;
         "iconAriaLabel": string;
+        "readonly": boolean;
+        "showAvatar": boolean;
+        "error": boolean;
     }
     interface UiPanelAttributes {
         "variant": PanelVariant;
@@ -1419,6 +1738,19 @@ declare namespace LocalJSX {
         "disabled": boolean;
         "stickyHeader": boolean;
         "lazy": boolean;
+    }
+    interface UiSpinnerAttributes {
+        "variant": SpinnerVariant;
+        "size": string;
+        "speed": string;
+        "color": string;
+        "trackColor": string;
+        "loading": boolean;
+        "overlay": boolean;
+        "inline": boolean;
+        "center": boolean;
+        "label": string;
+        "subLabel": string;
     }
     interface UiToastAttributes {
         "maxVisible": number;
@@ -1440,11 +1772,13 @@ declare namespace LocalJSX {
         "ui-button": Omit<UiButton, keyof UiButtonAttributes> & { [K in keyof UiButton & keyof UiButtonAttributes]?: UiButton[K] } & { [K in keyof UiButton & keyof UiButtonAttributes as `attr:${K}`]?: UiButtonAttributes[K] } & { [K in keyof UiButton & keyof UiButtonAttributes as `prop:${K}`]?: UiButton[K] };
         "ui-button-group": Omit<UiButtonGroup, keyof UiButtonGroupAttributes> & { [K in keyof UiButtonGroup & keyof UiButtonGroupAttributes]?: UiButtonGroup[K] } & { [K in keyof UiButtonGroup & keyof UiButtonGroupAttributes as `attr:${K}`]?: UiButtonGroupAttributes[K] } & { [K in keyof UiButtonGroup & keyof UiButtonGroupAttributes as `prop:${K}`]?: UiButtonGroup[K] };
         "ui-checkbox": Omit<UiCheckbox, keyof UiCheckboxAttributes> & { [K in keyof UiCheckbox & keyof UiCheckboxAttributes]?: UiCheckbox[K] } & { [K in keyof UiCheckbox & keyof UiCheckboxAttributes as `attr:${K}`]?: UiCheckboxAttributes[K] } & { [K in keyof UiCheckbox & keyof UiCheckboxAttributes as `prop:${K}`]?: UiCheckbox[K] };
+        "ui-checkbox-dropdown": Omit<UiCheckboxDropdown, keyof UiCheckboxDropdownAttributes> & { [K in keyof UiCheckboxDropdown & keyof UiCheckboxDropdownAttributes]?: UiCheckboxDropdown[K] } & { [K in keyof UiCheckboxDropdown & keyof UiCheckboxDropdownAttributes as `attr:${K}`]?: UiCheckboxDropdownAttributes[K] } & { [K in keyof UiCheckboxDropdown & keyof UiCheckboxDropdownAttributes as `prop:${K}`]?: UiCheckboxDropdown[K] };
         "ui-date-picker": Omit<UiDatePicker, keyof UiDatePickerAttributes> & { [K in keyof UiDatePicker & keyof UiDatePickerAttributes]?: UiDatePicker[K] } & { [K in keyof UiDatePicker & keyof UiDatePickerAttributes as `attr:${K}`]?: UiDatePickerAttributes[K] } & { [K in keyof UiDatePicker & keyof UiDatePickerAttributes as `prop:${K}`]?: UiDatePicker[K] };
         "ui-dropdown": Omit<UiDropdown, keyof UiDropdownAttributes> & { [K in keyof UiDropdown & keyof UiDropdownAttributes]?: UiDropdown[K] } & { [K in keyof UiDropdown & keyof UiDropdownAttributes as `attr:${K}`]?: UiDropdownAttributes[K] } & { [K in keyof UiDropdown & keyof UiDropdownAttributes as `prop:${K}`]?: UiDropdown[K] };
         "ui-icon": Omit<UiIcon, keyof UiIconAttributes> & { [K in keyof UiIcon & keyof UiIconAttributes]?: UiIcon[K] } & { [K in keyof UiIcon & keyof UiIconAttributes as `attr:${K}`]?: UiIconAttributes[K] } & { [K in keyof UiIcon & keyof UiIconAttributes as `prop:${K}`]?: UiIcon[K] } & OneOf<"name", UiIcon["name"], UiIconAttributes["name"]>;
         "ui-input": Omit<UiInput, keyof UiInputAttributes> & { [K in keyof UiInput & keyof UiInputAttributes]?: UiInput[K] } & { [K in keyof UiInput & keyof UiInputAttributes as `attr:${K}`]?: UiInputAttributes[K] } & { [K in keyof UiInput & keyof UiInputAttributes as `prop:${K}`]?: UiInput[K] };
         "ui-panel": Omit<UiPanel, keyof UiPanelAttributes> & { [K in keyof UiPanel & keyof UiPanelAttributes]?: UiPanel[K] } & { [K in keyof UiPanel & keyof UiPanelAttributes as `attr:${K}`]?: UiPanelAttributes[K] } & { [K in keyof UiPanel & keyof UiPanelAttributes as `prop:${K}`]?: UiPanel[K] };
+        "ui-spinner": Omit<UiSpinner, keyof UiSpinnerAttributes> & { [K in keyof UiSpinner & keyof UiSpinnerAttributes]?: UiSpinner[K] } & { [K in keyof UiSpinner & keyof UiSpinnerAttributes as `attr:${K}`]?: UiSpinnerAttributes[K] } & { [K in keyof UiSpinner & keyof UiSpinnerAttributes as `prop:${K}`]?: UiSpinner[K] };
         "ui-toast": Omit<UiToast, keyof UiToastAttributes> & { [K in keyof UiToast & keyof UiToastAttributes]?: UiToast[K] } & { [K in keyof UiToast & keyof UiToastAttributes as `attr:${K}`]?: UiToastAttributes[K] } & { [K in keyof UiToast & keyof UiToastAttributes as `prop:${K}`]?: UiToast[K] };
         "ui-toggle": Omit<UiToggle, keyof UiToggleAttributes> & { [K in keyof UiToggle & keyof UiToggleAttributes]?: UiToggle[K] } & { [K in keyof UiToggle & keyof UiToggleAttributes as `attr:${K}`]?: UiToggleAttributes[K] } & { [K in keyof UiToggle & keyof UiToggleAttributes as `prop:${K}`]?: UiToggle[K] };
     }
@@ -1479,11 +1813,20 @@ declare module "@stencil/core" {
              */
             "ui-button-group": LocalJSX.IntrinsicElements["ui-button-group"] & JSXBase.HTMLAttributes<HTMLUiButtonGroupElement>;
             "ui-checkbox": LocalJSX.IntrinsicElements["ui-checkbox"] & JSXBase.HTMLAttributes<HTMLUiCheckboxElement>;
+            "ui-checkbox-dropdown": LocalJSX.IntrinsicElements["ui-checkbox-dropdown"] & JSXBase.HTMLAttributes<HTMLUiCheckboxDropdownElement>;
             "ui-date-picker": LocalJSX.IntrinsicElements["ui-date-picker"] & JSXBase.HTMLAttributes<HTMLUiDatePickerElement>;
             "ui-dropdown": LocalJSX.IntrinsicElements["ui-dropdown"] & JSXBase.HTMLAttributes<HTMLUiDropdownElement>;
             "ui-icon": LocalJSX.IntrinsicElements["ui-icon"] & JSXBase.HTMLAttributes<HTMLUiIconElement>;
             "ui-input": LocalJSX.IntrinsicElements["ui-input"] & JSXBase.HTMLAttributes<HTMLUiInputElement>;
             "ui-panel": LocalJSX.IntrinsicElements["ui-panel"] & JSXBase.HTMLAttributes<HTMLUiPanelElement>;
+            /**
+             * UI Spinner Component
+             * Highly customizable loading spinner with multiple animation variants
+             * Supports theming, accessibility, and various display modes
+             * @event shown - Emitted when spinner becomes visible
+             * @event hidden - Emitted when spinner becomes hidden
+             */
+            "ui-spinner": LocalJSX.IntrinsicElements["ui-spinner"] & JSXBase.HTMLAttributes<HTMLUiSpinnerElement>;
             "ui-toast": LocalJSX.IntrinsicElements["ui-toast"] & JSXBase.HTMLAttributes<HTMLUiToastElement>;
             "ui-toggle": LocalJSX.IntrinsicElements["ui-toggle"] & JSXBase.HTMLAttributes<HTMLUiToggleElement>;
         }

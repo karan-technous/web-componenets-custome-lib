@@ -19,5 +19,8 @@ export type { PanelVariant, PanelSize, PanelRounded } from './lib/panel/panel.co
 export { UiDatePickerComponent, UiDatePickerDirective } from './lib/date-picker/date-picker.component';
 export { DropdownComponent } from './lib/dropdown/dropdown.component';
 export type { DropdownOption, DropdownMode, DropdownVariant } from './lib/dropdown/dropdown.component';
+export { UiCheckboxDropdownWrapper } from './lib/checkbox-dropdown/checkbox-dropdown.component';
+export { SpinnerComponent } from './lib/spinner/spinner.component';
+export type { SpinnerVariant, SpinnerSize, SpinnerSpeed } from './lib/spinner/spinner.component';
 // Re-export IconName for autocomplete when using iconLeft/iconRight props
 export type { IconName } from '@karan9186/core';

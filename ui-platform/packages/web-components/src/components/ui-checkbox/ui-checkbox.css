@@ -85,3 +85,8 @@
 .checkbox__input:focus-visible + .checkbox__control {
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--ui-primary) 35%, transparent);
 }
+
+.checkbox__control--indeterminate {
+  background: var(--ui-primary);
+  border-color: var(--ui-primary);
+}

@@ -15,6 +15,9 @@ export class UiInput extends BaseComponent {
   @Prop({ reflect: true }) rounded: 'xs' | 'sm' | 'md' | 'xl' = 'md';
   @Prop({ reflect: true }) icon?: string;
   @Prop() iconAriaLabel: string = 'Input icon action';
+  @Prop({ reflect: true }) readonly: boolean = false;
+  @Prop({ reflect: true }) showAvatar: boolean = false;
+  @Prop({ reflect: true }) error: boolean = false;
 
   @Event() valueChange!: EventEmitter<string>;
   @Event() uiBlur!: EventEmitter<void>;
@@ -56,10 +59,15 @@ export class UiInput extends BaseComponent {
           'input-wrap': true,
           'input-wrap--disabled': this.disabled,
           'input-wrap--with-icon': !!this.icon,
+          'input-wrap--with-avatar': this.showAvatar,
+          'input-wrap--error': this.error,
           [`input-wrap--rounded-${this.rounded}`]: true,
         }}
       >
         {this.label && <label class="input-label">{this.label}</label>}
+        
+        <slot name="prefix" />
+        
         <input
           ref={(el) => (this.inputEl = el as HTMLInputElement)}
           class="input"
@@ -67,6 +75,7 @@ export class UiInput extends BaseComponent {
           value={this.value || ''}
           placeholder={this.placeholder || 'Type something...'}
           disabled={this.disabled}
+          readonly={this.readonly}
           onInput={this.onInput}
           onBlur={() => this.uiBlur.emit()}
         />

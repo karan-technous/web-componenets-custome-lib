@@ -13,10 +13,12 @@ import { UiPanelFooterDirective } from './panel/panel-footer.directive';
 import { UiPanelActionsDirective } from './panel/panel-actions.directive';
 import { UiDatePickerComponent, UiDatePickerDirective } from './date-picker/date-picker.component';
 import { DropdownComponent } from './dropdown/dropdown.component';
+import { UiCheckboxDropdownWrapper } from './checkbox-dropdown/checkbox-dropdown.component';
+import { SpinnerComponent } from './spinner/spinner.component';
 
 @NgModule({
-  imports: [ButtonComponent, ButtonGroupComponent, InputComponent, UiCheckboxComponent, UiToggleComponent, BadgeComponent, BadgeRemoveDirective, UiBreadcrumbComponent, UiPanelComponent, UiPanelHeaderDirective, UiPanelFooterDirective, UiPanelActionsDirective, UiDatePickerComponent, UiDatePickerDirective, DropdownComponent],
-  exports: [ButtonComponent, ButtonGroupComponent, InputComponent, UiCheckboxComponent, UiToggleComponent, BadgeComponent, BadgeRemoveDirective, UiBreadcrumbComponent, UiPanelComponent, UiPanelHeaderDirective, UiPanelFooterDirective, UiPanelActionsDirective, UiDatePickerComponent, UiDatePickerDirective, DropdownComponent],
+  imports: [ButtonComponent, ButtonGroupComponent, InputComponent, UiCheckboxComponent, UiToggleComponent, BadgeComponent, BadgeRemoveDirective, UiBreadcrumbComponent, UiPanelComponent, UiPanelHeaderDirective, UiPanelFooterDirective, UiPanelActionsDirective, UiDatePickerComponent, UiDatePickerDirective, DropdownComponent, UiCheckboxDropdownWrapper, SpinnerComponent],
+  exports: [ButtonComponent, ButtonGroupComponent, InputComponent, UiCheckboxComponent, UiToggleComponent, BadgeComponent, BadgeRemoveDirective, UiBreadcrumbComponent, UiPanelComponent, UiPanelHeaderDirective, UiPanelFooterDirective, UiPanelActionsDirective, UiDatePickerComponent, UiDatePickerDirective, DropdownComponent, UiCheckboxDropdownWrapper, SpinnerComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class UiLibModule {}

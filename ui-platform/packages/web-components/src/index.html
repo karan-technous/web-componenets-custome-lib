@@ -27,7 +27,108 @@
   </head>
   <body>
     <my-component first="Stencil" middle="'Don't call me a framework'" last="JS"></my-component>
-    <h1>work</h1>
+    
+    <h1>Checkbox Dropdown Examples</h1>
+    
+    <h2>Basic Example</h2>
+    <ui-checkbox-dropdown
+      label="Select Fruits"
+      placeholder="Choose fruits..."
+      options='[{"label":"Apple","value":"apple"},{"label":"Banana","value":"banana"},{"label":"Cherry","value":"cherry"},{"label":"Date","value":"date"}]'
+    ></ui-checkbox-dropdown>
+
+    <h2>With Supporting Text</h2>
+    <ui-checkbox-dropdown
+      label="Select Countries"
+      supportingText="Choose your preferred countries"
+      placeholder="Select countries..."
+      options='[{"label":"United States","value":"us"},{"label":"Canada","value":"ca"},{"label":"United Kingdom","value":"uk"},{"label":"Germany","value":"de"}]'
+    ></ui-checkbox-dropdown>
+
+    <h2>Required Field</h2>
+    <ui-checkbox-dropdown
+      label="Select Categories"
+      required="true"
+      placeholder="Choose categories..."
+      options='[{"label":"Technology","value":"tech"},{"label":"Design","value":"design"},{"label":"Marketing","value":"marketing"}]'
+    ></ui-checkbox-dropdown>
+
+    <h2>With Error Message</h2>
+    <ui-checkbox-dropdown
+      label="Select Skills"
+      errorMessage="Please select at least one skill"
+      placeholder="Choose skills..."
+      options='[{"label":"JavaScript","value":"js"},{"label":"TypeScript","value":"ts"},{"label":"Python","value":"py"}]'
+    ></ui-checkbox-dropdown>
+
+    <h2>Disabled State</h2>
+    <ui-checkbox-dropdown
+      label="Disabled Dropdown"
+      disabled="true"
+      placeholder="Cannot select..."
+      options='[{"label":"Option 1","value":"1"},{"label":"Option 2","value":"2"},{"label":"Option 3","value":"3"}]'
+      value='["1", "2"]'
+    ></ui-checkbox-dropdown>
+
+    <h2>Loading State</h2>
+    <ui-checkbox-dropdown
+      label="Loading Options"
+      loading="true"
+      placeholder="Loading..."
+      options='[]'
+    ></ui-checkbox-dropdown>
+
+    <h2>With Avatars</h2>
+    <ui-checkbox-dropdown
+      label="Select Users"
+      show-avatar="true"
+      placeholder="Choose users..."
+      options='[{"label":"John Doe","value":"john","avatar":"https://i.pravatar.cc/150?img=1"},{"label":"Jane Smith","value":"jane","avatar":"https://i.pravatar.cc/150?img=2"},{"label":"Bob Johnson","value":"bob","avatar":"https://i.pravatar.cc/150?img=3"}]'
+    ></ui-checkbox-dropdown>
+
+    <h2>With Pre-selected Values</h2>
+    <ui-checkbox-dropdown
+      label="Select Colors"
+      placeholder="Choose colors..."
+      options='[{"label":"Red","value":"red"},{"label":"Blue","value":"blue"},{"label":"Green","value":"green"},{"label":"Yellow","value":"yellow"}]'
+      value='["red", "blue"]'
+    ></ui-checkbox-dropdown>
+
+    <h2>Hide Select All</h2>
+    <ui-checkbox-dropdown
+      label="Select Items (No Select All)"
+      show-select-all="false"
+      placeholder="Choose items..."
+      options='[{"label":"Item 1","value":"1"},{"label":"Item 2","value":"2"},{"label":"Item 3","value":"3"}]'
+    ></ui-checkbox-dropdown>
+
+    <h2>With Disabled Options</h2>
+    <ui-checkbox-dropdown
+      label="Select Products"
+      placeholder="Choose products..."
+      options='[{"label":"Product A","value":"a"},{"label":"Product B (Sold Out)","value":"b","disabled":true},{"label":"Product C","value":"c"},{"label":"Product D (Unavailable)","value":"d","disabled":true}]'
+    ></ui-checkbox-dropdown>
+
+    <h2>With Hidden Options</h2>
+    <ui-checkbox-dropdown
+      label="Select Options"
+      placeholder="Choose..."
+      options='[{"label":"Visible Option 1","value":"v1"},{"label":"Hidden Option","value":"h1","hidden":true},{"label":"Visible Option 2","value":"v2"}]'
+    ></ui-checkbox-dropdown>
+
+    <h2>Complete Example with All Props</h2>
+    <ui-checkbox-dropdown
+      label="Select Team Members"
+      supportingText="Choose your team members for the project"
+      placeholder="Select team members..."
+      required="true"
+      show-avatar="true"
+      show-select-all="true"
+      options='[{"label":"Alice","value":"alice","avatar":"https://i.pravatar.cc/150?img=4"},{"label":"Bob","value":"bob","avatar":"https://i.pravatar.cc/150?img=5"},{"label":"Charlie","value":"charlie","avatar":"https://i.pravatar.cc/150?img=6","disabled":true},{"label":"Diana","value":"diana","avatar":"https://i.pravatar.cc/150?img=7"}]'
+      value='["alice"]'
+    ></ui-checkbox-dropdown>
+
+    <h2>Regular Dropdown (for comparison)</h2>
     <ui-dropdown
       mode="single"
       variant="input"

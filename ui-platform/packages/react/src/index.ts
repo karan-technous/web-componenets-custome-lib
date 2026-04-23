@@ -12,5 +12,7 @@ export * from "./components/breadcrumb/index";
 export * from "./components/panel/index";
 export * from "./components/date-picker/index.js";
 export * from "./components/dropdown/Dropdown.js";
+export * from "./components/checkbox-dropdown/CheckboxDropdown.js";
+export * from "./components/spinner/index.js";
 export * from "./hooks/useButtonGroup.js";
 export * from "@karan9186/core";

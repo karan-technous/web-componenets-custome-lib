@@ -1,0 +1,200 @@
+:host {
+  display: block;
+  font-family: system-ui;
+}
+
+/* Wrapper */
+.wrapper {
+  position: relative;
+}
+
+/* Label */
+.label {
+  font-size: 14px;
+  margin-bottom: 6px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  color: var(--ui-text);
+}
+
+.required {
+  color: var(--ui-error, #e53e3e);
+}
+
+.supporting {
+  color: var(--ui-text-muted, #888);
+  font-size: 12px;
+}
+
+/* Trigger Wrapper */
+.trigger-wrapper {
+  position: relative;
+  cursor: pointer;
+}
+
+.trigger-wrapper ui-input {
+  pointer-events: none;
+}
+
+.trigger-wrapper ui-input .icon-button {
+  pointer-events: auto;
+}
+
+/* Avatar Group */
+.avatar-group {
+  display: flex;
+  align-items: center;
+}
+
+.avatar-group .avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  margin-left: -6px;
+  border: 2px solid var(--ui-bg, white);
+  object-fit: cover;
+}
+
+.avatar-group .avatar:first-child {
+  margin-left: 0;
+}
+
+/* Avatars inside ui-input prefix slot should be smaller */
+ui-input::slotted([slot="prefix"]) .avatar {
+  width: 20px;
+  height: 20px;
+  margin-left: -4px;
+  border: 2px solid var(--ui-bg, white);
+}
+
+ui-input::slotted([slot="prefix"]) .avatar:first-child {
+  margin-left: 0;
+}
+
+/* Dropdown */
+.dropdown {
+  position: absolute;
+  width: 100%;
+  background: var(--ui-bg, white);
+  border: 1px solid var(--ui-border-color, #ddd);
+  margin-top: 4px;
+  border-radius: var(--ui-border-radius, 8px);
+  max-height: 260px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 10;
+  transform: scaleY(0);
+  opacity: 0;
+  transform-origin: top center;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.15s ease;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.dropdown--visible {
+  transform: scaleY(1);
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+}
+
+/* List */
+.list {
+  padding: 4px 0;
+}
+
+/* Item */
+.item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: background-color 0.1s ease;
+}
+
+.item:hover {
+  background: var(--ui-bg-hover, #f5f5f5);
+}
+
+.item--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.item--disabled:hover {
+  background: transparent;
+}
+
+.item ui-checkbox {
+  flex-shrink: 0;
+}
+
+.item--select-all ui-checkbox {
+  pointer-events: none;
+}
+
+.item--select-all ui-checkbox::part(control) {
+  pointer-events: none;
+}
+
+.item span {
+  flex: 1;
+  min-width: 0;
+}
+.option-wrapper{
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+}
+
+/* Avatar */
+.avatar {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.avatar.small {
+  width: 18px;
+  height: 18px;
+}
+
+/* Error */
+.error-text {
+  font-size: 12px;
+  color: var(--ui-error, #e53e3e);
+  margin-top: 4px;
+}
+
+/* Loading */
+.loading {
+  padding: 12px;
+  text-align: center;
+  color: var(--ui-text-muted, #888);
+}
+
+/* Option Content */
+.option-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.option-content .label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ui-text);
+  margin-bottom: 0;
+}
+
+.option-content .supporting-text {
+  font-size: 12px;
+  color: var(--ui-text-muted, #6b7280);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
