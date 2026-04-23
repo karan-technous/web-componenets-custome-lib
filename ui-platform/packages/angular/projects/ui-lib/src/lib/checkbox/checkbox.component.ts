@@ -30,12 +30,12 @@ ensureCustomElements();
 export class UiCheckboxComponent implements ControlValueAccessor {
   // Inputs (same API)
   size = input<'sm' | 'md' | 'lg'>('md');
-  disabledInput = input(false);
+  disabled = input(false);
   label = input<string>('');
 
   // Internal state
   checked = signal(false);
-  disabled = signal(false);
+  internalDisabled = signal(false);
 
   // Outputs (normalized API)
   onChangeEvent = output<boolean>();
@@ -48,7 +48,7 @@ export class UiCheckboxComponent implements ControlValueAccessor {
   constructor() {
     // Sync disabled input
     effect(() => {
-      this.disabled.set(this.disabledInput());
+      this.internalDisabled.set(this.disabled());
     });
   }
 
@@ -66,7 +66,7 @@ export class UiCheckboxComponent implements ControlValueAccessor {
   }
 
   setDisabledState(isDisabled: boolean): void {
-    this.disabled.set(isDisabled);
+    this.internalDisabled.set(isDisabled);
   }
 
   // Event handlers

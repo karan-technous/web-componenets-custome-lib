@@ -1,6 +1,6 @@
 <ui-checkbox
   [checked]="checked()"
-  [disabled]="disabled()"
+  [disabled]="internalDisabled()"
   [size]="size()"
   [label]="label()"
   (uiChange)="handleCheckboxChange($event)"
