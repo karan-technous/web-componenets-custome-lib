@@ -34,6 +34,8 @@ export class UiToggle extends BaseComponent {
 
     if (!this.isControlled()) {
       this.internalChecked = newValue;
+    } else {
+      this.checked = newValue;
     }
 
     this.toggleChange.emit(newValue);
