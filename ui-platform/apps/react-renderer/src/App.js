@@ -1,5 +1,5 @@
 import { jsxs as _jsxs, jsx as _jsx } from "react/jsx-runtime";
-import { createElement, useEffect, useState, } from "react";
+import React, { createElement, useEffect, useState, useMemo, useCallback, } from "react";
 import * as ReactWrappers from "@karan9186/react";
 import "./theme.css";
 const initialPayload = {
@@ -188,6 +188,36 @@ function renderDynamicComponent(payload) {
             delete props[childrenProp];
         }
     }
+    else if (payload.component === "radio-group" && childrenProp === "radios" && typeof props[childrenProp] !== "undefined") {
+        try {
+            const radiosData = JSON.parse(String(props[childrenProp]));
+            if (Array.isArray(radiosData)) {
+                const RadioWrapper = resolveWrapper("radio", "Radio");
+                children = radiosData.map((radio, index) => {
+                    if (RadioWrapper) {
+                        return createElement(RadioWrapper, {
+                            key: index,
+                            value: radio.value,
+                            label: radio.label,
+                            supportingText: radio.supportingText,
+                            size: radio.size,
+                        });
+                    }
+                    return createElement("ui-radio", {
+                        key: index,
+                        value: radio.value,
+                        label: radio.label,
+                    });
+                });
+            }
+            delete props[childrenProp];
+        }
+        catch (e) {
+            console.error("Failed to parse radios JSON:", e);
+            children = String(props[childrenProp]);
+            delete props[childrenProp];
+        }
+    }
     else if (childrenProp && typeof props[childrenProp] !== "undefined") {
         children = String(props[childrenProp]);
         delete props[childrenProp];
@@ -249,26 +279,35 @@ function renderDynamicComponent(payload) {
         style: {},
     }, rendered);
 }
-export default function App() {
+const App = React.memo(function App() {
     const [payload, setPayload] = useState(parsePayloadFromUrl());
+    // Memoize appearance to prevent unnecessary effect runs
+    const appearance = useMemo(() => payload.appearance ?? "dark", [payload.appearance]);
     useEffect(() => {
-        document.documentElement.dataset.appearance = payload.appearance ?? "dark";
-    }, [payload.appearance]);
-    useEffect(() => {
-        const handler = (event) => {
-            if (event.data?.type !== "UPDATE_STORY") {
-                return;
-            }
-            const nextPayload = event.data.payload;
-            if (!nextPayload || nextPayload.framework !== "react") {
-                return;
-            }
+        document.documentElement.dataset.appearance = appearance;
+    }, [appearance]);
+    // Memoize message handler to prevent recreating on each render
+    const handleMessage = useCallback((event) => {
+        if (event.data?.type !== "UPDATE_STORY") {
+            return;
+        }
+        const nextPayload = event.data.payload;
+        if (!nextPayload || nextPayload.framework !== "react") {
+            return;
+        }
+        // Log only in development (check for Vite dev mode)
+        if (import.meta.env?.DEV) {
             console.log("React renderer received payload:", JSON.stringify(nextPayload, null, 2));
-            setPayload(nextPayload);
-        };
-        window.addEventListener("message", handler);
-        window.parent.postMessage({ type: "IFRAME_READY" }, "*");
-        return () => window.removeEventListener("message", handler);
+        }
+        setPayload(nextPayload);
     }, []);
-    return (_jsx("main", { className: "page", children: _jsx("section", { className: "canvas", children: _jsx("div", { className: "controls", children: renderDynamicComponent(payload) }) }) }));
-}
+    useEffect(() => {
+        window.addEventListener("message", handleMessage);
+        window.parent.postMessage({ type: "IFRAME_READY" }, "*");
+        return () => window.removeEventListener("message", handleMessage);
+    }, [handleMessage]);
+    // Memoize rendered component to prevent unnecessary re-renders
+    const renderedComponent = useMemo(() => renderDynamicComponent(payload), [payload]);
+    return (_jsx("main", { className: "page", children: _jsx("section", { className: "canvas", children: _jsx("div", { className: "controls", children: renderedComponent }) }) }));
+});
+export default App;

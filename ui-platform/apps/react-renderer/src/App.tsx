@@ -244,6 +244,34 @@ function renderDynamicComponent(payload: StoryPayload): ReactElement {
       children = String(props[childrenProp]);
       delete props[childrenProp];
     }
+  } else if (payload.component === "radio-group" && childrenProp === "radios" && typeof props[childrenProp] !== "undefined") {
+    try {
+      const radiosData = JSON.parse(String(props[childrenProp]));
+      if (Array.isArray(radiosData)) {
+        const RadioWrapper = resolveWrapper("radio", "Radio");
+        children = radiosData.map((radio: any, index: number) => {
+          if (RadioWrapper) {
+            return createElement(RadioWrapper, {
+              key: index,
+              value: radio.value,
+              label: radio.label,
+              supportingText: radio.supportingText,
+              size: radio.size,
+            });
+          }
+          return createElement("ui-radio", {
+            key: index,
+            value: radio.value,
+            label: radio.label,
+          });
+        });
+      }
+      delete props[childrenProp];
+    } catch (e) {
+      console.error("Failed to parse radios JSON:", e);
+      children = String(props[childrenProp]);
+      delete props[childrenProp];
+    }
   } else if (childrenProp && typeof props[childrenProp] !== "undefined") {
     children = String(props[childrenProp]);
     delete props[childrenProp];

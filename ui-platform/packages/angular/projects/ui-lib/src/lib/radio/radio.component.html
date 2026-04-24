@@ -1,0 +1,22 @@
+<ui-radio
+  [value]="value()"
+  [checked]="checked()"
+  [disabled]="disabled()"
+  [required]="required()"
+  [name]="name()"
+  [error]="error()"
+  [size]="size()"
+  [label]="label()"
+  [supportingText]="supportingText()"
+  (uiChange)="handleChange($event)"
+  (uiFocus)="handleFocus()"
+  (uiBlur)="handleBlur()"
+>
+  @if (label()) {
+    <span slot="label">{{ label() }}</span>
+  }
+  @if (supportingText()) {
+    <span slot="supporting">{{ supportingText() }}</span>
+  }
+  <ng-content />
+</ui-radio>

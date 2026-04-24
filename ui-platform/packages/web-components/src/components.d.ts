@@ -525,6 +525,67 @@ export namespace Components {
          */
         "variant": PanelVariant;
     }
+    interface UiRadio {
+        /**
+          * @default false
+         */
+        "checked": boolean;
+        /**
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * @default false
+         */
+        "error": boolean;
+        "label"?: string;
+        "name"?: string;
+        /**
+          * @default false
+         */
+        "required": boolean;
+        /**
+          * @default 'md'
+         */
+        "size": 'sm' | 'md' | 'lg';
+        "supportingText"?: string;
+        /**
+          * @default ''
+         */
+        "value": string;
+    }
+    interface UiRadioGroup {
+        /**
+          * @default ''
+         */
+        "defaultValue": string;
+        /**
+          * @default false
+         */
+        "disabled": boolean;
+        "label"?: string;
+        /**
+          * @default ''
+         */
+        "name": string;
+        /**
+          * @default 'vertical'
+         */
+        "orientation": 'horizontal' | 'vertical';
+        "radios"?: string;
+        /**
+          * @default false
+         */
+        "required": boolean;
+        /**
+          * @default 'md'
+         */
+        "size": 'sm' | 'md' | 'lg';
+        /**
+          * @default ''
+         */
+        "value": string;
+    }
     /**
      * UI Spinner Component
      * Highly customizable loading spinner with multiple animation variants
@@ -650,6 +711,14 @@ export interface UiInputCustomEvent<T> extends CustomEvent<T> {
 export interface UiPanelCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLUiPanelElement;
+}
+export interface UiRadioCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLUiRadioElement;
+}
+export interface UiRadioGroupCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLUiRadioGroupElement;
 }
 export interface UiSpinnerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -882,6 +951,42 @@ declare global {
         prototype: HTMLUiPanelElement;
         new (): HTMLUiPanelElement;
     };
+    interface HTMLUiRadioElementEventMap {
+        "uiChange": string;
+        "uiFocus": void;
+        "uiBlur": void;
+    }
+    interface HTMLUiRadioElement extends Components.UiRadio, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLUiRadioElementEventMap>(type: K, listener: (this: HTMLUiRadioElement, ev: UiRadioCustomEvent<HTMLUiRadioElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLUiRadioElementEventMap>(type: K, listener: (this: HTMLUiRadioElement, ev: UiRadioCustomEvent<HTMLUiRadioElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLUiRadioElement: {
+        prototype: HTMLUiRadioElement;
+        new (): HTMLUiRadioElement;
+    };
+    interface HTMLUiRadioGroupElementEventMap {
+        "uiChange": string;
+    }
+    interface HTMLUiRadioGroupElement extends Components.UiRadioGroup, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLUiRadioGroupElementEventMap>(type: K, listener: (this: HTMLUiRadioGroupElement, ev: UiRadioGroupCustomEvent<HTMLUiRadioGroupElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLUiRadioGroupElementEventMap>(type: K, listener: (this: HTMLUiRadioGroupElement, ev: UiRadioGroupCustomEvent<HTMLUiRadioGroupElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLUiRadioGroupElement: {
+        prototype: HTMLUiRadioGroupElement;
+        new (): HTMLUiRadioGroupElement;
+    };
     interface HTMLUiSpinnerElementEventMap {
         "shown": void;
         "hidden": void;
@@ -954,6 +1059,8 @@ declare global {
         "ui-icon": HTMLUiIconElement;
         "ui-input": HTMLUiInputElement;
         "ui-panel": HTMLUiPanelElement;
+        "ui-radio": HTMLUiRadioElement;
+        "ui-radio-group": HTMLUiRadioGroupElement;
         "ui-spinner": HTMLUiSpinnerElement;
         "ui-toast": HTMLUiToastElement;
         "ui-toggle": HTMLUiToggleElement;
@@ -1516,6 +1623,71 @@ declare namespace LocalJSX {
          */
         "variant"?: PanelVariant;
     }
+    interface UiRadio {
+        /**
+          * @default false
+         */
+        "checked"?: boolean;
+        /**
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * @default false
+         */
+        "error"?: boolean;
+        "label"?: string;
+        "name"?: string;
+        "onUiBlur"?: (event: UiRadioCustomEvent<void>) => void;
+        "onUiChange"?: (event: UiRadioCustomEvent<string>) => void;
+        "onUiFocus"?: (event: UiRadioCustomEvent<void>) => void;
+        /**
+          * @default false
+         */
+        "required"?: boolean;
+        /**
+          * @default 'md'
+         */
+        "size"?: 'sm' | 'md' | 'lg';
+        "supportingText"?: string;
+        /**
+          * @default ''
+         */
+        "value"?: string;
+    }
+    interface UiRadioGroup {
+        /**
+          * @default ''
+         */
+        "defaultValue"?: string;
+        /**
+          * @default false
+         */
+        "disabled"?: boolean;
+        "label"?: string;
+        /**
+          * @default ''
+         */
+        "name"?: string;
+        "onUiChange"?: (event: UiRadioGroupCustomEvent<string>) => void;
+        /**
+          * @default 'vertical'
+         */
+        "orientation"?: 'horizontal' | 'vertical';
+        "radios"?: string;
+        /**
+          * @default false
+         */
+        "required"?: boolean;
+        /**
+          * @default 'md'
+         */
+        "size"?: 'sm' | 'md' | 'lg';
+        /**
+          * @default ''
+         */
+        "value"?: string;
+    }
     /**
      * UI Spinner Component
      * Highly customizable loading spinner with multiple animation variants
@@ -1739,6 +1911,28 @@ declare namespace LocalJSX {
         "stickyHeader": boolean;
         "lazy": boolean;
     }
+    interface UiRadioAttributes {
+        "value": string;
+        "checked": boolean;
+        "disabled": boolean;
+        "required": boolean;
+        "name": string;
+        "error": boolean;
+        "size": 'sm' | 'md' | 'lg';
+        "label": string;
+        "supportingText": string;
+    }
+    interface UiRadioGroupAttributes {
+        "value": string;
+        "name": string;
+        "disabled": boolean;
+        "required": boolean;
+        "defaultValue": string;
+        "label": string;
+        "orientation": 'horizontal' | 'vertical';
+        "size": 'sm' | 'md' | 'lg';
+        "radios": string;
+    }
     interface UiSpinnerAttributes {
         "variant": SpinnerVariant;
         "size": string;
@@ -1778,6 +1972,8 @@ declare namespace LocalJSX {
         "ui-icon": Omit<UiIcon, keyof UiIconAttributes> & { [K in keyof UiIcon & keyof UiIconAttributes]?: UiIcon[K] } & { [K in keyof UiIcon & keyof UiIconAttributes as `attr:${K}`]?: UiIconAttributes[K] } & { [K in keyof UiIcon & keyof UiIconAttributes as `prop:${K}`]?: UiIcon[K] } & OneOf<"name", UiIcon["name"], UiIconAttributes["name"]>;
         "ui-input": Omit<UiInput, keyof UiInputAttributes> & { [K in keyof UiInput & keyof UiInputAttributes]?: UiInput[K] } & { [K in keyof UiInput & keyof UiInputAttributes as `attr:${K}`]?: UiInputAttributes[K] } & { [K in keyof UiInput & keyof UiInputAttributes as `prop:${K}`]?: UiInput[K] };
         "ui-panel": Omit<UiPanel, keyof UiPanelAttributes> & { [K in keyof UiPanel & keyof UiPanelAttributes]?: UiPanel[K] } & { [K in keyof UiPanel & keyof UiPanelAttributes as `attr:${K}`]?: UiPanelAttributes[K] } & { [K in keyof UiPanel & keyof UiPanelAttributes as `prop:${K}`]?: UiPanel[K] };
+        "ui-radio": Omit<UiRadio, keyof UiRadioAttributes> & { [K in keyof UiRadio & keyof UiRadioAttributes]?: UiRadio[K] } & { [K in keyof UiRadio & keyof UiRadioAttributes as `attr:${K}`]?: UiRadioAttributes[K] } & { [K in keyof UiRadio & keyof UiRadioAttributes as `prop:${K}`]?: UiRadio[K] };
+        "ui-radio-group": Omit<UiRadioGroup, keyof UiRadioGroupAttributes> & { [K in keyof UiRadioGroup & keyof UiRadioGroupAttributes]?: UiRadioGroup[K] } & { [K in keyof UiRadioGroup & keyof UiRadioGroupAttributes as `attr:${K}`]?: UiRadioGroupAttributes[K] } & { [K in keyof UiRadioGroup & keyof UiRadioGroupAttributes as `prop:${K}`]?: UiRadioGroup[K] };
         "ui-spinner": Omit<UiSpinner, keyof UiSpinnerAttributes> & { [K in keyof UiSpinner & keyof UiSpinnerAttributes]?: UiSpinner[K] } & { [K in keyof UiSpinner & keyof UiSpinnerAttributes as `attr:${K}`]?: UiSpinnerAttributes[K] } & { [K in keyof UiSpinner & keyof UiSpinnerAttributes as `prop:${K}`]?: UiSpinner[K] };
         "ui-toast": Omit<UiToast, keyof UiToastAttributes> & { [K in keyof UiToast & keyof UiToastAttributes]?: UiToast[K] } & { [K in keyof UiToast & keyof UiToastAttributes as `attr:${K}`]?: UiToastAttributes[K] } & { [K in keyof UiToast & keyof UiToastAttributes as `prop:${K}`]?: UiToast[K] };
         "ui-toggle": Omit<UiToggle, keyof UiToggleAttributes> & { [K in keyof UiToggle & keyof UiToggleAttributes]?: UiToggle[K] } & { [K in keyof UiToggle & keyof UiToggleAttributes as `attr:${K}`]?: UiToggleAttributes[K] } & { [K in keyof UiToggle & keyof UiToggleAttributes as `prop:${K}`]?: UiToggle[K] };
@@ -1819,6 +2015,8 @@ declare module "@stencil/core" {
             "ui-icon": LocalJSX.IntrinsicElements["ui-icon"] & JSXBase.HTMLAttributes<HTMLUiIconElement>;
             "ui-input": LocalJSX.IntrinsicElements["ui-input"] & JSXBase.HTMLAttributes<HTMLUiInputElement>;
             "ui-panel": LocalJSX.IntrinsicElements["ui-panel"] & JSXBase.HTMLAttributes<HTMLUiPanelElement>;
+            "ui-radio": LocalJSX.IntrinsicElements["ui-radio"] & JSXBase.HTMLAttributes<HTMLUiRadioElement>;
+            "ui-radio-group": LocalJSX.IntrinsicElements["ui-radio-group"] & JSXBase.HTMLAttributes<HTMLUiRadioGroupElement>;
             /**
              * UI Spinner Component
              * Highly customizable loading spinner with multiple animation variants

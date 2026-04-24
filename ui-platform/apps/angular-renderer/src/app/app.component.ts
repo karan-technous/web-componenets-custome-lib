@@ -307,6 +307,24 @@ export class AppComponent implements OnInit, OnDestroy {
       } catch (e) {
         console.error("Failed to parse buttons JSON:", e);
       }
+    } else if (payload.component === "radio-group" && projectedProp === "radios" && typeof payload.props[projectedProp] !== "undefined") {
+      try {
+        const radiosData = JSON.parse(String(payload.props[projectedProp]));
+        if (Array.isArray(radiosData)) {
+          // Create ui-radio web component elements directly
+          const radioNodes: Node[] = radiosData.map((radio: any) => {
+            const radioEl = document.createElement("ui-radio");
+            radioEl.setAttribute("value", radio.value);
+            if (radio.label) radioEl.setAttribute("label", radio.label);
+            if (radio.supportingText) radioEl.setAttribute("supporting-text", radio.supportingText);
+            if (radio.size) radioEl.setAttribute("size", radio.size);
+            return radioEl;
+          });
+          projectableNodes = [radioNodes];
+        }
+      } catch (e) {
+        console.error("Failed to parse radios JSON:", e);
+      }
     }
 
     const projectedValue =

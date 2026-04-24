@@ -1,0 +1,16 @@
+<ui-radio-group
+  [value]="value()"
+  [name]="name()"
+  [disabled]="disabled() || disabledState()"
+  [required]="!!required()"
+  [label]="label()"
+  [orientation]="orientation()"
+  [size]="size()"
+  [radios]="radios()"
+  (uiChange)="handleChange($event)"
+>
+  @if (label()) {
+    <span slot="label">{{ label() }}</span>
+  }
+  <ng-content />
+</ui-radio-group>

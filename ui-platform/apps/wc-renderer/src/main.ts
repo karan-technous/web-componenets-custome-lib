@@ -166,6 +166,27 @@ function renderComponent(payload: StoryPayload) {
         delete props[textProp];
       }
     }
+  } else if (payload.component === "radio-group" && textProp === "radios" && typeof props[textProp] !== "undefined") {
+    try {
+      const radiosData = JSON.parse(String(props[textProp]));
+      if (Array.isArray(radiosData)) {
+        radiosData.forEach((radio: any) => {
+          const radioEl = document.createElement("ui-radio");
+          radioEl.setAttribute("value", radio.value);
+          if (radio.label) radioEl.setAttribute("label", radio.label);
+          if (radio.supportingText) radioEl.setAttribute("supporting-text", radio.supportingText);
+          if (radio.size) radioEl.setAttribute("size", radio.size);
+          el.appendChild(radioEl);
+        });
+      }
+      delete props[textProp];
+    } catch (e) {
+      console.error("Failed to parse radios JSON:", e);
+      if (textProp && typeof props[textProp] !== "undefined") {
+        el.textContent = String(props[textProp]);
+        delete props[textProp];
+      }
+    }
   } else if (payload.component === "panel" && payload.slots) {
     // Handle slots for Panel component
     if (payload.slots.header) {

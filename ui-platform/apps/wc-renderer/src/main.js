@@ -144,6 +144,32 @@ function renderComponent(payload) {
             }
         }
     }
+    else if (payload.component === "radio-group" && textProp === "radios" && typeof props[textProp] !== "undefined") {
+        try {
+            const radiosData = JSON.parse(String(props[textProp]));
+            if (Array.isArray(radiosData)) {
+                radiosData.forEach((radio) => {
+                    const radioEl = document.createElement("ui-radio");
+                    radioEl.setAttribute("value", radio.value);
+                    if (radio.label)
+                        radioEl.setAttribute("label", radio.label);
+                    if (radio.supportingText)
+                        radioEl.setAttribute("supporting-text", radio.supportingText);
+                    if (radio.size)
+                        radioEl.setAttribute("size", radio.size);
+                    el.appendChild(radioEl);
+                });
+            }
+            delete props[textProp];
+        }
+        catch (e) {
+            console.error("Failed to parse radios JSON:", e);
+            if (textProp && typeof props[textProp] !== "undefined") {
+                el.textContent = String(props[textProp]);
+                delete props[textProp];
+            }
+        }
+    }
     else if (payload.component === "panel" && payload.slots) {
         // Handle slots for Panel component
         if (payload.slots.header) {
@@ -177,15 +203,10 @@ function renderComponent(payload) {
     applyProps(el, props);
     if (payload.component === "date-picker") {
         const wrapper = document.createElement("div");
-        wrapper.style.padding = "24px";
-        wrapper.style.maxWidth = "400px";
-        wrapper.style.width = "100%";
-        wrapper.style.boxSizing = "border-box";
         wrapper.appendChild(el);
         controls.appendChild(wrapper);
         return;
     }
-    
     controls.appendChild(el);
 }
 function applyAppearance(appearance) {
