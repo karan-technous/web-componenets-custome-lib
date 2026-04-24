@@ -71,14 +71,14 @@ export class UiDatePicker extends BaseComponent {
   @Prop() customParsers?: DatePickerParser[];
   @Prop() debounce: number = 220;
 
-  @Event({ eventName: 'onChange' }) onChange!: EventEmitter<Date | DateRangeValue>;
-  @Event({ eventName: 'onApply' }) onApply!: EventEmitter<Date | DateRangeValue>;
-  @Event({ eventName: 'onCancel' }) onCancel!: EventEmitter<void>;
-  @Event({ eventName: 'onInputChange' }) onInputChange!: EventEmitter<string>;
-  @Event({ eventName: 'onOpenChange' }) onOpenChange!: EventEmitter<boolean>;
-  @Event({ eventName: 'onInvalidInput' }) onInvalidInput!: EventEmitter<string>;
-  @Event({ eventName: 'onFocus' }) onFocus!: EventEmitter<void>;
-  @Event({ eventName: 'onBlur' }) onBlur!: EventEmitter<void>;
+  @Event({ eventName: 'uiChange' }) uiChange!: EventEmitter<Date | DateRangeValue>;
+  @Event({ eventName: 'uiApply' }) uiApply!: EventEmitter<Date | DateRangeValue>;
+  @Event({ eventName: 'uiCancel' }) uiCancel!: EventEmitter<void>;
+  @Event({ eventName: 'uiInputChange' }) uiInputChange!: EventEmitter<string>;
+  @Event({ eventName: 'uiOpenChange' }) uiOpenChange!: EventEmitter<boolean>;
+  @Event({ eventName: 'uiInvalidInput' }) uiInvalidInput!: EventEmitter<string>;
+  @Event({ eventName: 'uiFocus' }) uiFocus!: EventEmitter<void>;
+  @Event({ eventName: 'uiBlur' }) uiBlur!: EventEmitter<void>;
 
   @State() internalOpen = false;
   @State() inputValue = '';
@@ -91,6 +91,7 @@ export class UiDatePicker extends BaseComponent {
   @State() selectingRangeStart?: Date;
   @State() monthDirection: 'left' | 'right' = 'right';
   @State() shake = false;
+  @State() rangeSelectionState: 'idle' | 'selecting' | 'completed' = 'idle';
 
   private inputEl?: HTMLElement;
   private searchInputEl?: HTMLElement;
@@ -165,8 +166,9 @@ export class UiDatePicker extends BaseComponent {
       this.hasSearchError = false;
     } else {
       this.selectingRangeStart = undefined;
+      this.rangeSelectionState = 'idle';
     }
-    this.onOpenChange.emit(nextOpen);
+    this.uiOpenChange.emit(nextOpen);
   }
 
   private activeSelection() {
@@ -205,6 +207,7 @@ export class UiDatePicker extends BaseComponent {
       this.searchValue = '';
       this.focusedDay = undefined;
       this.selectingRangeStart = undefined;
+      this.rangeSelectionState = 'idle';
       this.currentMonth = this.startOfMonth(new Date());
       return;
     }
@@ -214,6 +217,7 @@ export class UiDatePicker extends BaseComponent {
     this.focusedDay = range.end;
     this.currentMonth = this.startOfMonth(range.start);
     this.selectingRangeStart = undefined;
+    this.rangeSelectionState = 'completed';
   }
 
   private normalizeDate(date: Date): Date {
@@ -338,7 +342,7 @@ export class UiDatePicker extends BaseComponent {
     } else {
       this.hasSearchError = true;
     }
-    this.onInvalidInput.emit(raw);
+    this.uiInvalidInput.emit(raw);
     this.shake = true;
     if (this.shakeTimer) clearTimeout(this.shakeTimer);
     this.shakeTimer = setTimeout(() => {
@@ -370,16 +374,16 @@ export class UiDatePicker extends BaseComponent {
     if (!this.isValueControlled) {
       this.value = this.cloneSelection(normalized);
     }
-    this.onChange.emit(normalized);
+    this.uiChange.emit(normalized);
     if (emitApply) {
-      this.onApply.emit(normalized);
+      this.uiApply.emit(normalized);
     }
   }
 
   private cancelDraft() {
     this.draftValue = this.cloneSelection(this.committedValue);
     this.syncUiFromSelection(this.activeSelection());
-    this.onCancel.emit();
+    this.uiCancel.emit();
     this.setOpen(false);
   }
 
@@ -410,7 +414,7 @@ export class UiDatePicker extends BaseComponent {
     const raw = event.detail ?? '';
     this.inputValue = raw;
     this.searchValue = raw;
-    this.onInputChange.emit(raw);
+    this.uiInputChange.emit(raw);
     if (this.parseTimerMain) clearTimeout(this.parseTimerMain);
     const wait = Number.isFinite(this.debounce) && this.debounce >= 0 ? this.debounce : 200;
     this.parseTimerMain = setTimeout(() => {
@@ -421,7 +425,7 @@ export class UiDatePicker extends BaseComponent {
   private onSearchValueChange = (event: InputValueChangeEvent) => {
     const raw = event.detail ?? '';
     this.searchValue = raw;
-    this.onInputChange.emit(raw);
+    this.uiInputChange.emit(raw);
     if (this.parseTimerSearch) clearTimeout(this.parseTimerSearch);
     const wait = Number.isFinite(this.debounce) && this.debounce >= 0 ? this.debounce : 200;
     this.parseTimerSearch = setTimeout(() => {
@@ -495,18 +499,42 @@ export class UiDatePicker extends BaseComponent {
       return;
     }
 
-    const currentRange = this.asRange(this.activeSelection());
-    if (!this.selectingRangeStart || currentRange) {
+    // Range mode with explicit state machine
+    // CASE 1: Idle or completed → start new selection (set from)
+    if (this.rangeSelectionState === 'idle' || this.rangeSelectionState === 'completed') {
       this.selectingRangeStart = normalized;
+      this.rangeSelectionState = 'selecting';
+      this.focusedDay = normalized;
       this.inputValue = `${this.formatDate(normalized)} - `;
       this.searchValue = this.inputValue;
       return;
     }
 
-    const start = this.selectingRangeStart.getTime() <= normalized.getTime() ? this.selectingRangeStart : normalized;
-    const end = this.selectingRangeStart.getTime() <= normalized.getTime() ? normalized : this.selectingRangeStart;
-    this.selectingRangeStart = undefined;
-    this.updateSelection({ start, end }, 'main');
+    // CASE 2: Selecting → complete selection (set to)
+    if (this.rangeSelectionState === 'selecting' && this.selectingRangeStart) {
+      let start: Date;
+      let end: Date;
+
+      // Handle reverse selection (user clicked date before start)
+      if (normalized.getTime() < this.selectingRangeStart.getTime()) {
+        start = normalized;
+        end = this.selectingRangeStart;
+      } else {
+        start = this.selectingRangeStart;
+        end = normalized;
+      }
+
+      // Handle same date click (single-day range)
+      if (normalized.getTime() === this.selectingRangeStart.getTime()) {
+        start = normalized;
+        end = normalized;
+      }
+
+      this.selectingRangeStart = undefined;
+      this.rangeSelectionState = 'completed';
+      this.updateSelection({ start, end }, 'main');
+      return;
+    }
   }
 
   private shiftFocusedDay(days: number) {
@@ -622,13 +650,15 @@ export class UiDatePicker extends BaseComponent {
           const inSelectedRange = this.inRange(normalized, selectedRange);
           const selectedStart = this.compareDay(selectedRange?.start, normalized);
           const selectedEnd = this.compareDay(selectedRange?.end, normalized);
-          const rangeDraft = this.selectingRangeStart
+          const isSelectingRange = this.mode === 'range' && this.rangeSelectionState === 'selecting';
+          const rangeDraft = isSelectingRange && this.selectingRangeStart
             ? this.asRange({ start: this.selectingRangeStart, end: this.focusedDay ?? this.selectingRangeStart })
             : undefined;
-          const inDraftRange = this.mode === 'range' && !selectedRange && this.inRange(normalized, rangeDraft);
+          const inDraftRange = isSelectingRange && this.inRange(normalized, rangeDraft);
           const isFocused = this.compareDay(this.focusedDay, normalized);
           const isSelected = selectedSingle || selectedStart || selectedEnd;
-          const isInRange = inSelectedRange || inDraftRange;
+          // Only show draft range when selecting, otherwise show selected range
+          const isInRange = isSelectingRange ? inDraftRange : inSelectedRange;
 
           return (
             <ui-button
@@ -649,7 +679,11 @@ export class UiDatePicker extends BaseComponent {
               aria-disabled={disabled ? 'true' : 'false'}
               disabled={disabled}
               onUiClick={() => this.handleDaySelect(normalized)}
-              onMouseOver={() => (this.focusedDay = normalized)}
+              onMouseOver={() => {
+                if (this.mode === 'range' && this.rangeSelectionState === 'selecting') {
+                  this.focusedDay = normalized;
+                }
+              }}
             >
               {normalized.getDate()}
             </ui-button>
@@ -715,8 +749,8 @@ export class UiDatePicker extends BaseComponent {
                 iconAriaLabel="Toggle calendar"
                 onValueChange={this.onInputValueChange}
                 onUiIconClick={() => this.setOpen(!this.internalOpen)}
-                onFocusin={() => this.onFocus.emit()}
-                onUiBlur={() => this.onBlur.emit()}
+                onFocusin={() => this.uiFocus.emit()}
+                onUiBlur={() => this.uiBlur.emit()}
                 onClick={() => this.setOpen(true)}
                 onKeyDown={this.onMainInputKeyDown}
                 aria-expanded={this.internalOpen ? 'true' : 'false'}

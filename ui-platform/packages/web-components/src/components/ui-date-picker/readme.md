@@ -36,14 +36,14 @@
 
 | Event            | Description | Type                                               |
 | ---------------- | ----------- | -------------------------------------------------- |
-| `onApply`        |             | `CustomEvent<Date \| { start: Date; end: Date; }>` |
-| `onBlur`         |             | `CustomEvent<void>`                                |
-| `onCancel`       |             | `CustomEvent<void>`                                |
-| `onChange`       |             | `CustomEvent<Date \| { start: Date; end: Date; }>` |
-| `onFocus`        |             | `CustomEvent<void>`                                |
-| `onInputChange`  |             | `CustomEvent<string>`                              |
-| `onInvalidInput` |             | `CustomEvent<string>`                              |
-| `onOpenChange`   |             | `CustomEvent<boolean>`                             |
+| `uiApply`        |             | `CustomEvent<Date \| { start: Date; end: Date; }>` |
+| `uiBlur`         |             | `CustomEvent<void>`                                |
+| `uiCancel`       |             | `CustomEvent<void>`                                |
+| `uiChange`       |             | `CustomEvent<Date \| { start: Date; end: Date; }>` |
+| `uiFocus`        |             | `CustomEvent<void>`                                |
+| `uiInputChange`  |             | `CustomEvent<string>`                              |
+| `uiInvalidInput` |             | `CustomEvent<string>`                              |
+| `uiOpenChange`   |             | `CustomEvent<boolean>`                             |
 
 
 ## Dependencies

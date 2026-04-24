@@ -795,14 +795,14 @@ declare global {
         new (): HTMLUiCheckboxDropdownElement;
     };
     interface HTMLUiDatePickerElementEventMap {
-        "onChange": Date | DateRangeValue;
-        "onApply": Date | DateRangeValue;
-        "onCancel": void;
-        "onInputChange": string;
-        "onOpenChange": boolean;
-        "onInvalidInput": string;
-        "onFocus": void;
-        "onBlur": void;
+        "uiChange": Date | DateRangeValue;
+        "uiApply": Date | DateRangeValue;
+        "uiCancel": void;
+        "uiInputChange": string;
+        "uiOpenChange": boolean;
+        "uiInvalidInput": string;
+        "uiFocus": void;
+        "uiBlur": void;
     }
     interface HTMLUiDatePickerElement extends Components.UiDatePicker, HTMLStencilElement {
         addEventListener<K extends keyof HTMLUiDatePickerElementEventMap>(type: K, listener: (this: HTMLUiDatePickerElement, ev: UiDatePickerCustomEvent<HTMLUiDatePickerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -1304,14 +1304,14 @@ declare namespace LocalJSX {
           * @default 'single'
          */
         "mode"?: DatePickerMode;
-        "onOnApply"?: (event: UiDatePickerCustomEvent<Date | DateRangeValue>) => void;
-        "onOnBlur"?: (event: UiDatePickerCustomEvent<void>) => void;
-        "onOnCancel"?: (event: UiDatePickerCustomEvent<void>) => void;
-        "onOnChange"?: (event: UiDatePickerCustomEvent<Date | DateRangeValue>) => void;
-        "onOnFocus"?: (event: UiDatePickerCustomEvent<void>) => void;
-        "onOnInputChange"?: (event: UiDatePickerCustomEvent<string>) => void;
-        "onOnInvalidInput"?: (event: UiDatePickerCustomEvent<string>) => void;
-        "onOnOpenChange"?: (event: UiDatePickerCustomEvent<boolean>) => void;
+        "onUiApply"?: (event: UiDatePickerCustomEvent<Date | DateRangeValue>) => void;
+        "onUiBlur"?: (event: UiDatePickerCustomEvent<void>) => void;
+        "onUiCancel"?: (event: UiDatePickerCustomEvent<void>) => void;
+        "onUiChange"?: (event: UiDatePickerCustomEvent<Date | DateRangeValue>) => void;
+        "onUiFocus"?: (event: UiDatePickerCustomEvent<void>) => void;
+        "onUiInputChange"?: (event: UiDatePickerCustomEvent<string>) => void;
+        "onUiInvalidInput"?: (event: UiDatePickerCustomEvent<string>) => void;
+        "onUiOpenChange"?: (event: UiDatePickerCustomEvent<boolean>) => void;
         "open"?: boolean;
         /**
           * @default 'Enter date (e.g. 1 Jan 2020)'

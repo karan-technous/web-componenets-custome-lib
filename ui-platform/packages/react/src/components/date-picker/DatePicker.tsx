@@ -37,14 +37,14 @@ export type DatePickerProps = {
   search?: boolean;
   customParsers?: CustomParser[];
   debounce?: number;
-  onChange?: (date: Date | DateRange) => void;
-  onApply?: (date: Date | DateRange) => void;
-  onCancel?: () => void;
-  onInputChange?: (value: string) => void;
-  onOpenChange?: (open: boolean) => void;
-  onInvalidInput?: (value: string) => void;
-  onFocus?: () => void;
-  onBlur?: () => void;
+  uiChange?: (date: Date | DateRange) => void;
+  uiApply?: (date: Date | DateRange) => void;
+  uiCancel?: () => void;
+  uiInputChange?: (value: string) => void;
+  uiOpenChange?: (open: boolean) => void;
+  uiInvalidInput?: (value: string) => void;
+  uiFocus?: () => void;
+  uiBlur?: () => void;
 };
 
 export const DatePicker = forwardRef<HTMLElement, DatePickerProps>(
@@ -71,14 +71,14 @@ export const DatePicker = forwardRef<HTMLElement, DatePickerProps>(
       search = false,
       customParsers,
       debounce = 220,
-      onChange,
-      onApply,
-      onCancel,
-      onInputChange,
-      onOpenChange,
-      onInvalidInput,
-      onFocus,
-      onBlur,
+      uiChange,
+      uiApply,
+      uiCancel,
+      uiInputChange,
+      uiOpenChange,
+      uiInvalidInput,
+      uiFocus,
+      uiBlur,
     },
     forwardedRef,
   ) => {
@@ -142,36 +142,36 @@ export const DatePicker = forwardRef<HTMLElement, DatePickerProps>(
       const handleChange = (e: any) => {
         const nextValue = e.detail as Date | DateRange;
         if (!isControlled) setInternalValue(nextValue);
-        onChange?.(nextValue);
+        uiChange?.(nextValue);
       };
-      const handleInputChange = (e: any) => onInputChange?.(e.detail as string);
-      const handleApply = (e: any) => onApply?.(e.detail as Date | DateRange);
-      const handleCancel = () => onCancel?.();
-      const handleOpenChange = (e: any) => onOpenChange?.(!!e.detail);
-      const handleInvalidInput = (e: any) => onInvalidInput?.(e.detail as string);
-      const handleFocus = () => onFocus?.();
-      const handleBlur = () => onBlur?.();
+      const handleInputChange = (e: any) => uiInputChange?.(e.detail as string);
+      const handleApply = (e: any) => uiApply?.(e.detail as Date | DateRange);
+      const handleCancel = () => uiCancel?.();
+      const handleOpenChange = (e: any) => uiOpenChange?.(!!e.detail);
+      const handleInvalidInput = (e: any) => uiInvalidInput?.(e.detail as string);
+      const handleFocus = () => uiFocus?.();
+      const handleBlur = () => uiBlur?.();
 
-      el.addEventListener("onChange", handleChange);
-      el.addEventListener("onInputChange", handleInputChange);
-      el.addEventListener("onApply", handleApply);
-      el.addEventListener("onCancel", handleCancel);
-      el.addEventListener("onOpenChange", handleOpenChange);
-      el.addEventListener("onInvalidInput", handleInvalidInput);
-      el.addEventListener("onFocus", handleFocus);
-      el.addEventListener("onBlur", handleBlur);
+      el.addEventListener("uiChange", handleChange);
+      el.addEventListener("uiInputChange", handleInputChange);
+      el.addEventListener("uiApply", handleApply);
+      el.addEventListener("uiCancel", handleCancel);
+      el.addEventListener("uiOpenChange", handleOpenChange);
+      el.addEventListener("uiInvalidInput", handleInvalidInput);
+      el.addEventListener("uiFocus", handleFocus);
+      el.addEventListener("uiBlur", handleBlur);
 
       return () => {
-        el.removeEventListener("onChange", handleChange);
-        el.removeEventListener("onInputChange", handleInputChange);
-        el.removeEventListener("onApply", handleApply);
-        el.removeEventListener("onCancel", handleCancel);
-        el.removeEventListener("onOpenChange", handleOpenChange);
-        el.removeEventListener("onInvalidInput", handleInvalidInput);
-        el.removeEventListener("onFocus", handleFocus);
-        el.removeEventListener("onBlur", handleBlur);
+        el.removeEventListener("uiChange", handleChange);
+        el.removeEventListener("uiInputChange", handleInputChange);
+        el.removeEventListener("uiApply", handleApply);
+        el.removeEventListener("uiCancel", handleCancel);
+        el.removeEventListener("uiOpenChange", handleOpenChange);
+        el.removeEventListener("uiInvalidInput", handleInvalidInput);
+        el.removeEventListener("uiFocus", handleFocus);
+        el.removeEventListener("uiBlur", handleBlur);
       };
-    }, [isControlled, onApply, onBlur, onCancel, onChange, onFocus, onInputChange, onInvalidInput, onOpenChange]);
+    }, [isControlled, uiApply, uiBlur, uiCancel, uiChange, uiFocus, uiInputChange, uiInvalidInput, uiOpenChange]);
 
     return React.createElement("ui-date-picker", { ref });
   },

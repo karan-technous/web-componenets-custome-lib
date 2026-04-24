@@ -1,6 +1,6 @@
 {
   "name": "@karan9186/workspace",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Monorepo workspace for the UI Library design system.",
   "private": "false",
   "type": "module",

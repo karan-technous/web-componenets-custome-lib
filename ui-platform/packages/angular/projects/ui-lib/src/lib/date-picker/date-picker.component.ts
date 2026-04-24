@@ -80,13 +80,13 @@ export class UiDatePickerComponent implements ControlValueAccessor, Validator {
   customParsers = input<any[] | undefined>(undefined);
   debounce = input<number>(220);
 
-  onInputChange = output<string>();
-  onOpenChange = output<boolean>();
-  onInvalidInput = output<string>();
-  onApply = output<Date | DateRange>();
-  onCancel = output<void>();
-  onFocus = output<void>();
-  onBlur = output<void>();
+  uiInputChange = output<string>();
+  uiOpenChange = output<boolean>();
+  uiInvalidInput = output<string>();
+  uiApply = output<Date | DateRange>();
+  uiCancel = output<void>();
+  uiFocus = output<void>();
+  uiBlur = output<void>();
   changed = output<Date | DateRange>();
 
   private onChange: (value: DatePickerValue) => void = () => {};
@@ -124,33 +124,33 @@ export class UiDatePickerComponent implements ControlValueAccessor, Validator {
   }
 
   handleInputChange(event: Event): void {
-    this.onInputChange.emit((event as CustomEvent<string>).detail);
+    this.uiInputChange.emit((event as CustomEvent<string>).detail);
   }
 
   handleOpenChange(event: Event): void {
-    this.onOpenChange.emit(!!(event as CustomEvent<boolean>).detail);
+    this.uiOpenChange.emit(!!(event as CustomEvent<boolean>).detail);
   }
 
   handleApply(event: Event): void {
-    this.onApply.emit((event as CustomEvent<Date | DateRange>).detail);
+    this.uiApply.emit((event as CustomEvent<Date | DateRange>).detail);
   }
 
   handleCancel(): void {
-    this.onCancel.emit();
+    this.uiCancel.emit();
   }
 
   handleInvalidInput(event: Event): void {
-    this.onInvalidInput.emit((event as CustomEvent<string>).detail);
+    this.uiInvalidInput.emit((event as CustomEvent<string>).detail);
   }
 
   handleFocus(): void {
-    this.onFocus.emit();
+    this.uiFocus.emit();
   }
 
   handleBlur(): void {
     this.touched.set(true);
     this.onTouched();
-    this.onBlur.emit();
+    this.uiBlur.emit();
   }
 }
 
