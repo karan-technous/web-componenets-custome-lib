@@ -32,7 +32,7 @@ function normalizeDefinition(definition: StoryDefinition): StoryEntry {
               merged[key] = value;
             }
           }
-          return { name, props: merged, slots: story.slots };
+          return { name, props: merged, slots: story.slots, code: story.code };
         })
       : [{ name: "Default", props: defaultProps }];
 
@@ -70,6 +70,7 @@ function toSelectedStory(entry: StoryEntry, variant: StoryVariant): SelectedStor
     propsConfig: entry.definition.props,
     renderers: entry.definition.renderers,
     docs: entry.definition.docs,
+    code: variant.code,
   };
 }
 

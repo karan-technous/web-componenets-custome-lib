@@ -2,6 +2,16 @@ import type { Framework } from "./frameworkStore";
 
 export type StoryPropValue = string | boolean;
 export type StoryProps = Record<string, StoryPropValue>;
+export type Story = {
+  component: string;
+  props?: Record<string, unknown>;
+  children?: unknown;
+};
+export interface StoryCustomCode {
+  react?: string;
+  angular?: string;
+  wc?: string;
+}
 
 export type ControlType = "string" | "select" | "boolean";
 
@@ -15,6 +25,7 @@ export interface PropConfig {
 export interface StoryVariantConfig {
   props?: Partial<StoryProps>;
   slots?: Record<string, string>;
+  code?: StoryCustomCode;
 }
 
 export interface StoryDocsExample {
@@ -80,6 +91,7 @@ export interface StoryVariant {
   name: string;
   props: StoryProps;
   slots?: Record<string, string>;
+  code?: StoryCustomCode;
 }
 
 export interface StoryEntry {
@@ -98,4 +110,5 @@ export interface SelectedStory {
   renderers?: StoryRendererBindings;
   docs?: StoryDocs;
   slots?: Record<string, string>;
+  code?: StoryCustomCode;
 }

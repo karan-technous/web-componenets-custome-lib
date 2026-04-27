@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import type { Framework } from "../state/frameworkStore";
 import type { SelectedStory, StoryRendererBindings } from "../state/storyTypes";
+import { transformStory } from "../state/storyTransformer";
 
 interface PreviewCanvasProps {
   framework: Framework;
@@ -47,6 +48,8 @@ function sendToPreview(
     props: Record<string, string | boolean>;
     slots?: Record<string, string>;
     renderers?: StoryRendererBindings;
+    code: string;
+    angularImports?: string[];
   },
 ) {
   if (!iframe?.contentWindow) {
@@ -55,7 +58,7 @@ function sendToPreview(
 
   iframe.contentWindow.postMessage(
     {
-      type: "UPDATE_STORY",
+      type: "RUN_STORY",
       payload,
     },
     "*",
@@ -93,6 +96,8 @@ export const PreviewCanvas = React.memo(function PreviewCanvas({
     props: Record<string, string | boolean>;
     slots?: Record<string, string>;
     renderers?: StoryRendererBindings;
+    code: string;
+    angularImports?: string[];
   } | null>(null);
 
   useEffect(() => {
@@ -139,6 +144,7 @@ export const PreviewCanvas = React.memo(function PreviewCanvas({
       props: selection.props,
       slots: selection.slots,
       renderers: selection.renderers,
+      ...transformStory(selection, framework),
     };
 
     console.log("PreviewCanvas: Selection changed, payload:", JSON.stringify(payload, null, 2));

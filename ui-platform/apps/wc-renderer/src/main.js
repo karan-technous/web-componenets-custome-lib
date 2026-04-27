@@ -35,6 +35,35 @@ function applyProps(el, props) {
         }
     });
 }
+function attachToastTrigger(payload) {
+    const button = controls.querySelector("[data-bridge-toast-trigger]");
+    const toastElement = controls.querySelector("ui-toast");
+    if (!button || !toastElement) {
+        return;
+    }
+    button.addEventListener("click", () => {
+        const toastType = payload.props.type || "info";
+        if (toastType === "promise" && typeof toastElement.promise === "function") {
+            toastElement.promise(new Promise((resolve, reject) => {
+                window.setTimeout(() => {
+                    Math.random() > 0.3 ? resolve({ ok: true }) : reject(new Error("Request failed"));
+                }, 1200);
+            }), {
+                loading: payload.props.loading || "Loading...",
+                success: payload.props.success || "Success!",
+                error: payload.props.error || "Error!",
+                position: payload.props.position || "bottom-right",
+                duration: parseInt(String(payload.props.duration || "4000")),
+            });
+            return;
+        }
+        toastElement.show({
+            message: payload.props.message || "Toast message",
+            type: toastType,
+            position: payload.props.position || "top-right",
+        });
+    });
+}
 function renderComponent(payload) {
     controls.innerHTML = "";
     controls.style.width = "100%";
@@ -289,17 +318,24 @@ window.addEventListener("message", (event) => {
             return;
         }
         if (event.data?.type !== "UPDATE_STORY") {
-            return;
+            if (event.data?.type !== "RUN_STORY") {
+                return;
+            }
         }
         const payload = event.data.payload;
         if (!payload || payload.framework !== "wc") {
             return;
         }
-        console.log("WC renderer received payload:", JSON.stringify(payload, null, 2));
         if (payload.appearance) {
             currentAppearance = payload.appearance;
         }
         applyAppearance(currentAppearance);
+        if (event.data?.type === "RUN_STORY" && payload.code) {
+            controls.innerHTML = payload.code;
+            attachToastTrigger(payload);
+            return;
+        }
+        console.log("WC renderer received payload:", JSON.stringify(payload, null, 2));
         renderComponent(payload);
     }
     catch (error) {

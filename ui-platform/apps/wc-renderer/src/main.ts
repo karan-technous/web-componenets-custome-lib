@@ -49,6 +49,7 @@ type StoryPayload = {
   framework: "angular" | "react" | "wc";
   component: string;
   story: string;
+  code?: string;
   props: Record<string, unknown>;
   slots?: Record<string, string>;
   appearance?: "dark" | "light";
@@ -59,6 +60,42 @@ type StoryPayload = {
     };
   };
 };
+
+function attachToastTrigger(payload: StoryPayload) {
+  const button = controls.querySelector("[data-bridge-toast-trigger]") as HTMLButtonElement | null;
+  const toastElement = controls.querySelector("ui-toast") as any;
+  if (!button || !toastElement) {
+    return;
+  }
+
+  button.addEventListener("click", () => {
+    const toastType = payload.props.type || "info";
+
+    if (toastType === "promise" && typeof toastElement.promise === "function") {
+      toastElement.promise(
+        new Promise((resolve, reject) => {
+          window.setTimeout(() => {
+            Math.random() > 0.3 ? resolve({ ok: true }) : reject(new Error("Request failed"));
+          }, 1200);
+        }),
+        {
+          loading: payload.props.loading || "Loading...",
+          success: payload.props.success || "Success!",
+          error: payload.props.error || "Error!",
+          position: payload.props.position || "bottom-right",
+          duration: parseInt(String(payload.props.duration || "4000")),
+        },
+      );
+      return;
+    }
+
+    toastElement.show({
+      message: payload.props.message || "Toast message",
+      type: toastType,
+      position: payload.props.position || "top-right",
+    });
+  });
+}
 
 function renderComponent(payload: StoryPayload) {
   controls.innerHTML = "";
@@ -325,7 +362,9 @@ window.addEventListener("message", (event: MessageEvent) => {
     }
 
     if (event.data?.type !== "UPDATE_STORY") {
-      return;
+      if (event.data?.type !== "RUN_STORY") {
+        return;
+      }
     }
 
     const payload = event.data.payload as StoryPayload;
@@ -333,11 +372,18 @@ window.addEventListener("message", (event: MessageEvent) => {
       return;
     }
 
-    console.log("WC renderer received payload:", JSON.stringify(payload, null, 2));
     if (payload.appearance) {
       currentAppearance = payload.appearance;
     }
     applyAppearance(currentAppearance);
+
+    if (event.data?.type === "RUN_STORY" && payload.code) {
+      controls.innerHTML = payload.code;
+      attachToastTrigger(payload);
+      return;
+    }
+
+    console.log("WC renderer received payload:", JSON.stringify(payload, null, 2));
     renderComponent(payload);
   } catch (error) {
     console.error("Failed to handle message:", error);

@@ -76,11 +76,21 @@ const buttonStory: StoryDefinition = {
         label: "Get Started",
         variant: "default",
       },
+      code: {
+        react: `<UiButton variant={"default"}>Get Started</UiButton>`,
+        angular: `<ui-button-angular [variant]="'default'">Get Started</ui-button-angular>`,
+        wc: `<ui-button variant="default">Get Started</ui-button>`,
+      },
     },
     Secondary: {
       props: {
         label: "Learn More",
         variant: "secondary",
+      },
+      code: {
+        react: `<UiButton variant={"secondary"}>Learn More</UiButton>`,
+        angular: `<ui-button-angular [variant]="'secondary'">Learn More</ui-button-angular>`,
+        wc: `<ui-button variant="secondary">Learn More</ui-button>`,
       },
     },
     Outline: {
@@ -88,11 +98,21 @@ const buttonStory: StoryDefinition = {
         label: "View Details",
         variant: "outline",
       },
+      code: {
+        react: `<UiButton variant={"outline"}>View Details</UiButton>`,
+        angular: `<ui-button-angular [variant]="'outline'">View Details</ui-button-angular>`,
+        wc: `<ui-button variant="outline">View Details</ui-button>`,
+      },
     },
     Ghost: {
       props: {
         label: "Ghost Button",
         variant: "ghost",
+      },
+      code: {
+        react: `<UiButton variant={"ghost"}>Ghost Button</UiButton>`,
+        angular: `<ui-button-angular [variant]="'ghost'">Ghost Button</ui-button-angular>`,
+        wc: `<ui-button variant="ghost">Ghost Button</ui-button>`,
       },
     },
     Destructive: {
@@ -100,11 +120,21 @@ const buttonStory: StoryDefinition = {
         label: "Delete Item",
         variant: "destructive",
       },
+      code: {
+        react: `<UiButton variant={"destructive"}>Delete Item</UiButton>`,
+        angular: `<ui-button-angular [variant]="'destructive'">Delete Item</ui-button-angular>`,
+        wc: `<ui-button variant="destructive">Delete Item</ui-button>`,
+      },
     },
     Link: {
       props: {
         label: "View Documentation",
         variant: "link",
+      },
+      code: {
+        react: `<UiButton variant={"link"}>View Documentation</UiButton>`,
+        angular: `<ui-button-angular [variant]="'link'">View Documentation</ui-button-angular>`,
+        wc: `<ui-button variant="link">View Documentation</ui-button>`,
       },
     },
     Small: {
@@ -113,12 +143,22 @@ const buttonStory: StoryDefinition = {
         variant: "default",
         size: "sm",
       },
+      code: {
+        react: `<UiButton variant={"default"} size={"sm"}>Small Button</UiButton>`,
+        angular: `<ui-button-angular [variant]="'default'" [size]="'sm'">Small Button</ui-button-angular>`,
+        wc: `<ui-button variant="default" size="sm">Small Button</ui-button>`,
+      },
     },
     Large: {
       props: {
         label: "Large Button",
         variant: "default",
         size: "lg",
+      },
+      code: {
+        react: `<UiButton variant={"default"} size={"lg"}>Large Button</UiButton>`,
+        angular: `<ui-button-angular [variant]="'default'" [size]="'lg'">Large Button</ui-button-angular>`,
+        wc: `<ui-button variant="default" size="lg">Large Button</ui-button>`,
       },
     },
     ExtraSmall: {
@@ -127,12 +167,22 @@ const buttonStory: StoryDefinition = {
         variant: "default",
         size: "xs",
       },
+      code: {
+        react: `<UiButton variant={"default"} size={"xs"}>XS Button</UiButton>`,
+        angular: `<ui-button-angular [variant]="'default'" [size]="'xs'">XS Button</ui-button-angular>`,
+        wc: `<ui-button variant="default" size="xs">XS Button</ui-button>`,
+      },
     },
     RoundedFull: {
       props: {
         label: "Pill Shape",
         variant: "default",
         rounded: "full",
+      },
+      code: {
+        react: `<UiButton variant={"default"} rounded={"full"}>Pill Shape</UiButton>`,
+        angular: `<ui-button-angular [variant]="'default'" [rounded]="'full'">Pill Shape</ui-button-angular>`,
+        wc: `<ui-button variant="default" rounded="full">Pill Shape</ui-button>`,
       },
     },
     Animated: {
@@ -141,12 +191,22 @@ const buttonStory: StoryDefinition = {
         variant: "default",
         animated: true,
       },
+      code: {
+        react: `<UiButton variant={"default"} animated={true}>Click Me (Animated)</UiButton>`,
+        angular: `<ui-button-angular [variant]="'default'" [animated]="true">Click Me (Animated)</ui-button-angular>`,
+        wc: `<ui-button variant="default" animated>Click Me (Animated)</ui-button>`,
+      },
     },
     Loading: {
       props: {
         label: "Loading...",
         variant: "default",
         loading: true,
+      },
+      code: {
+        react: `<UiButton variant={"default"} loading={true}>Loading...</UiButton>`,
+        angular: `<ui-button-angular [variant]="'default'" [loading]="true">Loading...</ui-button-angular>`,
+        wc: `<ui-button variant="default" loading>Loading...</ui-button>`,
       },
     },
     Disabled: {
@@ -155,12 +215,22 @@ const buttonStory: StoryDefinition = {
         variant: "default",
         disabled: true,
       },
+      code: {
+        react: `<UiButton variant={"default"} disabled={true}>Disabled</UiButton>`,
+        angular: `<ui-button-angular [variant]="'default'" [disabled]="true">Disabled</ui-button-angular>`,
+        wc: `<ui-button variant="default" disabled>Disabled</ui-button>`,
+      },
     },
     FullWidth: {
       props: {
         label: "Full Width Button",
         variant: "default",
         fullWidth: true,
+      },
+      code: {
+        react: `<UiButton variant={"default"} fullWidth={true}>Full Width Button</UiButton>`,
+        angular: `<ui-button-angular [variant]="'default'" [fullWidth]="true">Full Width Button</ui-button-angular>`,
+        wc: `<ui-button variant="default" full-width>Full Width Button</ui-button>`,
       },
     },
     WithLeftIcon: {
@@ -169,12 +239,22 @@ const buttonStory: StoryDefinition = {
         variant: "default",
         iconLeft: "Plus",
       },
+      code: {
+        react: `<UiButton variant={"default"} iconLeft={"Plus"}>Add New</UiButton>`,
+        angular: `<ui-button-angular [variant]="'default'" [iconLeft]="'Plus'">Add New</ui-button-angular>`,
+        wc: `<ui-button variant="default" icon-left="Plus">Add New</ui-button>`,
+      },
     },
     WithRightIcon: {
       props: {
         label: "Next",
         variant: "outline",
         iconRight: "ArrowRight",
+      },
+      code: {
+        react: `<UiButton variant={"outline"} iconRight={"ArrowRight"}>Next</UiButton>`,
+        angular: `<ui-button-angular [variant]="'outline'" [iconRight]="'ArrowRight'">Next</ui-button-angular>`,
+        wc: `<ui-button variant="outline" icon-right="ArrowRight">Next</ui-button>`,
       },
     },
     WithBothIcons: {
@@ -184,12 +264,38 @@ const buttonStory: StoryDefinition = {
         iconLeft: "Search",
         iconRight: "ArrowRight",
       },
+      code: {
+        react: `<UiButton variant={"secondary"} iconLeft={"Search"} iconRight={"ArrowRight"}>Search</UiButton>`,
+        angular: `<ui-button-angular [variant]="'secondary'" [iconLeft]="'Search'" [iconRight]="'ArrowRight'">Search</ui-button-angular>`,
+        wc: `<ui-button variant="secondary" icon-left="Search" icon-right="ArrowRight">Search</ui-button>`,
+      },
+    },
+    CustomCode: {
+      props: {
+        label: "Deploy Now",
+        variant: "outline",
+        size: "lg",
+        rounded: "full",
+        animated: true,
+        iconLeft: "Rocket",
+        iconRight: "ArrowRight",
+      },
+      code: {
+        react: `<UiButton variant={"outline"} size={"lg"} rounded={"full"} animated={true} iconLeft={"Rocket"} iconRight={"ArrowRight"}>Deploy Now</UiButton>`,
+        angular: `<ui-button-angular [variant]="'outline'" [size]="'lg'" [rounded]="'full'" [animated]="true" [iconLeft]="'Rocket'" [iconRight]="'ArrowRight'">Deploy Now</ui-button-angular>`,
+        wc: `<ui-button variant="outline" size="lg" rounded="full" animated icon-left="Rocket" icon-right="ArrowRight">Deploy Now</ui-button>`,
+      },
     },
     IconButton: {
       props: {
         icon: "Search",
         variant: "default",
         size: "icon",
+      },
+      code: {
+        react: `<UiButton variant={"default"} size={"icon"} icon={"Search"} />`,
+        angular: `<ui-button-angular [variant]="'default'" [size]="'icon'" [icon]="'Search'"></ui-button-angular>`,
+        wc: `<ui-button variant="default" size="icon" icon="Search"></ui-button>`,
       },
     },
   },
@@ -252,6 +358,21 @@ const buttonStory: StoryDefinition = {
         description:
           "Shows a spinner and disables interaction during async operations.",
         props: { variant: "default", label: "Loading...", loading: true },
+      },
+      {
+        title: "Custom Code",
+        storyName: "CustomCode",
+        description:
+          "Exercises the transformed framework-specific code path with multiple props and projected button content.",
+        props: {
+          variant: "outline",
+          size: "lg",
+          rounded: "full",
+          animated: true,
+          label: "Deploy Now",
+          iconLeft: "Rocket",
+          iconRight: "ArrowRight",
+        },
       },
     ],
     usage: {
