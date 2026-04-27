@@ -155,6 +155,8 @@ function renderDynamicComponent(payload) {
     const props = { ...payload.props };
     const renderKey = `${payload.component}:${payload.story}:${JSON.stringify(payload.props)}`;
     let children;
+    // Remove children from props to avoid conflicts with DOM read-only property
+    delete props.children;
     const childrenProp = binding?.childrenProp;
     // Special handling for button-group to parse buttons JSON and create UiButton components
     if (payload.component === "button-group" && childrenProp === "buttons" && typeof props[childrenProp] !== "undefined") {

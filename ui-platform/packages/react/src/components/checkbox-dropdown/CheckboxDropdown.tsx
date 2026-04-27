@@ -46,7 +46,7 @@ export const CheckboxDropdown = forwardRef<any, Props>(
       onChange,
     });
 
-    // ✅ Sync ALL props properly
+    // Sync ALL props properly
     useEffect(() => {
       const el = elRef.current;
       if (!el) return;
@@ -56,10 +56,12 @@ export const CheckboxDropdown = forwardRef<any, Props>(
       el.showSelectAll = showSelectAll;
       el.errorMessage = errorMessage;
 
-      Object.assign(el, rest);
+      // Remove children from rest to avoid read-only property error
+      const { children, ...safeRest } = rest as any;
+      Object.assign(el, safeRest);
     }, [val, options, showSelectAll, errorMessage, rest]);
 
-    // ✅ Event normalization
+    // Event normalization
     useEffect(() => {
       const el = elRef.current;
 

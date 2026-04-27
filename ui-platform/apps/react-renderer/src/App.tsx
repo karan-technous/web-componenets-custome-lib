@@ -212,6 +212,9 @@ function renderDynamicComponent(payload: StoryPayload): ReactElement {
   const renderKey = `${payload.component}:${payload.story}:${JSON.stringify(payload.props)}`;
   let children: string | ReactElement | ReactElement[] | undefined;
 
+  // Remove children from props to avoid conflicts with DOM read-only property
+  delete (props as any).children;
+
   const childrenProp = binding?.childrenProp;
 
   // Special handling for button-group to parse buttons JSON and create UiButton components
