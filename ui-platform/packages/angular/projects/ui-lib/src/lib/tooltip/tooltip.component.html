@@ -1,0 +1,13 @@
+<ui-tooltip
+  [content]="content()"
+  [position]="position()"
+  [trigger]="trigger()"
+  [open]="resolvedOpen()"
+  [disabled]="disabledState() || disabled()"
+  [variant]="variant()"
+  [delay]="delay()"
+  (openChange)="handleOpenChange($event)"
+>
+  <ng-content></ng-content>
+  <ng-content select="[tooltip-content]" slot="content"></ng-content>
+</ui-tooltip>

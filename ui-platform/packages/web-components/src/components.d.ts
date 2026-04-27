@@ -5,14 +5,14 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { BadgeColor, BadgeShape, BadgeSize, BadgeVariant, BreadcrumbEventDetail, BreadcrumbSeparator, ButtonEventDetail, ButtonGroupEventDetail, ButtonGroupOrientation, ButtonGroupSize, ButtonGroupVariant, ButtonRounded, ButtonSize, ButtonVariant, IconName, ToastLifecycleDetail, ToastPromiseOptions, ToastShowOptions } from "@karan9186/core";
+import { BadgeColor, BadgeShape, BadgeSize, BadgeVariant, BreadcrumbEventDetail, BreadcrumbSeparator, ButtonEventDetail, ButtonGroupEventDetail, ButtonGroupOrientation, ButtonGroupSize, ButtonGroupVariant, ButtonRounded, ButtonSize, ButtonVariant, IconName, ToastLifecycleDetail, ToastPromiseOptions, ToastShowOptions, TooltipPosition, TooltipTrigger, TooltipVariant } from "@karan9186/core";
 import { DropdownOption } from "./components/ui-checkbox-dropdown/ui-checkbox-dropdown";
 import { DatePickerParser } from "./components/ui-date-picker/ui-date-picker";
 import { DropdownMode, DropdownOption as DropdownOption1, DropdownVariant } from "./components/ui-dropdown/ui-dropdown";
 import { IconName as IconName1 } from "./components/icons/icon.registry";
 import { PanelRounded, PanelSize, PanelVariant } from "./components/ui-panel/ui-panel";
 import { SpinnerSize, SpinnerSpeed, SpinnerVariant } from "./components/ui-spinner/ui-spinner";
-export { BadgeColor, BadgeShape, BadgeSize, BadgeVariant, BreadcrumbEventDetail, BreadcrumbSeparator, ButtonEventDetail, ButtonGroupEventDetail, ButtonGroupOrientation, ButtonGroupSize, ButtonGroupVariant, ButtonRounded, ButtonSize, ButtonVariant, IconName, ToastLifecycleDetail, ToastPromiseOptions, ToastShowOptions } from "@karan9186/core";
+export { BadgeColor, BadgeShape, BadgeSize, BadgeVariant, BreadcrumbEventDetail, BreadcrumbSeparator, ButtonEventDetail, ButtonGroupEventDetail, ButtonGroupOrientation, ButtonGroupSize, ButtonGroupVariant, ButtonRounded, ButtonSize, ButtonVariant, IconName, ToastLifecycleDetail, ToastPromiseOptions, ToastShowOptions, TooltipPosition, TooltipTrigger, TooltipVariant } from "@karan9186/core";
 export { DropdownOption } from "./components/ui-checkbox-dropdown/ui-checkbox-dropdown";
 export { DatePickerParser } from "./components/ui-date-picker/ui-date-picker";
 export { DropdownMode, DropdownOption as DropdownOption1, DropdownVariant } from "./components/ui-dropdown/ui-dropdown";
@@ -671,6 +671,30 @@ export namespace Components {
          */
         "size": 'sm' | 'md' | 'lg';
     }
+    interface UiTooltip {
+        "content"?: string;
+        /**
+          * @default 150
+         */
+        "delay": number;
+        /**
+          * @default false
+         */
+        "disabled": boolean;
+        "open"?: boolean;
+        /**
+          * @default 'top'
+         */
+        "position": TooltipPosition;
+        /**
+          * @default 'hover'
+         */
+        "trigger": TooltipTrigger;
+        /**
+          * @default 'simple'
+         */
+        "variant": TooltipVariant;
+    }
 }
 export interface UiBadgeCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -731,6 +755,10 @@ export interface UiToastCustomEvent<T> extends CustomEvent<T> {
 export interface UiToggleCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLUiToggleElement;
+}
+export interface UiTooltipCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLUiTooltipElement;
 }
 declare global {
     interface HTMLUiBadgeElementEventMap {
@@ -1047,6 +1075,23 @@ declare global {
         prototype: HTMLUiToggleElement;
         new (): HTMLUiToggleElement;
     };
+    interface HTMLUiTooltipElementEventMap {
+        "openChange": boolean;
+    }
+    interface HTMLUiTooltipElement extends Components.UiTooltip, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLUiTooltipElementEventMap>(type: K, listener: (this: HTMLUiTooltipElement, ev: UiTooltipCustomEvent<HTMLUiTooltipElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLUiTooltipElementEventMap>(type: K, listener: (this: HTMLUiTooltipElement, ev: UiTooltipCustomEvent<HTMLUiTooltipElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLUiTooltipElement: {
+        prototype: HTMLUiTooltipElement;
+        new (): HTMLUiTooltipElement;
+    };
     interface HTMLElementTagNameMap {
         "ui-badge": HTMLUiBadgeElement;
         "ui-breadcrumb": HTMLUiBreadcrumbElement;
@@ -1064,6 +1109,7 @@ declare global {
         "ui-spinner": HTMLUiSpinnerElement;
         "ui-toast": HTMLUiToastElement;
         "ui-toggle": HTMLUiToggleElement;
+        "ui-tooltip": HTMLUiTooltipElement;
     }
 }
 declare namespace LocalJSX {
@@ -1781,6 +1827,31 @@ declare namespace LocalJSX {
          */
         "size"?: 'sm' | 'md' | 'lg';
     }
+    interface UiTooltip {
+        "content"?: string;
+        /**
+          * @default 150
+         */
+        "delay"?: number;
+        /**
+          * @default false
+         */
+        "disabled"?: boolean;
+        "onOpenChange"?: (event: UiTooltipCustomEvent<boolean>) => void;
+        "open"?: boolean;
+        /**
+          * @default 'top'
+         */
+        "position"?: TooltipPosition;
+        /**
+          * @default 'hover'
+         */
+        "trigger"?: TooltipTrigger;
+        /**
+          * @default 'simple'
+         */
+        "variant"?: TooltipVariant;
+    }
 
     interface UiBadgeAttributes {
         "variant": BadgeVariant;
@@ -1959,6 +2030,15 @@ declare namespace LocalJSX {
         "disabled": boolean;
         "size": 'sm' | 'md' | 'lg';
     }
+    interface UiTooltipAttributes {
+        "content": string;
+        "position": TooltipPosition;
+        "trigger": TooltipTrigger;
+        "open": boolean;
+        "disabled": boolean;
+        "variant": TooltipVariant;
+        "delay": number;
+    }
 
     interface IntrinsicElements {
         "ui-badge": Omit<UiBadge, keyof UiBadgeAttributes> & { [K in keyof UiBadge & keyof UiBadgeAttributes]?: UiBadge[K] } & { [K in keyof UiBadge & keyof UiBadgeAttributes as `attr:${K}`]?: UiBadgeAttributes[K] } & { [K in keyof UiBadge & keyof UiBadgeAttributes as `prop:${K}`]?: UiBadge[K] };
@@ -1977,6 +2057,7 @@ declare namespace LocalJSX {
         "ui-spinner": Omit<UiSpinner, keyof UiSpinnerAttributes> & { [K in keyof UiSpinner & keyof UiSpinnerAttributes]?: UiSpinner[K] } & { [K in keyof UiSpinner & keyof UiSpinnerAttributes as `attr:${K}`]?: UiSpinnerAttributes[K] } & { [K in keyof UiSpinner & keyof UiSpinnerAttributes as `prop:${K}`]?: UiSpinner[K] };
         "ui-toast": Omit<UiToast, keyof UiToastAttributes> & { [K in keyof UiToast & keyof UiToastAttributes]?: UiToast[K] } & { [K in keyof UiToast & keyof UiToastAttributes as `attr:${K}`]?: UiToastAttributes[K] } & { [K in keyof UiToast & keyof UiToastAttributes as `prop:${K}`]?: UiToast[K] };
         "ui-toggle": Omit<UiToggle, keyof UiToggleAttributes> & { [K in keyof UiToggle & keyof UiToggleAttributes]?: UiToggle[K] } & { [K in keyof UiToggle & keyof UiToggleAttributes as `attr:${K}`]?: UiToggleAttributes[K] } & { [K in keyof UiToggle & keyof UiToggleAttributes as `prop:${K}`]?: UiToggle[K] };
+        "ui-tooltip": Omit<UiTooltip, keyof UiTooltipAttributes> & { [K in keyof UiTooltip & keyof UiTooltipAttributes]?: UiTooltip[K] } & { [K in keyof UiTooltip & keyof UiTooltipAttributes as `attr:${K}`]?: UiTooltipAttributes[K] } & { [K in keyof UiTooltip & keyof UiTooltipAttributes as `prop:${K}`]?: UiTooltip[K] };
     }
 }
 export { LocalJSX as JSX };
@@ -2027,6 +2108,7 @@ declare module "@stencil/core" {
             "ui-spinner": LocalJSX.IntrinsicElements["ui-spinner"] & JSXBase.HTMLAttributes<HTMLUiSpinnerElement>;
             "ui-toast": LocalJSX.IntrinsicElements["ui-toast"] & JSXBase.HTMLAttributes<HTMLUiToastElement>;
             "ui-toggle": LocalJSX.IntrinsicElements["ui-toggle"] & JSXBase.HTMLAttributes<HTMLUiToggleElement>;
+            "ui-tooltip": LocalJSX.IntrinsicElements["ui-tooltip"] & JSXBase.HTMLAttributes<HTMLUiTooltipElement>;
         }
     }
 }

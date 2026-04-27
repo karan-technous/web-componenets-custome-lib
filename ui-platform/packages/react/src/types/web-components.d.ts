@@ -110,6 +110,11 @@ declare module "react" {
         maxHeight?: string;
       };
 
+      "ui-tooltip": React.DetailedHTMLProps<
+        React.HTMLAttributes<HTMLElement>,
+        HTMLElement
+      >
+
       "ui-spinner": React.DetailedHTMLProps<
         React.HTMLAttributes<HTMLElement>,
         HTMLElement

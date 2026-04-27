@@ -8,7 +8,7 @@ import {
 } from "@karan9186/react";
 import { ToggleTest } from "./test/toggle.test";
 import { CheckboxTest } from "./test/checkbox.test";
-
+import {Tooltip} from "@karan9186/react"
 const App = () => {
   const [value, setValue] = useState("");
   const [disabled, setDisabled] = useState(false);
@@ -48,6 +48,10 @@ const App = () => {
   };
   return (
     <div>
+      <h2>tooltip example</h2>
+      <Tooltip variant="complex" position="left" content="This is sdfsdfsdfsdfsdf tooltip">
+        <UiButton>Hover me</UiButton>
+      </Tooltip>
       <h2>Custom Input</h2>
       <UiInput
         value={value}

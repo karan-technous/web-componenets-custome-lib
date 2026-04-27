@@ -15,10 +15,11 @@ import { UiDatePickerComponent, UiDatePickerDirective } from './date-picker/date
 import { DropdownComponent } from './dropdown/dropdown.component';
 import { UiCheckboxDropdownWrapper } from './checkbox-dropdown/checkbox-dropdown.component';
 import { SpinnerComponent } from './spinner/spinner.component';
+import { UiTooltipComponent, UiTooltipDirective } from './tooltip/tooltip.component';
 
 @NgModule({
-  imports: [ButtonComponent, ButtonGroupComponent, InputComponent, UiCheckboxComponent, UiToggleComponent, BadgeComponent, BadgeRemoveDirective, UiBreadcrumbComponent, UiPanelComponent, UiPanelHeaderDirective, UiPanelFooterDirective, UiPanelActionsDirective, UiDatePickerComponent, UiDatePickerDirective, DropdownComponent, UiCheckboxDropdownWrapper, SpinnerComponent],
-  exports: [ButtonComponent, ButtonGroupComponent, InputComponent, UiCheckboxComponent, UiToggleComponent, BadgeComponent, BadgeRemoveDirective, UiBreadcrumbComponent, UiPanelComponent, UiPanelHeaderDirective, UiPanelFooterDirective, UiPanelActionsDirective, UiDatePickerComponent, UiDatePickerDirective, DropdownComponent, UiCheckboxDropdownWrapper, SpinnerComponent],
+  imports: [ButtonComponent, ButtonGroupComponent, InputComponent, UiCheckboxComponent, UiToggleComponent, BadgeComponent, BadgeRemoveDirective, UiBreadcrumbComponent, UiPanelComponent, UiPanelHeaderDirective, UiPanelFooterDirective, UiPanelActionsDirective, UiDatePickerComponent, UiDatePickerDirective, DropdownComponent, UiCheckboxDropdownWrapper, SpinnerComponent, UiTooltipComponent, UiTooltipDirective],
+  exports: [ButtonComponent, ButtonGroupComponent, InputComponent, UiCheckboxComponent, UiToggleComponent, BadgeComponent, BadgeRemoveDirective, UiBreadcrumbComponent, UiPanelComponent, UiPanelHeaderDirective, UiPanelFooterDirective, UiPanelActionsDirective, UiDatePickerComponent, UiDatePickerDirective, DropdownComponent, UiCheckboxDropdownWrapper, SpinnerComponent, UiTooltipComponent, UiTooltipDirective],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class UiLibModule {}

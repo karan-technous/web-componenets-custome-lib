@@ -24,5 +24,6 @@ export { SpinnerComponent } from './lib/spinner/spinner.component';
 export type { SpinnerVariant, SpinnerSize, SpinnerSpeed } from './lib/spinner/spinner.component';
 export { UiRadioComponent, UiRadioDirective } from './lib/radio/radio.component';
 export { UiRadioGroupComponent, UiRadioGroupDirective } from './lib/radio-group/radio-group.component';
+export { UiTooltipComponent, UiTooltipDirective } from './lib/tooltip/tooltip.component';
 // Re-export IconName for autocomplete when using iconLeft/iconRight props
 export type { IconName } from '@karan9186/core';

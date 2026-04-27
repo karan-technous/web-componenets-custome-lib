@@ -20,10 +20,10 @@ export interface TransformedStory {
 
 function escapeHtml(value: string): string {
   return value
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;");
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
 }
 
 function toLiteral(value: unknown): string {
@@ -183,6 +183,101 @@ function buildToastHtml(props: Record<string, unknown>): string {
   <button type="button" data-bridge-toast-trigger="${escapedOptions}">Show Toast</button>
   <ui-toast></ui-toast>
 </div>
+`.trim();
+}
+
+function getTooltipTriggerMarkup(slots?: Record<string, string>): string {
+  return slots?.default?.trim() || "Hover me";
+}
+
+function getTooltipComplexMarkup(slots?: Record<string, string>): string {
+  return (
+    slots?.content?.trim() ||
+    `<strong>More details</strong><div>Additional contextual help for this trigger.</div>`
+  );
+}
+
+function buildTooltipReactCode(
+  props: Record<string, unknown>,
+  slots?: Record<string, string>,
+): string {
+  const triggerMarkup = getTooltipTriggerMarkup(slots);
+  const isComplex = props.variant === "complex";
+  const tooltipProps = buildReactProps(
+    Object.fromEntries(
+      Object.entries(props).filter(([, value]) => typeof value !== "undefined"),
+    ),
+  );
+
+  const complexProp = isComplex
+    ? ` tooltipContent={<div dangerouslySetInnerHTML={{ __html: ${toLiteral(
+        getTooltipComplexMarkup(slots),
+      )} }} />}`
+    : "";
+
+  return `
+const BridgeReact = window.BridgeReact;
+const BridgeReactWrappers = window.BridgeReactWrappers;
+const Tooltip = BridgeReactWrappers.Tooltip;
+
+export default function Story() {
+  return (
+    <Tooltip${tooltipProps}${complexProp}>
+      <button
+        type="button"
+        dangerouslySetInnerHTML={{ __html: ${toLiteral(triggerMarkup)} }}
+      />
+    </Tooltip>
+  );
+}
+`.trim();
+}
+
+function buildTooltipAngularTemplate(
+  binding: AngularComponentBinding,
+  props: Record<string, unknown>,
+  slots?: Record<string, string>,
+): { code: string; imports: string[] } {
+  const triggerMarkup = getTooltipTriggerMarkup(slots);
+  const complexMarkup = getTooltipComplexMarkup(slots);
+  const propString = buildAngularProps(props);
+  const content =
+    props.variant === "complex"
+      ? `
+  <button type="button">${triggerMarkup}</button>
+  <div tooltip-content>${complexMarkup}</div>
+`
+      : `
+  <button type="button">${triggerMarkup}</button>
+`;
+
+  return {
+    code: `
+<${binding.selector}${propString}>${content}</${binding.selector}>
+`.trim(),
+    imports: binding.imports ?? (binding.exportName ? [binding.exportName] : []),
+  };
+}
+
+function buildTooltipHtml(
+  binding: WcComponentBinding,
+  props: Record<string, unknown>,
+  slots?: Record<string, string>,
+): string {
+  const triggerMarkup = getTooltipTriggerMarkup(slots);
+  const complexMarkup = getTooltipComplexMarkup(slots);
+  const content =
+    props.variant === "complex"
+      ? `
+  <button type="button">${triggerMarkup}</button>
+  <div slot="content">${complexMarkup}</div>
+`
+      : `
+  <button type="button">${triggerMarkup}</button>
+`;
+
+  return `
+<${binding.tagName}${buildHtmlProps(props)}>${content}</${binding.tagName}>
 `.trim();
 }
 
@@ -444,6 +539,10 @@ function transformReactStory(
     return buildToastReactCode(props);
   }
 
+  if (story.component === "tooltip") {
+    return buildTooltipReactCode(props, story.children as Record<string, string> | undefined);
+  }
+
   let children = "";
   const childrenProp = binding.childrenProp;
 
@@ -501,6 +600,14 @@ function transformAngularStory(
     };
   }
 
+  if (story.component === "tooltip") {
+    return buildTooltipAngularTemplate(
+      binding,
+      props,
+      story.children as Record<string, string> | undefined,
+    );
+  }
+
   let children = "";
   const projectedProp = binding.projectedProp;
 
@@ -538,6 +645,14 @@ function transformWcStory(story: Story, binding: WcComponentBinding): string {
 
   if (story.component === "toast") {
     return buildToastHtml(props);
+  }
+
+  if (story.component === "tooltip") {
+    return buildTooltipHtml(
+      binding,
+      props,
+      story.children as Record<string, string> | undefined,
+    );
   }
 
   let children = "";

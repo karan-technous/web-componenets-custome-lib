@@ -173,10 +173,11 @@ export const componentRegistry: ComponentRegistry = {
     wc: { tagName: "ui-toggle" },
   },
   tooltip: {
-    react: { exportName: "UiTooltip" },
+    react: { exportName: "Tooltip" },
     angular: {
-      selector: "ui-tooltip",
-      imports: [],
+      selector: "ui-tooltip-angular",
+      exportName: "UiTooltipComponent",
+      imports: ["UiTooltipComponent"],
     },
     wc: { tagName: "ui-tooltip" },
   },
