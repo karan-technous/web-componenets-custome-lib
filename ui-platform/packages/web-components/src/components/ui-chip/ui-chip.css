@@ -1,0 +1,145 @@
+:host {
+  display: inline-flex;
+  vertical-align: middle;
+  max-width: 100%;
+  outline: none;
+}
+
+:host(:focus-visible) .chip {
+  box-shadow:
+    0 0 0 2px var(--ui-bg),
+    0 0 0 4px var(--ui-ring),
+    var(--ui-shadow);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  min-height: 2rem;
+  max-width: 100%;
+  padding: 0.25rem 0.625rem;
+  border: 1px solid var(--ui-border-color);
+  border-radius: 999px;
+  background: var(--ui-secondary);
+  color: var(--ui-secondary-foreground);
+  box-shadow: var(--ui-shadow);
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background 120ms ease,
+    border-color 120ms ease,
+    color 120ms ease,
+    box-shadow 120ms ease,
+    transform 120ms ease;
+}
+
+.chip:hover {
+  background: var(--ui-secondary-hover);
+  border-color: var(--ui-border-hover);
+}
+
+.chip:active {
+  transform: translateY(1px);
+}
+
+.chip.active {
+  background: var(--ui-primary);
+  color: var(--ui-primary-foreground);
+  border-color: var(--ui-primary);
+}
+
+.chip.active:hover {
+  background: var(--ui-primary-hover);
+  border-color: var(--ui-primary-hover);
+}
+
+.chip.sm {
+  padding: 0.125rem 0.375rem;
+  min-height: 1.5rem;
+  font-size: 0.75rem;
+}
+
+.chip.md {
+  padding: 0.25rem 0.625rem;
+  min-height: 2rem;
+  font-size: 0.8125rem;
+}
+
+.chip.lg {
+  padding: 0.5rem 1rem;
+  min-height: 2.5rem;
+  font-size: 1rem;
+}
+
+.chip.xl {
+  padding: 0.75rem 1.25rem;
+  min-height: 3rem;
+  font-size: 1.125rem;
+}
+
+.chip.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.chip__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.chip__icon-button,
+.chip__remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 1rem;
+  height: 1rem;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  transition:
+    background 120ms ease,
+    color 120ms ease,
+    transform 120ms ease;
+}
+
+.chip__icon-button:hover,
+.chip__remove:hover {
+  background: var(--ui-secondary-hover-bg);
+}
+
+.chip.active .chip__icon-button:hover,
+.chip.active .chip__remove:hover {
+  background: var(--ui-outline-hover-bg);
+}
+
+.chip__icon-button:focus-visible,
+.chip__remove:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--ui-ring);
+}
+
+.chip__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.125rem;
+  height: 1.125rem;
+  padding: 0 0.375rem;
+  border-radius: 999px;
+  background: var(--ui-destructive);
+  color: var(--ui-destructive-foreground);
+  font-size: 0.625rem;
+  font-weight: 700;
+  line-height: 1;
+}

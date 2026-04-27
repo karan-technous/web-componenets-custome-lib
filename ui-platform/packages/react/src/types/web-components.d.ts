@@ -115,6 +115,19 @@ declare module "react" {
         HTMLElement
       >
 
+      "ui-chip": React.DetailedHTMLProps<
+        React.HTMLAttributes<HTMLElement>,
+        HTMLElement
+      > & {
+        label?: string;
+        value?: string;
+        active?: boolean;
+        disabled?: boolean;
+        iconName?: string;
+        badgeCounter?: number;
+        removable?: boolean;
+      }
+
       "ui-spinner": React.DetailedHTMLProps<
         React.HTMLAttributes<HTMLElement>,
         HTMLElement

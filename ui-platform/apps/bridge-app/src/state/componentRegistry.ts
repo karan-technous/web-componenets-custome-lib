@@ -84,6 +84,15 @@ export const componentRegistry: ComponentRegistry = {
     },
     wc: { tagName: "ui-checkbox-dropdown" },
   },
+  chip: {
+    react: { exportName: "Chip" },
+    angular: {
+      selector: "ui-chip-angular",
+      exportName: "UiChipComponent",
+      imports: ["UiChipComponent"],
+    },
+    wc: { tagName: "ui-chip" },
+  },
   "date-picker": {
     react: { exportName: "DatePicker" },
     angular: {

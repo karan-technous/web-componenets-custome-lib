@@ -18,16 +18,16 @@ export class UiIcon extends BaseComponent {
 
     if (!icon) {
       // Fallback to search icon if icon not found
-      const fallbackIcon = ICONS['search'];
+      const fallbackIcon = ICONS['Search'];
       if (fallbackIcon) {
-        return fallbackIcon.map(([tag, attrs]) => {
+        return fallbackIcon.map(([tag, attrs]: [string, Record<string, any>]) => {
           return h(tag, { ...attrs });
         });
       }
       return <span>⚠️ Icon not found</span>;
     }
 
-    return icon.map(([tag, attrs]) => {
+    return icon.map(([tag, attrs]: [string, Record<string, any>]) => {
       return h(tag, { ...attrs });
     });
   }

@@ -16,10 +16,11 @@ import { DropdownComponent } from './dropdown/dropdown.component';
 import { UiCheckboxDropdownWrapper } from './checkbox-dropdown/checkbox-dropdown.component';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { UiTooltipComponent, UiTooltipDirective } from './tooltip/tooltip.component';
+import { UiChipComponent, UiChipDirective } from './chip/chip.component';
 
 @NgModule({
-  imports: [ButtonComponent, ButtonGroupComponent, InputComponent, UiCheckboxComponent, UiToggleComponent, BadgeComponent, BadgeRemoveDirective, UiBreadcrumbComponent, UiPanelComponent, UiPanelHeaderDirective, UiPanelFooterDirective, UiPanelActionsDirective, UiDatePickerComponent, UiDatePickerDirective, DropdownComponent, UiCheckboxDropdownWrapper, SpinnerComponent, UiTooltipComponent, UiTooltipDirective],
-  exports: [ButtonComponent, ButtonGroupComponent, InputComponent, UiCheckboxComponent, UiToggleComponent, BadgeComponent, BadgeRemoveDirective, UiBreadcrumbComponent, UiPanelComponent, UiPanelHeaderDirective, UiPanelFooterDirective, UiPanelActionsDirective, UiDatePickerComponent, UiDatePickerDirective, DropdownComponent, UiCheckboxDropdownWrapper, SpinnerComponent, UiTooltipComponent, UiTooltipDirective],
+  imports: [ButtonComponent, ButtonGroupComponent, InputComponent, UiCheckboxComponent, UiToggleComponent, BadgeComponent, BadgeRemoveDirective, UiBreadcrumbComponent, UiPanelComponent, UiPanelHeaderDirective, UiPanelFooterDirective, UiPanelActionsDirective, UiDatePickerComponent, UiDatePickerDirective, DropdownComponent, UiCheckboxDropdownWrapper, SpinnerComponent, UiTooltipComponent, UiTooltipDirective, UiChipComponent, UiChipDirective],
+  exports: [ButtonComponent, ButtonGroupComponent, InputComponent, UiCheckboxComponent, UiToggleComponent, BadgeComponent, BadgeRemoveDirective, UiBreadcrumbComponent, UiPanelComponent, UiPanelHeaderDirective, UiPanelFooterDirective, UiPanelActionsDirective, UiDatePickerComponent, UiDatePickerDirective, DropdownComponent, UiCheckboxDropdownWrapper, SpinnerComponent, UiTooltipComponent, UiTooltipDirective, UiChipComponent, UiChipDirective],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class UiLibModule {}

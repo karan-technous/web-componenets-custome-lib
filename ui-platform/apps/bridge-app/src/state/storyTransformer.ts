@@ -47,7 +47,15 @@ function reactPropValue(value: unknown): string {
   return `{${toLiteral(value)}}`;
 }
 
+function isNumericString(value: unknown): value is string {
+  return typeof value === "string" && /^-?\d+(?:\.\d+)?$/.test(value);
+}
+
 function angularPropValue(value: unknown): string {
+  if (isNumericString(value)) {
+    return value;
+  }
+
   return toLiteral(value);
 }
 
