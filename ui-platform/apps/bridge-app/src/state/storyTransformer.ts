@@ -11,9 +11,6 @@ type Primitive = string | number | boolean | null;
 type RawReactExpression = { __raw: string };
 
 export interface TransformedStory {
-  framework: Framework;
-  component: string;
-  story: string;
   code: string;
   angularImports?: string[];
 }
@@ -698,9 +695,6 @@ export function transformStory(
   const customCode = selection.code?.[framework as keyof StoryCustomCode];
   if (customCode) {
     return {
-      framework,
-      component: selection.component,
-      story: selection.storyName,
       code:
         framework === "react"
           ? normalizeReactCustomCode(selection, customCode)
@@ -724,9 +718,6 @@ export function transformStory(
 
   if (framework === "react") {
     return {
-      framework,
-      component: selection.component,
-      story: selection.storyName,
       code: transformReactStory(
         story,
         resolveMeta(story, framework, selection.renderers) as ReactComponentBinding,
@@ -740,18 +731,12 @@ export function transformStory(
       resolveMeta(story, framework, selection.renderers) as AngularComponentBinding,
     );
     return {
-      framework,
-      component: selection.component,
-      story: selection.storyName,
       code: result.code,
       angularImports: result.imports,
     };
   }
 
   return {
-    framework,
-    component: selection.component,
-    story: selection.storyName,
     code: transformWcStory(
       story,
       resolveMeta(story, framework, selection.renderers) as WcComponentBinding,

@@ -31,8 +31,8 @@ export class UiDropdown extends BaseComponent {
   @Prop({ reflect: true }) loading: boolean = false;
   @Prop({ reflect: true }) searchable: boolean = false;
   @Prop({ reflect: true }) clearable: boolean = false;
-  @Prop({ reflect: true }) open: boolean = undefined;
-  @Prop({ reflect: true }) minWidth: string = '200px';
+  @Prop({ reflect: true }) open: boolean | undefined = undefined;
+  @Prop({ reflect: true }) minWidth: string = 'auto';
   @Prop({ reflect: true }) maxWidth: string = 'none';
   @Prop({ reflect: true }) maxHeight: string = '300px';
   @Prop({ reflect: true }) selectAll: boolean = false;
@@ -109,9 +109,7 @@ export class UiDropdown extends BaseComponent {
     if (this.mode === 'single') {
       return options.filter(opt => opt.value === this.internalValue);
     }
-    return options.filter(opt =>
-      Array.isArray(this.internalValue) && this.internalValue.includes(opt.value)
-    );
+    return options.filter(opt => Array.isArray(this.internalValue) && this.internalValue.includes(opt.value));
   }
 
   get displayValue(): string {
@@ -124,7 +122,10 @@ export class UiDropdown extends BaseComponent {
     if (count <= 3) {
       return this.selectedOptions.map(opt => opt.label).join(', ');
     }
-    return `${this.selectedOptions.slice(0, 3).map(opt => opt.label).join(', ')} +${count - 3} more`;
+    return `${this.selectedOptions
+      .slice(0, 3)
+      .map(opt => opt.label)
+      .join(', ')} +${count - 3} more`;
   }
 
   // Methods
@@ -216,9 +217,7 @@ export class UiDropdown extends BaseComponent {
     }
 
     const query = this.searchQuery.toLowerCase();
-    this.filteredOptions = this.options.filter(opt =>
-      opt.label.toLowerCase().includes(query)
-    );
+    this.filteredOptions = this.options.filter(opt => opt.label.toLowerCase().includes(query));
   };
 
   @Watch('searchQuery')
@@ -246,10 +245,7 @@ export class UiDropdown extends BaseComponent {
     switch (e.key) {
       case 'ArrowDown':
         e.preventDefault();
-        this.highlightedIndex = Math.min(
-          this.highlightedIndex + 1,
-          this.filteredOptions.length - 1
-        );
+        this.highlightedIndex = Math.min(this.highlightedIndex + 1, this.filteredOptions.length - 1);
         break;
       case 'ArrowUp':
         e.preventDefault();
@@ -276,9 +272,7 @@ export class UiDropdown extends BaseComponent {
   };
 
   scrollToHighlighted = () => {
-    const highlightedOption = this.dropdownRef?.querySelector(
-      `[data-index="${this.highlightedIndex}"]`
-    ) as HTMLElement;
+    const highlightedOption = this.dropdownRef?.querySelector(`[data-index="${this.highlightedIndex}"]`) as HTMLElement;
     if (highlightedOption) {
       highlightedOption.scrollIntoView({ block: 'nearest' });
     }
@@ -291,7 +285,7 @@ export class UiDropdown extends BaseComponent {
     if (!e.composedPath().includes(this.el)) {
       this.setOpen(false);
     }
-  };
+  }
 
   // Focus trap
   @Listen('keydown')
@@ -301,16 +295,17 @@ export class UiDropdown extends BaseComponent {
   }
 
   render() {
-    const hasSelection = this.mode === 'single' 
-      ? this.internalValue !== null 
-      : Array.isArray(this.internalValue) && this.internalValue.length > 0;
+    const hasSelection = this.mode === 'single' ? this.internalValue !== null : Array.isArray(this.internalValue) && this.internalValue.length > 0;
 
-    const groupedOptions = this.filteredOptions.reduce((acc, opt) => {
-      const group = opt.group || 'default';
-      if (!acc[group]) acc[group] = [];
-      acc[group].push(opt);
-      return acc;
-    }, {} as Record<string, DropdownOption[]>);
+    const groupedOptions = this.filteredOptions.reduce(
+      (acc, opt) => {
+        const group = opt.group || 'default';
+        if (!acc[group]) acc[group] = [];
+        acc[group].push(opt);
+        return acc;
+      },
+      {} as Record<string, DropdownOption[]>,
+    );
 
     return (
       <Host>
@@ -325,10 +320,7 @@ export class UiDropdown extends BaseComponent {
         >
           {/* Trigger */}
           {this.variant === 'input' && (
-            <div
-              class="dropdown-trigger"
-              onClick={() => !this.disabled && this.toggle()}
-            >
+            <div class="dropdown-trigger" onClick={() => !this.disabled && this.toggle()}>
               <ui-input
                 placeholder={this.placeholder}
                 disabled={this.disabled}
@@ -341,11 +333,7 @@ export class UiDropdown extends BaseComponent {
               >
                 {this.clearable && hasSelection && (
                   <span slot="suffix">
-                    <button
-                      class="dropdown-clear"
-                      onClick={this.clear}
-                      aria-label="Clear selection"
-                    >
+                    <button class="dropdown-clear" onClick={this.clear} aria-label="Clear selection">
                       <ui-icon name="X" size="sm"></ui-icon>
                     </button>
                   </span>
@@ -358,7 +346,7 @@ export class UiDropdown extends BaseComponent {
             <button
               class="dropdown-button"
               part="button"
-              ref={(el) => (this.triggerRef = el as HTMLElement)}
+              ref={el => (this.triggerRef = el as HTMLElement)}
               onClick={() => !this.disabled && this.toggle()}
               onKeyDown={this.handleKeyDown}
               disabled={this.disabled}
@@ -374,7 +362,7 @@ export class UiDropdown extends BaseComponent {
           {this.variant === 'icon-only' && (
             <button
               class="dropdown-icon-trigger"
-              ref={(el) => (this.triggerRef = el as HTMLElement)}
+              ref={el => (this.triggerRef = el as HTMLElement)}
               onClick={() => !this.disabled && this.toggle()}
               onKeyDown={this.handleKeyDown}
               disabled={this.disabled}
@@ -393,7 +381,7 @@ export class UiDropdown extends BaseComponent {
               'dropdown-menu': true,
               'dropdown-menu--open': this.internalOpen,
             }}
-            ref={(el) => (this.dropdownRef = el as HTMLElement)}
+            ref={el => (this.dropdownRef = el as HTMLElement)}
             style={{ '--ui-dropdown-max-height': this.maxHeight }}
             role="listbox"
             aria-orientation="vertical"
@@ -404,82 +392,71 @@ export class UiDropdown extends BaseComponent {
               </div>
             ) : (
               <div>
-              {/* Search */}
-              {this.searchable && (
-                <div class="dropdown-search">
-                  <ui-input
-                    ref={(el) => (this.searchInputRef = el as any)}
-                    value={this.searchQuery}
-                    placeholder="Search..."
-                    onValueChange={this.handleSearch}
-                    icon="Search"
-                  ></ui-input>
-                </div>
-              )}
+                {/* Search */}
+                {this.searchable && (
+                  <div class="dropdown-search">
+                    <ui-input
+                      ref={el => (this.searchInputRef = el as any)}
+                      value={this.searchQuery}
+                      placeholder="Search..."
+                      onValueChange={this.handleSearch}
+                      icon="Search"
+                    ></ui-input>
+                  </div>
+                )}
 
-              {/* Select All / Clear All (multi-select) */}
-              {this.mode === 'multiple' && (this.selectAll || this.clearable) && (
-                <div class="dropdown-actions">
-                  {this.selectAll && (
-                    <button class="dropdown-action-btn" onClick={this.selectAllOptions}>
-                      Select All
-                    </button>
-                  )}
-                  {this.clearable && hasSelection && (
-                    <button class="dropdown-action-btn" onClick={this.clearAllOptions}>
-                      Clear All
-                    </button>
-                  )}
-                </div>
-              )}
+                {/* Select All / Clear All (multi-select) */}
+                {this.mode === 'multiple' && (this.selectAll || this.clearable) && (
+                  <div class="dropdown-actions">
+                    {this.selectAll && (
+                      <button class="dropdown-action-btn" onClick={this.selectAllOptions}>
+                        Select All
+                      </button>
+                    )}
+                    {this.clearable && hasSelection && (
+                      <button class="dropdown-action-btn" onClick={this.clearAllOptions}>
+                        Clear All
+                      </button>
+                    )}
+                  </div>
+                )}
 
-              {/* Options */}
-              {Object.keys(groupedOptions).length === 0 && (
-                <div class="dropdown-empty">No options available</div>
-              )}
+                {/* Options */}
+                {Object.keys(groupedOptions).length === 0 && <div class="dropdown-empty">No options available</div>}
 
-              {Object.entries(groupedOptions).map(([group, options]) => (
-                <div key={group} class="dropdown-group">
-                  {group !== 'default' && (
-                    <div class="dropdown-group-label">{group}</div>
-                  )}
-                  {options.map((option, index) => {
-                    const isSelected = this.mode === 'single'
-                      ? this.internalValue === option.value
-                      : Array.isArray(this.internalValue) && this.internalValue.includes(option.value);
-                    const globalIndex = this.filteredOptions.indexOf(option);
+                {Object.entries(groupedOptions).map(([group, options]) => (
+                  <div key={group} class="dropdown-group">
+                    {group !== 'default' && <div class="dropdown-group-label">{group}</div>}
+                    {options.map((option, index) => {
+                      const isSelected =
+                        this.mode === 'single' ? this.internalValue === option.value : Array.isArray(this.internalValue) && this.internalValue.includes(option.value);
+                      const globalIndex = this.filteredOptions.indexOf(option);
 
-                    return (
-                      <div
-                        key={option.value}
-                        class={{
-                          'dropdown-option': true,
-                          'dropdown-option--selected': isSelected,
-                          'dropdown-option--disabled': option.disabled,
-                          'dropdown-option--highlighted': globalIndex === this.highlightedIndex,
-                        }}
-                        data-index={globalIndex}
-                        onClick={() => this.selectOption(option)}
-                        role="option"
-                        aria-selected={isSelected}
-                        aria-disabled={option.disabled}
-                      >
-                        {this.mode === 'multiple' && (
-                          <ui-checkbox
-                            checked={isSelected}
-                            disabled={option.disabled}
-                            size="md"
-                          ></ui-checkbox>
-                        )}
-                        <span class="dropdown-option-label">{option.label}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-              ))}
+                      return (
+                        <div
+                          key={option.value}
+                          class={{
+                            'dropdown-option': true,
+                            'dropdown-option--selected': isSelected,
+                            'dropdown-option--disabled': !!option.disabled,
+                            'dropdown-option--highlighted': globalIndex === this.highlightedIndex,
+                          }}
+                          data-index={globalIndex}
+                          onClick={() => this.selectOption(option)}
+                          role="option"
+                          aria-selected={isSelected}
+                          aria-disabled={option.disabled}
+                        >
+                          {this.mode === 'multiple' && <ui-checkbox checked={isSelected} disabled={option.disabled} size="md"></ui-checkbox>}
+                          <span class="dropdown-option-label">{option.label}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                ))}
               </div>
             )}
-            </div>
+          </div>
         </div>
       </Host>
     );

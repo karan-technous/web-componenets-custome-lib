@@ -16,7 +16,7 @@
 | `loading`      | `loading`       |             | `boolean`                            | `false`       |
 | `maxHeight`    | `max-height`    |             | `string`                             | `'300px'`     |
 | `maxWidth`     | `max-width`     |             | `string`                             | `'none'`      |
-| `minWidth`     | `min-width`     |             | `string`                             | `'200px'`     |
+| `minWidth`     | `min-width`     |             | `string`                             | `'auto'`      |
 | `mode`         | `mode`          |             | `"multiple" \| "single"`             | `'single'`    |
 | `open`         | `open`          |             | `boolean`                            | `undefined`   |
 | `options`      | --              |             | `DropdownOption[]`                   | `[]`          |
@@ -48,6 +48,7 @@
 ### Used by
 
  - [ui-date-picker](../ui-date-picker)
+ - [ui-month-picker](../ui-month-picker)
 
 ### Depends on
 
@@ -66,6 +67,7 @@ graph TD;
   ui-input --> ui-icon
   ui-checkbox --> ui-icon
   ui-date-picker --> ui-dropdown
+  ui-month-picker --> ui-dropdown
   style ui-dropdown fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

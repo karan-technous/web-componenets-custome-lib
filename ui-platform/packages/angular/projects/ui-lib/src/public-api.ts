@@ -26,5 +26,6 @@ export { UiRadioComponent, UiRadioDirective } from './lib/radio/radio.component'
 export { UiRadioGroupComponent, UiRadioGroupDirective } from './lib/radio-group/radio-group.component';
 export { UiTooltipComponent, UiTooltipDirective } from './lib/tooltip/tooltip.component';
 export { UiChipComponent, UiChipDirective } from './lib/chip/chip.component';
+export { UiMonthPickerComponent } from './lib/month-picker/month-picker.component';
 // Re-export IconName for autocomplete when using iconLeft/iconRight props
 export type { IconName } from '@karan9186/core';

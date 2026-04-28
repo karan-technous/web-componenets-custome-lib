@@ -16,8 +16,22 @@ declare module "react" {
         React.HTMLAttributes<HTMLElement>,
         HTMLElement
       > & {
-        variant?: "default" | "secondary" | "outline" | "ghost" | "destructive" | "link";
-        size?: "default" | "xs" | "sm" | "lg" | "icon" | "icon-xs" | "icon-sm" | "icon-lg";
+        variant?:
+          | "default"
+          | "secondary"
+          | "outline"
+          | "ghost"
+          | "destructive"
+          | "link";
+        size?:
+          | "default"
+          | "xs"
+          | "sm"
+          | "lg"
+          | "icon"
+          | "icon-xs"
+          | "icon-sm"
+          | "icon-lg";
         disabled?: boolean;
         loading?: boolean;
         fullWidth?: boolean;
@@ -56,7 +70,16 @@ declare module "react" {
       "ui-checkbox-dropdown": React.DetailedHTMLProps<
         React.HTMLAttributes<HTMLElement>,
         HTMLElement
-      > & { label?: string; placeholder?: string; supportingText?: string; disabled?: boolean; required?: boolean; loading?: boolean; showAvatar?: boolean; ref: RefObject<any>; };
+      > & {
+        label?: string;
+        placeholder?: string;
+        supportingText?: string;
+        disabled?: boolean;
+        required?: boolean;
+        loading?: boolean;
+        showAvatar?: boolean;
+        ref: RefObject<any>;
+      };
 
       "ui-date-picker": React.DetailedHTMLProps<
         React.HTMLAttributes<HTMLElement>,
@@ -113,7 +136,21 @@ declare module "react" {
       "ui-tooltip": React.DetailedHTMLProps<
         React.HTMLAttributes<HTMLElement>,
         HTMLElement
-      >
+      >;
+
+      "ui-month-picker": React.DetailedHTMLProps<
+        React.HTMLAttributes<HTMLElement>,
+        HTMLElement
+      > & {
+        value?: string;
+        defaultValue?: string;
+        placeholder?: string;
+        disabled?: boolean;
+        required?: boolean;
+        errorMessage?: string;
+        minYear?: number;
+        maxYear?: number;
+      };
 
       "ui-chip": React.DetailedHTMLProps<
         React.HTMLAttributes<HTMLElement>,
@@ -126,7 +163,7 @@ declare module "react" {
         iconName?: string;
         badgeCounter?: number;
         removable?: boolean;
-      }
+      };
 
       "ui-spinner": React.DetailedHTMLProps<
         React.HTMLAttributes<HTMLElement>,

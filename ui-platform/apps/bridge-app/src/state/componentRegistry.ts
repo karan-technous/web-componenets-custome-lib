@@ -163,6 +163,7 @@ export const componentRegistry: ComponentRegistry = {
     },
     wc: { tagName: "ui-spinner" },
   },
+
   toast: {
     react: { exportName: "UiToast" },
     angular: {
@@ -189,6 +190,15 @@ export const componentRegistry: ComponentRegistry = {
       imports: ["UiTooltipComponent"],
     },
     wc: { tagName: "ui-tooltip" },
+  },
+  "month-picker": {
+    react: { exportName: "MonthPicker" },
+    angular: {
+      selector: "ui-month-picker-angular",
+      exportName: "UiMonthPickerComponent",
+      imports: ["UiMonthPickerComponent"],
+    },
+    wc: { tagName: "ui-month-picker" },
   },
 };
 

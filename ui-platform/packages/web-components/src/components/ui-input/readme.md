@@ -38,6 +38,7 @@
  - [ui-checkbox-dropdown](../ui-checkbox-dropdown)
  - [ui-date-picker](../ui-date-picker)
  - [ui-dropdown](../ui-dropdown)
+ - [ui-month-picker](../ui-month-picker)
 
 ### Depends on
 
@@ -50,6 +51,7 @@ graph TD;
   ui-checkbox-dropdown --> ui-input
   ui-date-picker --> ui-input
   ui-dropdown --> ui-input
+  ui-month-picker --> ui-input
   style ui-input fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

@@ -1,0 +1,9 @@
+<ui-month-picker
+  #wc
+  [attr.placeholder]="placeholder()"
+  [attr.disabled]="disabled() ? true : null"
+  [attr.required]="required() ? true : null"
+  [attr.min-year]="minYear()"
+  [attr.max-year]="maxYear()"
+  [attr.error-message]="errorMessage()"
+></ui-month-picker>

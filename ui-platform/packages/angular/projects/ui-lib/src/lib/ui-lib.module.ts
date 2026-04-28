@@ -17,10 +17,11 @@ import { UiCheckboxDropdownWrapper } from './checkbox-dropdown/checkbox-dropdown
 import { SpinnerComponent } from './spinner/spinner.component';
 import { UiTooltipComponent, UiTooltipDirective } from './tooltip/tooltip.component';
 import { UiChipComponent, UiChipDirective } from './chip/chip.component';
+import { UiMonthPickerComponent } from './month-picker/month-picker.component';
 
 @NgModule({
-  imports: [ButtonComponent, ButtonGroupComponent, InputComponent, UiCheckboxComponent, UiToggleComponent, BadgeComponent, BadgeRemoveDirective, UiBreadcrumbComponent, UiPanelComponent, UiPanelHeaderDirective, UiPanelFooterDirective, UiPanelActionsDirective, UiDatePickerComponent, UiDatePickerDirective, DropdownComponent, UiCheckboxDropdownWrapper, SpinnerComponent, UiTooltipComponent, UiTooltipDirective, UiChipComponent, UiChipDirective],
-  exports: [ButtonComponent, ButtonGroupComponent, InputComponent, UiCheckboxComponent, UiToggleComponent, BadgeComponent, BadgeRemoveDirective, UiBreadcrumbComponent, UiPanelComponent, UiPanelHeaderDirective, UiPanelFooterDirective, UiPanelActionsDirective, UiDatePickerComponent, UiDatePickerDirective, DropdownComponent, UiCheckboxDropdownWrapper, SpinnerComponent, UiTooltipComponent, UiTooltipDirective, UiChipComponent, UiChipDirective],
+  imports: [ButtonComponent, ButtonGroupComponent, InputComponent, UiCheckboxComponent, UiToggleComponent, BadgeComponent, BadgeRemoveDirective, UiBreadcrumbComponent, UiPanelComponent, UiPanelHeaderDirective, UiPanelFooterDirective, UiPanelActionsDirective, UiDatePickerComponent, UiDatePickerDirective, DropdownComponent, UiCheckboxDropdownWrapper, SpinnerComponent, UiTooltipComponent, UiTooltipDirective, UiChipComponent, UiChipDirective, UiMonthPickerComponent],
+  exports: [ButtonComponent, ButtonGroupComponent, InputComponent, UiCheckboxComponent, UiToggleComponent, BadgeComponent, BadgeRemoveDirective, UiBreadcrumbComponent, UiPanelComponent, UiPanelHeaderDirective, UiPanelFooterDirective, UiPanelActionsDirective, UiDatePickerComponent, UiDatePickerDirective, DropdownComponent, UiCheckboxDropdownWrapper, SpinnerComponent, UiTooltipComponent, UiTooltipDirective, UiChipComponent, UiChipDirective, UiMonthPickerComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class UiLibModule {}

@@ -397,7 +397,7 @@ export namespace Components {
          */
         "maxWidth": string;
         /**
-          * @default '200px'
+          * @default 'auto'
          */
         "minWidth": string;
         /**
@@ -407,7 +407,7 @@ export namespace Components {
         /**
           * @default undefined
          */
-        "open": boolean;
+        "open": boolean | undefined;
         /**
           * @default []
          */
@@ -487,6 +487,30 @@ export namespace Components {
           * @default ''
          */
         "value": string;
+    }
+    interface UiMonthPicker {
+        /**
+          * @default false
+         */
+        "disabled": boolean;
+        "errorMessage"?: string;
+        /**
+          * @default 2100
+         */
+        "maxYear": number;
+        /**
+          * @default 2000
+         */
+        "minYear": number;
+        /**
+          * @default 'Select month'
+         */
+        "placeholder": string;
+        /**
+          * @default false
+         */
+        "required": boolean;
+        "value"?: string;
     }
     interface UiPanel {
         /**
@@ -758,6 +782,10 @@ export interface UiInputCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLUiInputElement;
 }
+export interface UiMonthPickerCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLUiMonthPickerElement;
+}
 export interface UiPanelCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLUiPanelElement;
@@ -1004,6 +1032,23 @@ declare global {
         prototype: HTMLUiInputElement;
         new (): HTMLUiInputElement;
     };
+    interface HTMLUiMonthPickerElementEventMap {
+        "valueChange": string;
+    }
+    interface HTMLUiMonthPickerElement extends Components.UiMonthPicker, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLUiMonthPickerElementEventMap>(type: K, listener: (this: HTMLUiMonthPickerElement, ev: UiMonthPickerCustomEvent<HTMLUiMonthPickerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLUiMonthPickerElementEventMap>(type: K, listener: (this: HTMLUiMonthPickerElement, ev: UiMonthPickerCustomEvent<HTMLUiMonthPickerElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLUiMonthPickerElement: {
+        prototype: HTMLUiMonthPickerElement;
+        new (): HTMLUiMonthPickerElement;
+    };
     interface HTMLUiPanelElementEventMap {
         "toggle": boolean;
         "expand": boolean;
@@ -1149,6 +1194,7 @@ declare global {
         "ui-dropdown": HTMLUiDropdownElement;
         "ui-icon": HTMLUiIconElement;
         "ui-input": HTMLUiInputElement;
+        "ui-month-picker": HTMLUiMonthPickerElement;
         "ui-panel": HTMLUiPanelElement;
         "ui-radio": HTMLUiRadioElement;
         "ui-radio-group": HTMLUiRadioGroupElement;
@@ -1586,7 +1632,7 @@ declare namespace LocalJSX {
          */
         "maxWidth"?: string;
         /**
-          * @default '200px'
+          * @default 'auto'
          */
         "minWidth"?: string;
         /**
@@ -1599,7 +1645,7 @@ declare namespace LocalJSX {
         /**
           * @default undefined
          */
-        "open"?: boolean;
+        "open"?: boolean | undefined;
         /**
           * @default []
          */
@@ -1681,6 +1727,31 @@ declare namespace LocalJSX {
         /**
           * @default ''
          */
+        "value"?: string;
+    }
+    interface UiMonthPicker {
+        /**
+          * @default false
+         */
+        "disabled"?: boolean;
+        "errorMessage"?: string;
+        /**
+          * @default 2100
+         */
+        "maxYear"?: number;
+        /**
+          * @default 2000
+         */
+        "minYear"?: number;
+        "onValueChange"?: (event: UiMonthPickerCustomEvent<string>) => void;
+        /**
+          * @default 'Select month'
+         */
+        "placeholder"?: string;
+        /**
+          * @default false
+         */
+        "required"?: boolean;
         "value"?: string;
     }
     interface UiPanel {
@@ -2027,7 +2098,7 @@ declare namespace LocalJSX {
         "loading": boolean;
         "searchable": boolean;
         "clearable": boolean;
-        "open": boolean;
+        "open": boolean | undefined;
         "minWidth": string;
         "maxWidth": string;
         "maxHeight": string;
@@ -2051,6 +2122,15 @@ declare namespace LocalJSX {
         "readonly": boolean;
         "showAvatar": boolean;
         "error": boolean;
+    }
+    interface UiMonthPickerAttributes {
+        "value": string;
+        "placeholder": string;
+        "disabled": boolean;
+        "required": boolean;
+        "errorMessage": string;
+        "minYear": number;
+        "maxYear": number;
     }
     interface UiPanelAttributes {
         "variant": PanelVariant;
@@ -2133,6 +2213,7 @@ declare namespace LocalJSX {
         "ui-dropdown": Omit<UiDropdown, keyof UiDropdownAttributes> & { [K in keyof UiDropdown & keyof UiDropdownAttributes]?: UiDropdown[K] } & { [K in keyof UiDropdown & keyof UiDropdownAttributes as `attr:${K}`]?: UiDropdownAttributes[K] } & { [K in keyof UiDropdown & keyof UiDropdownAttributes as `prop:${K}`]?: UiDropdown[K] };
         "ui-icon": Omit<UiIcon, keyof UiIconAttributes> & { [K in keyof UiIcon & keyof UiIconAttributes]?: UiIcon[K] } & { [K in keyof UiIcon & keyof UiIconAttributes as `attr:${K}`]?: UiIconAttributes[K] } & { [K in keyof UiIcon & keyof UiIconAttributes as `prop:${K}`]?: UiIcon[K] } & OneOf<"name", UiIcon["name"], UiIconAttributes["name"]>;
         "ui-input": Omit<UiInput, keyof UiInputAttributes> & { [K in keyof UiInput & keyof UiInputAttributes]?: UiInput[K] } & { [K in keyof UiInput & keyof UiInputAttributes as `attr:${K}`]?: UiInputAttributes[K] } & { [K in keyof UiInput & keyof UiInputAttributes as `prop:${K}`]?: UiInput[K] };
+        "ui-month-picker": Omit<UiMonthPicker, keyof UiMonthPickerAttributes> & { [K in keyof UiMonthPicker & keyof UiMonthPickerAttributes]?: UiMonthPicker[K] } & { [K in keyof UiMonthPicker & keyof UiMonthPickerAttributes as `attr:${K}`]?: UiMonthPickerAttributes[K] } & { [K in keyof UiMonthPicker & keyof UiMonthPickerAttributes as `prop:${K}`]?: UiMonthPicker[K] };
         "ui-panel": Omit<UiPanel, keyof UiPanelAttributes> & { [K in keyof UiPanel & keyof UiPanelAttributes]?: UiPanel[K] } & { [K in keyof UiPanel & keyof UiPanelAttributes as `attr:${K}`]?: UiPanelAttributes[K] } & { [K in keyof UiPanel & keyof UiPanelAttributes as `prop:${K}`]?: UiPanel[K] };
         "ui-radio": Omit<UiRadio, keyof UiRadioAttributes> & { [K in keyof UiRadio & keyof UiRadioAttributes]?: UiRadio[K] } & { [K in keyof UiRadio & keyof UiRadioAttributes as `attr:${K}`]?: UiRadioAttributes[K] } & { [K in keyof UiRadio & keyof UiRadioAttributes as `prop:${K}`]?: UiRadio[K] };
         "ui-radio-group": Omit<UiRadioGroup, keyof UiRadioGroupAttributes> & { [K in keyof UiRadioGroup & keyof UiRadioGroupAttributes]?: UiRadioGroup[K] } & { [K in keyof UiRadioGroup & keyof UiRadioGroupAttributes as `attr:${K}`]?: UiRadioGroupAttributes[K] } & { [K in keyof UiRadioGroup & keyof UiRadioGroupAttributes as `prop:${K}`]?: UiRadioGroup[K] };
@@ -2178,6 +2259,7 @@ declare module "@stencil/core" {
             "ui-dropdown": LocalJSX.IntrinsicElements["ui-dropdown"] & JSXBase.HTMLAttributes<HTMLUiDropdownElement>;
             "ui-icon": LocalJSX.IntrinsicElements["ui-icon"] & JSXBase.HTMLAttributes<HTMLUiIconElement>;
             "ui-input": LocalJSX.IntrinsicElements["ui-input"] & JSXBase.HTMLAttributes<HTMLUiInputElement>;
+            "ui-month-picker": LocalJSX.IntrinsicElements["ui-month-picker"] & JSXBase.HTMLAttributes<HTMLUiMonthPickerElement>;
             "ui-panel": LocalJSX.IntrinsicElements["ui-panel"] & JSXBase.HTMLAttributes<HTMLUiPanelElement>;
             "ui-radio": LocalJSX.IntrinsicElements["ui-radio"] & JSXBase.HTMLAttributes<HTMLUiRadioElement>;
             "ui-radio-group": LocalJSX.IntrinsicElements["ui-radio-group"] & JSXBase.HTMLAttributes<HTMLUiRadioGroupElement>;
