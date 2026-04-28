@@ -1,0 +1,13 @@
+<ui-chips-input
+  [value]="value()"
+  [placeholder]="placeholder()"
+  [disabled]="resolvedDisabled()"
+  [required]="required()"
+  [errorMessage]="errorMessage()"
+  [maxChips]="maxChips()"
+  [separator]="separator()"
+  (valueChange)="handleValueChange($event)"
+  (chipAdd)="handleChipAdd($event)"
+  (chipRemove)="handleChipRemove($event)"
+  (uiBlur)="handleBlur()"
+></ui-chips-input>

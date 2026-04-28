@@ -9,6 +9,7 @@
 
 | Property        | Attribute         | Description | Type                           | Default               |
 | --------------- | ----------------- | ----------- | ------------------------------ | --------------------- |
+| `customInput`   | `custom-input`    |             | `boolean`                      | `false`               |
 | `disabled`      | `disabled`        |             | `boolean`                      | `false`               |
 | `error`         | `error`           |             | `boolean`                      | `false`               |
 | `icon`          | `icon`            |             | `string`                       | `undefined`           |
@@ -36,6 +37,7 @@
 ### Used by
 
  - [ui-checkbox-dropdown](../ui-checkbox-dropdown)
+ - [ui-chips-input](../ui-chips-input)
  - [ui-date-picker](../ui-date-picker)
  - [ui-dropdown](../ui-dropdown)
  - [ui-month-picker](../ui-month-picker)
@@ -49,6 +51,7 @@
 graph TD;
   ui-input --> ui-icon
   ui-checkbox-dropdown --> ui-input
+  ui-chips-input --> ui-input
   ui-date-picker --> ui-input
   ui-dropdown --> ui-input
   ui-month-picker --> ui-input

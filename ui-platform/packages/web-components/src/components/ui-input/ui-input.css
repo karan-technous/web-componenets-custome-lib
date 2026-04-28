@@ -71,12 +71,21 @@
 ::slotted([slot="prefix"]) {
   display: flex;
   align-items: center;
-  margin-right: -8px;
   flex-shrink: 0;
+  min-width: 0;
 }
 
 .input-wrap--with-avatar {
   padding-left: 4px;
+}
+
+.input-wrap--with-avatar ::slotted([slot="prefix"]) {
+  margin-right: -8px;
+}
+
+::slotted([slot="control"]) {
+  flex: 1;
+  min-width: 0;
 }
 
 .input {

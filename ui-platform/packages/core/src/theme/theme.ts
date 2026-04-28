@@ -10,6 +10,7 @@ export type UiTheme = {
   '--ui-border-color': string;
   '--ui-border-radius': string;
   '--ui-input-radius-xs': string;
+  '--ui-input-chips-min-height': string;
   '--ui-input-radius-sm': string;
   '--ui-input-radius-md': string;
   '--ui-input-radius-xl': string;
@@ -86,6 +87,7 @@ export const lightTheme: UiTheme = {
   '--ui-primary-foreground': '#ffffff',
   '--ui-bg': '#ffffff',
   '--ui-text': '#111827',
+  '--ui-input-chips-min-height': '34px',
   '--ui-input-radius-xs': '2px',
   '--ui-input-radius-sm': '4px',
   '--ui-input-radius-md': '6px',
@@ -170,6 +172,7 @@ export const darkTheme: UiTheme = {
   '--ui-input-radius-sm': '4px',
   '--ui-input-radius-md': '6px',
   '--ui-input-radius-xl': '12px',
+  '--ui-input-chips-min-height': '34px',
   '--ui-text-on-primary': '#ffffff',
   '--ui-border': '#333333',
   '--ui-border-hover': '#444444',

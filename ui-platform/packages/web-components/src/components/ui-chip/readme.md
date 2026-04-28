@@ -30,6 +30,10 @@
 
 ## Dependencies
 
+### Used by
+
+ - [ui-chips-input](../ui-chips-input)
+
 ### Depends on
 
 - [ui-icon](../ui-icon)
@@ -38,6 +42,7 @@
 ```mermaid
 graph TD;
   ui-chip --> ui-icon
+  ui-chips-input --> ui-chip
   style ui-chip fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

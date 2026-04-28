@@ -18,6 +18,7 @@ export class UiInput extends BaseComponent {
   @Prop({ reflect: true }) readonly: boolean = false;
   @Prop({ reflect: true }) showAvatar: boolean = false;
   @Prop({ reflect: true }) error: boolean = false;
+  @Prop({ reflect: true }) customInput: boolean = false;
 
   @Event() valueChange!: EventEmitter<string>;
   @Event() uiBlur!: EventEmitter<void>;
@@ -67,18 +68,22 @@ export class UiInput extends BaseComponent {
         {this.label && <label class="input-label">{this.label}</label>}
         
         <slot name="prefix" />
-        
-        <input
-          ref={(el) => (this.inputEl = el as HTMLInputElement)}
-          class="input"
-          type={this.type}
-          value={this.value || ''}
-          placeholder={this.placeholder || 'Type something...'}
-          disabled={this.disabled}
-          readonly={this.readonly}
-          onInput={this.onInput}
-          onBlur={() => this.uiBlur.emit()}
-        />
+
+        {this.customInput ? (
+          <slot name="control" />
+        ) : (
+          <input
+            ref={(el) => (this.inputEl = el as HTMLInputElement)}
+            class="input"
+            type={this.type}
+            value={this.value || ''}
+            placeholder={this.placeholder || 'Type something...'}
+            disabled={this.disabled}
+            readonly={this.readonly}
+            onInput={this.onInput}
+            onBlur={() => this.uiBlur.emit()}
+          />
+        )}
 
         {this.icon && (
           <button

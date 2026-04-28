@@ -165,6 +165,19 @@ declare module "react" {
         removable?: boolean;
       };
 
+      "ui-chips-input": React.DetailedHTMLProps<
+        React.HTMLAttributes<HTMLElement>,
+        HTMLElement
+      > & {
+        value?: string[];
+        placeholder?: string;
+        disabled?: boolean;
+        required?: boolean;
+        errorMessage?: string;
+        maxChips?: number;
+        separator?: string;
+      };
+
       "ui-spinner": React.DetailedHTMLProps<
         React.HTMLAttributes<HTMLElement>,
         HTMLElement

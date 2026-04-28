@@ -93,6 +93,15 @@ export const componentRegistry: ComponentRegistry = {
     },
     wc: { tagName: "ui-chip" },
   },
+  "chips-input": {
+    react: { exportName: "ChipsInput" },
+    angular: {
+      selector: "ui-chips-input-angular",
+      exportName: "UiChipsInputComponent",
+      imports: ["UiChipsInputComponent"],
+    },
+    wc: { tagName: "ui-chips-input" },
+  },
   "date-picker": {
     react: { exportName: "DatePicker" },
     angular: {

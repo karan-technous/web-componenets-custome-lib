@@ -314,6 +314,31 @@ export namespace Components {
         "size": string;
         "value": string;
     }
+    interface UiChipsInput {
+        /**
+          * @default false
+         */
+        "disabled": boolean;
+        "errorMessage"?: string;
+        "maxChips"?: number;
+        /**
+          * @default 'Type and press Enter'
+         */
+        "placeholder": string;
+        /**
+          * @default false
+         */
+        "required": boolean;
+        /**
+          * @default ','
+         */
+        "separator": string;
+        "setFocus": () => Promise<void>;
+        /**
+          * @default []
+         */
+        "value": string[];
+    }
     interface UiDatePicker {
         "customParsers"?: DatePickerParser[];
         /**
@@ -449,6 +474,10 @@ export namespace Components {
         "stroke": number;
     }
     interface UiInput {
+        /**
+          * @default false
+         */
+        "customInput": boolean;
         /**
           * @default false
          */
@@ -770,6 +799,10 @@ export interface UiChipCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLUiChipElement;
 }
+export interface UiChipsInputCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLUiChipsInputElement;
+}
 export interface UiDatePickerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLUiDatePickerElement;
@@ -963,6 +996,27 @@ declare global {
     var HTMLUiChipElement: {
         prototype: HTMLUiChipElement;
         new (): HTMLUiChipElement;
+    };
+    interface HTMLUiChipsInputElementEventMap {
+        "valueChange": string[];
+        "chipAdd": string;
+        "chipRemove": string;
+        "uiFocus": void;
+        "uiBlur": void;
+    }
+    interface HTMLUiChipsInputElement extends Components.UiChipsInput, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLUiChipsInputElementEventMap>(type: K, listener: (this: HTMLUiChipsInputElement, ev: UiChipsInputCustomEvent<HTMLUiChipsInputElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLUiChipsInputElementEventMap>(type: K, listener: (this: HTMLUiChipsInputElement, ev: UiChipsInputCustomEvent<HTMLUiChipsInputElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLUiChipsInputElement: {
+        prototype: HTMLUiChipsInputElement;
+        new (): HTMLUiChipsInputElement;
     };
     interface HTMLUiDatePickerElementEventMap {
         "uiChange": Date | DateRangeValue;
@@ -1190,6 +1244,7 @@ declare global {
         "ui-checkbox": HTMLUiCheckboxElement;
         "ui-checkbox-dropdown": HTMLUiCheckboxDropdownElement;
         "ui-chip": HTMLUiChipElement;
+        "ui-chips-input": HTMLUiChipsInputElement;
         "ui-date-picker": HTMLUiDatePickerElement;
         "ui-dropdown": HTMLUiDropdownElement;
         "ui-icon": HTMLUiIconElement;
@@ -1541,6 +1596,35 @@ declare namespace LocalJSX {
         "size"?: string;
         "value": string;
     }
+    interface UiChipsInput {
+        /**
+          * @default false
+         */
+        "disabled"?: boolean;
+        "errorMessage"?: string;
+        "maxChips"?: number;
+        "onChipAdd"?: (event: UiChipsInputCustomEvent<string>) => void;
+        "onChipRemove"?: (event: UiChipsInputCustomEvent<string>) => void;
+        "onUiBlur"?: (event: UiChipsInputCustomEvent<void>) => void;
+        "onUiFocus"?: (event: UiChipsInputCustomEvent<void>) => void;
+        "onValueChange"?: (event: UiChipsInputCustomEvent<string[]>) => void;
+        /**
+          * @default 'Type and press Enter'
+         */
+        "placeholder"?: string;
+        /**
+          * @default false
+         */
+        "required"?: boolean;
+        /**
+          * @default ','
+         */
+        "separator"?: string;
+        /**
+          * @default []
+         */
+        "value"?: string[];
+    }
     interface UiDatePicker {
         "customParsers"?: DatePickerParser[];
         /**
@@ -1687,6 +1771,10 @@ declare namespace LocalJSX {
         "stroke"?: number;
     }
     interface UiInput {
+        /**
+          * @default false
+         */
+        "customInput"?: boolean;
         /**
           * @default false
          */
@@ -2069,6 +2157,14 @@ declare namespace LocalJSX {
         "removable": boolean;
         "size": string;
     }
+    interface UiChipsInputAttributes {
+        "placeholder": string;
+        "disabled": boolean;
+        "required": boolean;
+        "errorMessage": string;
+        "maxChips": number;
+        "separator": string;
+    }
     interface UiDatePickerAttributes {
         "mode": DatePickerMode;
         "placeholder": string;
@@ -2122,6 +2218,7 @@ declare namespace LocalJSX {
         "readonly": boolean;
         "showAvatar": boolean;
         "error": boolean;
+        "customInput": boolean;
     }
     interface UiMonthPickerAttributes {
         "value": string;
@@ -2209,6 +2306,7 @@ declare namespace LocalJSX {
         "ui-checkbox": Omit<UiCheckbox, keyof UiCheckboxAttributes> & { [K in keyof UiCheckbox & keyof UiCheckboxAttributes]?: UiCheckbox[K] } & { [K in keyof UiCheckbox & keyof UiCheckboxAttributes as `attr:${K}`]?: UiCheckboxAttributes[K] } & { [K in keyof UiCheckbox & keyof UiCheckboxAttributes as `prop:${K}`]?: UiCheckbox[K] };
         "ui-checkbox-dropdown": Omit<UiCheckboxDropdown, keyof UiCheckboxDropdownAttributes> & { [K in keyof UiCheckboxDropdown & keyof UiCheckboxDropdownAttributes]?: UiCheckboxDropdown[K] } & { [K in keyof UiCheckboxDropdown & keyof UiCheckboxDropdownAttributes as `attr:${K}`]?: UiCheckboxDropdownAttributes[K] } & { [K in keyof UiCheckboxDropdown & keyof UiCheckboxDropdownAttributes as `prop:${K}`]?: UiCheckboxDropdown[K] };
         "ui-chip": Omit<UiChip, keyof UiChipAttributes> & { [K in keyof UiChip & keyof UiChipAttributes]?: UiChip[K] } & { [K in keyof UiChip & keyof UiChipAttributes as `attr:${K}`]?: UiChipAttributes[K] } & { [K in keyof UiChip & keyof UiChipAttributes as `prop:${K}`]?: UiChip[K] } & OneOf<"label", UiChip["label"], UiChipAttributes["label"]> & OneOf<"value", UiChip["value"], UiChipAttributes["value"]>;
+        "ui-chips-input": Omit<UiChipsInput, keyof UiChipsInputAttributes> & { [K in keyof UiChipsInput & keyof UiChipsInputAttributes]?: UiChipsInput[K] } & { [K in keyof UiChipsInput & keyof UiChipsInputAttributes as `attr:${K}`]?: UiChipsInputAttributes[K] } & { [K in keyof UiChipsInput & keyof UiChipsInputAttributes as `prop:${K}`]?: UiChipsInput[K] };
         "ui-date-picker": Omit<UiDatePicker, keyof UiDatePickerAttributes> & { [K in keyof UiDatePicker & keyof UiDatePickerAttributes]?: UiDatePicker[K] } & { [K in keyof UiDatePicker & keyof UiDatePickerAttributes as `attr:${K}`]?: UiDatePickerAttributes[K] } & { [K in keyof UiDatePicker & keyof UiDatePickerAttributes as `prop:${K}`]?: UiDatePicker[K] };
         "ui-dropdown": Omit<UiDropdown, keyof UiDropdownAttributes> & { [K in keyof UiDropdown & keyof UiDropdownAttributes]?: UiDropdown[K] } & { [K in keyof UiDropdown & keyof UiDropdownAttributes as `attr:${K}`]?: UiDropdownAttributes[K] } & { [K in keyof UiDropdown & keyof UiDropdownAttributes as `prop:${K}`]?: UiDropdown[K] };
         "ui-icon": Omit<UiIcon, keyof UiIconAttributes> & { [K in keyof UiIcon & keyof UiIconAttributes]?: UiIcon[K] } & { [K in keyof UiIcon & keyof UiIconAttributes as `attr:${K}`]?: UiIconAttributes[K] } & { [K in keyof UiIcon & keyof UiIconAttributes as `prop:${K}`]?: UiIcon[K] } & OneOf<"name", UiIcon["name"], UiIconAttributes["name"]>;
@@ -2255,6 +2353,7 @@ declare module "@stencil/core" {
             "ui-checkbox": LocalJSX.IntrinsicElements["ui-checkbox"] & JSXBase.HTMLAttributes<HTMLUiCheckboxElement>;
             "ui-checkbox-dropdown": LocalJSX.IntrinsicElements["ui-checkbox-dropdown"] & JSXBase.HTMLAttributes<HTMLUiCheckboxDropdownElement>;
             "ui-chip": LocalJSX.IntrinsicElements["ui-chip"] & JSXBase.HTMLAttributes<HTMLUiChipElement>;
+            "ui-chips-input": LocalJSX.IntrinsicElements["ui-chips-input"] & JSXBase.HTMLAttributes<HTMLUiChipsInputElement>;
             "ui-date-picker": LocalJSX.IntrinsicElements["ui-date-picker"] & JSXBase.HTMLAttributes<HTMLUiDatePickerElement>;
             "ui-dropdown": LocalJSX.IntrinsicElements["ui-dropdown"] & JSXBase.HTMLAttributes<HTMLUiDropdownElement>;
             "ui-icon": LocalJSX.IntrinsicElements["ui-icon"] & JSXBase.HTMLAttributes<HTMLUiIconElement>;
