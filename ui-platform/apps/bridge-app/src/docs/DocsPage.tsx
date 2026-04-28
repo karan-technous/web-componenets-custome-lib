@@ -1,10 +1,12 @@
 import { BookOpen, Copy, ExternalLink, Sparkles } from "lucide-react";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import type { Framework } from "../state/frameworkStore";
 import { storyCatalog } from "../state/storyStore";
+import { transformStory } from "../state/storyTransformer";
 import type {
   PropConfig,
   SelectedStory,
+  StoryCustomCode,
   StoryDocsExample,
   StoryProps,
   StoryRendererBindings,
@@ -129,6 +131,17 @@ function buildPreviewUrl(
     story: story.storyName,
     props: JSON.stringify(props),
     renderers: JSON.stringify(story.renderers ?? {}),
+    appearance,
+  });
+
+  return `${rendererUrls[framework]}?${params.toString()}`;
+}
+
+function buildRendererFrameUrl(
+  framework: Framework,
+  appearance: "dark" | "light",
+): string {
+  const params = new URLSearchParams({
     appearance,
   });
 
@@ -390,7 +403,11 @@ function StoryPreviewCard({
 }: {
   framework: Framework;
   story: SelectedStory;
-  example: StoryDocsExample & { props: StoryProps };
+  example: StoryDocsExample & {
+    props: StoryProps;
+    slots?: Record<string, string>;
+    code?: StoryCustomCode;
+  };
   onOpenStory: (storyName: string) => void;
   appearance: "dark" | "light";
 }) {
@@ -401,6 +418,66 @@ function StoryPreviewCard({
     example.props,
     story.renderers,
   );
+  const iframeSrc = useMemo(
+    () => buildRendererFrameUrl(framework, appearance),
+    [framework, appearance],
+  );
+  const iframeRef = useRef<HTMLIFrameElement | null>(null);
+  const [isFrameReady, setIsFrameReady] = useState(false);
+
+  useEffect(() => {
+    setIsFrameReady(false);
+  }, [iframeSrc]);
+
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      if (event.data?.type !== "IFRAME_READY") {
+        return;
+      }
+
+      if (event.source !== iframeRef.current?.contentWindow) {
+        return;
+      }
+
+      setIsFrameReady(true);
+    };
+
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, []);
+
+  useEffect(() => {
+    if (!isFrameReady || !iframeRef.current?.contentWindow) {
+      return;
+    }
+
+    const selection: SelectedStory = {
+      ...story,
+      storyName: example.storyName ?? example.title,
+      props: example.props,
+      slots: example.slots,
+      code: example.code,
+    };
+
+    const payload = {
+      framework,
+      component: selection.component,
+      story: selection.storyName,
+      props: selection.props,
+      slots: selection.slots,
+      renderers: selection.renderers,
+      appearance,
+      ...transformStory(selection, framework),
+    };
+
+    iframeRef.current.contentWindow.postMessage(
+      {
+        type: "RUN_STORY",
+        payload,
+      },
+      "*",
+    );
+  }, [appearance, example.code, example.props, example.slots, example.storyName, example.title, framework, isFrameReady, story]);
 
   return (
     <article className="space-y-4">
@@ -429,9 +506,10 @@ function StoryPreviewCard({
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_82%_20%,var(--docs-accent-surface),transparent_20%)] opacity-16" />
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(var(--bride-text-muted)_1px,transparent_1px),linear-gradient(90deg,var(--bride-text-muted)_1px,transparent_1px)] bg-[size:24px_24px] opacity-[0.08]" />
         <iframe
+          ref={iframeRef}
           title={`${story.component}-${example.title}`}
-          src={previewUrl}
-          className="relative z-10 h-[72px] w-full min-w-0 border-0 bg-transparent"
+          src={iframeSrc}
+          className="relative z-10 h-[116px] w-full min-w-0 border-0 bg-transparent"
         />
       </div>
 
@@ -463,6 +541,12 @@ export function DocsPage({ framework, story, onOpenStory, appearance }: DocsPage
     story.docs?.examples?.map((example) => ({
       ...example,
       props: mergeProps(story.props, example.props),
+      slots:
+        variants.find((variant) => variant.name === (example.storyName ?? example.title))
+          ?.slots,
+      code:
+        variants.find((variant) => variant.name === (example.storyName ?? example.title))
+          ?.code,
     })) ?? [];
   const examples =
     docsExamples.length > 0
