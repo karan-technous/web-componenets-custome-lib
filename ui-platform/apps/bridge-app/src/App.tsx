@@ -11,7 +11,6 @@ import {
   type Framework,
 } from "./state/frameworkStore";
 import {
-  getInitialSelectedStory,
   getStoriesForFramework,
   resolveStorySelection,
 } from "./state/storyStore";
@@ -26,14 +25,14 @@ import {
 export default function App() {
   const [framework, setFrameworkState] = useState<Framework>(getFramework());
   const filteredStories = getStoriesForFramework(framework);
-  const [selection, setSelection] = useState<SelectedStory | null>(
-    getInitialSelectedStory(framework),
-  );
+  // Do not auto-select any story on initial load — start with null selection
+  const [selection, setSelection] = useState<SelectedStory | null>(null);
   const [activeTab, setActiveTab] = useState<BottomTab>("controls");
   const [mode, setMode] = useState<"preview" | "docs">("preview");
   const [appearance, setAppearanceState] =
     useState<AppearanceMode>(getAppearance());
-  const [showPanel, setShowPanel] = useState(true);
+  // Start with the bottom panel closed by default (controls/actions/interactions)
+  const [showPanel, setShowPanel] = useState(false);
   const [panelHeight, setPanelHeight] = useState(300);
   const [zoom, setZoom] = useState(1);
   const [refreshToken, setRefreshToken] = useState(0);
@@ -103,7 +102,8 @@ export default function App() {
       if (current && current.framework.includes(value)) {
         return current;
       }
-      return getInitialSelectedStory(value);
+      // Do not auto-select when switching frameworks — clear selection.
+      return null;
     });
     addAction("onFrameworkChange", value);
     if (isMobile) {
@@ -112,6 +112,7 @@ export default function App() {
   };
 
   const handleStorySelect = (storyId: string, storyName: string) => {
+    console.log("storyid", storyId, " = storyName", storyName);
     const next = resolveStorySelection(storyId, storyName);
     setSelection(next);
     addAction("onClick", `${storyId}/${storyName}`);
@@ -180,6 +181,16 @@ export default function App() {
     setAppearanceState(value);
     addAction("onAppearanceChange", value);
   };
+
+  const openExplorer = () => {
+    setIsSidebarCollapsed(false);
+    const next = resolveStorySelection("badge", "Primary");
+    setSelection(next);
+    addAction("onClick", `badge/Primary`);
+    if (isMobile) setIsMobileSidebarOpen(true);
+  };
+
+  const openDocs = () => setMode("docs");
 
   return (
     <main className="h-screen overflow-hidden">
@@ -269,6 +280,9 @@ export default function App() {
                     refreshToken={refreshToken}
                     onCurrentUrlChange={setCurrentUrl}
                     appearance={appearance}
+                    onExplore={openExplorer}
+                    onOpenDocs={openDocs}
+                    onRefresh={handleRefresh}
                   />
                 </div>
                 <BottomPanel

@@ -82,13 +82,10 @@ export function getInitialSelectedStory(
     return null;
   }
 
-  const first = pool[0];
-  const variant = first.variants[0];
-  if (!variant) {
-    return null;
-  }
-
-  return toSelectedStory(first, variant);
+  // By default we do NOT auto-select a story on initial load.
+  // Return null to allow the app to show an empty/welcome canvas
+  // and only select when the user explicitly clicks a story.
+  return null;
 }
 
 export function resolveStorySelection(

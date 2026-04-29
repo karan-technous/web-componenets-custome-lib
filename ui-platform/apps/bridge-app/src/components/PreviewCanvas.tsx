@@ -3,6 +3,7 @@ import React, { useEffect, useMemo, useRef, useState, useCallback } from "react"
 import type { Framework } from "../state/frameworkStore";
 import type { SelectedStory, StoryRendererBindings } from "../state/storyTypes";
 import { transformStory } from "../state/storyTransformer";
+import WelcomeScreen from "./WelcomeScreen";
 
 interface PreviewCanvasProps {
   framework: Framework;
@@ -11,6 +12,9 @@ interface PreviewCanvasProps {
   refreshToken: number;
   onCurrentUrlChange: (url: string) => void;
   appearance: "dark" | "light";
+  onExplore?: () => void;
+  onOpenDocs?: () => void;
+  onRefresh?: () => void;
 }
 
 const rendererUrls: Record<Framework, string> = {
@@ -72,6 +76,9 @@ export const PreviewCanvas = React.memo(function PreviewCanvas({
   refreshToken,
   onCurrentUrlChange,
   appearance,
+  onExplore,
+  onOpenDocs,
+  onRefresh,
 }: PreviewCanvasProps) {
   // Component implementation
   const src = useMemo(
@@ -190,16 +197,11 @@ export const PreviewCanvas = React.memo(function PreviewCanvas({
 
   if (!selection) {
     return (
-      <section className="flex min-h-0 flex-1 items-center justify-center bg-[var(--bride-glass-dark)]">
-        <div className="text-center">
-          <p className="text-sm font-medium text-[color:var(--bride-text)]">
-            No story selected
-          </p>
-          <p className="mt-1 text-xs text-[color:var(--bride-text-soft)]">
-            Select a story from the explorer.
-          </p>
-        </div>
-      </section>
+      <WelcomeScreen
+        onExplore={onExplore}
+        onOpenDocs={onOpenDocs}
+        onRefresh={onRefresh}
+      />
     );
   }
 

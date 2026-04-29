@@ -190,6 +190,11 @@ export function Toolbar({
   isSidebarOpen,
   onToggleSidebar,
 }: ToolbarProps) {
+  // Hide the toolbar when no story is selected (welcome / empty state)
+  if (!selection) {
+    return null;
+  }
+
   return (
     <header className="relative overflow-hidden border-b border-[color:var(--bride-border-subtle)] bg-[var(--bride-bg-elevated)]">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,var(--docs-accent-glow),transparent_35%)] opacity-30" />

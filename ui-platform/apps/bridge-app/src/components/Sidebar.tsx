@@ -55,7 +55,8 @@ export function Sidebar({
   const initialGroups = useMemo(
     () =>
       stories.reduce<Record<string, boolean>>((acc, group) => {
-        acc[group.definition.id] = true;
+        // Start collapsed by default
+        acc[group.definition.id] = false;
         return acc;
       }, {}),
     [stories],
@@ -78,40 +79,6 @@ export function Sidebar({
       transition={{ duration: 0.2 }}
       className="relative flex h-full min-h-0 flex-col overflow-visible border border-[color:var(--bride-border-subtle)] bg-[var(--bride-glass-dark)] shadow-[0_22px_44px_var(--bride-glow),inset_0_1px_0_var(--bride-border-subtle)] transition-[width] duration-300 ease-out"
     >
-      {/* <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: `
-            radial-gradient(ellipse 140% 42% at 50% -8%, rgba(var(--bride-primary-rgb), 0.045) 0%, transparent 62%),
-            radial-gradient(ellipse 75% 24% at 0% 100%, rgba(var(--bride-secondary-rgb), 0.025) 0%, transparent 72%)
-          `,
-        }}
-      /> */}
-      {/* <div
-        className="absolute inset-0 pointer-events-none opacity-[0.16] mix-blend-overlay"
-        style={{
-          backgroundImage:
-            'url("data:image/svg+xml,%3Csvg viewBox=%270 0 256 256%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cfilter id=%27noise%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.85%27 numOctaves=%274%27 stitchTiles=%27stitch%27/%3E%3C/filter%3E%3Crect width=%27100%25%27 height=%27100%25%27 filter=%27url(%23noise)%27 opacity=%270.06%27/%3E%3C/svg%3E")',
-          backgroundRepeat: "repeat",
-          backgroundSize: "128px 128px",
-        }}
-      /> */}
-      {/* <div
-        className="absolute top-0 left-0 right-0 pointer-events-none"
-        style={{
-          height: "1px",
-          zIndex: 100,
-          background: `
-          linear-gradient(
-            90deg,
-            transparent 0%,
-            color-mix(in srgb, var(--bride-primary) 60%, transparent) 40%,
-            color-mix(in srgb, var(--bride-primary) 80%, var(--bride-text)) 70%,
-            transparent 100%
-          )
-        `,
-        }}
-      /> */}
       <button
         type="button"
         onClick={onToggleCollapse}
@@ -142,48 +109,19 @@ export function Sidebar({
           }`}
         >
           <div className="flex gap-3">
-            <div
-              className="relative flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl"
-              style={{
-                background: `
-                  linear-gradient(
-                    135deg,
-                    rgba(var(--bride-primary-rgb), 0.22) 0%,
-                    rgba(var(--bride-secondary-rgb), 0.1) 100%
-                  )
-                `,
-                border: "1px solid rgba(var(--bride-primary-rgb), 0.26)",
-                boxShadow: `
-                  0 0 12px rgba(var(--bride-primary-rgb), 0.14),
-                  inset 0 1px 0 var(--bride-border-subtle)
-                `,
-              }}
-            >
-              <Hexagon
-                className="h-4 w-4"
-                strokeWidth={1.5}
-                style={{ color: "var(--bride-primary-light)" }}
-              />
-              <div
-                className="absolute inset-0 rounded-lg pointer-events-none"
-                style={{
-                  background: `
-                  linear-gradient(
-                    135deg,
-                    color-mix(in srgb, var(--bride-text) 18%, transparent) 0%,
-                    transparent 60%
-                  )
-                `,
-                }}
-              />
-            </div>
+            <img
+              src="/one-box-ui-logo-removebg-only-logo-removebg-preview.png"
+              alt="One Box UI Logo"
+              height={50}
+              width={50}
+            />
             {!isCollapsed ? (
               <div>
                 <p className="font-[var(--bride-font-display)] text-[15px] font-semibold tracking-[-0.02em] text-[color:var(--bride-text)]">
-                  UI Platform
+                  One Box UI
                 </p>
                 <p className="text-[10px] uppercase tracking-[0.08em] text-[color:var(--bride-text-muted)]">
-                  Design System
+                  Component Explorer
                 </p>
               </div>
             ) : null}
