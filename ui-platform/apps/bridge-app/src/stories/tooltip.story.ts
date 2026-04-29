@@ -46,33 +46,24 @@ const tooltipStory: StoryDefinition = {
   },
   stories: {
     Default: {
-      props: {
-        content: "Tooltip",
-        position: "top",
-        trigger: "hover",
-      },
-      slots: {
-        default: "Hover me",
+      code: {
+        react: `<Tooltip content="Hello"><ui-button>Hover me</ui-button></Tooltip>`,
+        angular: `<ui-tooltip-angular [content]="'Hello'"><ui-button>Hover me</ui-button></ui-tooltip-angular>`,
+        wc: `<ui-tooltip content="Hello"><ui-button>Hover me</ui-button></ui-tooltip>`,
       },
     },
     ClickTrigger: {
-      props: {
-        content: "Tooltip",
-        position: "bottom",
-        trigger: "click",
-      },
-      slots: {
-        default: "Click me",
+      code: {
+        react: `<Tooltip content="Hello" position="bottom" trigger="click"><ui-button>Click me</ui-button></Tooltip>`,
+        angular: `<ui-tooltip-angular [content]="'Hello'" [position]="'bottom'" [trigger]="'click'"><ui-button>Click me</ui-button></ui-tooltip-angular>`,
+        wc: `<ui-tooltip content="Hello" position="bottom" trigger="click"><ui-button>Click me</ui-button></ui-tooltip>`,
       },
     },
     FocusTrigger: {
-      props: {
-        content: "Tooltip",
-        position: "right",
-        trigger: "focus",
-      },
-      slots: {
-        default: "Tab to me",
+      code: {
+        react: `<Tooltip content="Hello" position="right" trigger="focus"><ui-button>Focus me</ui-button></Tooltip>`,
+        angular: `<ui-tooltip-angular [content]="'Hello'" [position]="'right'" [trigger]="'focus'"><ui-button>Focus me</ui-button></ui-tooltip-angular>`,
+        wc: `<ui-tooltip content="Hello" position="right" trigger="focus"><ui-button>Focus me</ui-button></ui-tooltip>`,
       },
     },
   },

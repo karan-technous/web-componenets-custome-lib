@@ -1,1 +1,6 @@
-<ui-toggle #wc></ui-toggle>
+<ui-toggle
+  #wc
+  [checked]="checkedState()"
+  [disabled]="disabledState()"
+  [size]="size()"
+></ui-toggle>

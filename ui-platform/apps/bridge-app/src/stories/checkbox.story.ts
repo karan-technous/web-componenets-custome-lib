@@ -5,7 +5,7 @@ const checkboxStory: StoryDefinition = {
   title: "Checkbox",
   framework: ["react", "angular", "wc"],
   renderers: {
-    react: { exportName: "Checkbox" },
+    react: { exportName: "UiCheckbox" },
     angular: { exportName: "UiCheckboxComponent" },
     wc: { tagName: "ui-checkbox" },
   },

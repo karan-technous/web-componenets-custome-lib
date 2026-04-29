@@ -5,6 +5,7 @@ import {
   input,
   output,
   signal,
+  effect,
   viewChild,
   CUSTOM_ELEMENTS_SCHEMA,
   ChangeDetectionStrategy,
@@ -35,37 +36,65 @@ export class UiToggleComponent
 {
   wc = viewChild<ElementRef>('wc');
 
-  size = input<'sm' | 'md' | 'lg'>('md');
-  disabledInput = input(false);
+  checked = input<boolean | undefined>(undefined);
   defaultChecked = input(false);
 
-  checked = signal(false);
-  disabled = signal(false);
+  disabled = input(false);
+  size = input<'sm' | 'md' | 'lg'>('md');
 
-  changed = output<boolean>();
+  protected checkedState = signal(false);
+  protected disabledState = signal(false);
+
+  toggleChange = output<boolean>();
 
   private onChange = (value: boolean) => {};
   private onTouched = () => {};
-
   private cleanup?: () => void;
 
+  constructor() {
+    // disabled sync
+    effect(() => {
+      this.disabledState.set(this.disabled());
+    });
+
+    // controlled/uncontrolled sync
+    effect(() => {
+      if (this.checked() !== undefined) {
+        this.checkedState.set(!!this.checked());
+      } else {
+        this.checkedState.set(!!this.defaultChecked());
+      }
+    });
+
+    // push to WC reactively
+    effect(() => {
+      const el = this.wc()?.nativeElement;
+      if (!el) return;
+
+      el.checked = this.checkedState();
+      el.disabled = this.disabledState();
+      el.size = this.size();
+    });
+  }
+
+  // =========================
+  // LIFECYCLE
+  // =========================
   ngAfterViewInit() {
-    const el = this.wc()?.nativeElement as any;
+    const el = this.wc()?.nativeElement;
     if (!el) return;
 
-    // initial
-    el.checked = this.checked() ?? this.defaultChecked();
-    el.disabled = this.disabledInput();
-    el.size = this.size();
-
-    // listener (ONLY ONCE)
     const handler = (e: any) => {
-      const value = e.detail;
+      const value = !!e.detail;
 
-      this.checked.set(value);
+      this.checkedState.set(value);
+
+      // CVA
       this.onChange(value);
-      this.changed.emit(value);
       this.onTouched();
+
+      // output (same name as WC)
+      this.toggleChange.emit(value);
     };
 
     el.addEventListener('toggleChange', handler);
@@ -79,8 +108,11 @@ export class UiToggleComponent
     this.cleanup?.();
   }
 
+  // =========================
+  // CVA
+  // =========================
   writeValue(value: boolean): void {
-    this.checked.set(!!value);
+    this.checkedState.set(!!value);
   }
 
   registerOnChange(fn: any): void {
@@ -92,6 +124,6 @@ export class UiToggleComponent
   }
 
   setDisabledState(isDisabled: boolean): void {
-    this.disabled.set(isDisabled);
+    this.disabledState.set(isDisabled);
   }
 }

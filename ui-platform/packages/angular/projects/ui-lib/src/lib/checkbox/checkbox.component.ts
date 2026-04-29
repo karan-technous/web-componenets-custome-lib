@@ -34,7 +34,9 @@ export class UiCheckboxComponent implements ControlValueAccessor {
   label = input<string>('');
 
   // Internal state
-  checked = signal(false);
+  checked = input<boolean>(false);
+  protected checkedState = signal(false);
+
   internalDisabled = signal(false);
 
   // Outputs (normalized API)
@@ -50,11 +52,15 @@ export class UiCheckboxComponent implements ControlValueAccessor {
     effect(() => {
       this.internalDisabled.set(this.disabled());
     });
+
+    effect(() => {
+      this.checkedState.set(!!this.checked());
+    });
   }
 
   // CVA methods
   writeValue(value: boolean): void {
-    this.checked.set(!!value);
+    this.checkedState.set(!!value);
   }
 
   registerOnChange(fn: (value: boolean) => void): void {
@@ -73,7 +79,7 @@ export class UiCheckboxComponent implements ControlValueAccessor {
   handleCheckboxChange(event: Event): void {
     const value = !!(event as CustomEvent<boolean>).detail;
 
-    this.checked.set(value);
+    this.checkedState.set(value);
     this.onChange(value);
     this.onChangeEvent.emit(value);
   }
