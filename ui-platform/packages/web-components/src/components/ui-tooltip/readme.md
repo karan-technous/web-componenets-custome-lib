@@ -25,6 +25,19 @@
 | `openChange` |             | `CustomEvent<boolean>` |
 
 
+## Dependencies
+
+### Used by
+
+ - [ui-tabs](../ui-tabs)
+
+### Graph
+```mermaid
+graph TD;
+  ui-tabs --> ui-tooltip
+  style ui-tooltip fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*

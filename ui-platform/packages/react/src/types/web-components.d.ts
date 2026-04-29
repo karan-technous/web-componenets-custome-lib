@@ -1,4 +1,5 @@
 /// <reference types="react" />
+import type { TabItem } from "@karan9186/core/dist/types/tabs.types";
 
 declare module "react" {
   namespace JSX {
@@ -176,6 +177,18 @@ declare module "react" {
         errorMessage?: string;
         maxChips?: number;
         separator?: string;
+      };
+
+      "ui-tabs": React.DetailedHTMLProps<
+        React.HTMLAttributes<HTMLElement>,
+        HTMLElement
+      > & {
+        tabs?: TabItem[];
+        activeIndex?: number;
+        defaultActiveIndex?: number;
+        scrollable?: boolean;
+        customTooltipClass?: string;
+        tagColor?: string;
       };
 
       "ui-spinner": React.DetailedHTMLProps<

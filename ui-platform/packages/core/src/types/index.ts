@@ -10,3 +10,4 @@ export * from './badge.types';
 export * from './breadcrumb.types';
 export * from './tooltip.types';
 export * from './chip.types';
+export * from './tabs.types';

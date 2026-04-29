@@ -18,6 +18,7 @@ export * from "./components/radio/index.js";
 export * from "./components/tooltip/index.js";
 export * from "./components/chip/index.js";
 export * from "./components/chips-input/index.js";
+export * from "./components/tabs/index.js";
 export * from "./components/month-picker/index";
 export * from "./hooks/useButtonGroup.js";
 export * from "./hooks/useRadioGroup.js";

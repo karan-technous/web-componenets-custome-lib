@@ -209,6 +209,15 @@ export const componentRegistry: ComponentRegistry = {
     },
     wc: { tagName: "ui-month-picker" },
   },
+  tabs: {
+    react: { exportName: "Tabs" },
+    angular: {
+      selector: "ui-tabs-angular",
+      exportName: "UiTabsComponent",
+      imports: ["UiTabsComponent"],
+    },
+    wc: { tagName: "ui-tabs" },
+  },
 };
 
 export function getComponentBinding(

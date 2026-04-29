@@ -12,6 +12,7 @@ import { DropdownMode, DropdownOption as DropdownOption1, DropdownVariant } from
 import { IconName as IconName1 } from "./components/icons/icon.registry";
 import { PanelRounded, PanelSize, PanelVariant } from "./components/ui-panel/ui-panel";
 import { SpinnerSize, SpinnerSpeed, SpinnerVariant } from "./components/ui-spinner/ui-spinner";
+import { TabIconClickDetail, TabItem } from "@karan9186/core/dist/types/tabs.types";
 export { BadgeColor, BadgeShape, BadgeSize, BadgeVariant, BreadcrumbEventDetail, BreadcrumbSeparator, ButtonEventDetail, ButtonGroupEventDetail, ButtonGroupOrientation, ButtonGroupSize, ButtonGroupVariant, ButtonRounded, ButtonSize, ButtonVariant, ChipEventDetail, IconName, ToastLifecycleDetail, ToastPromiseOptions, ToastShowOptions, TooltipPosition, TooltipTrigger, TooltipVariant } from "@karan9186/core";
 export { DropdownOption } from "./components/ui-checkbox-dropdown/ui-checkbox-dropdown";
 export { DatePickerParser } from "./components/ui-date-picker/ui-date-picker";
@@ -19,6 +20,7 @@ export { DropdownMode, DropdownOption as DropdownOption1, DropdownVariant } from
 export { IconName as IconName1 } from "./components/icons/icon.registry";
 export { PanelRounded, PanelSize, PanelVariant } from "./components/ui-panel/ui-panel";
 export { SpinnerSize, SpinnerSpeed, SpinnerVariant } from "./components/ui-spinner/ui-spinner";
+export { TabIconClickDetail, TabItem } from "@karan9186/core/dist/types/tabs.types";
 export namespace Components {
     /**
      * UI Badge Component
@@ -721,6 +723,25 @@ export namespace Components {
          */
         "variant": SpinnerVariant;
     }
+    interface UiTabs {
+        "activeIndex"?: number;
+        "changeTab": (index: number) => Promise<void>;
+        "customTooltipClass"?: string;
+        /**
+          * @default 0
+         */
+        "defaultActiveIndex": number;
+        "getHeader": () => Promise<HTMLElement>;
+        /**
+          * @default false
+         */
+        "scrollable": boolean;
+        /**
+          * @default []
+         */
+        "tabs": TabItem[];
+        "tagColor"?: string;
+    }
     interface UiToast {
         "defaultDuration": number;
         "dismiss": (id?: string) => Promise<void>;
@@ -834,6 +855,10 @@ export interface UiRadioGroupCustomEvent<T> extends CustomEvent<T> {
 export interface UiSpinnerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLUiSpinnerElement;
+}
+export interface UiTabsCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLUiTabsElement;
 }
 export interface UiToastCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -1184,6 +1209,25 @@ declare global {
         prototype: HTMLUiSpinnerElement;
         new (): HTMLUiSpinnerElement;
     };
+    interface HTMLUiTabsElementEventMap {
+        "getSelectedTab": TabItem;
+        "getTabIndex": number;
+        "tabIconClicked": TabIconClickDetail;
+    }
+    interface HTMLUiTabsElement extends Components.UiTabs, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLUiTabsElementEventMap>(type: K, listener: (this: HTMLUiTabsElement, ev: UiTabsCustomEvent<HTMLUiTabsElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLUiTabsElementEventMap>(type: K, listener: (this: HTMLUiTabsElement, ev: UiTabsCustomEvent<HTMLUiTabsElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLUiTabsElement: {
+        prototype: HTMLUiTabsElement;
+        new (): HTMLUiTabsElement;
+    };
     interface HTMLUiToastElementEventMap {
         "toastShow": ToastLifecycleDetail;
         "toastClose": ToastLifecycleDetail;
@@ -1254,6 +1298,7 @@ declare global {
         "ui-radio": HTMLUiRadioElement;
         "ui-radio-group": HTMLUiRadioGroupElement;
         "ui-spinner": HTMLUiSpinnerElement;
+        "ui-tabs": HTMLUiTabsElement;
         "ui-toast": HTMLUiToastElement;
         "ui-toggle": HTMLUiToggleElement;
         "ui-tooltip": HTMLUiTooltipElement;
@@ -2032,6 +2077,26 @@ declare namespace LocalJSX {
          */
         "variant"?: SpinnerVariant;
     }
+    interface UiTabs {
+        "activeIndex"?: number;
+        "customTooltipClass"?: string;
+        /**
+          * @default 0
+         */
+        "defaultActiveIndex"?: number;
+        "onGetSelectedTab"?: (event: UiTabsCustomEvent<TabItem>) => void;
+        "onGetTabIndex"?: (event: UiTabsCustomEvent<number>) => void;
+        "onTabIconClicked"?: (event: UiTabsCustomEvent<TabIconClickDetail>) => void;
+        /**
+          * @default false
+         */
+        "scrollable"?: boolean;
+        /**
+          * @default []
+         */
+        "tabs"?: TabItem[];
+        "tagColor"?: string;
+    }
     interface UiToast {
         "defaultDuration"?: number;
         "maxVisible"?: number;
@@ -2275,6 +2340,13 @@ declare namespace LocalJSX {
         "label": string;
         "subLabel": string;
     }
+    interface UiTabsAttributes {
+        "activeIndex": number;
+        "defaultActiveIndex": number;
+        "scrollable": boolean;
+        "customTooltipClass": string;
+        "tagColor": string;
+    }
     interface UiToastAttributes {
         "maxVisible": number;
         "defaultDuration": number;
@@ -2316,6 +2388,7 @@ declare namespace LocalJSX {
         "ui-radio": Omit<UiRadio, keyof UiRadioAttributes> & { [K in keyof UiRadio & keyof UiRadioAttributes]?: UiRadio[K] } & { [K in keyof UiRadio & keyof UiRadioAttributes as `attr:${K}`]?: UiRadioAttributes[K] } & { [K in keyof UiRadio & keyof UiRadioAttributes as `prop:${K}`]?: UiRadio[K] };
         "ui-radio-group": Omit<UiRadioGroup, keyof UiRadioGroupAttributes> & { [K in keyof UiRadioGroup & keyof UiRadioGroupAttributes]?: UiRadioGroup[K] } & { [K in keyof UiRadioGroup & keyof UiRadioGroupAttributes as `attr:${K}`]?: UiRadioGroupAttributes[K] } & { [K in keyof UiRadioGroup & keyof UiRadioGroupAttributes as `prop:${K}`]?: UiRadioGroup[K] };
         "ui-spinner": Omit<UiSpinner, keyof UiSpinnerAttributes> & { [K in keyof UiSpinner & keyof UiSpinnerAttributes]?: UiSpinner[K] } & { [K in keyof UiSpinner & keyof UiSpinnerAttributes as `attr:${K}`]?: UiSpinnerAttributes[K] } & { [K in keyof UiSpinner & keyof UiSpinnerAttributes as `prop:${K}`]?: UiSpinner[K] };
+        "ui-tabs": Omit<UiTabs, keyof UiTabsAttributes> & { [K in keyof UiTabs & keyof UiTabsAttributes]?: UiTabs[K] } & { [K in keyof UiTabs & keyof UiTabsAttributes as `attr:${K}`]?: UiTabsAttributes[K] } & { [K in keyof UiTabs & keyof UiTabsAttributes as `prop:${K}`]?: UiTabs[K] };
         "ui-toast": Omit<UiToast, keyof UiToastAttributes> & { [K in keyof UiToast & keyof UiToastAttributes]?: UiToast[K] } & { [K in keyof UiToast & keyof UiToastAttributes as `attr:${K}`]?: UiToastAttributes[K] } & { [K in keyof UiToast & keyof UiToastAttributes as `prop:${K}`]?: UiToast[K] };
         "ui-toggle": Omit<UiToggle, keyof UiToggleAttributes> & { [K in keyof UiToggle & keyof UiToggleAttributes]?: UiToggle[K] } & { [K in keyof UiToggle & keyof UiToggleAttributes as `attr:${K}`]?: UiToggleAttributes[K] } & { [K in keyof UiToggle & keyof UiToggleAttributes as `prop:${K}`]?: UiToggle[K] };
         "ui-tooltip": Omit<UiTooltip, keyof UiTooltipAttributes> & { [K in keyof UiTooltip & keyof UiTooltipAttributes]?: UiTooltip[K] } & { [K in keyof UiTooltip & keyof UiTooltipAttributes as `attr:${K}`]?: UiTooltipAttributes[K] } & { [K in keyof UiTooltip & keyof UiTooltipAttributes as `prop:${K}`]?: UiTooltip[K] };
@@ -2370,6 +2443,7 @@ declare module "@stencil/core" {
              * @event hidden - Emitted when spinner becomes hidden
              */
             "ui-spinner": LocalJSX.IntrinsicElements["ui-spinner"] & JSXBase.HTMLAttributes<HTMLUiSpinnerElement>;
+            "ui-tabs": LocalJSX.IntrinsicElements["ui-tabs"] & JSXBase.HTMLAttributes<HTMLUiTabsElement>;
             "ui-toast": LocalJSX.IntrinsicElements["ui-toast"] & JSXBase.HTMLAttributes<HTMLUiToastElement>;
             "ui-toggle": LocalJSX.IntrinsicElements["ui-toggle"] & JSXBase.HTMLAttributes<HTMLUiToggleElement>;
             "ui-tooltip": LocalJSX.IntrinsicElements["ui-tooltip"] & JSXBase.HTMLAttributes<HTMLUiTooltipElement>;

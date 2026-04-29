@@ -1,0 +1,12 @@
+<ui-tabs
+  #tabsEl
+  [tabs]="tabs()"
+  [activeIndex]="resolvedActiveIndex()"
+  [defaultActiveIndex]="defaultActiveIndex()"
+  [scrollable]="scrollable()"
+  [customTooltipClass]="customTooltipClass()"
+  [tagColor]="tagColor()"
+  (getSelectedTab)="handleSelectedTab($event)"
+  (getTabIndex)="handleTabIndex($event)"
+  (tabIconClicked)="handleTabIconClicked($event)"
+></ui-tabs>
