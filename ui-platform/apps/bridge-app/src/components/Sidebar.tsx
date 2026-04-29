@@ -198,10 +198,10 @@ export function Sidebar({
               const filteredStories = group.variants.filter((story) =>
                 story.name.toLowerCase().includes(query.toLowerCase()),
               );
-
               if (!matchesGroup && filteredStories.length === 0) {
                 return null;
               }
+              console.log(group, "group");
 
               const isOpen = openGroups[group.definition.id] ?? true;
               const isActiveGroup = selectedStoryId === group.definition.id;
@@ -215,12 +215,7 @@ export function Sidebar({
                 <div key={group.definition.id} className="mb-0.5">
                   <button
                     onClick={() => {
-                      if (isCollapsed) {
-                        if (compactStory) {
-                          onSelectStory(group.definition.id, compactStory.name);
-                        }
-                        return;
-                      }
+                      onSelectStory(group.definition.id, compactStory.name);
                       toggleGroup(group.definition.id);
                     }}
                     title={group.definition.title}
