@@ -19,16 +19,29 @@ export function WelcomeScreen({
   onRefresh,
 }: WelcomeScreenProps) {
   return (
-    <section className="flex min-h-0 flex-1 items-center justify-center bg-[var(--bride-glass-dark)] p-6">
+    <section
+      className="flex min-h-0 flex-1 items-center justify-center bg-[var(--bride-glass-dark)] p-6"
+      style={{ background: "#F7F9FF" }}
+    >
       <div className="max-w-2xl text-center">
         <div className="flex items-center justify-center">
-          <img src="/one-box-ui-logo-transparent.png" height={300} width={300} alt="logo" />
+          {/* <img src="/one-box-ui-logo-transparent.png" height={300} width={300} alt="logo" /> */}
+          <div style={{ height: "200px", width: "300px", overflow: "hidden" }}>
+            <video
+              autoPlay
+              muted
+              loop
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            >
+              <source src="/logo_video.mp4" type="video/mp4" />
+            </video>
+          </div>
         </div>
 
-        <p className="mt-2 text-sm text-[color:var(--bride-text-soft)]">
+        {/* <p className="mt-2 text-sm text-[color:var(--bride-text-soft)]">
           Select a component from the sidebar to begin. The preview will render
           only after you choose a story.
-        </p>
+        </p> */}
 
         <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
           <div className="flex flex-col items-center gap-2 rounded-lg border bg-[var(--bride-field-bg)] p-3">

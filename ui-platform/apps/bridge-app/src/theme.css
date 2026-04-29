@@ -1,8 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap");
 
 :root {
-  --bride-font-ui: "Outfit", "Segoe UI", system-ui, sans-serif;
-  --bride-font-display: "Space Grotesk", "Outfit", sans-serif;
+  --bride-font-ui: "Inter", sans-serif;
+  --bride-font-display: "Inter", sans-serif;
 
   /* All theme variables are now managed by themeManager.ts */
   /* These are set dynamically via JavaScript in applyTheme() */
@@ -31,6 +31,7 @@ body {
   color: var(--bride-text);
   font-family: var(--bride-font-ui);
   letter-spacing: 0.01em;
+  font-weight: 600;
 }
 
 :root[data-appearance="light"] body {
