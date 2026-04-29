@@ -20,7 +20,7 @@ export function WelcomeScreen({
 }: WelcomeScreenProps) {
   return (
     <section
-      className="flex min-h-0 flex-1 items-center justify-center bg-[var(--bride-glass-dark)] p-6"
+      className="flex min-h-screen flex-1 items-center justify-center bg-[var(--bride-glass-dark)] p-6"
       style={{ background: "#F7F9FF" }}
     >
       <div className="max-w-2xl text-center">
