@@ -1,4 +1,4 @@
-linkWorkspacePackages: true
+linkWorkspacePackages: false
 
 packages:
   - "apps/*"

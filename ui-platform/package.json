@@ -5,7 +5,7 @@
   "private": "false",
   "type": "module",
   "engines": {
-    "node": ">=18.18.0"
+    "node": "20.20.2"
   },
   "scripts": {
     "build": "pnpm --filter ./packages/core --filter ./packages/web-components --filter ./packages/react --filter ./packages/angular -r build",
@@ -24,7 +24,8 @@
     "build:react-renderer": "pnpm --filter react-renderer build",
     "build:wc-renderer": "pnpm --filter wc-renderer build",
     "build:all": "pnpm run build:bridge && pnpm run build:react-renderer && pnpm run build:wc-renderer",
-    "vercel-build": "pnpm build:all"
+    "vercel-build": "pnpm build:all",
+    "v-build": "pnpm --filter ./packages/* build && pnpm --filter ./apps/* build"
   },
   "pnpm": {
     "overrides": {
