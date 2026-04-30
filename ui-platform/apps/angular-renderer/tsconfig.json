@@ -8,5 +8,8 @@
     "skipLibCheck": true,
     "experimentalDecorators": true,
     "lib": ["ES2022", "DOM"],
+    "paths": {
+      "@karan9186/angular": ["../../packages/angular/projects/ui-lib/src/public-api.ts"]
+    }
   }
 }

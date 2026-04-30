@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "apps/bridge-app/package.json", "use": "@vercel/static-build", "config": { "distDir": "dist" } },
+    { "src": "apps/react-renderer/package.json", "use": "@vercel/static-build", "config": { "distDir": "dist" } }
+  ],
+  "routes": [
+    { "src": "/bridge/(.*)", "dest": "/apps/bridge-app/dist/$1" },
+    { "src": "/bridge", "dest": "/apps/bridge-app/dist/index.html" },
+    { "src": "/renderer/(.*)", "dest": "/apps/react-renderer/dist/$1" },
+    { "src": "/renderer", "dest": "/apps/react-renderer/dist/index.html" },
+    { "src": "/(.*)", "dest": "/apps/bridge-app/dist/$1" }
+  ]
+}

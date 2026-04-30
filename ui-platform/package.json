@@ -16,7 +16,12 @@
     "test": "echo \"No root test runner configured\"",
     "build2": "pnpm -r build && node scripts/build-all.js",
     "pack:tarball": "pnpm run build2 && npm pack --ignore-scripts",
-    "prepack": "pnpm -r build && node scripts/build-all.js"
+    "prepack": "pnpm -r build && node scripts/build-all.js",
+    "build:bridge": "pnpm --filter bridge-app build",
+    "build:react-renderer": "pnpm --filter react-renderer build",
+    "build:wc-renderer": "pnpm --filter wc-renderer build",
+    "build:all": "pnpm run build:bridge && pnpm run build:react-renderer && pnpm run build:wc-renderer",
+    "vercel-build": "pnpm build:all"
   },
   "pnpm": {
     "overrides": {
