@@ -4,6 +4,9 @@
   "description": "Monorepo workspace for the UI Library design system.",
   "private": "false",
   "type": "module",
+  "engines": {
+    "node": ">=18.18.0"
+  },
   "scripts": {
     "build": "pnpm --filter ./packages/core --filter ./packages/web-components --filter ./packages/react --filter ./packages/angular -r build",
     "dev:renderer": "concurrently -k -n bridge,react,angular,wc \"pnpm --filter bridge-app dev\" \"pnpm --filter react-renderer dev\" \"pnpm --filter angular-renderer dev\" \"pnpm --filter wc-renderer dev\"",
@@ -12,7 +15,7 @@
     "dev:test": "pnpm --filter ./test/angular-test --filter ./test/react-test -r --parallel run dev",
     "publish:prepare": "pnpm run build && node scripts/prepare-publish.js",
     "publish:dry-run": "node scripts/publish-packages.js --dry-run",
-    "publish:all": "node scripts/publish-packages.js",  
+    "publish:all": "node scripts/publish-packages.js",
     "test": "echo \"No root test runner configured\"",
     "build2": "pnpm -r build && node scripts/build-all.js",
     "pack:tarball": "pnpm run build2 && npm pack --ignore-scripts",

@@ -1,9 +1,7 @@
 {
   "version": 2,
-  "builds": [
-    { "src": "apps/bridge-app/package.json", "use": "@vercel/static-build", "config": { "distDir": "dist" } },
-    { "src": "apps/react-renderer/package.json", "use": "@vercel/static-build", "config": { "distDir": "dist" } }
-  ],
+  "buildCommand": "cd ui-platform && pnpm install --no-frozen-lockfile && pnpm build",
+  "outputDirectory": "ui-platform/apps/bridge-app/dist",
   "routes": [
     { "src": "/bridge/(.*)", "dest": "/apps/bridge-app/dist/$1" },
     { "src": "/bridge", "dest": "/apps/bridge-app/dist/index.html" },
