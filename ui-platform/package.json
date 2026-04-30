@@ -25,7 +25,7 @@
     "build:wc-renderer": "pnpm --filter wc-renderer build",
     "build:all": "pnpm run build:bridge && pnpm run build:react-renderer && pnpm run build:wc-renderer",
     "vercel-build": "pnpm build:all",
-    "v-build": "pnpm --filter ./packages/* build && pnpm --filter ./apps/* build"
+    "v-build": "pnpm build && pnpm -r --filter ./apps/* run build"
   },
   "pnpm": {
     "overrides": {
