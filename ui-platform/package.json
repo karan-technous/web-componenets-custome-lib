@@ -21,8 +21,11 @@
     "pack:tarball": "pnpm run build2 && npm pack --ignore-scripts",
     "prepack": "pnpm -r build && node scripts/build-all.js",
     "build:bridge": "pnpm --filter bridge-app build",
-    "build:react-renderer": "pnpm --filter react-renderer build",
-    "build:wc-renderer": "pnpm --filter wc-renderer build",
+    "build:react-renderer-deps": "pnpm --filter ./packages/core --filter ./packages/web-components --filter ./packages/react -r build",
+    "build:wc-renderer-deps": "pnpm --filter ./packages/core --filter ./packages/web-components -r build",
+    "build:react-renderer": "pnpm run build:react-renderer-deps && pnpm --filter react-renderer build",
+    "build:wc-renderer": "pnpm run build:wc-renderer-deps && pnpm --filter wc-renderer build",
+    "build:angular-renderer": "pnpm --filter angular-renderer build",
     "build:all": "pnpm run build:bridge && pnpm run build:react-renderer && pnpm run build:wc-renderer",
     "vercel-build": "pnpm build:all",
     "v-build": "pnpm build && pnpm --filter bridge-app run build && pnpm --filter react-renderer run build && pnpm --filter angular-renderer run build && pnpm --filter wc-renderer run build"

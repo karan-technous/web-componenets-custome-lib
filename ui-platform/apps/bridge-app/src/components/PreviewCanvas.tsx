@@ -1,8 +1,15 @@
 import { AnimatePresence, motion } from "framer-motion";
-import React, { useEffect, useMemo, useRef, useState, useCallback } from "react";
+import React, {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useCallback,
+} from "react";
 import type { Framework } from "../state/frameworkStore";
 import type { SelectedStory, StoryRendererBindings } from "../state/storyTypes";
 import { transformStory } from "../state/storyTransformer";
+import { rendererUrls } from "../config/rendererUrls";
 import WelcomeScreen from "./WelcomeScreen";
 
 interface PreviewCanvasProps {
@@ -16,12 +23,6 @@ interface PreviewCanvasProps {
   onOpenDocs?: () => void;
   onRefresh?: () => void;
 }
-
-const rendererUrls: Record<Framework, string> = {
-  angular: "http://localhost:4200",
-  react: "http://localhost:5173",
-  wc: "http://localhost:5174",
-};
 
 function buildPreviewUrl(framework: Framework, refreshToken: number) {
   const params = new URLSearchParams({
@@ -154,7 +155,10 @@ export const PreviewCanvas = React.memo(function PreviewCanvas({
       ...transformStory(selection, framework),
     };
 
-    console.log("PreviewCanvas: Selection changed, payload:", JSON.stringify(payload, null, 2));
+    console.log(
+      "PreviewCanvas: Selection changed, payload:",
+      JSON.stringify(payload, null, 2),
+    );
     console.log("PreviewCanvas: Slots:", selection.slots);
     pendingPayloadRef.current = payload;
     if (!isReady) {

@@ -1,5 +1,6 @@
 import { BookOpen, Copy, ExternalLink, Sparkles } from "lucide-react";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { rendererUrls } from "../config/rendererUrls";
 import type { Framework } from "../state/frameworkStore";
 import { storyCatalog } from "../state/storyStore";
 import { transformStory } from "../state/storyTransformer";
@@ -19,12 +20,6 @@ interface DocsPageProps {
   onOpenStory: (storyName: string) => void;
   appearance: "dark" | "light";
 }
-
-const rendererUrls: Record<Framework, string> = {
-  angular: "http://localhost:4200",
-  react: "http://localhost:5173",
-  wc: "http://localhost:5174",
-};
 
 function toPascalCase(value: string): string {
   return value
